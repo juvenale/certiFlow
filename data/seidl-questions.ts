@@ -1,0 +1,15088 @@
+export type QuizQuestion = {
+  id: string;
+  domain: string;
+  questionNumber: number;
+  question: string;
+  choices: [string, string, string, string];
+  answer: number;
+  explanation: string;
+  source: "David Seidl local import" | "Mike Chapple local import";
+};
+
+export const seidlQuestions = [
+  {
+    "id": "seidl-d1-0-q1",
+    "domain": "General Security Concepts",
+    "questionNumber": 1,
+    "question": "Felicia wants to deploy an encryption solution that will protect files in motion as they are copied between file shares as well as at rest, and also needs it to support granular, per-user security. What type of solution should she select?",
+    "choices": [
+      "Partition encryption",
+      "File encryption",
+      "Full-disk encryption",
+      "Record-level encryption"
+    ],
+    "answer": 1,
+    "explanation": "File encryption meets all of the needs described. Full-disk encryption is easier to deploy and manage but does not protect individual files in motion and does not effectively support multiuser scenarios. Partition-level encryption has the same challenges, albeit at a partition rather than full-disk level. Record-level encryption is typically used in databases to protect individual records or entries.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q2",
+    "domain": "General Security Concepts",
+    "questionNumber": 2,
+    "question": "Valerie wants to use a certificate to handle multiple subdomains for her website, including the sales.example.com and support.example.com subdomains. What type of certificate should she use?",
+    "choices": [
+      "A self-signed certificate",
+      "A root of trust certificate",
+      "A CRL certificate",
+      "A wildcard certificate"
+    ],
+    "answer": 3,
+    "explanation": "Wildcard certificates are used to handle multiple subdomains with a single certificate. A self-signed certificate will not be recognized by browsers and other services, creating confusion for customers. Root of trust certificates and CRL certificates are not types of certificates.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q3",
+    "domain": "General Security Concepts",
+    "questionNumber": 3,
+    "question": "What information is analyzed during a gap analysis?",
+    "choices": [
+      "Control objectives and controls intended to meet the objectives",
+      "Physically separate networks and their potential connection points",
+      "Compensating controls and the controls they are replacing",
+      "Security procedures and the policies they are designed to support"
+    ],
+    "answer": 0,
+    "explanation": "Gap analysis considers control objectives and the controls that are intended to meet the objectives.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q4",
+    "domain": "General Security Concepts",
+    "questionNumber": 4,
+    "question": "Susan's team has recommended an application restart for a production, customer-facing application as part of an urgent patch due to a security update. What technical implication is the most common concern when conducting an application restart?",
+    "choices": [
+      "Application configuration changes caused by the restart",
+      "Whether the patch will properly apply",
+      "Lack of security controls during the restart",
+      "The downtime during the restart"
+    ],
+    "answer": 3,
+    "explanation": "In most production environments downtime is the primary concern when considering an application restart. Many application architectures are designed to allow restarts of individual systems or services without creating an outage or downtime. Configuration changes should not be created by a restart, patches generally apply properly, and security controls should be in place throughout the process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q5",
+    "domain": "General Security Concepts",
+    "questionNumber": 5,
+    "question": "Using a tool like git is most frequently associated with what critical change management process?",
+    "choices": [
+      "Having a backout plan",
+      "Stakeholder analysis",
+      "Version control",
+      "Standard operating procedures (SOPs)"
+    ],
+    "answer": 2,
+    "explanation": "Organizations frequently use tools like git to build repositories that support their need for version control. Backout plans might note that you need to return to the prior version but will need to include how to do so. Stakeholder analysis and SOPs are not specifically supported by or improved by using git.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q6",
+    "domain": "General Security Concepts",
+    "questionNumber": 6,
+    "question": "Jacob is concerned that the password used for one of his organization's services is weak, and he wants to make it harder to crack by making it harder to test possible keys during a bruteforce attack. What is this technique called?",
+    "choices": [
+      "Master keying",
+      "Key stretching",
+      "Key rotation",
+      "Passphrase armoring General Security Concepts General Security Concepts"
+    ],
+    "answer": 1,
+    "explanation": "Key stretching makes potentially weak keys more resistant to brute-forcing and often involves using a hash or block cipher repeatedly to make the original value harder to crack. Key rotation is the process of changing keys on a periodic basis to limit the impact of potential exposure. Master keying and passphrase armoring are not commonly used concepts for information security, although master keys are used for physical locks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q7",
+    "domain": "General Security Concepts",
+    "questionNumber": 7,
+    "question": "Log monitoring is an example of what control category?",
+    "choices": [
+      "Technical",
+      "Managerial",
+      "Operational",
+      "Physical"
+    ],
+    "answer": 2,
+    "explanation": "Operational controls like log monitoring, change management processes, and vulnerability management are all put in place to support managing and using technology in a secure manner.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q8",
+    "domain": "General Security Concepts",
+    "questionNumber": 8,
+    "question": "Rick wants to make offline brute-force attacks against his password file very difficult for attackers. Which of the following is not a common technique to make passwords harder to crack?",
+    "choices": [
+      "Use of a salt",
+      "Use of a pepper",
+      "Use of a purpose-built password hashing algorithm",
+      "Encrypting password plain text using symmetric encryption"
+    ],
+    "answer": 3,
+    "explanation": "Retaining the actual password is not a best practice, and thus encrypting password plain text is not a common technique to make passwords harder to crack. Since the application would need the cryptographic key to read the passwords, anybody who had access to that key could decrypt the passwords. Using a salt, a pepper, and a cryptographic hashing algorithm designed for passwords are all common best practices to prevent offline bruteforce attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q9",
+    "domain": "General Security Concepts",
+    "questionNumber": 9,
+    "question": "Diffie-Hellman and RSA are both examples of what important encryption-related solution?",
+    "choices": [
+      "Rekeying",
+      "Certificate revocation protocols",
+      "Key exchange algorithms",
+      "Key generation algorithms"
+    ],
+    "answer": 2,
+    "explanation": "Both Diffie-Hellman and RSA are key exchange algorithms designed to securely allow key exchange between users or systems that have not previously communicated.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q10",
+    "domain": "General Security Concepts",
+    "questionNumber": 10,
+    "question": "Sally wants to ensure that her change management process includes a procedure for what to do if the change fails. What should she create to handle this possibility?",
+    "choices": [
+      "An impact analysis",
+      "A backout plan",
+      "A regression test",
+      "A maintenance window"
+    ],
+    "answer": 1,
+    "explanation": "Backout plans document what to do to return to a state prior to the change being made and are designed to be implemented if the change fails. They may involve undoing changes, General Security Concepts 219 restoring from backups, or taking other steps and they must contain an appropriate level of detail to ensure that the change can be undone. An impact analysis looks at the potential impact of a change, regression testing ensures that old issues are not introduced in new updates, and maintenance windows are scheduled to allow for downtime or other maintenance activities with appropriate communications, staffing, and other needed elements.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q11",
+    "domain": "General Security Concepts",
+    "questionNumber": 11,
+    "question": "Theresa is concerned that her scheduled maintenance window may extend beyond the allocated time due to an unexpected issue. What element from the CIA triad is she concerned about?",
+    "choices": [
+      "Criticality",
+      "Accessibility",
+      "Integrity",
+      "Availability"
+    ],
+    "answer": 3,
+    "explanation": "The CIA triad is confidentiality, availability, and integrity. Theresa's extended outage window will impact the availability of her applications and services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q12",
+    "domain": "General Security Concepts",
+    "questionNumber": 12,
+    "question": "Alaina is concerned about vehicles that might impact her organization's backup generator. What should she install to prevent both inadvertent and purposeful vehicle impacts on a generator installed outside her building near a parking lot?",
+    "choices": [
+      "A speed bump",
+      "An access control vestibule",
+      "Bollards",
+      "A chain-link fence General Security Concepts 5"
+    ],
+    "answer": 2,
+    "explanation": "Bollards are used to protect infrastructure and structures, and they are usually concrete or steel posts, planters, or similar structures that are intended to prevent a vehicle from impacting what they protect. Speed bumps won't prevent an impact, although they might slow it. Access control vestibules are used to ensure only authorized personnel access a space, and chain-link fences are not typically sufficient for this type of control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q13",
+    "domain": "General Security Concepts",
+    "questionNumber": 13,
+    "question": "Ben has deployed a data loss prevention (DLP) tool that inspects data and flags specific data types for review before emails containing it are sent outside the organization. What control type best describes this type of solution?",
+    "choices": [
+      "Managerial",
+      "Detective",
+      "Corrective",
+      "Preventive"
+    ],
+    "answer": 3,
+    "explanation": "This is a preventive control that is intended to prevent sensitive data from being sent outside the organization. Managerial controls are procedural mechanisms, corrective controls remediate security issues that have already occurred, and detective controls identify security events that have already occurred.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q14",
+    "domain": "General Security Concepts",
+    "questionNumber": 14,
+    "question": "What type of control is a policy or procedure?",
+    "choices": [
+      "Directive",
+      "Corrective",
+      "Detective",
+      "Preventive"
+    ],
+    "answer": 0,
+    "explanation": "Policies and procedures are examples of directive control that inform employees and others of what they should do to achieve security objectives. Corrective controls remediate already existing security issues, detective controls identify security events that have already happened, and preventive controls attempt to stop a security issue before it occurs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q15",
+    "domain": "General Security Concepts",
+    "questionNumber": 15,
+    "question": "Murali has deployed a file integrity monitoring tool and has configured alerts to notify him if files are modified. What control type best describes this solution?",
+    "choices": [
+      "Preventive",
+      "Deterrent",
+      "Directive",
+      "Detective"
+    ],
+    "answer": 3,
+    "explanation": "This solution monitors for changes and is therefore a detective control. It does not prevent changes, and intruders and malicious actors are unlikely to know about it, making it a poor deterrent. Since it is not a policy or practice, it is not a directive control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q16",
+    "domain": "General Security Concepts",
+    "questionNumber": 16,
+    "question": "Charles wants to reduce the threat scope of compromised credentials. What type of the following security controls is best suited to meeting this need?",
+    "choices": [
+      "Single sign-on",
+      "Federation",
+      "Zero trust",
+      "Multifactor authentication (MFA)"
+    ],
+    "answer": 2,
+    "explanation": "Zero trust designs implement continuous verification, which is an effective control used to limit the threat scope of compromised credentials. While multifactor authentication can be a useful control in this circumstance, a fully implemented zero-trust design will provide greater control than just MFA alone. Single sign-on and federation are both likely to increase threat scope in a compromised credential scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q17",
+    "domain": "General Security Concepts",
+    "questionNumber": 17,
+    "question": "Carol wants to obfuscate data that is contained in her database. She wants to be able to refer to the data elements without having the actual data exposed. What type of obfuscation option should she select?",
+    "choices": [
+      "Tokenization",
+      "Encryption",
+      "Data masking",
+      "Data randomization"
+    ],
+    "answer": 0,
+    "explanation": "Tokens replace data with a value that is linked specifically to the data, allowing it to be referenced and used without the field being exposed. Encryption is not used for this purpose, data masking hides elements of a data field like digits from a credit card number, and data randomization is not an obfuscation method.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q18",
+    "domain": "General Security Concepts",
+    "questionNumber": 18,
+    "question": "What key is used to decrypt information sent by another individual between two people using public key encryption?",
+    "choices": [
+      "The recipient's private key",
+      "The recipient's public key",
+      "The sender's private key",
+      "The sender's public key General Security Concepts"
+    ],
+    "answer": 0,
+    "explanation": "The sender uses the receiver's public key to encrypt the message, then the receiver uses their private key to decrypt the message. This ensures that the receiver is the only person who can decrypt a message sent using public key encryption.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q19",
+    "domain": "General Security Concepts",
+    "questionNumber": 19,
+    "question": "Selah's organization has recently experienced a breach and the private keys for her organization's certificates were exposed. What should she immediately do?",
+    "choices": [
+      "Reissue the certificates with changed hostnames and other details.",
+      "Replace the certificates with self-signed certificates until they can be replaced by the vendor.",
+      "Revoke the certificates and place them on a certificate revocation list.",
+      "Replace the certificates with wildcard certificates."
+    ],
+    "answer": 2,
+    "explanation": "If a certificate may have been breached, organizations should immediately revoke the certificates and place them on a certificate revocation list (CRL). They will then need to replace the certificates with new certificates, but changing hostnames is not required as the certificates themselves will be new. The other options are not typical practices.220 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q20",
+    "domain": "General Security Concepts",
+    "questionNumber": 20,
+    "question": "Which of the following is not a major concern related to downtime caused by patching and system updates?",
+    "choices": [
+      "Attackers compromising the system or service while it is offline",
+      "Security systems or functions being offline during restart or shutdown processes",
+      "Unexpected extended downtime",
+      "Dependencies between systems or services related to downtime"
+    ],
+    "answer": 0,
+    "explanation": "Attackers are unlikely to be able to compromise a system or service while it is offline. They may, however, be able to take advantage of the restart or shutdown process if critical security processes are not online for some portion of the process. Unexpected downtime and dependencies between systems must also be considered when planning patching and system updates.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q21",
+    "domain": "General Security Concepts",
+    "questionNumber": 21,
+    "question": "Joanna wants to ensure that the most current version of each component in her application is deployed. What change management process will help the most with this requirement?",
+    "choices": [
+      "Dependency mapping",
+      "Version control",
+      "Impact analysis",
+      "Allow and deny lists"
+    ],
+    "answer": 1,
+    "explanation": "Version control is important to ensure that the current and correct version of an application or component is deployed. Dependency mapping can be important to ensure that changed versions don't cause other issues, but it isn't specifically needed to ensure that the current version is what you're deploying. Impact analysis and allow/deny lists are not directly relevant to this requirement.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q22",
+    "domain": "General Security Concepts",
+    "questionNumber": 22,
+    "question": "Greg wants to implement a version control system to ensure that changes are made in ways that will not cause problems for his organization's critical software. Which of the following is not a common feature of version control systems designed for software source code?",
+    "choices": [
+      "Atomic operations",
+      "File locking",
+      "Regression testing",
+      "Tagging and labeling"
+    ],
+    "answer": 2,
+    "explanation": "Version control systems track versions but don't do testing themselves. Atomic operations ensure that actions like commits don't overwrite other commits in progress. File locking allows a developer to check out a file while it is being worked on, and tagging and labeling helps developers track files and versions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q23",
+    "domain": "General Security Concepts",
+    "questionNumber": 23,
+    "question": "Christina wants to implement a physical security control that has the greatest flexibility in how it is applied because she knows that exceptions to security practices may be required at times. Which of the following solutions has the greatest flexibility?",
+    "choices": [
+      "Video surveillance",
+      "Security guards",
+      "Access badges",
+      "Access control vestibules"
+    ],
+    "answer": 1,
+    "explanation": "Security guards are expensive but offer the most flexibility when organizations need intelligence and reasoning to be applied to security events and unexpected needs. Christina knows that guards can often identify issues that a fixed sensor or control cannot.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q24",
+    "domain": "General Security Concepts",
+    "questionNumber": 24,
+    "question": "Lisa wants to ensure that theft of a device will not lead to exposure of the data contained on the device if the device is locked or turned off. What type of encryption should she select to best ensure this?",
+    "choices": [
+      "Volume-level encryption",
+      "Full-disk encryption",
+      "File-level encryption",
+      "Partition-level encryption General Security Concepts 7"
+    ],
+    "answer": 1,
+    "explanation": "Full-disk encryption provides the most security in situations like this if the device is locked or off. Volume- and partition-level encryption may leave some drive information or even entire volumes or partitions unencrypted, and file-level encryption is typically selective instead of covering every file on a drive.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q25",
+    "domain": "General Security Concepts",
+    "questionNumber": 25,
+    "question": "Mahmoud has been asked to implement an allow list for websites that users at his company can visit. What concern should he bring up to management due to this request?",
+    "choices": [
+      "Allow lists cannot be used for websites.",
+      "Allow lists are overly permissive and are likely to allow unwanted sites to be visited.",
+      "Using an allow list for websites will take a lot of time to maintain.",
+      "Using an allow list for websites is easily bypassed."
+    ],
+    "answer": 2,
+    "explanation": "In most organizations attempting to use an allow list for websites will take up a lot of time. Mahmoud knows that allow lists can be set up for websites, often at a central network security device-level like a firewall. Bypassing allow lists may be possible, but this can largely be prevented if desired. Allow lists are not overly permissive unless they are configured that way.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q26",
+    "domain": "General Security Concepts",
+    "questionNumber": 26,
+    "question": "Which of the following change management processes does not commonly directly involve stakeholders outside of the IT organization?",
+    "choices": [
+      "Impact analysis",
+      "Building the backout plan",
+      "The change approval process",
+      "Determining the maintenance window"
+    ],
+    "answer": 1,
+    "explanation": "Administrators and system owners typically build backout plans. Stakeholders are involved in impact analysis as they help technical staff understand what the impact of changes will be on business areas. They engage in the change approval process, and they help to determine the maintenance window to ensure that impact on the business is minimized.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q27",
+    "domain": "General Security Concepts",
+    "questionNumber": 27,
+    "question": "What hardware component is used to generate, store, and manage cryptographic keys?",
+    "choices": [
+      "A CPU",
+      "A NSA",
+      "A TPM",
+      "A CCA"
+    ],
+    "answer": 2,
+    "explanation": "A TPM, or trusted platform module, is a hardware-based, cryptographic processor that is used to generate, store, and manage cryptographic keys. It is also used to help ensure platform integrity by allowing boot validation processes to occur in a secure manner. A CPU is the main processor for a system, NSA is the National Security Agency, and a CCA is a chosen ciphertext attack, a type of attack against cryptographic systems where the attacker can cause a cryptographic system to encrypt known text for analysis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q28",
+    "domain": "General Security Concepts",
+    "questionNumber": 28,
+    "question": "Chris wants to check to see if a certificate has been revoked. What protocol can he use to validate the current status of a certificate?",
+    "choices": [
+      "TLS",
+      "OCRS",
+      "SSL",
+      "OCSP"
+    ],
+    "answer": 3,
+    "explanation": "The Online Certificate Status Protocol (OCSP) is used to validate certificate status, including checking to see if the certificate is on a certificate revocation list (CRL). TLS is Transport Layer Security, a protocol used to encrypt data in transit between systems that relies on cryptographic certificates, but it is not used to validate the status of certificates on a CRL. Despite SSL itself being outmoded, the term SSL is commonly used to refer to TLS- but here, neither TLS nor SSL is the right option. OCRS was made up for this question. General Security Concepts 221",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q29",
+    "domain": "General Security Concepts",
+    "questionNumber": 29,
+    "question": "Brian's organization uses a process where a secure module boots systems, then monitors them as each boot stage proceeds. It validates each signed boot stage and reports on whether the boot process was correct or not when complete. What is the secure module used to verify these stages called?",
+    "choices": [
+      "A secure initiation manager",
+      "A root of trust",
+      "A boot hash",
+      "A cryptographic boot manager"
+    ],
+    "answer": 1,
+    "explanation": "A root of trust-based secure boot process validates each signed component as it starts and ensures that the trusted components are all loaded as part of the boot process. Changes to the components are reported as exceptions, meaning that the boot process cannot be properly verified or trusted. Secure initiation manager, boot hash, cryptographic boot manager were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q30",
+    "domain": "General Security Concepts",
+    "questionNumber": 30,
+    "question": "A vulnerability scan shows that an embedded device that Alice is responsible for has a vulnerability. She knows the vendor is no longer in business and that there is no updated firmware or software update for the device. To resolve the issue, Alice places a firewall between the device and the rest of the network and creates rules that prevent the vulnerable service from being available to other devices. What type of control has Alice deployed?",
+    "choices": [
+      "A directive control",
+      "A compensating control",
+      "A detective control",
+      "A procedural control General Security Concepts"
+    ],
+    "answer": 1,
+    "explanation": "Alice has deployed a compensating control since she cannot apply controls like patching, configuration, or updates. Directive controls provide formal directions to staff, detective controls detect issues rather than preventing them directly, and procedural controls are not a type of control type used on the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q31",
+    "domain": "General Security Concepts",
+    "questionNumber": 31,
+    "question": "Jason knows that his Apple system uses a separate portion of its SoC (system on chip) to store keys and biometric information. What is this specialized component called?",
+    "choices": [
+      "A TPM",
+      "A HSM",
+      "A secure enclave",
+      "A screened subnet"
+    ],
+    "answer": 2,
+    "explanation": "Apple devices use a specialized, separate coprocessor that uses encrypted memory and storage as well as dedicated cryptographic functions called a secure enclave. This is distinct from a TPM or HSM, and a screened subnet is a networking concept for a space that will be exposed to the less secure zones while needing to remain secure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q32",
+    "domain": "General Security Concepts",
+    "questionNumber": 32,
+    "question": "What change management term is used to describe the processes that an organization uses for each change that is made to ensure that a consistent process is used?",
+    "choices": [
+      "Standard operating procedures",
+      "A change plan",
+      "Fixed operating procedures",
+      "A backout plan"
+    ],
+    "answer": 0,
+    "explanation": "Standard operating procedures (SOPs) are an organization's normal processes that it uses. SOPs are helpful to ensure that organizations have consistent practices that are in use on an ongoing basis. A change plan is specific to a change, and a backout plan is used to undo a change if problems arise. Fixed operating procedures is not a common term used in change management.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q33",
+    "domain": "General Security Concepts",
+    "questionNumber": 33,
+    "question": "Jack knows that there are three common types of database encryption. Which of the following is not a common type of database encryption?",
+    "choices": [
+      "Sensitivity-based encryption",
+      "Transparent data encryption",
+      "Field-level encryption",
+      "Column-level encryption"
+    ],
+    "answer": 0,
+    "explanation": "Transparent data encryption, field-level, and column-level encryption are all common types of database encryption. Sensitivity-based encryption is not and was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q34",
+    "domain": "General Security Concepts",
+    "questionNumber": 34,
+    "question": "Ujamaa wants to conduct a gap analysis as part of his security efforts. Which of the following best describes what he will analyze?",
+    "choices": [
+      "Which services are not configured properly",
+      "Whether current patches are installed on all systems",
+      "The security program as implemented versus best practices",
+      "Legal requirements versus the security program"
+    ],
+    "answer": 2,
+    "explanation": "Gap analysis focuses on reviewing a security program against common best practices to identify where gaps between practices exist. Ujamaa will select an information security standard like NIST 800-53, ISO 27001, or another relevant standard and will validate his organization's controls implementation against it. This may include things like which services are not configured properly, whether patches are installed, and if legal requirements are being met, but any of those answers is not a complete answer in this context.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q35",
+    "domain": "General Security Concepts",
+    "questionNumber": 35,
+    "question": "Brandon wants to deploy a detective control that will help him with physical security threats. Which of the following fits his needs?",
+    "choices": [
+      "Fencing",
+      "Lighting",
+      "Video surveillance",
+      "Bollards"
+    ],
+    "answer": 2,
+    "explanation": "Video surveillance is a detective control and is useful for detecting security events after they have happened. Fencing, bollards, and lighting are typically considered preventive controls.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q36",
+    "domain": "General Security Concepts",
+    "questionNumber": 36,
+    "question": "Jack has deployed a system that appears to attackers to be a vulnerable system. The system is specifically designed to capture information and data from attacks to allow for later analysis. What type of tool has Jack deployed?",
+    "choices": [
+      "A tarpit",
+      "A honeypot",
+      "A beehive",
+      "An intrusion detection system General Security Concepts 9"
+    ],
+    "answer": 1,
+    "explanation": "Honeypots are designed to appear to be vulnerable. They are heavily instrumented to capture attacker techniques and tools, allowing for analysis by defenders. Tarpits slow down attackers, beehives are not a term used in this context, and intrusion detection systems (IDSs) are designed to identify and alert about attacks but are not designed to appear to be vulnerable.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q37",
+    "domain": "General Security Concepts",
+    "questionNumber": 37,
+    "question": "Renee wants to ensure that her logs support nonrepudiation. What should she do to ensure this?",
+    "choices": [
+      "Encrypt, then hash the logs.",
+      "Hash the logs and then digitally sign them.",
+      "Digitally sign the log file, then encrypt it.",
+      "Hash, then encrypt the logs."
+    ],
+    "answer": 1,
+    "explanation": "Calculating a cryptographic hash allows the log's hash to be compared against copies to validate that they match. Digitally signing the hash ensures that it can be verified to be the original. Encrypting the log does not allow it to be verified against an original. Without a digital signature, a hash does not meet Renee's requirement for nonrepudiation.222 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q38",
+    "domain": "General Security Concepts",
+    "questionNumber": 38,
+    "question": "Isaac wants to deploy sensors to detect intruders in a facility, but he is concerned about the sensors being overly sensitive. What type of sensor is best suited to detecting intruders in an open office environment without significant expense or issues with sensitivity?",
+    "choices": [
+      "Infrared",
+      "Pressure",
+      "Microwave",
+      "Ultrasonic"
+    ],
+    "answer": 0,
+    "explanation": "Infrared sensors are commonly used in open spaces. They are well suited to detecting individuals and are less likely to be overly sensitive. They can cover broader fields than a pressure sensor, and ultrasonic sensors are not commonly deployed as facility-level security sensors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q39",
+    "domain": "General Security Concepts",
+    "questionNumber": 39,
+    "question": "Wayne wants to allow systems to claim identities as part of his AAA process. Which of the following is most commonly used to identify both individuals and systems?",
+    "choices": [
+      "Tokens",
+      "Smartcards",
+      "Certificates",
+      "Usernames"
+    ],
+    "answer": 2,
+    "explanation": "Certificates are commonly used to identify both individuals and systems. Tokens, smartcards, and usernames are primarily used by individuals.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q40",
+    "domain": "General Security Concepts",
+    "questionNumber": 40,
+    "question": "What are considerations like database and network connectivity, authentication system access, and network time availability considered in the context of change management processes?",
+    "choices": [
+      "Allowed services",
+      "Standard operating procedures",
+      "Denied services",
+      "Dependencies"
+    ],
+    "answer": 3,
+    "explanation": "Database and network connectivity, authentication system access, and network time availability are all common dependencies that must be considered when making changes. Applications and services may fail to start properly if these dependencies are not available when they attempt to start.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q41",
+    "domain": "General Security Concepts",
+    "questionNumber": 41,
+    "question": "What role does the policy engine play in a zero-trust environment?",
+    "choices": [
+      "It creates new administrative policies based on user behavior.",
+      "It grants access based on policies created by administrators and based on security systems data.",
+      "It enforces policies by monitoring connections between clients and servers.",
+      "It suggests new administrative policies based on usage patterns for adoption by the organization."
+    ],
+    "answer": 1,
+    "explanation": "Policy engines decide whether to grant access to resources based on policies created by administrators and based on data provided by tools like endpoint detection and response tools, threat intelligence feeds, and security information and event management tools. It does not create or suggest administrative policies, and it does not directly enforce policies-that occurs at a policy enforcement point, typically through a zero-trust agent on the client and at the resource or service side.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q42",
+    "domain": "General Security Concepts",
+    "questionNumber": 42,
+    "question": "Which of the following is not a common post-change activity found in change management practices?",
+    "choices": [
+      "Updating diagrams",
+      "Updating procedures",
+      "Updating policies",
+      "Updating contracts General Security Concepts"
+    ],
+    "answer": 3,
+    "explanation": "Contracts tend to be updated as part of a contract renewal process, not as part of a change management process related to technical change.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q43",
+    "domain": "General Security Concepts",
+    "questionNumber": 43,
+    "question": "Which of the following activities should Alaina not restrict as part of her preparation for a change window?",
+    "choices": [
+      "Patching",
+      "Scaling clustered systems up or down",
+      "Changing hostnames",
+      "Modifying database configurations"
+    ],
+    "answer": 1,
+    "explanation": "Change windows rely on the documented change being able to be made. Patching and other technical changes may lead to unexpected interactions or dependency changes that are not accounted for in the original change window. Scaling a clustered system up or down does not change the systems and should not be restricted during a change management window.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q44",
+    "domain": "General Security Concepts",
+    "questionNumber": 44,
+    "question": "What two key features define blockchain ledgers?",
+    "choices": [
+      "They are immutable and nontransferable.",
+      "They are shared and can be modified by a vote among all participants.",
+      "They are unique to each participant and are atomic.",
+      "They are shared and immutable."
+    ],
+    "answer": 3,
+    "explanation": "Blockchain ledgers are immutable-they cannot be changed after they are recorded, and they are shared, which means that each participant in the blockchain has access to the entire ledger. Transactions are recorded only once and cannot be tampered with-in fact, if an error is made and recorded, a new record has to be created including the fix, and both records will be accessible to show the history of what occurred.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q45",
+    "domain": "General Security Concepts",
+    "questionNumber": 45,
+    "question": "Damian issues the following command on his Linux server: openssl req -new -newkey rsa:2048 -nodes -keyout exampleserver. key -out exampleserver.csr What has he done?",
+    "choices": [
+      "Created a certificate signing request",
+      "Created a certificate revocation request",
+      "Signed a certificate signing request",
+      "Updated the OCSP record for a certificate"
+    ],
+    "answer": 0,
+    "explanation": "Damian has created a certificate signing request, which he can submit to a certificate authority (CA).",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q46",
+    "domain": "General Security Concepts",
+    "questionNumber": 46,
+    "question": "Nick's organization sets aside Saturday nights from 2 a.m. to 4 a.m. for scheduled maintenance. What is this type of reserved time typically called?",
+    "choices": [
+      "Allocated downtime",
+      "A maintenance window",
+      "An unscheduled outage",
+      "An allowed outage"
+    ],
+    "answer": 1,
+    "explanation": "Preplanned times when maintenance is done and outages may occur is known as a maintenance window. An unscheduled outage is just that-unscheduled and unplanned, often due to a failure or other issue. Allocated downtime and allowed outages are not common terms for this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q47",
+    "domain": "General Security Concepts",
+    "questionNumber": 47,
+    "question": "Megan wants to assess the impact of a change as part of her change management process. Which of the following is most likely to help her assess impact?",
+    "choices": [
+      "A backout plan",
+      "An estimate of the downtime expected",
+      "A list of stakeholders",
+      "A list of dependencies for impacted systems"
+    ],
+    "answer": 1,
+    "explanation": "An estimate of the downtime expected as part of the change will help Megan to assess the impact of the change on her organization's business operations. A backout plan is useful if something goes wrong and can help estimate impact if that happens, but it does not identify impact under normal circumstances. A list of stakeholders can help when communicating with stakeholders to notify them of what will occur, but without the estimate of downtime, Megan will not be able to ask them what the impact would be. Finally, a list of dependencies is helpful to ensure that the change does not have unexpected issues and can help with General Security Concepts 223 the impact assessment to determine if other systems may be impacted, but the downtime expected remains the most important item.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q48",
+    "domain": "General Security Concepts",
+    "questionNumber": 48,
+    "question": "Jared wants to estimate the downtime that will result as part of a planned change. Which of the following methods will most effectively help him estimate downtime?",
+    "choices": [
+      "Average the downtime from other recent changes.",
+      "Contact the vendor for time estimates for the change.",
+      "Perform the change in a test environment.",
+      "Use a fixed maintenance window. General Security Concepts 11"
+    ],
+    "answer": 2,
+    "explanation": "Organizations often perform changes in a test environment to allow accurate time estimates and to determine if there are issues with the change like undocumented dependencies or problems with patches. Average downtime is a poor indicator of what a specific change may require, a fixed maintenance window does not ensure the change will take that amount of time, and vendors rarely have a full understanding of the environment an organization is operating in.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q49",
+    "domain": "General Security Concepts",
+    "questionNumber": 49,
+    "question": "An encryption method in which all participants have the same key is known as which of the following types of encryption?",
+    "choices": [
+      "Shared hashing",
+      "Asymmetric encryption",
+      "Symmetric encryption",
+      "Universal encryption"
+    ],
+    "answer": 2,
+    "explanation": "Symmetric encryption uses the same key for all participants in an exchange. Asymmetric encryption uses public and private keys where public keys are shared and private keys are retained. Shared hashing and universal encryption are not terms commonly used to describe encryption.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q50",
+    "domain": "General Security Concepts",
+    "questionNumber": 50,
+    "question": "What important encryption challenge does asymmetric encryption help with by using public keys?",
+    "choices": [
+      "Evil twins",
+      "Collision resistance",
+      "Key length",
+      "Key exchange"
+    ],
+    "answer": 3,
+    "explanation": "Asymmetric encryption makes key exchange possible because public keys are just that: public. They can be shared without causing a loss of cryptographic security or repudiation. They do not help with collision resistance, key length, or evil twins (which are malicious wireless access points).",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q51",
+    "domain": "General Security Concepts",
+    "questionNumber": 51,
+    "question": "Rick's cloud provider offers a dedicated hardware security module. Which of the following capabilities is it unlikely to offer?",
+    "choices": [
+      "Validating secure boot processes",
+      "Key generation",
+      "Encrypting and decrypting data",
+      "Creating digital signatures"
+    ],
+    "answer": 0,
+    "explanation": "A TPM is used to validate secure boot processes. A hardware security module (HSM) is used for key generation, storage, and management as well as for encrypting and decrypting data and creating and validating digital signatures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q52",
+    "domain": "General Security Concepts",
+    "questionNumber": 52,
+    "question": "Michelle believes that an image she has discovered in an attacker's directory of files contains additional information that has been hidden in it. What is this type of obfuscation called?",
+    "choices": [
+      "Steganography",
+      "Image hashing",
+      "PNG warping",
+      "Image blocking"
+    ],
+    "answer": 0,
+    "explanation": "Steganography is the art of hiding additional data in images. Michelle can use steganography detection tools to attempt to find the data, but attackers may use custom tools that could avoid detection as well. The other options were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q53",
+    "domain": "General Security Concepts",
+    "questionNumber": 53,
+    "question": "Which of the following is not a common transport encryption protocol?",
+    "choices": [
+      "TLS",
+      "IPSec",
+      "SAML",
+      "SSH"
+    ],
+    "answer": 2,
+    "explanation": "SAML is the Security Assertion Markup Language, used to exchange authentication and authorization data between identity providers and service providers. TLS, IPSec, and SSH are all common transport encryption protocols.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q54",
+    "domain": "General Security Concepts",
+    "questionNumber": 54,
+    "question": "What technology is record-level encryption most commonly associated with?",
+    "choices": [
+      "Stored audio files",
+      "Databases",
+      "Physical disks",
+      "Removable storage General Security Concepts"
+    ],
+    "answer": 1,
+    "explanation": "Record-level encryption is commonly associated with databases, where it is used to encrypt each record with a unique encryption key, allowing it to be more secure than database-level encryption.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q55",
+    "domain": "General Security Concepts",
+    "questionNumber": 55,
+    "question": "Yasmine submits the Windows BitLocker key to a central repository after she encryptions the machine. The central repository allows files to be uploaded, but not read, and is protected with access requiring special permissions. What type of solution is Yasmine's company using?",
+    "choices": [
+      "A hardware security module",
+      "Perfect forward secrecy",
+      "Key escrow",
+      "Private keys"
+    ],
+    "answer": 2,
+    "explanation": "Yasmine's company has implemented a key escrow process where encryption keys are retained by the organization in case the files on the drive need to be accessed by someone with proper authority. A hardware security module (HSM) is a hardware device used to create and store encryption keys, among other encryption-related functions. Perfect forward secrecy (PFS) is a term used in encryption systems that change keys frequently to ensure that even if a key is hacked, the attacker's access to data will exist in a limited window. Private keys are part of asymmetric encryption schemes and do not reflect the full solution Yasmine's organization is using.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q56",
+    "domain": "General Security Concepts",
+    "questionNumber": 56,
+    "question": "Valerie wants to authenticate her systems using her AAA system. Which of the following options is best suited to system authentication?",
+    "choices": [
+      "Asymmetric authentication",
+      "Certificate-based authentication",
+      "Symmetric authentication",
+      "PIN-based authentication"
+    ],
+    "answer": 1,
+    "explanation": "Certificates are commonly used for system authentication in AAA systems. While asymmetric and symmetric are forms of encryption, they are not authentication schemes, and PINbased authentication is not commonly used for system authentication.224 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q57",
+    "domain": "General Security Concepts",
+    "questionNumber": 57,
+    "question": "Valentine wants to detect if an intruder has accessed a secured file server. Which of the following techniques will work best with a data loss prevention tool to identify data exfiltration?",
+    "choices": [
+      "A honeypot",
+      "A honeynet",
+      "A honeyfile",
+      "A honeytoken"
+    ],
+    "answer": 2,
+    "explanation": "Honeyfiles are files that are intentionally made to look attractive while being configured for detection by data loss prevention and intrusion prevention/detection systems. A honeypot is an intentionally vulnerable system that is used to monitor attacker behavior and techniques for analysis. Honeynets are networks that are configured to be intentionally vulnerable and that operate much like honeypots at a network level. Honeytokens are credentials that are not actually used but that are monitored for use in case an attacker is able to capture them.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q58",
+    "domain": "General Security Concepts",
+    "questionNumber": 58,
+    "question": "Jason has recommended that additional lighting be put in place on the exterior of his building as part of a security upgrade. What type of control is lighting?",
+    "choices": [
+      "Operational",
+      "Deterrent",
+      "Corrective",
+      "Technical"
+    ],
+    "answer": 1,
+    "explanation": "Lighting is a deterrent control type and would typically be categorized as a physical control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q59",
+    "domain": "General Security Concepts",
+    "questionNumber": 59,
+    "question": "Which of the following controls is typically the most expensive to implement?",
+    "choices": [
+      "Bollards",
+      "Access control vestibules",
+      "Security guards",
+      "Access badges"
+    ],
+    "answer": 2,
+    "explanation": "Any control that requires constant human presence like security guards is likely to have a higher ongoing cost than controls that can be put in place and operate without human intervention or presence.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q60",
+    "domain": "General Security Concepts",
+    "questionNumber": 60,
+    "question": "Frankie wants to validate the integrity of a file by comparing it against an original copy. Which of the following solutions both fulfills this requirement and avoids known security issues?",
+    "choices": [
+      "Hash the original file and the current file using MD5 and compare the hashes.",
+      "Hash the original file and the current file using SHA-1 and compare the hashes.",
+      "Hash the original file and the current file using SHA-256 and compare the hashes.",
+      "Hash the original file and the current file using AES and compare the hashes. General Security Concepts 13"
+    ],
+    "answer": 2,
+    "explanation": "SHA-256 is the current, secure hashing standard. While it is unlikely that a malicious actor would exploit known flaws in MD5 and SHA-1, in most normal operations SHA-256 remains the preferred option when it is available. The Advanced Encryption Standard (AES) is used for encryption, not hashing.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q61",
+    "domain": "General Security Concepts",
+    "questionNumber": 61,
+    "question": "Joanna's organization has a policy that requires a user's password to be immediately reset to lock accounts if the account is determined to have been successfully phished. What type of control is this?",
+    "choices": [
+      "A detective control",
+      "A directive control",
+      "A compensating control",
+      "A preventive control"
+    ],
+    "answer": 1,
+    "explanation": "Policies are examples of directive controls. This could also be considered a corrective control, but that is not one of the options listed. Detective controls identify security events that have already occurred, and this does not detect the compromised account-it directs what must happen afterward. A compensating control mitigates risks due to exceptions in the security policy like a violation of policy due to an inability to implement a specific technical control like patching. A preventive control attempts to stop a security issue before it occurs. Here, the issue has already occurred. The policy of directive control tells staff what do to, and the action of locking the account is a corrective control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q62",
+    "domain": "General Security Concepts",
+    "questionNumber": 62,
+    "question": "Jackie wants to implement an AAA system for her network. What AAA protocol is commonly used for network devices?",
+    "choices": [
+      "OpenID",
+      "SAML",
+      "RADIUS",
+      "TANGENT"
+    ],
+    "answer": 2,
+    "explanation": "RADIUS is commonly used for AAA for network devices. OpenID and SAML are more commonly associated with federated services, and TANGENT is not an AAA protocol or server.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q63",
+    "domain": "General Security Concepts",
+    "questionNumber": 63,
+    "question": "Scott wants to automate policy creation in his zero-trust environment's policy engine. Which of the following is not a typical component for automated data and event-driven policy management?",
+    "choices": [
+      "A SIEM",
+      "Threat feeds",
+      "Infrared sensor data",
+      "EDR tools"
+    ],
+    "answer": 2,
+    "explanation": "Physical security sensors are not typically part of a zero-trust policy engine feed. Zerotrust environments primarily focus on network and systems access rather than physical security and access.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q64",
+    "domain": "General Security Concepts",
+    "questionNumber": 64,
+    "question": "Valerie's organization has deployed a zero-trust solution, and Valerie receives an authentication prompt when she is attempting to access a file server. What component of the zero-trust architecture is she interacting with?",
+    "choices": [
+      "A policy enforcement point",
+      "A policy administrator",
+      "The policy engine",
+      "The trust manager"
+    ],
+    "answer": 0,
+    "explanation": "Valerie is interacting with a policy enforcement point, the agent and resource-side elements that validate trust by requiring authentication and authorization before allowing access to a resource. The policy enforcement point will validate her access through the policy engine, which will be configured by the policy administrator. Trust managers are not a typical component of the zero-trust model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q65",
+    "domain": "General Security Concepts",
+    "questionNumber": 65,
+    "question": "Matt is assessing his organization's zero-trust model against the NIST Zero Trust Maturity Model. Which of the following is not a common element of zero-trust systems that would be assessed as part of the model?",
+    "choices": [
+      "Identity",
+      "Business model",
+      "Networks",
+      "Devices"
+    ],
+    "answer": 1,
+    "explanation": "Identity, devices, networks, applications and workloads, and data are all assessed as part of the NIST Zero Trust Maturity Model. The model does not assess an organization's business model or practices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q66",
+    "domain": "General Security Concepts",
+    "questionNumber": 66,
+    "question": "Quentin wants to deploy a single sign-on system to allow his users to log in to cloud services. Which of the following technologies is he most likely to deploy?",
+    "choices": [
+      "OpenID",
+      "Kerberos",
+      "LDAP",
+      "TACACS+ General Security Concepts"
+    ],
+    "answer": 0,
+    "explanation": "OpenID is an open standard for decentralized authentication that is used by many cloud service providers. Kerberos, LDAP, and TACACS+ are all most commonly associated with on-site usage. General Security Concepts 225",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q67",
+    "domain": "General Security Concepts",
+    "questionNumber": 67,
+    "question": "Marty wants to deploy a corrective control to deal with a recently compromised system. Which of the following would be considered a corrective control?",
+    "choices": [
+      "Patching the vulnerability that allowed the compromise to occur",
+      "Deploying full-disk encryption",
+      "Deploying an endpoint detection and response (EDR) tool",
+      "Enabling logging and sending logs to a SIEM"
+    ],
+    "answer": 0,
+    "explanation": "Corrective controls attempt to remediate security issues that have already occurred. Patching the flaw that allowed an attack to succeed is an example of a corrective control. Deploying full-disk encryption or an EDR tool are both examples of preventive controls, and logging and log monitoring are examples of detective controls. It is important to note that in many cases, controls could be identified as multiple potential control types. In cases where controls might fit multiple control types, you should look for the control that is most obviously the correct control type.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q68",
+    "domain": "General Security Concepts",
+    "questionNumber": 68,
+    "question": "What important encryption feature is not supported by symmetric encryption?",
+    "choices": [
+      "Confidentiality",
+      "Integrity",
+      "Nonrepudiation",
+      "Authentication"
+    ],
+    "answer": 2,
+    "explanation": "Symmetric encryption does not support nonrepudiation because both parties have the same key. Both asymmetric and symmetric encryption can provide confidentiality, integrity, and authentication.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q69",
+    "domain": "General Security Concepts",
+    "questionNumber": 69,
+    "question": "Theresa wants to use a cloud-hosted security solution that will allow her to safely store and manage secrets. What type of solution should she select?",
+    "choices": [
+      "A TPM",
+      "A CA",
+      "A KMS",
+      "A CSR"
+    ],
+    "answer": 2,
+    "explanation": "A KMS, or key management system, is a solution that allows you to safely store and manage secrets like keys and certificates. Centralizing a KMS allows organizations to effectively manage their secrets, including tracking their life cycle and rotation. A TPM is used for hardware security on physical systems, a CA is a certificate authority used to create and sign certificates, and a CSR is a certificate signing request.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q70",
+    "domain": "General Security Concepts",
+    "questionNumber": 70,
+    "question": "Joanna is reviewing her account information on an e-commerce website and sees her credit card number displayed as XXXX-XXXX-XXXX-1234. What type of data obfuscation is in use?",
+    "choices": [
+      "Hashing",
+      "Data masking",
+      "Field encryption",
+      "Tokenization"
+    ],
+    "answer": 1,
+    "explanation": "Data masking conceals elements of a data field or entry, preventing all of it from being seen but leaving it accessible through the database when masking is not used. Tokenization replaces values with a reference value-often a hash that can be used to refer to the value without using the actual entry. Hashing is a one-way function that produces an input of arbitrary length. Field encryption is not a common term.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q71",
+    "domain": "General Security Concepts",
+    "questionNumber": 71,
+    "question": "Amanda's organization wants to use a decentralized blockchain to store data. Which of the following is true about a decentralized blockchain?",
+    "choices": [
+      "No individual or group controls the blockchain.",
+      "Only cryptocurrency-related data can be stored in a blockchain.",
+      "Blockchain data can be changed after being stored by the original submitter.",
+      "Blockchain ledgers are stored on central servers chosen by regular elections among blockchain participants."
+    ],
+    "answer": 0,
+    "explanation": "In a decentralized blockchain, no individual or group controls the blockchain. Blockchains can store many types of data, including but not limited to transactions. Blockchain transactions are permanent once written, and a new transaction or update would need to be recorded rather than revising an existing transaction. Blockchain transactions are stored on the blockchain maintained by participants, not on central servers chosen by election.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q72",
+    "domain": "General Security Concepts",
+    "questionNumber": 72,
+    "question": "What role does a subordinate CA have in a CA hierarchy?",
+    "choices": [
+      "Subordinate CAs issue certificates based on subdomains.",
+      "Subordinate CAs provide control over certificate issuance while avoiding the cost of being a root CA.",
+      "Subordinate CAs validate root CA activities to ensure auditability.",
+      "Subordinate CAs review certificate signing requests before forwarding them to the root CA. General Security Concepts 15"
+    ],
+    "answer": 1,
+    "explanation": "Subordinate CAs avoid the cost of maintaining a root CA while providing control over certificates that are issued and allowing specialized support for different types of certificates like SSL and S/MIME. Subordinate CAs can issue certificates for any allowed domain or subdomain, are not required to ensure auditability, and can sign certificates themselves.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q73",
+    "domain": "General Security Concepts",
+    "questionNumber": 73,
+    "question": "Which of the following sensor types is commonly used to detect footsteps?",
+    "choices": [
+      "Infrared",
+      "Pressure",
+      "Microwave",
+      "Ultrasonic"
+    ],
+    "answer": 1,
+    "explanation": "Pressure sensors can be deployed to detect footsteps in a secured area. Infrared and microwave sensors are more commonly used to detect motion, and ultrasonic sensors are rarely used for security purposes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q74",
+    "domain": "General Security Concepts",
+    "questionNumber": 74,
+    "question": "Which of the following is not a managerial control?",
+    "choices": [
+      "Risk assessments",
+      "Including security in change management processes",
+      "Security planning exercises",
+      "Implementing firewalls"
+    ],
+    "answer": 3,
+    "explanation": "Firewalls are a technical control, not a managerial control that focuses on the mechanics of the risk management process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q75",
+    "domain": "General Security Concepts",
+    "questionNumber": 75,
+    "question": "What purpose do third-party certificates serve for customers of cloud services?",
+    "choices": [
+      "They reduce costs by using bring-your-own certificates.",
+      "They allow certificates for domains other than the service provider's domain.",
+      "They provide control over cryptographic security for the customer.",
+      "They allow more flexibility in TLS version selection."
+    ],
+    "answer": 2,
+    "explanation": "Third-party certificates allow customers to have full control over the certificate, including the private key and certificate signing request. By bringing your own certificate, encrypted traffic cannot be decrypted by the cloud provider. Using provider-provided or -created certificates leads to a potential risk if the provider is malicious or compromised and private keys managed by the provider are compromised. Bringing your own certificate does not necessarily reduce costs. Providers typically allow certificate signing requests for customer domains and subdomains as needed and supported by the service.226 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q76",
+    "domain": "General Security Concepts",
+    "questionNumber": 76,
+    "question": "Which of the following is not a common control focused on availability?",
+    "choices": [
+      "Uninterruptible power systems",
+      "Redundant Internet connectivity",
+      "Disk encryption",
+      "Load balancers"
+    ],
+    "answer": 2,
+    "explanation": "Disk encryption is commonly used to ensure confidentiality of data. UPS, load balancers, and redundant Internet connectivity all support availability.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q77",
+    "domain": "General Security Concepts",
+    "questionNumber": 77,
+    "question": "What term describes a collection of honeypots on a network intended to capture information about cybersecurity threats?",
+    "choices": [
+      "A honeyfarm",
+      "A honeynet",
+      "A honeycluster",
+      "A darknet"
+    ],
+    "answer": 1,
+    "explanation": "Honeynets are collections of decoy systems and devices that are instrumented and monitored, providing organizations and individuals with information about how threat actors attack targeted systems. Honeyfarm and honeycluster are not industry terms, and darknets are segments of unused network space that should not receive traffic. Darknets are monitored to help identify scanning and other attacks since traffic should not flow to them.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q78",
+    "domain": "General Security Concepts",
+    "questionNumber": 78,
+    "question": "Skip wants to implement a deterrent control to prevent physical security issues for his organization. Which of the following controls should he select?",
+    "choices": [
+      "A fence",
+      "A generator",
+      "Access badges",
+      "A camera system"
+    ],
+    "answer": 0,
+    "explanation": "Fencing is considered a deterrent because it will discourage potential intruders from accessing facilities. Generators are used to ensure availability and are a preventive control. Access badges are a technical and preventive control in most cases. A camera system is a detective, technical control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q79",
+    "domain": "General Security Concepts",
+    "questionNumber": 79,
+    "question": "What holds the position of the root of trust in a certificate chain?",
+    "choices": [
+      "A hardened hardware device",
+      "A TPM",
+      "A root certificate",
+      "A wildcard certificate General Security Concepts"
+    ],
+    "answer": 2,
+    "explanation": "The root certificate, or top certificate for a certificate chain, is the root of trust of the chain, and it must be kept secure so the entire certificate and CA hierarchy can be trusted. Hardened hardware devices may be used to store it, but they are not the actual root itself. A TPM is used to store system-specific security data, and wildcard certificates cover more than one subdomain for an organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q80",
+    "domain": "General Security Concepts",
+    "questionNumber": 80,
+    "question": "Jill needs to explain the concept of open public ledgers to her organization as management wants to adopt a blockchain-based system. What should she tell them about access to the ledger?",
+    "choices": [
+      "Members must be added by a vote of all current members.",
+      "Anyone can join at any time.",
+      "Members must be added by a vote of more than 51 percent of current members.",
+      "Ledgers are public but membership is private and controlled by the creator of the ledger."
+    ],
+    "answer": 1,
+    "explanation": "By definition, open public ledgers are open and public-anyone can join at any time. No vote is required, and creators do not control the ledger once it is made public.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q81",
+    "domain": "General Security Concepts",
+    "questionNumber": 81,
+    "question": "Olivia wants to use a self-signed certificate in her test environment for her organization's services to save money on commercial certificates. What warning should her team give her about the use of self-signed certificates in a test environment?",
+    "choices": [
+      "Certificate root of trust validation attempts will fail if implemented.",
+      "Self-signed certificates cannot be used for external users to support SSL.",
+      "Self-signed certificates cannot be used for internal users to support SSL.",
+      "Browsers will not allow self-signed certificates to be used when browsing sites."
+    ],
+    "answer": 0,
+    "explanation": "Some software may attempt to validate the certificates in use and could fail. This may also lead to unexpected differences between production certificates and test certificates, which is undesirable in a test environment intended to mirror production. Both internal users and external users can still successfully use self-signed certificates for SSL, but they will receive warnings in modern browsers. Browsers can typically be told to bypass warnings, or selfsigned certificates can be added to system certificate chains as needed, although this requires additional work from system administration teams and may not be desirable.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q82",
+    "domain": "General Security Concepts",
+    "questionNumber": 82,
+    "question": "Amanda is concerned about issues with dependencies that may be found during her pending change. What practice should she implement to help ensure unexpected dependency issues are not encountered?",
+    "choices": [
+      "Update organizational policies and procedures before the change.",
+      "Update functional diagrams before the change.",
+      "Validate the change in a test environment.",
+      "Document legacy applications that may create dependencies."
+    ],
+    "answer": 2,
+    "explanation": "The most effective way to ensure that all dependencies have been satisfied is to perform the change in a matching test environment to ensure that all issues have been identified and resolved. Updating policies and procedures as well as diagrams is typically done after major changes that result in a need for updates. Legacy applications that may create dependencies are not the only potential source of dependency issues.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q83",
+    "domain": "General Security Concepts",
+    "questionNumber": 83,
+    "question": "Lucca has implemented an authentication scheme that relies on ticket-granting tickets as part of the authentication process. What common authentication service has he implemented?",
+    "choices": [
+      "TACACS+",
+      "Kerberos",
+      "MS-CHAP",
+      "EAP"
+    ],
+    "answer": 1,
+    "explanation": "Kerberos uses authentication tickets and ticket-granting tickets to grant session keys for services that clients present to services to access them. TACACS+, MS-CHAP, and EAP do not use this ticket-based approach.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q84",
+    "domain": "General Security Concepts",
+    "questionNumber": 84,
+    "question": "Jocelyn wants to select a modern encryption algorithm for use in her organization. Which of the following is a currently recommended encryption algorithm?",
+    "choices": [
+      "AES-256",
+      "SHA1",
+      "DES",
+      "Blowfish"
+    ],
+    "answer": 0,
+    "explanation": "AES-256 is the only currently recommended encryption solution on the list. SHA-1 is a hashing algorithm. DES and Blowfish both have vulnerabilities and have been replaced in modern usage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q85",
+    "domain": "General Security Concepts",
+    "questionNumber": 85,
+    "question": "Elizabeth wants to classify the following controls by their category. What category best describes lighting, fences, bollards, and access control vestibules?",
+    "choices": [
+      "Technical",
+      "Managerial",
+      "Operational",
+      "Physical General Security Concepts 17"
+    ],
+    "answer": 3,
+    "explanation": "Lighting, fences, bollards, and access control vestibules are all examples of physical controls.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q86",
+    "domain": "General Security Concepts",
+    "questionNumber": 86,
+    "question": "Jack wants to ensure the integrity of a file that he is sending to a third party via email. How can he provide the integrity of a file to an organization that he has not done business with before?",
+    "choices": [
+      "Encrypt the file and send it to them.",
+      "Digitally sign the file.",
+      "Send a hash of the file in a separate email.",
+      "Email the file size and original name in a separate email."
+    ],
+    "answer": 1,
+    "explanation": "Jack should digitally sign the file and provide his public key to the other organization. This will allow them to validate his signature, as well as the integrity of the signed file. General Security Concepts 227 Encrypting the file does not ensure its integrity but does protect its confidentiality. Sending a hash does not ensure that the email was not modified, and emailing file size and name does not ensure the file was not changed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q87",
+    "domain": "General Security Concepts",
+    "questionNumber": 87,
+    "question": "Annie notices that her browser shows that the certificate for the site she is visiting is not valid. After performing some checks, she sees that the certificate is on the CA's certificate revocation list. Which of the following is not a reason for a certificate to be on a CRL?",
+    "choices": [
+      "The CA is compromised.",
+      "The certificate's private key was compromised.",
+      "The certificate was signed with a stolen key.",
+      "The certificate expired."
+    ],
+    "answer": 3,
+    "explanation": "Certificates expire, but expiration does not place them on a CRL. That avoids extremely long CRLs in most cases, and the expired certificate contains sufficient information to know that the certificate is expired without being on a CRL. Reasons to add a certificate to a CLR include the CA being compromised, the certificate's private key being compromised, a misissued certificate, certificate detail changes that require a reissued certificate, or certificates that were fraudulently signed, typically by a subordinate CA that was exploited or had poor practices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q88",
+    "domain": "General Security Concepts",
+    "questionNumber": 88,
+    "question": "Mohinder wants to use modern, secure hashing algorithms to validate files against known good originals. Which of the following hashing algorithms should he select?",
+    "choices": [
+      "MD5",
+      "SHA-1",
+      "AES-256",
+      "SHA-256"
+    ],
+    "answer": 3,
+    "explanation": "SHA-256 is the only hashing algorithm listed that is considered current and secure as of the publication of this book. MD5 and SHA-1 both have known security issues, and AES-256 is an encryption algorithm.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q89",
+    "domain": "General Security Concepts",
+    "questionNumber": 89,
+    "question": "Derrick wants to validate an encrypted and digitally signed message sent using asymmetric encryption. What does he need from the sender to validate the message?",
+    "choices": [
+      "The sender's private key",
+      "Derrick's private key",
+      "The sender's public key",
+      "Derrick's public key"
+    ],
+    "answer": 2,
+    "explanation": "To verify whether a message was signed by a sender, the recipient needs the sender's public key.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q90",
+    "domain": "General Security Concepts",
+    "questionNumber": 90,
+    "question": "The major patch release that Susan's team installed has failed, resulting in a nonworking service. What should her team do according to change management best practices?",
+    "choices": [
+      "Declare an outage.",
+      "Follow the documented backout plan.",
+      "Restore from backups to the previous version.",
+      "Uninstall the patch and validate service function."
+    ],
+    "answer": 1,
+    "explanation": "Creating a complete backout plan and implementing it if something goes wrong that cannot be remediated during a change window is the accepted best practice in this scenario. That may involve restoring from backups or uninstalling the patch, but neither of these options is necessarily the correct answer in all circumstances. Similarly, declaring an outage may be necessary, but following the backout plan and communicating effectively is the best option.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q91",
+    "domain": "General Security Concepts",
+    "questionNumber": 91,
+    "question": "The web server that Angela's organization manages was recently compromised and the SSL certificate's private key was accessed by attackers. Angela's team has completed remediation and has created a new CSR, including a new private key that they have secured. What type of control type best describes the creation of a new key and certificate in this circumstance?",
+    "choices": [
+      "Corrective",
+      "Compensating",
+      "Deterrent",
+      "Detective General Security Concepts"
+    ],
+    "answer": 0,
+    "explanation": "This is a corrective control because it remediates a security issue after the event has occurred. A compensating control would attempt to mitigate a risk associated with exceptions made to a security policy. Deterrent controls attempt to prevent an attacker from violating security policies, and detective controls identify security events that have already happened.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q92",
+    "domain": "General Security Concepts",
+    "questionNumber": 92,
+    "question": "Mikayla's zero-trust system has received a request for access with an identity, and the basic criteria for access have been met. What should the system do next before providing access to the resource requested?",
+    "choices": [
+      "Check the remote system's security status.",
+      "Require reauthentication using MFA.",
+      "Check the user's rights to ensure they can access the resource.",
+      "Determine its level of confidence in the request."
+    ],
+    "answer": 3,
+    "explanation": "A zero-trust system should validate its level of confidence in a request that it receives once the basic criteria have been met. This may involve checking the access against known patterns of access by the user, validating current threat feed information, or checking other details that will help ensure the security and authenticity of the request.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q93",
+    "domain": "General Security Concepts",
+    "questionNumber": 93,
+    "question": "Charles sets up an RDP server on an isolated network segment and places a file on it called passwords.xlsx. He then configures his IPS and DLP systems to monitor for that file exiting the network segment. What type of tool has Charles deployed?",
+    "choices": [
+      "A honeyfile",
+      "A SQL trap",
+      "A red flag",
+      "A trigger file"
+    ],
+    "answer": 0,
+    "explanation": "While many honeyfiles use canary tokens, simply monitoring for known files exiting systems that should not be accessed under normal circumstances is also a valid means to construct a honeypot and honeyfile-based detection system. Charles can use the file and the isolated system to detect attackers who attempt to exfiltrate the file. The other answers were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q94",
+    "domain": "General Security Concepts",
+    "questionNumber": 94,
+    "question": "Lucca is using precomputed rainbow tables to attempt to crack hashed passwords from a data breach. He knows that two users have the same password, but the hashes do not match. What password hash security technique has Lucca most likely encountered?",
+    "choices": [
+      "Password encryption",
+      "Salting",
+      "Hash rotation",
+      "Password mismatching"
+    ],
+    "answer": 1,
+    "explanation": "Salting uses a unique, randomly generated string that is added to each password before it is hashed. That means that even matching passwords will not have the same hash. This prevents rainbow tables from being effectively used against password hashes due to the added computational load it creates for precomputing hashes.228 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q95",
+    "domain": "General Security Concepts",
+    "questionNumber": 95,
+    "question": "What operating system is commonly associated with secure enclaves?",
+    "choices": [
+      "Windows",
+      "iOS",
+      "Linux",
+      "Android"
+    ],
+    "answer": 1,
+    "explanation": "Secure enclaves are used by Apple devices to securely store security information like cryptographic keys.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q96",
+    "domain": "General Security Concepts",
+    "questionNumber": 96,
+    "question": "Isaac is concerned that the passwords that his users are creating are too short and can be easily brute-forced if their hashes were compromised. Rather than make his users remember longer passwords, he would like to implement a technical solution to help make the hashes more resistant to cracking. What solution can he use to help with this?",
+    "choices": [
+      "Implement pass-the-hash algorithms.",
+      "Use a collision-resistant hashing algorithm.",
+      "Implement key stretching techniques.",
+      "Encrypt passwords rather than hashing them. General Security Concepts 19"
+    ],
+    "answer": 2,
+    "explanation": "Implementing key stretching techniques can help short-and thus weak-passwords resist brute-force hash cracking techniques. They won't help against brute-force password guessing attacks, so Isaac will need to implement other controls against that type of attack. Pass-the-hash attacks reuse hashes, and thus aren't a technique used to prevent brute-force attacks against hashed passwords. Collision resistance is a requirement for an effective hashing algorithm and should be part of any password hash storage implementation. Encrypting passwords is not a recommended practice because it leaves passwords in the hands of the organization rather than hashes and requires the organization to decrypt passwords to check them when they are used, creating frequent opportunities for exposure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q97",
+    "domain": "General Security Concepts",
+    "questionNumber": 97,
+    "question": "Christina wants to implement access badges printed with picture IDs for her organization, but she wants to use a wireless reader. What access badge technology is commonly implemented in scenarios like this?",
+    "choices": [
+      "Wi-Fi-enabled access badges",
+      "RFID access badges",
+      "Bluetooth-enabled access badges",
+      "NFC access badges"
+    ],
+    "answer": 1,
+    "explanation": "RFID badges are the most commonly implemented wireless identification badges. Wi-Fi and Bluetooth both require additional power for devices and thus are not a good fit for a badge, and NFC-enabled badges have not come into common use at this time, although they are increasingly available for mobile device-enabled badges.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q98",
+    "domain": "General Security Concepts",
+    "questionNumber": 98,
+    "question": "Kendra's vulnerability management team has discovered that Internet of Things (IoT) devices deployed a few years ago to monitor temperatures for critical refrigerated equipment are vulnerable to a new attack. After reviewing the issue, her team has discovered that the devices are no longer supported and that the manufacturer has gone out of business. They suggest moving the devices to an isolated network to help protect them. What type of control has Kendra's team suggested?",
+    "choices": [
+      "A corrective control",
+      "A compensating control",
+      "A confidentiality control",
+      "A coordinated control"
+    ],
+    "answer": 1,
+    "explanation": "A compensating control helps to mitigate a risk due to an exception to a security policy. Here, the devices cannot be patched or fixed but are important to the operations of the organization. Moving them to a protected network will help compensate for the lack of patching. Since no security issues have occurred, this is not a corrective control. Confidentiality and coordinated controls are not control types for the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q99",
+    "domain": "General Security Concepts",
+    "questionNumber": 99,
+    "question": "Which of the following is not a common factor in adaptive authentication for zero trust?",
+    "choices": [
+      "Where the user is logging in from",
+      "Whether the user has logged in recently from another device",
+      "What device the user is logging in from",
+      "If the device is configured correctly"
+    ],
+    "answer": 1,
+    "explanation": "Adaptive authentication looks at the context of a login, including where they're logging in from-both geographically, and from a network trust perspective, what device they're logging in from, and if the device is configured correctly. In modern, multidevice usage, whether the user has logged in recently from another device isn't as likely to be considered, but if the devices were in different countries it would likely raise a flag!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q100",
+    "domain": "General Security Concepts",
+    "questionNumber": 100,
+    "question": "Juan's organization is designing their zero-trust model. Which of the following statements is true for network security zones?",
+    "choices": [
+      "All communication is secured, regardless of the network security zone it occurs in.",
+      "Communication receives additional security in low-trust zones.",
+      "Communication receives less security in high-trust zones.",
+      "All zero-trust networks are considered secured zones."
+    ],
+    "answer": 0,
+    "explanation": "One of the basic tenets of zero-trust architecture is that all communication is secured, regardless of the security zone or trust zone that it occurs in. Additional security should not be required, nor should communications receive less security in higher trust zones. All zerotrust networks are considered potential risk areas-thus the zero in zero trust!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q101",
+    "domain": "General Security Concepts",
+    "questionNumber": 101,
+    "question": "What advantage do microwave sensors have over infrared sensors?",
+    "choices": [
+      "They can detect heat signatures.",
+      "They are cheaper than infrared sensors.",
+      "They can penetrate some types of walls.",
+      "They do not interfere with sensitive equipment. General Security Concepts"
+    ],
+    "answer": 2,
+    "explanation": "Microwave sensors work in temperature ranges that infrared sensors do not, and they can penetrate walls and some small spaces allowing more complete coverage. Microwave sensors cannot detect heat signatures, are not cheaper than infrared sensors, and can interfere with some types of sensitive equipment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q102",
+    "domain": "General Security Concepts",
+    "questionNumber": 102,
+    "question": "Isaac is conducting a physical penetration test and wants to bypass an access control vestibule. What must he accomplish?",
+    "choices": [
+      "He needs to persuade an individual to allow him to follow them through a single door.",
+      "He needs to acquire an individual's access card.",
+      "He needs to persuade an individual to allow him to follow them through two doors in a row.",
+      "He needs to acquire the individual's access PIN."
+    ],
+    "answer": 2,
+    "explanation": "Access control vestibules are intended to make it obvious that someone is following you through secured doors and may only be large enough for a single person to come through at once. Larger vestibules rely on staff noticing that the person following them through is not providing credentials and ensuring that doors close between access attempts.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q103",
+    "domain": "General Security Concepts",
+    "questionNumber": 103,
+    "question": "Rachel wants to select an obfuscation method that will allow her customer service representatives to validate customer identities without providing full access to customer data. What should she select?",
+    "choices": [
+      "Tokenization",
+      "Data masking",
+      "Steganography",
+      "Hashing"
+    ],
+    "answer": 1,
+    "explanation": "Data masking reveals only part of a field and is often used with details like credit card numbers or Social Security numbers where only the last four digits will be revealed for validation purposes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q104",
+    "domain": "General Security Concepts",
+    "questionNumber": 104,
+    "question": "Valerie's manager has informed her that version control must be implemented for her development team's work. Which of the following is not a common, security-related reason for version control?",
+    "choices": [
+      "To help with patching",
+      "To track each contributor's workload",
+      "To ensure the proper version is deployed",
+      "To help with change management"
+    ],
+    "answer": 1,
+    "explanation": "While version control has many useful impacts on security, tracking workload is not a security-related issue for version control. General Security Concepts 229",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q105",
+    "domain": "General Security Concepts",
+    "questionNumber": 105,
+    "question": "Jackie's change management process involves reporting functional validation test results to stakeholders. Which of the following is not a common stakeholder or stakeholder group for an application upgrade?",
+    "choices": [
+      "Application administrators",
+      "Service owners",
+      "System administrators",
+      "Auditors"
+    ],
+    "answer": 3,
+    "explanation": "While auditors may request application version information during audits, they are not typically notified during normal application updates and patching cycles. Application administrators, service owners, and system administrators are all commonly notified about functional validation test results so that they can take further action or know that the service update is complete.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q106",
+    "domain": "General Security Concepts",
+    "questionNumber": 106,
+    "question": "How many keypairs are required for four individuals to communicate securely using asymmetric encryption?",
+    "choices": [
+      "1",
+      "4",
+      "8",
+      "12 General Security Concepts 21"
+    ],
+    "answer": 1,
+    "explanation": "Each individual has their own keypair in asymmetric encryption systems; thus, for four individuals to communicate securely using asymmetric encryption four keypairs are needed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q107",
+    "domain": "General Security Concepts",
+    "questionNumber": 107,
+    "question": "Michelle wants to store secrets for her organization in a cloud service. She wants to ensure the greatest level of security for her organization, and she is willing to spend more money to provide that security. What solution should she look for?",
+    "choices": [
+      "A shared cloud TPM",
+      "A shared cloud HSM",
+      "A dedicated hardware cloud TPM",
+      "A dedicated hardware cloud HSM"
+    ],
+    "answer": 3,
+    "explanation": "A dedicated, hardware-based, cloud-hosted hardware security module (HSM) is an appropriate solution for Michelle's needs. Cloud providers often provide shared HSMs as a service, which can increase perceived risk due to the shared underlying hardware. Dedicated hardware is typically available at a higher cost. Trusted platform modules (TPMs) are used to provide secure boot and related services, not to store secrets for an organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q108",
+    "domain": "General Security Concepts",
+    "questionNumber": 108,
+    "question": "Murali wants to digitally sign a file. What key does he need to sign it?",
+    "choices": [
+      "The recipient's private key",
+      "His private key",
+      "The recipient's public key",
+      "His public key"
+    ],
+    "answer": 1,
+    "explanation": "To sign a file, Murali needs to use his own private key. The recipient can then use their public key to validate the signature.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q109",
+    "domain": "General Security Concepts",
+    "questionNumber": 109,
+    "question": "What information is necessary for a certificate to be identified properly in an OCSP request?",
+    "choices": [
+      "The domain name",
+      "The original requestor's name",
+      "The certificate's serial number",
+      "The identifier for the open public ledger entry"
+    ],
+    "answer": 2,
+    "explanation": "OCSP requests must include the certificate's serial number to allow the OCSP responder to check the CA database for the certificate and its status. It does not require the domain name or requestor's name. Open public ledgers are part of blockchains, not OCSP.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q110",
+    "domain": "General Security Concepts",
+    "questionNumber": 110,
+    "question": "Rick checks the certificate for the site he is viewing and sees that it reads *.example.com. What type of certificate is this, and why is it in use?",
+    "choices": [
+      "It is a self-signed certificate, and it is used for testing purposes.",
+      "It is a wildcard certificate and is used for testing purposes.",
+      "It is a wildcard certificate and is used for multiple subdomains.",
+      "It is a self-signed certificate and is used for multiple subdomains."
+    ],
+    "answer": 2,
+    "explanation": "Wildcard certificates have a * in them, denoting that they can be used for any subdomain. For example, in this question, the wildcard would match any *.example.com subdomain like test.example.com and sales.example.com. Self-signed certificates will not link to a root or intermediate CA, and thus cannot be verified with CAs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q111",
+    "domain": "General Security Concepts",
+    "questionNumber": 111,
+    "question": "John wants to write a procedure that addresses what to do if an employee inadvertently discloses their password due to a phishing attempt. What type of control is John considering?",
+    "choices": [
+      "A directive control",
+      "A proactive control",
+      "A deterrent control",
+      "A preventive control"
+    ],
+    "answer": 0,
+    "explanation": "Policies and procedures are examples of directive controls. Deterrent controls attempt to dissuade attackers from taking action. Preventive controls attempt to stop security issues from occurring. Proactive controls are not a control category used on the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q112",
+    "domain": "General Security Concepts",
+    "questionNumber": 112,
+    "question": "Adam has been asked to implement an allow list for websites that his servers can visit. What concern should he raise about the implementation of allow lists?",
+    "choices": [
+      "Allow lists can be difficult to manage and cause failures if sites that are needed are not added.",
+      "Allow lists do not prevent sites from being visited if they are not on the allow list.",
+      "Allow lists cannot be configured to allow entire domains to be visited, creating significant overhead.",
+      "Allow lists are prone to error, allowing unwanted sites to be added. General Security Concepts"
+    ],
+    "answer": 0,
+    "explanation": "Allow lists can be difficult to manage over time, particularly as manufacturers and vendors add additional download and update sites and subdomains. This creates additional work for administrators and can cause errors or issues with updates and patching if not carefully monitored. Allow lists do prevent sites from being visited if they are not on the list, they can be configured with wildcards to allow entire domains or subdomains if desired, and they only allow sites that are added, meaning any problems with unwanted sites are the responsibility of the allow list administrator.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q113",
+    "domain": "General Security Concepts",
+    "questionNumber": 113,
+    "question": "Jim wants to implement an authentication framework for his wireless network. Which of the following is most commonly used for wireless network authentication?",
+    "choices": [
+      "EAP",
+      "MS-CHAP",
+      "Kerberos",
+      "LDAP"
+    ],
+    "answer": 0,
+    "explanation": "EAP is commonly used for authentication to wireless networks. MS-CHAP is used with PPTP-based VPNs, Kerberos is used for organizationwide authentication, and LDAP is used as part of authentication in Microsoft Active Directory domains, among other uses.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q114",
+    "domain": "General Security Concepts",
+    "questionNumber": 114,
+    "question": "Gary is preparing change management documentation for an application restart after patching. What step should immediately follow the application restart?",
+    "choices": [
+      "Validation testing",
+      "Documenting the change occurred",
+      "Updating version control",
+      "Vulnerability scanning"
+    ],
+    "answer": 0,
+    "explanation": "Validation testing should follow application restarts to ensure the application is working as expected after the restart. Documentation and updating version information can be done after the validation because if validation fails the change may need to be reversed. Vulnerability scanning should have been done prior to implementation in a test environment if needed, and then should be done as part of ongoing security operations.230 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q115",
+    "domain": "General Security Concepts",
+    "questionNumber": 115,
+    "question": "Anna has been told that her organization has deployed microwave sensors in the organization's warehouses. What are microwave sensors most frequently used to detect?",
+    "choices": [
+      "Motion",
+      "Glass break",
+      "Heat signatures",
+      "Pressure"
+    ],
+    "answer": 0,
+    "explanation": "Microwave sensors are commonly used to detect motion and have advantages over infrared sensors because they can work in a greater temperature range as well as traveling through some obstacles that would not allow infrared to penetrate them. They do not capture audio and are therefore not used for glass-break sensors, they do not capture thermal data like infrared sensors, and they are not pressure sensors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q116",
+    "domain": "General Security Concepts",
+    "questionNumber": 116,
+    "question": "When is data on a drive that uses full-disk encryption at the greatest risk?",
+    "choices": [
+      "During the system boot process",
+      "When the system is off",
+      "When the system is logged in and in use",
+      "When the system is being shut down"
+    ],
+    "answer": 2,
+    "explanation": "In order for a drive to be used, it must be accessible to the operating system, meaning that when the system is logged in and in use data can be accessed. When full-disk encryption systems are booting and not logged in or when they are being shut down, they are typically not in a greater risk state, and they are most secure when shut down.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q117",
+    "domain": "General Security Concepts",
+    "questionNumber": 117,
+    "question": "Alex has configured full-disk encryption for laptops that his organization issues to employees. What cybersecurity objective does this primarily support?",
+    "choices": [
+      "Confidentiality",
+      "Availability",
+      "Authenticity",
+      "Integrity"
+    ],
+    "answer": 0,
+    "explanation": "Full-disk encryption primarily supports confidentiality by preventing unwanted access to the drive if it is stolen or otherwise exposed. The three objectives are confidentiality, integrity, and availability, which means authenticity is not a possible answer. Encryption does not increase availability, and integrity ensures that data has not been changed inadvertently or maliciously. Thus, encryption can help, but it is not as strong of an answer as confidentiality.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q118",
+    "domain": "General Security Concepts",
+    "questionNumber": 118,
+    "question": "What process reviews control objectives for an organization, system, or service to determine if controls do not meet the control objectives?",
+    "choices": [
+      "A penetration test",
+      "A gap analysis",
+      "A Boolean analysis",
+      "A risk analysis General Security Concepts 23"
+    ],
+    "answer": 1,
+    "explanation": "A gap analysis is used to determine whether controls meet control objectives for a service, an organization, or a system. Penetration tests simulate an attacker trying to gain access or breach systems and other controls. Boolean analysis is not a security term, and risk analysis is done as part of risk assessment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q119",
+    "domain": "General Security Concepts",
+    "questionNumber": 119,
+    "question": "Frank configures an access control list to ensure that only specific IP addresses are able to connect to a service. What type of control has he deployed?",
+    "choices": [
+      "Managerial",
+      "Physical",
+      "Technical",
+      "Operational"
+    ],
+    "answer": 2,
+    "explanation": "Access control lists are best described as technical controls. Managerial controls are procedural mechanisms; physical controls are controls that impact the physical world, like locks or fences; and operational controls are processes used to manage technology in a secure manner, like the change management process Frank will likely follow to make changes to the access control list.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q120",
+    "domain": "General Security Concepts",
+    "questionNumber": 120,
+    "question": "Annie has recently implemented a video surveillance system for her organization. What is the largest driver for new ongoing costs for an unmonitored video surveillance system?",
+    "choices": [
+      "Camera maintenance",
+      "The ongoing cost of storage",
+      "Security guards",
+      "Licensing"
+    ],
+    "answer": 1,
+    "explanation": "Video surveillance system storage can drive additional costs based on decisions like how long video is retained, sensitivity levels, video resolution, and how heavily trafficked camera covered areas are. Licensing may grow if additional cameras are added, but there is no information in the question indicating changes in the size of the implementation. Since this is an unmonitored system, no guards are involved, and camera maintenance is not a typical issue for a newly deployed system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q121",
+    "domain": "General Security Concepts",
+    "questionNumber": 121,
+    "question": "Henry's organization has recently experienced a ransomware attack and is restoring backups from a secure backup system. What type of security control is Henry using?",
+    "choices": [
+      "A preventive control",
+      "A directive control",
+      "A compensating control",
+      "A corrective control"
+    ],
+    "answer": 3,
+    "explanation": "Restoring from backups helps to remediate a security issue, making this a corrective control. Preventive controls for Henry's situation might include endpoint detection and response (EDR) tools, directive controls would include policies and procedures for ransomware events, and compensating controls would be used if exceptions to the security policies needed to be made.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q122",
+    "domain": "General Security Concepts",
+    "questionNumber": 122,
+    "question": "What data obfuscation technique relies on a lookup table that allows you to match the data you want to secure to a randomly generated value to ensure that the actual value is not easily accessible?",
+    "choices": [
+      "Hashing",
+      "Tokenization",
+      "Randomization",
+      "Masking"
+    ],
+    "answer": 1,
+    "explanation": "Tokenization commonly uses randomly generated values that are assigned to replace existing known values. The token is stored in a lookup table, allowing the token to be checked against the table if needed. Hashing relies on a hash function, which is not mentioned here; randomization is not a data obfuscation technique; and masking replaces some or all of a sensitive field with a replacement character to ensure the data is unreadable when displayed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q123",
+    "domain": "General Security Concepts",
+    "questionNumber": 123,
+    "question": "What challenge drives the need for key exchange mechanisms?",
+    "choices": [
+      "The number of keys required for symmetric encryption",
+      "The need to determine if a key is public",
+      "The need to exchange keys in a way that prevents others from obtaining a copy",
+      "The need to securely return keys to their owner after they are traded"
+    ],
+    "answer": 2,
+    "explanation": "Key exchange algorithms focus on how to securely exchange keys so that others cannot obtain a copy of the key. Asymmetric encryption is used instead of symmetric encryption General Security Concepts 231 to resolve the issue of large numbers of symmetric keys; keys are either public or private in asymmetric systems and determining if they are public is not considered a problem; and keys are not returned to their owner, as only public keys should be exchanged.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q124",
+    "domain": "General Security Concepts",
+    "questionNumber": 124,
+    "question": "Jackie is performing an impact analysis prior to a large-scale change her team is preparing to implement. Which of the following groups is not typically part of the impact analysis?",
+    "choices": [
+      "Stakeholders",
+      "System administrators",
+      "Service owners",
+      "Legal counsel General Security Concepts"
+    ],
+    "answer": 3,
+    "explanation": "Legal counsel is not typically part of change management processes. Stakeholders, service owners, and system administrators are commonly involved in impact analysis sessions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q125",
+    "domain": "General Security Concepts",
+    "questionNumber": 125,
+    "question": "Ilya wants to create a certificate signing request. Which of the following is not a typical part of a CSR?",
+    "choices": [
+      "The common name of the server",
+      "The organization's legal name",
+      "A contact email address",
+      "The organization's phone number"
+    ],
+    "answer": 3,
+    "explanation": "Certificate requests include the common name (CN); organization (O); organization unit in the organization (OU); city or locality (L); the state, county, or region (S); country (C); and organizational contact email address.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q126",
+    "domain": "General Security Concepts",
+    "questionNumber": 126,
+    "question": "Before Tony stores a password hash, he appends a string of characters that is unique to each password generated using an algorithm he created. What technique is Tony using to help protect his password hashes?",
+    "choices": [
+      "Tokenization",
+      "Steganography",
+      "Salting",
+      "Key stretching"
+    ],
+    "answer": 2,
+    "explanation": "Tony is salting his password, which involves adding a string of characters to the password before it is hashed. This creates a unique hash, even if the password itself is an easily guessed or common password.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q127",
+    "domain": "General Security Concepts",
+    "questionNumber": 127,
+    "question": "Which of the following is not a step taken when a transaction is entered in a blockchain?",
+    "choices": [
+      "The value of the block is determined.",
+      "The transaction is sent to a peer-to-peer network of computers.",
+      "The transaction is validated using equations.",
+      "A transaction history is maintained as part of the blockchain."
+    ],
+    "answer": 0,
+    "explanation": "While cryptocurrency is a common use of blockchain technology, it isn't the only use. Values of blocks are not determined as part of transactions-in fact, even in cryptocurrency uses, values are determined by prices set on exchanges as sellers and buyers exchange cryptocurrencies.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q128",
+    "domain": "General Security Concepts",
+    "questionNumber": 128,
+    "question": "Kent wants to encrypt network traffic in transit. What cryptographic protocol is most frequently used to add encryption to existing protocols?",
+    "choices": [
+      "S/MIME",
+      "TLS",
+      "MPLS",
+      "SSH"
+    ],
+    "answer": 1,
+    "explanation": "TLS, or Transport Layer Security, is a cryptographic protocol used to secure network traffic in transit. S/MIME, or Secure MIME, is used for digital signatures and encryption for email. MPLS is multiprotocol label switching, a network routing technique. SSH is Secure Shell and is used for encrypted command-line access as well as to tunnel other protocols in some cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q129",
+    "domain": "General Security Concepts",
+    "questionNumber": 129,
+    "question": "Which of the following is not a common concern in change management processes related to legacy applications?",
+    "choices": [
+      "Lack of vendor support",
+      "Lack of patches and updates",
+      "Ongoing licensing costs",
+      "Availability of third-party or consultant expertise"
+    ],
+    "answer": 2,
+    "explanation": "Legacy applications are often unsupported, don't receive new patches or updates, and have a shrinking or nonexistent base of consultants and experts. Licensing for legal applications is often not available; this making ongoing licensing costs a less frequent concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q130",
+    "domain": "General Security Concepts",
+    "questionNumber": 130,
+    "question": "Elaine wants to document the technical concerns that dependencies create as part of her change management process. Which of the following concerns is the most common when dependencies are encountered as part of change management?",
+    "choices": [
+      "Documenting the dependencies to ensure they are addressed",
+      "Removing the dependencies as part of the change",
+      "Patching the dependencies in addition to the main application",
+      "Updating diagrams related to the dependencies General Security Concepts 25"
+    ],
+    "answer": 0,
+    "explanation": "Change management processes typically focus on documenting dependencies and ensuring they are met. That may involve ensuring that the appropriate version is installed or that applications are restarted in a specific order, or that a service is available that is needed for a system to successfully function. Removing dependencies is unlikely, patching may or may not be required, and updating diagrams is less important than ensuring the dependencies are understood and met.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q131",
+    "domain": "General Security Concepts",
+    "questionNumber": 131,
+    "question": "Gary has implemented record-level encryption for his database. How many keys will he use in a typical implementation of record-level encryption?",
+    "choices": [
+      "One key per record",
+      "One key per column",
+      "One key per table",
+      "One key per database"
+    ],
+    "answer": 0,
+    "explanation": "Record-level encryption relies on a unique key for each record, keeping records private to a user or account in typical usage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q132",
+    "domain": "General Security Concepts",
+    "questionNumber": 132,
+    "question": "Justin's laptop is part of his organization's zero-trust architecture. What term is used to refer to a device like a laptop, desktop, or mobile device in a zero-trust design?",
+    "choices": [
+      "A subject",
+      "A policy engine",
+      "A service provider",
+      "A policy application point"
+    ],
+    "answer": 0,
+    "explanation": "Justin's laptop is a subject. Subjects like users, applications, or devices are not trusted by default. Justin's system is also likely a policy enforcement point, not a policy application point, and will run a zero-trust client application that will interface with the zero-trust framework to determine if the system is secure as part of authentication and authorization processes. Policy engines evaluate policies and use threat information and other data to determine if access should be given in the context of the time, place, and system the request is made from. Service providers are concepts used in federation, rather than in zero-trust environments.232 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q133",
+    "domain": "General Security Concepts",
+    "questionNumber": 133,
+    "question": "Susan's organization has deployed a zero-trust architecture. Which of the following zerotrust control plane components uses rules to determine who can access a service based on the security status of their system, threat data, and similar information?",
+    "choices": [
+      "Adaptive authorization",
+      "Threat scope reduction",
+      "Policy-driven access control",
+      "Secured zones"
+    ],
+    "answer": 2,
+    "explanation": "Policy-driven access control focuses on using rules to determine who can access a service based on security state and other information. Adaptive authorization adjusts authorization levels based on factors like device status, user behavior, and location. Threat scope reduction is a key concept in zero trust that focuses on ensuring that threats have less of a target to attack if they enter the secure environment. Secured zones are no longer a critical concept for zero trust, as continuous verification means all interactions are secured and validated.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q134",
+    "domain": "General Security Concepts",
+    "questionNumber": 134,
+    "question": "Scott wants to implement OCSP as part of an application he is creating. What will he implement?",
+    "choices": [
+      "A corrective control security process",
+      "Certificate status checking",
+      "Transport encryption",
+      "Full-disk encryption"
+    ],
+    "answer": 1,
+    "explanation": "OCSP, or the Online Certificate Status Protocol, provides a way to check on the status of a certificate, including whether it has been revoked.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q135",
+    "domain": "General Security Concepts",
+    "questionNumber": 135,
+    "question": "Which of the following is not a common reason to implement key escrow?",
+    "choices": [
+      "Regulatory compliance",
+      "Providing access to encrypted data for administrative reasons",
+      "Providing access to encrypted data in emergencies",
+      "Preventing the need for key rotation after a user leaves"
+    ],
+    "answer": 3,
+    "explanation": "Key rotation should occur when a user leaves, even if the key is escrowed. Regulatory compliance as well as providing access for administrative or emergency access to organizational data are common reasons to implement key escrow.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q136",
+    "domain": "General Security Concepts",
+    "questionNumber": 136,
+    "question": "Yariv discovers that he has exposed his private key to other users in his organization by sending it via email instead of his public key. What should he do?",
+    "choices": [
+      "Ask the other users to delete any copies of his private key that they may have.",
+      "Immediately add his key to a CRL and reissue the key.",
+      "Create a new keypair and notify others that he has replaced his keypair.",
+      "Continue to operate as normal as long as the private key was not used maliciously. General Security Concepts"
+    ],
+    "answer": 2,
+    "explanation": "Once a private key has been exposed, it should not be considered secure, even in an organization of trusted users. Since Yariv exposed his private key via email, he cannot ensure that it is not available in another user's email archives, and he must immediately create a new keypair and advise individuals that he works with of his new public key.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q137",
+    "domain": "General Security Concepts",
+    "questionNumber": 137,
+    "question": "What happens if a mistake is made and an incorrect transaction is entered into the open public ledger in a blockchain?",
+    "choices": [
+      "The transaction is reversed once it is discovered, and the original transaction is removed from the record.",
+      "A new transaction must be processed, and both transactions remain in the record.",
+      "The original transaction is updated and becomes the new record.",
+      "An error block must be mined and labeled with the transaction number and error details."
+    ],
+    "answer": 1,
+    "explanation": "Since blockchains are not changed after transactions are recorded, a new transaction must be recorded and both transactions remain in the record as part of the ledger.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q138",
+    "domain": "General Security Concepts",
+    "questionNumber": 138,
+    "question": "Which of the following activities will not typically result in a need to update policies and procedures?",
+    "choices": [
+      "Deploying a new application",
+      "Installing patches for an existing application",
+      "Conducting a lessons learned exercise after an incident",
+      "Changes in regulations"
+    ],
+    "answer": 1,
+    "explanation": "Patches and updates are less likely to result in a need to update policies and procedures. New applications, lessons learned exercises, and regulatory changes are all likely to result in changes to policies and procedures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q139",
+    "domain": "General Security Concepts",
+    "questionNumber": 139,
+    "question": "Hrant's organization wants to ensure that staff members use both something they know and something they have as part of their physical access control scheme. Which of the following solutions meets that requirement?",
+    "choices": [
+      "Security guards and access badges",
+      "Keys and access control vestibules",
+      "Access badges and PINs",
+      "Security guards and access control vestibules"
+    ],
+    "answer": 2,
+    "explanation": "Access badges are an example of something you have, and PINs are an example of something you know. Combining the two is a common requirement to help prevent a lost badge from providing access to a secure facility. A security desk with a guard is more costly but can be more effective if the guards are well trained and diligent, but the needs of Hrant's organization are met properly by the access badge and PIN.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q140",
+    "domain": "General Security Concepts",
+    "questionNumber": 140,
+    "question": "Julia wants to detect if an intruder enters a space using a sensor system. Which of the following is not typically used to detect intruders?",
+    "choices": [
+      "Infrared sensors",
+      "Pressure sensors",
+      "Microwave sensors",
+      "Ultrasonic sensors"
+    ],
+    "answer": 2,
+    "explanation": "Microwave sensors are not commonly used to detect intruders. Infrared and ultrasonic sensors are commonly used, and pressure sensors may be used in special circumstances.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q141",
+    "domain": "General Security Concepts",
+    "questionNumber": 141,
+    "question": "Which of the following is not true for a secure cryptographic hash system?",
+    "choices": [
+      "Hashes are a one-way function.",
+      "Hashes generate a fixed length output.",
+      "Hashes may generate the same output for multiple inputs.",
+      "Hashes are commonly used to verify the integrity of files."
+    ],
+    "answer": 2,
+    "explanation": "Secure cryptographic hash systems should not generate the same output for two different inputs. They should, however, be one-way functions and generate fixed length output, and they are commonly used to verify the integrity of files.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q142",
+    "domain": "General Security Concepts",
+    "questionNumber": 142,
+    "question": "Casey wants to prevent tailgating attacks on her datacenter. What type of physical security solution should she put in place?",
+    "choices": [
+      "Video surveillance",
+      "Bollards",
+      "An access control vestibule",
+      "Access badges General Security Concepts 27"
+    ],
+    "answer": 2,
+    "explanation": "Access control vestibules are designed to stop tailgating attacks, which occur when someone follows an authorized user into a space. Access badges do not prevent this, as tailgating relies on passing through a door someone with access has opened. Video surveillance may allow you to see the attack but won't stop it, and bollards are used to prevent vehicles from passing through a space.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q143",
+    "domain": "General Security Concepts",
+    "questionNumber": 143,
+    "question": "As Casey continues to work to secure her datacenter, she decides to deploy access badges. What technique will provide the greatest assurance that a stolen or cloned access badge will not allow an attacker access?",
+    "choices": [
+      "Use barcode-based badges.",
+      "Require a PIN along with the badge.",
+      "Use RFID-based badges.",
+      "Include a picture of the user on the badge."
+    ],
+    "answer": 1,
+    "explanation": "Requiring a PIN is the best option unless guards are in place to validate that the person using the badge matches the badge. Even then a PIN may be better than a picture if the badge does not have other elements like holographic seals that will prevent it from being modified. Barcode and RFID badges can still be cloned and are not as effective as requiring a knowledge-based identifier as well as a possession-based identifier. Threats, Vulnerabilities, and Mitigations 233",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q144",
+    "domain": "General Security Concepts",
+    "questionNumber": 144,
+    "question": "What term describes the function of digital signatures related to proving that the signature was provided by the owner of a given private key?",
+    "choices": [
+      "Ledger-based validation",
+      "Nonrepudiation",
+      "Key stretching",
+      "Authentication"
+    ],
+    "answer": 1,
+    "explanation": "A feature of digital signatures is nonrepudiation. A signed file or message can be proven to be from the signer, proving that it is legitimate. Key stretching describes techniques used to make it harder to crack weak keys. Authentication is the process of validating that a person is who they say they are but is not specific to digital signatures. Ledger-based validation was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q145",
+    "domain": "General Security Concepts",
+    "questionNumber": 145,
+    "question": "John wants to send his public key to another user. What steps are necessary to do so?",
+    "choices": [
+      "The key must be sent using Diffie-Hellman.",
+      "The key can simply be sent via email or other means.",
+      "The key must be sent using RSA.",
+      "The key must be signed, then sent via email or other means."
+    ],
+    "answer": 1,
+    "explanation": "Public keys can simply be sent to another user if so desired. It is common to provide public keys via key servers or even in email signatures, although addition verification that the key belongs to an individual may be desirable, if not required.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q146",
+    "domain": "General Security Concepts",
+    "questionNumber": 146,
+    "question": "Tracy wants to use the most secure salting solution she can. Which of the following options will provide the most secure salt?",
+    "choices": [
+      "Set a salt value and store it in a database.",
+      "Set a salt value and store it in the program code.",
+      "Generate a unique salt for each hashed entry.",
+      "Generate a unique salt value every time a value is used."
+    ],
+    "answer": 2,
+    "explanation": "Generating a unique salt for each hashed entry is the most secure option among those listed. Storing a fixed salt in a database or in code reduces the complexity of the salted information, making it possible for an attacker to acquire the single salt and then attack the stored hashes. Generating a unique salt every time a value is used is impractical due to the rate of change.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q147",
+    "domain": "General Security Concepts",
+    "questionNumber": 147,
+    "question": "Bob conducts a periodic risk assessment of his organization. What category of security control is this?",
+    "choices": [
+      "Technical",
+      "Managerial",
+      "Operational",
+      "Physical"
+    ],
+    "answer": 1,
+    "explanation": "Risk assessments are an example of a managerial control, which includes procedural mechanisms related to the risk management process. Technical controls enforce confidentiality, integrity, and availability using technical means. Physical controls like locks and fences impact the physical world. Operational controls include processes put in place to manage technology in a secure manner.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q148",
+    "domain": "General Security Concepts",
+    "questionNumber": 148,
+    "question": "After a breach, Jackie removes malicious software from a server that she is responsible for. What control type should she classify this as?",
+    "choices": [
+      "Preventive",
+      "Corrective",
+      "Compensating",
+      "Deterrent General Security Concepts"
+    ],
+    "answer": 1,
+    "explanation": "Removing malicious software is an example of a corrective control, which seeks to remediate security issues that have already occurred. Preventive controls are intended to stop security issues from occurring. Compensating controls are designed to mitigate risks associated with exemptions to the security policy, like moving systems to a secure network segment because they cannot be patched. Deterrent controls attempt to prevent a malicious actor from violating security policies.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q149",
+    "domain": "General Security Concepts",
+    "questionNumber": 149,
+    "question": "What can a root SSL (TLS) certificate do?",
+    "choices": [
+      "Remove a certificate from a CRL",
+      "Generate a signing key and use it to sign a new certificate",
+      "Authorize new CA users",
+      "Allow key stretching"
+    ],
+    "answer": 1,
+    "explanation": "Root certificates are at the root of trust in a CA hierarchy and allow signing keys to be created and used to sign certificates. They are not used to authorize new CA users or to remove certificates from a CRL. Key stretching is used to make weak keys stronger, not as part of cryptographic certificates.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d1-0-q150",
+    "domain": "General Security Concepts",
+    "questionNumber": 150,
+    "question": "Christina wants to authenticate individuals as part of her AAA implementation. What will she need to do to authenticate users?",
+    "choices": [
+      "Match users to roles and ensure that rights are assigned.",
+      "Conduct biometric enrollments for every user.",
+      "Use identity proofing for each user she creates.",
+      "Ensure that users provide an identity and one or more authentication factor Technical implications (allow lists/deny lists, restricted activities, downtime, service restart, application restart, legacy applications, dependencies) Documentation (updating diagrams, updating policies/procedures) Version control 1.4 Explain the importance of using appropriate cryptographic solutions Public key infrastructure (PKI) (Public key, private, key, key escrow) Encryption (Level, transport/communication, asymmetric, symmetric, key exchange, algorithms, key length) Tools (Trusted Platform Module [TPM], Hardware security module [HSM], key management systems, secure enclave) Obfuscation (Steganography, tokenization, data masking) Hashing Salting Digital Signatures Key stretching Blockchain Open public ledger Certificates (certificate authorities, certificate revocation lists [CRLs], Online Certificate Status Protocol [OCSP], self-signed, third-party, root of trust, certificate signing request [CSR] generation, wildcard)"
+    ],
+    "answer": 3,
+    "explanation": "Authentication requires that users provide (claim) an identity and then provide one or more authentication factors like a password, biometric factor, or multifactor code. Authorization relies on matching users and roles to allow users to perform tasks once they are authenticated. Biometric enrollments and identity proofing may be desirable but are not necessarily required for any given authentication system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q1",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 1,
+    "question": "Brent's organization is profiling threat actors that may target their infrastructure and systems. Which of the following is most likely a motivation for a nation-state actor?",
+    "choices": [
+      "Financial gain",
+      "Blackmail",
+      "Espionage",
+      "Ethical"
+    ],
+    "answer": 2,
+    "explanation": "Nation-state actors are typically advanced persistent threats (APTs) and their motivations commonly include espionage, data exfiltration, disruption/chaos, and war. Financial gain is more commonly associated with organized crime, blackmail with insider threats, and ethical with hacktivists.234 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q2",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 2,
+    "question": "Ahmed is a sales manager with a major insurance company. He has received an email that is encouraging him to click on a link and fill out a survey. He is suspicious of the email, but it does mention a major insurance association, and that makes him think it might be legitimate. Which of the following best describes this attack?",
+    "choices": [
+      "Phishing",
+      "Social engineering",
+      "Spear phishing",
+      "Trojan horse"
+    ],
+    "answer": 2,
+    "explanation": "Spear phishing is targeted to a specific group, in this case insurance professionals. Although this is a form of phishing, the more specific answer is the one you will need to choose on questions like this. Phishing uses social engineering techniques to succeed but is once again a broader answer than spear phishing and thus is not the correct choice. Finally, a Trojan horse pretends to be a legitimate or desirable program or file, which this scenario doesn't describe.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q3",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 3,
+    "question": "You are a security administrator for a medium-sized bank. You have discovered a piece of software on your bank's database server that is not supposed to be there. It appears that the software will begin deleting database files if a specific employee is terminated. What best describes this?",
+    "choices": [
+      "Worm",
+      "Logic bomb",
+      "Trojan horse",
+      "Rootkit"
+    ],
+    "answer": 1,
+    "explanation": "A logic bomb is malware that performs its malicious activity when some condition is met. A worm is malware that self-propagates. A Trojan horse is malware attached to a legitimate program, and a rootkit is malware that gets root or administrative privileges.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q4",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 4,
+    "question": "The company that Yarif works for uses a third-party IT support company to manage their cloud-hosted web application infrastructure. How can Yarif best address concerns about potential threat vectors via the managed service provider (MSP)?",
+    "choices": [
+      "Conduct regular vulnerability scans.",
+      "Use shared incident response exercises to prepare.",
+      "Ensure appropriate contractual coverage for issues.",
+      "Require the MSP to have an annual pentest."
+    ],
+    "answer": 2,
+    "explanation": "Using appropriate contractual terms is usually the best available option for handling third-party vendor risk. The terms can include things like security practices, such as pentesting, incident response exercises, and vulnerability scanning, and can also have sufficient penalties to ensure ongoing compliance from responsible companies.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q5",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 5,
+    "question": "Jill's organization has received an advisory about a flaw that could allow software running on a virtual machine to execute code on the system that is running the VM hypervisor. What type of vulnerability is this?",
+    "choices": [
+      "A resource reuse issue",
+      "A VM escape issue",
+      "A jailbreaking issue",
+      "A sideloading issue Threats, Vulnerabilities, and Mitigations 33"
+    ],
+    "answer": 1,
+    "explanation": "This is an example of a virtual machine (VM) escape vulnerability. Jailbreaking and sideloading are terms used to describe mobile device-related means of violating security, and resource reuse is a VM concern if data is not properly removed before a resource is given to another VM.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q6",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 6,
+    "question": "Helen is concerned about ransomware attacks against workstations that she is responsible for. Which of the following hardening options is best suited to protecting her organization from ransomware?",
+    "choices": [
+      "Installing host-based firewalls",
+      "Installing endpoint protection software",
+      "Installing a host-based IPS software",
+      "Removing unnecessary software"
+    ],
+    "answer": 1,
+    "explanation": "Endpoint protection software like an endpoint detection and response (EDR) or extended detection and response (XDR) tool will provide the greatest protection against ransomware. Firewalls and intrusion prevention systems (IPSs) are less likely to prevent ransomware from being installed, and removing unnecessary software may reduce the attack surface but most ransomware is installed via attacks that leverage users.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q7",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 7,
+    "question": "The company that Gary works for has deployed a wireless network. Which of the following network options is the most secure?",
+    "choices": [
+      "WPA-2 Personal",
+      "WPA-3",
+      "WPA-2 Enterprise",
+      "WPA-4"
+    ],
+    "answer": 1,
+    "explanation": "Wi-Fi Protected Access 3 (WPA-3) is the most modern, most secure option from the list. WPA-4 does not currently exist as of this writing. WPA-2 Enterprise requires an authentication server and is less secure than WPA-3, while WPA-2 Personal allows for a single, set password.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q8",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 8,
+    "question": "What type of attack depends on the attacker entering JavaScript into a text area that is intended for users to enter text that will be viewed by other users?",
+    "choices": [
+      "SQL injection",
+      "Clickjacking",
+      "Cross-site scripting",
+      "Bluejacking"
+    ],
+    "answer": 2,
+    "explanation": "Cross-site scripting (XSS) involves entering a script into text areas that other users will view. SQL injection (SQLi) is not about entering scripts but rather SQL commands. Clickjacking is about tricking users into clicking on the wrong thing. Bluejacking is a Bluetooth attack.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q9",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 9,
+    "question": "Unusual outbound network traffic, geographical irregularities, and increases in database read volumes are all examples of what key element of threat intelligence?",
+    "choices": [
+      "Predictive analysis",
+      "OSINT",
+      "Indicators of compromise",
+      "Threat maps"
+    ],
+    "answer": 2,
+    "explanation": "There are many indicators of compromise (IoCs), including unusual outbound network traffic, geographical irregularities like logins from a country where the person normally does not work, or increases in database read volumes beyond normal traffic patterns. Predictive analysis is analysis work done using datasets to attempt to determine trends and likely attack vectors so that analysts can focus their efforts where they will be most needed and effective. OSINT is open source intelligence, and threat maps are often real-time or near-real-time visualizations of where threats are coming from and where they are headed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q10",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 10,
+    "question": "Julie wants to conduct a replay attack. What type of attack is most commonly associated with successful replay attacks?",
+    "choices": [
+      "SQL injection",
+      "An on-path attack",
+      "Brute force",
+      "A DDoS"
+    ],
+    "answer": 1,
+    "explanation": "On-path attacks that route traffic through a system or device that the attacker controls allow the attacker to both receive and modify traffic, making replay attacks more likely to succeed. SQL injection attacks are associated with web applications and databases. Bruteforce and distributed denial-of-service (DDoS) attacks are not typically associated with replay attacks. Threats, Vulnerabilities, and Mitigations 235",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q11",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 11,
+    "question": "Valerie is investigating a recent incident and checks /var/log on a Linux system. She finds the audit.log file empty despite the system uptime showing over a month of uptime. What has she most likely encountered?",
+    "choices": [
+      "A wiped log",
+      "A recent reboot",
+      "A system error",
+      "Incorrect permissions to view the log Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 0,
+    "explanation": "Since Valerie is investigating an incident, she should immediately consider the potential that the logs were wiped. That likely means that the intruder has gained privileged access to the system, which should worry her even more! Reboots do not wipe audit.log, and Valerie should have permissions appropriate to perform her function. System errors could explain an empty audit.log, but are unlikely, and an empty log found during an investigation is a cause for concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q12",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 12,
+    "question": "Jack purchases ads on a site that staff members of his target organization frequently visit in preparation for a penetration test. Once his ads start to display, he replaces the underlying code with attack code that redirects visitors to a login page that matches the organization's own internal website. What type of attack has Jack attempted?",
+    "choices": [
+      "A misinformation attack",
+      "A watering hole attack",
+      "A disinformation attack",
+      "A business website compromise attack"
+    ],
+    "answer": 1,
+    "explanation": "Jack has attempted a watering hole attack that leverages a frequently visited site to target a specific group of people. In this case, he is targeting his penetration testing target's users. Misinformation and disinformation are used to change opinions or to provide false information, and while business email compromise attacks are part of the Security+ exam outline, business website compromise attacks are not.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q13",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 13,
+    "question": "Which of the following is not a common concern related to the hardware vendor supply chain?",
+    "choices": [
+      "Malware preinstalled on hardware",
+      "Lack of availability of hardware",
+      "Third-party hardware modifications",
+      "Malicious firmware modifications"
+    ],
+    "answer": 2,
+    "explanation": "While malware, modified firmware, and lack of availability are common concerns with the hardware supply chain, hardware modifications remain relatively uncommon.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q14",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 14,
+    "question": "Ben wants to conduct a credential replay attack. What should he do first to enable the attack?",
+    "choices": [
+      "Create a phishing email.",
+      "Conduct an on-path attack.",
+      "Use a brute-force password attack.",
+      "Conduct an injection attack."
+    ],
+    "answer": 1,
+    "explanation": "On-path attacks are used to capture, then replay valid credentials for attackers to use. Session tokens are used to counter this type of attack in some cases. Phishing email and brute-force password attacks can help obtain credentials but do not involve credential replay. Injection attacks are typically conducted against database servers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q15",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 15,
+    "question": "Nick is assessing internal threat actors and considering what motivations are likely to drive them. Which of the following is the most likely motivation for an internal threat actor?",
+    "choices": [
+      "Espionage",
+      "Blackmail",
+      "War",
+      "Political beliefs"
+    ],
+    "answer": 1,
+    "explanation": "Common motivations for internal threat actors include blackmail, financial gain, and ethical reasons. Nation-state threats are more likely to be interested in espionage and war, and hacktivists in political beliefs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q16",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 16,
+    "question": "Yasmine is reviewing the software installed on a client's computer and notices that multiple browser toolbars, weather applications, and social media applications were preinstalled. What term is most commonly used to describe this software?",
+    "choices": [
+      "MSPs",
+      "Bloatware",
+      "Ransomware",
+      "Rootware Threats, Vulnerabilities, and Mitigations 35"
+    ],
+    "answer": 1,
+    "explanation": "These are all common examples of bloatware, unwanted but typically not harmful software installed by manufacturers and as part of the installation processes for desired applications. MSPs are managed service providers, ransomware is malware that attempts to hold files for ransom, and rootware was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q17",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 17,
+    "question": "Ilya is reviewing logs and notices that one of his staff has logged in from his home location in China at 2 p.m., and then logged in from the United Kingdom an hour later. What indicator of compromise should he flag this as?",
+    "choices": [
+      "Concurrent session usage",
+      "Resource inaccessibility",
+      "Impossible travel",
+      "Segmentation"
+    ],
+    "answer": 2,
+    "explanation": "Impossible travel describes scenarios where logins or other actions occur from separate physical locations that are too far apart to travel between before the action occurs. Here it is impossible to travel from China to the UK in an hour, and Ilya may need to check in with the employee since no VPN usage was described. It is possible the employee's account is compromised or some other questionable activity is occurring.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q18",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 18,
+    "question": "Adam's organization has deployed RFID badges as part of their access control system. Adam is required to enter a 6-digit PIN when he uses his RFID badge and dislikes the additional step. What type of attack is the PIN intended to stop?",
+    "choices": [
+      "Piggybacking",
+      "On-path",
+      "Concurrent access",
+      "Badge cloning"
+    ],
+    "answer": 3,
+    "explanation": "Radio frequency identification (RFID) badges can be cloned, but adding an additional factor like a PIN means the badge alone is not sufficient to gain access. Piggybacking involves following an authorized user through a security door or gate. On-path attacks inject an attacker into the middle of a transaction or network connection, allowing them to view and potentially modify traffic. Concurrent session usage or access is an indicator of compromise (IoC) that focuses on multiple systems or users using the same credentials.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q19",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 19,
+    "question": "Jen recently received an email that appeared to be from one of her vendors asking for a change in the method of payment to another account. She normally works with mike_ smith@example.com, but noticed that the email was from mike_smith@examp1e.com on further review. What type of social engineering attack is this?",
+    "choices": [
+      "Vishing",
+      "Business email compromise",
+      "Smishing",
+      "Pretexting"
+    ],
+    "answer": 1,
+    "explanation": "Business email compromise (BEC) scams appear to come from legitimate sources and make requests that may seem reasonable like a payment change to a different wire transfer method. Vishing is done via voice, smishing via SMS, and pretexting uses excuses or reasons that the requested action must be taken.236 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q20",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 20,
+    "question": "What is the primary concern for security professionals about legacy hardware?",
+    "choices": [
+      "Its likelihood of failure",
+      "Lack of patches and updates",
+      "Lack of vendor support",
+      "Inability to support modern protocols"
+    ],
+    "answer": 1,
+    "explanation": "The primary concern for security professionals around legacy hardware is their lack of patches and updates, meaning that security fixes and updates will not exist. While the hardware could fail, that would typically lead to replacement with more modern, supportable options and is a concern for the system administrators and owners. Lack of vendor support and inability to support modern protocols are primarily concerns for owners and system administrators.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q21",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 21,
+    "question": "Coleen is the web security administrator for an online auction website. A small number of users are complaining that when they visit the website it does not appear to be the correct site. Coleen checks and she can visit the site without any problem, even from computers outside the network. She also checks the web server log and there is no record of those users ever connecting. Which of the following might best explain this?",
+    "choices": [
+      "Typo squatting",
+      "SQL injection",
+      "Cross-site scripting",
+      "Cross-site request forgery Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 0,
+    "explanation": "From the description it appears that they are not connecting to the real web server but rather a fake server. That indicates typo squatting: having a URL that is named very similarly to a real site so that when users mistype the real site's URL they will go to the fake site.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q22",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 22,
+    "question": "The organization that Mike works in finds that one of their domains is directing traffic to a competitor's website. When Mike checks, the domain information has been changed, including the contact and other administrative details for the domain. If the domain had not expired, what has most likely occurred?",
+    "choices": [
+      "DNS hijacking",
+      "An on-path attack",
+      "Domain hijacking",
+      "A zero-day attack"
+    ],
+    "answer": 2,
+    "explanation": "Domain hijacking, or domain theft, occurs when the registration or other information for the domain is changed without the original registrant's permission. This may occur because of a compromised account or due to a breach of the domain registrar's security. A common issue is a lapsed domain being purchased by a third party, and this can look like a hijacked domain, but it is a legitimate occurrence if the domain is not renewed! DNS hijacking inserts false information into a DNS server, on-path (man-in-the-middle) attacks capture or modify traffic by causing the traffic to pass through a compromised midpoint, and zero-day attacks are unknown to product vendors and, therefore, no patches are available to correct them.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q23",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 23,
+    "question": "Lucia's organization has adopted open source software provided by a third-party vendor as part of their web application. What concern should she express about her software supply chain?",
+    "choices": [
+      "Lack of vendor support",
+      "Lack of code auditability",
+      "Lack of control over open source dependencies",
+      "Lack of updates"
+    ],
+    "answer": 2,
+    "explanation": "Open source software dependencies are a primary challenge when considering open source supply chain concerns. In this case, Lucia is using a third-party vendor who can provide support, open source code is auditable, and updates are likely to occur with a vendor involved.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q24",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 24,
+    "question": "Alice wants to prevent server-side request forgery (SSRF) attacks. Which of the following will not be helpful for preventing them?",
+    "choices": [
+      "Removing all SQL code from submitted HTTP queries",
+      "Blocking hostnames like 127.0.01 and localhost",
+      "Blocking sensitive URLs like /admin",
+      "Applying allow list-based input filters"
+    ],
+    "answer": 0,
+    "explanation": "Server-side request forgery (SSRF) attempts typically attempt to get HTTP data passed through and will not include SQL injection. Blocking sensitive hostnames, IP addresses, and URLs are all valid ways to prevent SSRF, as is the use of allow list-based input filters.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q25",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 25,
+    "question": "Tracy wants to protect desktop and laptop systems in her organization from network attacks. She wants to deploy a tool that can actively stop attacks based on signatures, heuristics, and anomalies. What type of tool should she deploy?",
+    "choices": [
+      "A firewall",
+      "Antimalware",
+      "HIDS",
+      "HIPS"
+    ],
+    "answer": 3,
+    "explanation": "A host-based intrusion prevention system (HIPS) can monitor, identify, and stop network traffic that displays network traffic to identify attacks, suspicious behavior, and known bad patterns using signatures. A firewall stops traffic based on rules; antimalware tools are specifically designed to stop malware, not attacks and suspicious network behavior; and a hostbased intrusion detection system (HIDS) can only detect, not stop, these behaviors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q26",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 26,
+    "question": "Mahmoud is responsible for managing security at a large university. He has just performed a threat analysis for the network, and based on past incidents and studies of similar networks, he has determined that the most prevalent threat to his network are attackers who wish to breach the system, simply to prove they can or for some low-level crime, such as changing a grade. Which term best describes this type of attacker?",
+    "choices": [
+      "Hacktivist",
+      "Nation-state",
+      "Insider",
+      "Unskilled attacker Threats, Vulnerabilities, and Mitigations 37"
+    ],
+    "answer": 3,
+    "explanation": "Unskilled attackers, often called script kiddies, tend to use premade tools in unsophisticated ways. Hacktivists take action based on political motivation, insiders operate from inside of an organization, and nation-state actors are typically highly capable and well resourced.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q27",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 27,
+    "question": "How is phishing different from general spam?",
+    "choices": [
+      "It is sent only to specific targeted individuals.",
+      "It is intended to acquire credentials or other data.",
+      "It is sent via SMS.",
+      "It includes malware in the message."
+    ],
+    "answer": 1,
+    "explanation": "Phishing is intended to acquire data, most often credentials or other information that will be useful to the attacker. Spam is a broader term for unwanted email, although the term is often generally used to describe unwanted communications. Spear phishing targets specific individuals, whereas whaling targets higher-ups such as CEOs in an organization. Smishing is sent via SMS (text message). Malware can be sent in any of these instances, but there is not a specific related term that means \"spam with malware in it.\" Threats, Vulnerabilities, and Mitigations 237",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q28",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 28,
+    "question": "Selah includes a question in her procurement request-for-proposal process that asks how long the vendor has been in business and how many existing clients the vendor has. What common issue is this practice intended to help prevent?",
+    "choices": [
+      "Supply chain security issues",
+      "Lack of vendor support",
+      "Outsourced code development issues",
+      "System integration problems"
+    ],
+    "answer": 1,
+    "explanation": "Systems and software that no longer have vendor support can be a significant security risk, and ensuring that a vendor will continue to exist and provide support is an important part of many procurement processes. Selah's questions are intended to assess the longevity and viability of the company and whether buying from them will result in her organization having a usable product for the long term.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q29",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 29,
+    "question": "Frank is a network administrator for a small college. He discovers that several machines on his network are infected with malware. That malware is sending a flood of packets to a target external to the network. What best describes this attack?",
+    "choices": [
+      "SYN flood",
+      "DDoS",
+      "Botnet",
+      "Backdoor"
+    ],
+    "answer": 1,
+    "explanation": "His machines are part of a distributed denial-of-service (DDoS) attack. This scenario describes a generic DDoS, not a specific one like SYN flood, which would involve many SYN packets being sent without a full three-way TCP handshake. These machines could be part of a botnet or they may just have a trigger that causes them to launch the attack at a specific time. The real key in this scenario is the DDoS attack. Finally, a backdoor gives an attacker access to the target system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q30",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 30,
+    "question": "A sales manager at your company is complaining about slow performance on his computer. When you thoroughly investigate the issue, you find spyware on his computer. He insists that the only thing he has downloaded recently was a freeware stock trading application. What would best explain this situation?",
+    "choices": [
+      "Logic bomb",
+      "Trojan",
+      "Rootkit",
+      "Macro virus"
+    ],
+    "answer": 1,
+    "explanation": "A Trojan attaches a malicious program to a legitimate program. When the user downloads and installs the legitimate program, they get the malware. A logic bomb is malware that does its misdeeds when some condition is met. A rootkit is malware that gets administrative, or root, access. A macro virus is a virus that is embedded in a document as a macro.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q31",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 31,
+    "question": "What threat actor is most likely to be motivated by political beliefs?",
+    "choices": [
+      "Hacktivists",
+      "Organized crime",
+      "Unskilled attackers",
+      "Insider threats"
+    ],
+    "answer": 0,
+    "explanation": "Hacktivists are defined by their political motivation. Organized crime is most frequently associated with financial gain as a motivation. While unskilled attackers and insider threats may have political motivations, hacktivists remain the most likely of this list.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q32",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 32,
+    "question": "What type of threat actors are most likely to have a profit motive for their malicious activities?",
+    "choices": [
+      "State actors",
+      "Hacktivists",
+      "Unskilled attackers",
+      "Organized crime Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 3,
+    "explanation": "Organized crime may produce, sell, and support malware tools, or may deploy them themselves. Crypto malware and other packages are examples of tools often created and used by criminal syndicates. State actors are more likely to be associated with advanced persistent threats (APTs) aimed at accomplishing goals of the nation-state that supports them. Hacktivists typically have political motivations, whereas unskilled attackers (script kiddies) may simply be in it for recognition or fun.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q33",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 33,
+    "question": "You have noticed that when in a crowded area, you sometimes get a stream of unwanted text messages. The messages end when you leave the area. What describes this attack?",
+    "choices": [
+      "Bluejacking",
+      "Bluesnarfing",
+      "Evil twin",
+      "Rogue access point"
+    ],
+    "answer": 0,
+    "explanation": "Bluejacking involves sending unsolicited messages to Bluetooth devices when they are in range. Bluesnarfing involves getting data from the Bluetooth device. An evil twin attack uses a rogue access point whose name is similar or identical to that of a legitimate access point.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q34",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 34,
+    "question": "Dennis uses an on-path attack to cause a system to send traffic to his system and then forwards it to the actual server the traffic is intended for. What information will be visible from his system as it passed through it?",
+    "choices": [
+      "All traffic meant for remote systems",
+      "All traffic meant for local systems",
+      "Only unencrypted traffic",
+      "Only unencrypted traffic meant for his system"
+    ],
+    "answer": 0,
+    "explanation": "An on-path attack redirects all traffic through an attacker's system that would normally pass through a network gateway. Dennis will be able to see all traffic bound for remote systems, but some of it may be encrypted.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q35",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 35,
+    "question": "Andrea recently received a phone call claiming to be from her bank. The caller asked for information including her account number and Social Security number to validate her identity. What type of social engineering attack was Andrea the target of?",
+    "choices": [
+      "Smishing",
+      "Brand impersonation",
+      "A watering hole attack",
+      "A business email compromise attack"
+    ],
+    "answer": 1,
+    "explanation": "When malicious actors claim to represent a company or organization to accomplish their goals, it is an example of a brand impersonation attack. Here, this is a combination of a vishing attack and a brand impersonation attack. Smishing occurs via SMS, watering hole attacks target sites that their intended victims commonly visit, and business email compromise attempts to gain access to or leverages email accounts.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q36",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 36,
+    "question": "Jake's vulnerability scanner reports that the software his organization is running is vulnerable to a cryptographic downgrade attack. What concern should Jake have about this potential issue?",
+    "choices": [
+      "Attackers may be able to force use of a weaker encryption algorithm, making data easier to access.",
+      "Attackers may be able to force use of weaker hashing, making it easier to recover passwords.",
+      "Attackers may be able to force use of older versions of the software, including previously patched vulnerabilities.",
+      "Attackers may be able to force encryption to be turned off, causing information to be sent in plain text."
+    ],
+    "answer": 0,
+    "explanation": "Cryptographic downgrade attacks like POODLE, FREAK, and Logjam all rely on flaws that cause software to use weaker encryption options. This could allow attackers to capture traffic encrypted with weaker encryption, potentially allowing them to decrypt the traffic and read it. They do not allow hashing changes to recover passwords, reversion to old versions of software, or encryption to be entirely turned off.238 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q37",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 37,
+    "question": "Rick has three major categories of data and applications in use in his virtualization environment: highly sensitive; business sensitive; and unclassified, or public information. He wants to ensure that data and applications of different sensitivity are not compromised in the event of a breach. What mitigation technique is best suited to this type of requirement?",
+    "choices": [
+      "Application allow lists",
+      "Monitoring",
+      "Least privilege",
+      "Segmentation Threats, Vulnerabilities, and Mitigations 39"
+    ],
+    "answer": 3,
+    "explanation": "Segmentation can be used to separate systems and applications of different sensitivity levels. A breach of one segmented group should not automatically mean that the other groupings are in immediate danger. Application allow lists control what applications can be installed but do not introduce separation between systems and applications. Monitoring would allow visibility but does not meet the goal Rick has. Least privilege is an effective practice to ensure only the rights required are in place, but again this does not meet the goal.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q38",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 38,
+    "question": "Users in your company report someone has been calling their extension and claiming to be doing a survey for a large vendor. Based on the questions asked in the survey, you suspect that this is a scam to elicit information from your company's employees. What best describes this?",
+    "choices": [
+      "Spear phishing",
+      "Vishing",
+      "War dialing",
+      "Robocalling"
+    ],
+    "answer": 1,
+    "explanation": "This is vishing, or using voice calls for phishing. Spear phishing is targeting a small, specific group. War dialing is dialing numbers hoping a computer modem answers. Robocalling is used to place unsolicited telemarketing calls.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q39",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 39,
+    "question": "As part of a zero-trust environment, Quentin is given rights that he needs only when he needs them through a checkout process and they are then removed when he is done. What mitigation technique best describes this solution?",
+    "choices": [
+      "Segmentation",
+      "Isolation",
+      "Least privilege",
+      "Configuration enforcement"
+    ],
+    "answer": 2,
+    "explanation": "This is an example of a least privilege implementation where only the privileges required are issued. The checkout process is a modern addition to least privilege environments where even privileges needed are only issued temporarily, making least privilege even more secure. Segmentation and isolation are used to separate systems or environments, and configuration enforcement is used to ensure that configurations continue to be set as expected.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q40",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 40,
+    "question": "While performing a scan for wireless networks, Lisa discovers a network that does not use WPA-2 or WPA-3. What network traffic information can she recover from devices using this network?",
+    "choices": [
+      "All network traffic",
+      "Network packet headers, but not packet data",
+      "Network packet data, but not headers",
+      "DNS and DHCP queries, but not network packet data"
+    ],
+    "answer": 0,
+    "explanation": "An insecure, unencrypted, unprotected wireless network will have all of its traffic exposed. If the network is not using WPA-2 or WPA-3, it is trivial to observe network traffic even if an old protocol like WEP was in use.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q41",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 41,
+    "question": "Jared is responsible for network security at his company. He has discovered behavior on one computer that certainly appears to be a virus. He has even identified a file he thinks might be the virus. However, using three separate antivirus programs, he finds that none can detect the file. Which of the following is most likely to be occurring?",
+    "choices": [
+      "The computer has a RAT.",
+      "The computer has a zero-day exploit.",
+      "The computer has a worm.",
+      "The computer has a rootkit."
+    ],
+    "answer": 1,
+    "explanation": "Zero-day exploits are new, and they are not in the virus definitions for the antivirus (AV) programs. This makes them difficult to detect, except by their behavior. Remote-access Trojans (RATs), worms, and rootkits are more likely to be detected by AV programs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q42",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 42,
+    "question": "John has discovered that an attacker is trying to get network passwords by using software that attempts a series of passwords with a minor change each time the password is tried. What type of attack is this?",
+    "choices": [
+      "Dictionary",
+      "Rainbow table",
+      "Brute force",
+      "Session hijacking Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 2,
+    "explanation": "Brute force tries every possible combination with small changes each time. Dictionary attacks use a list of words that are believed to be likely passwords. A rainbow table is a precomputed table of hashes. Session hijacking is when the attacker takes over an authenticated session.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q43",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 43,
+    "question": "Fares is the network security administrator for a company that creates advanced routers and switches. He has discovered that his company's networks have been subjected to a series of advanced attacks by an attacker sponsored by a government over a period of time. What best describes this attack?",
+    "choices": [
+      "DDoS",
+      "Brute force",
+      "Nation-state",
+      "Disassociation attack"
+    ],
+    "answer": 2,
+    "explanation": "A nation-state advanced persistent threat (APT) involves sophisticated (i.e., advanced) attacks over a period of time (i.e., persistent). A distributed denial-of-service (DDoS) could be a part of an APT, but in and of itself is unlikely to be an APT. Brute force attempts every possible random combination to get the password or encryption key. In a disassociation attack, the attacker attempts to force the victim into disassociating from a resource.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q44",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 44,
+    "question": "What type of information is phishing not commonly intended to acquire?",
+    "choices": [
+      "Passwords",
+      "Email addresses",
+      "Credit card numbers",
+      "Personal information"
+    ],
+    "answer": 1,
+    "explanation": "Phishing is not commonly used to acquire email addresses. Phishing emails target personal information and sensitive information like passwords and credit card numbers in most cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q45",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 45,
+    "question": "Scott discovers that malware has been installed on one of the systems he is responsible for. Shortly afterward passwords used by the user that the system is assigned to are discovered to be in use by attackers. What type of malicious program should Scott look for on the compromised system?",
+    "choices": [
+      "A rootkit",
+      "A keylogger",
+      "A worm",
+      "None of the above"
+    ],
+    "answer": 1,
+    "explanation": "A keylogger is a software or hardware tool used to capture keystrokes. Keyloggers are often used by attackers to capture credentials and other sensitive information. A rootkit is used to obtain and maintain administrative rights on a system, and a worm is a self-spreading form of malware that frequently targets vulnerable services on a network to spread.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q46",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 46,
+    "question": "Nick purchases his network devices through a gray market supplier that imports them into his region without an official relationship with the network device manufacturer. What risk should Nick identify when he assesses his supply chain risk?",
+    "choices": [
+      "Lack of vendor support",
+      "Lack of warranty coverage",
+      "Inability to validate the source of the devices",
+      "All of the above"
+    ],
+    "answer": 3,
+    "explanation": "Acquisition via the gray market can lead to lack of vendor support, lack of warranty coverage, and the inability to validate where the devices came from. Nick should express concerns about the supply chain, and if his devices need to be from a trusted source or supplier with real support he may need to change his organization's acquisition practices. Threats, Vulnerabilities, and Mitigations 239",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q47",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 47,
+    "question": "Naomi is preparing a laptop for a traveling salesperson who frequently needs to connect to untrusted hotel networks. What hardening technique can she use to provide the greatest protection against network-based attacks on untrusted networks?",
+    "choices": [
+      "Install an endpoint detection and response tool.",
+      "Install a host-based firewall.",
+      "Install an extended detection and response tool.",
+      "Install a disk encryption tool. Threats, Vulnerabilities, and Mitigations 41"
+    ],
+    "answer": 1,
+    "explanation": "A host-based firewall is an excellent first line of defense for systems that will be deployed to untrusted networks. EDR and XDR are useful for preventing malicious software installs like ransomware, but they do not directly protect against network-based attacks, and disk encryption is a confidentiality control, not a useful tool to prevent network-based attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q48",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 48,
+    "question": "While conducting a vulnerability scan of her network, Susan discovers that a marketing staff member has set up their own server running a specialized marketing tool. After inquiring about the server, which is vulnerable due to missing patches, Susan discovers that the team set it up themselves because of a need that was not met by existing tools. What type of threat actor has Susan encountered?",
+    "choices": [
+      "An unskilled attacker",
+      "An insider threat",
+      "Shadow IT",
+      "A hacktivist"
+    ],
+    "answer": 2,
+    "explanation": "The marketing team has created a shadow IT solution-a solution put in place without central or formal IT support, typically done without IT's assistance or awareness. This creates a risk to the organization due to lack of support and may bring additional risks like licensing and compliance risks. The team did not intend to create an issue and is not actively working against the organization, meaning that they are not unskilled attackers, insider threats, or hacktivists.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q49",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 49,
+    "question": "Which of the following indicators is most commonly associated with a denial-ofservice attack?",
+    "choices": [
+      "Resource inaccessibility",
+      "Impossible travel",
+      "Missing logs",
+      "Blocked content"
+    ],
+    "answer": 0,
+    "explanation": "Resource inaccessibility is a common symptom of a denial-of-service attack. Impossible travel is typically found in log events through correlation. Missing logs are frequently indicators of compromised accounts deleting logs, and blocked content is most likely due to reputation service usage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q50",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 50,
+    "question": "Henry wants to decommission a server that was used to store sensitive data. What step should he take to ensure the decommissioning process protects the organization's data?",
+    "choices": [
+      "Reformat the drives as part of the decommissioning process.",
+      "Physically destroy the drives as part of the decommissioning process.",
+      "Remove the system from organizational inventory as part of the decommissioning process.",
+      "Physically destroy the entire system as part of the decommissioning process."
+    ],
+    "answer": 1,
+    "explanation": "Since the drives stored sensitive data and no mention of encryption was made, the drives should be physically destroyed to ensure that no data leakage can occur. It is not necessary to destroy the entire system to ensure this. Reformatting drives does not wipe data, and simply removing the system from inventory is typically part of the process but does not protect organizational data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q51",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 51,
+    "question": "Renee has a large number of workstations and servers in her corporate environment and wants to more effectively monitor logs for them. What solution from the following list is best suited to identifying and alerting on issues in a large-scale environment?",
+    "choices": [
+      "Centralized logging",
+      "A SIEM",
+      "An IPS",
+      "An EDR"
+    ],
+    "answer": 1,
+    "explanation": "A security information and event management tool (SIEM) is designed to ingest and analyze large volumes of logs and then alert on issues and events. Centralized logging is useful but needs additional tools to alert on issues. An IPS is used to detect and potentially respond to network-based attacks, not to gather and analyze logs, and EDR tools are useful for monitoring endpoints, not for large-scale log ingestion and analysis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q52",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 52,
+    "question": "Patrick is reviewing potential attack surfaces for his small business and recently deployed new networked printers for each of his three locations. What should his first action be to begin to properly secure their web management interfaces?",
+    "choices": [
+      "Update the firmware.",
+      "Change their default IP address.",
+      "Change the default administrator password.",
+      "Disable unnecessary services. Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 2,
+    "explanation": "Patrick knows that the first thing he should do is change the administrator password. Any further security changes, including updating firmware and disabling unnecessary services, can be made once the administrative account has been properly secured. Changing the default IP address does not necessarily improve security for the device.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q53",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 53,
+    "question": "Paul has performed an nmap scan of a new network connected device. He notices TCP ports 22, 80, and 443 are open. If his hardening guidelines only allow encrypted management interfaces, what port or ports should he disable from this list?",
+    "choices": [
+      "22",
+      "80",
+      "22 and 80",
+      "80 and 443"
+    ],
+    "answer": 1,
+    "explanation": "Paul knows that SSH typically uses port 22, HTTP uses port 80, and HTTPS uses port 443. HTTP is the only unencrypted protocol from that list, and thus he should disable port 80.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q54",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 54,
+    "question": "The following graphic shows a network connection between two systems, and then a network-based attack. What type of attack is shown? Communications traffic Attackercontrolled system Communications traffic Communications traffic",
+    "choices": [
+      "A denial-of-service attack",
+      "A SQL injection attack",
+      "An on-path attack",
+      "A directory traversal attack"
+    ],
+    "answer": 2,
+    "explanation": "An on-path attack redirects traffic to allow an attacker to see and potentially modify the traffic as shown in the graphic. SQL injection is accomplished by inserting SQL into web queries or application traffic, denial-of-service will target a service and no indication of that is shown, and a directory traversal attack will typically show directory manipulation like ../../.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q55",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 55,
+    "question": "Which of the following protocols is most commonly associated with credential relaying attacks?",
+    "choices": [
+      "RDP",
+      "NTLM",
+      "SQL",
+      "TLS"
+    ],
+    "answer": 1,
+    "explanation": "While dated, NTLM was historically one of the most common targets of credential relay attacks. RDP, SQL, and TLS are less commonly associated with credential relay attacks. Modern protocols implement encryption, session, IDs, and one-time passwords to prevent this type of attack.240 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q56",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 56,
+    "question": "After a recent laptop theft, Jaime's organization is worried about data breaches driven by lost devices. What endpoint hardening technique is best suited to preventing this?",
+    "choices": [
+      "Encryption",
+      "Host-based IPS",
+      "Disabling ports and protocols",
+      "Changing default passwords Threats, Vulnerabilities, and Mitigations 43"
+    ],
+    "answer": 0,
+    "explanation": "Encryption is the appropriate solution to prevent data loss if a system is stolen. A HIPS, disabling ports and protocols, and changing default passwords will not prevent data acquisition from a drive.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q57",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 57,
+    "question": "Derek wants to conduct a birthday attack against a digital signature. Which of the following best describes the process he would need to take to achieve his goal?",
+    "choices": [
+      "He needs to prepare both a correct and a malicious document and find ways to modify the correct document until its encryption matches the malicious document.",
+      "He needs to make sure all dates match in both a correct and a malicious document.",
+      "He needs to ensure that the file length and creation date match for both a correct document and a malicious document.",
+      "He needs to prepare both a correct and a malicious document, then find ways to modify the malicious document until its hash matches the hash of the correct document."
+    ],
+    "answer": 3,
+    "explanation": "Derek knows that attacking a digital signature requires that hashes match for both an original document and a malicious document. He will modify the malicious document until he finds a way to convey the changes he needs while retaining the matching hash. This type of attack is why hashing algorithms needs to be resistant to birthday attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q58",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 58,
+    "question": "Ashley's organization has recently come under attack and has suffered a DNS outage. As she investigated, she found that requests to her DNS servers were sent to open DNS resolvers using spoofed IP addresses with requests that would result in very large responses from the DNS resolvers to the IP addresses that appeared to be making the request. What type of attack targeted Ashley's organization?",
+    "choices": [
+      "A reflected DDoS",
+      "A DNS flood",
+      "A mirrored DDoS",
+      "A supersized query attack"
+    ],
+    "answer": 0,
+    "explanation": "Ashley's organization was the target of a reflected (and amplified) DDoS where attackers took advantage of DNS queries to make small amounts of spoofed traffic into very large amounts of data sent to her servers. DNS floods, mirrored DDoSs, and supersized query attacks were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q59",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 59,
+    "question": "What term is used to describe the problem when two files have the same hash?",
+    "choices": [
+      "A birthday attack",
+      "A collision",
+      "A bingo",
+      "A match-the-hash attack"
+    ],
+    "answer": 1,
+    "explanation": "Collisions occur when two files have the same hash. Secure hashing solutions are collision resistant, meaning that collision-based hash attacks should be unlikely unless an insecure or outdated hash algorithm like MD5 is selected. Birthday attacks leverage the likelihood of collisions in a random set of attacks rather than by progressing linearly through the solution set. Bingo attacks and match-the-hash are both made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q60",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 60,
+    "question": "Kara wants to protect against the most common means of firmware-based exploits. Which of the following is not a common firmware defense mechanism for the vendors of devices that use firmware?",
+    "choices": [
+      "Using signed firmware updates",
+      "Using input validation for user input",
+      "Encrypting firmware",
+      "Code review processes for firmware"
+    ],
+    "answer": 2,
+    "explanation": "Firmware is typically not encrypted, but it is commonly digitally signed. Using input validation and code review both help to keep firmware secure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q61",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 61,
+    "question": "Annie's organization has been facing negative social media campaigns for months and is struggling to address them. Numerous bot posts about the company are providing incorrect information about the company. What type of attack is Annie's company facing?",
+    "choices": [
+      "A misinformation campaign",
+      "A pretexting campaign",
+      "An impersonation campaign",
+      "A disinformation campaign Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 3,
+    "explanation": "Annie's company is facing a disinformation campaign. If users were simply getting facts wrong, this would be misinformation, but since bots are intentionally misstating information, it is disinformation. Pretexting would attempt to exploit human behaviors to explain why something needed to occur or why an attacker was asking for something. Impersonation occurs when an attacker pretends to be someone they are not.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q62",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 62,
+    "question": "Ines is concerned about messaging through tools like Discord and Slack as attack vectors. What can she do to most effectively limit the attack surface for threats like this?",
+    "choices": [
+      "Deploy EDR tools to all workstations and devices.",
+      "Deploy an organizational communication tool or instance instead of using public tools.",
+      "Deploy messaging-aware firewalls.",
+      "Deploy messaging-aware IPS systems."
+    ],
+    "answer": 1,
+    "explanation": "In many cases, the best option to limit the attack surface of messaging applications is to use a trusted, internally managed organizational instance rather than public tools or instances. EDR, firewalls, and IPS are not as effective with messaging-based attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q63",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 63,
+    "question": "Ana's vendor has informed her that the hardware her organization uses is considered end-oflife. What should Ana do?",
+    "choices": [
+      "Identify replacement hardware and purchase it immediately.",
+      "Purchase an extended support contract from a third-party vendor.",
+      "Begin plans to phase out the equipment before it reaches end-of-support.",
+      "Install final patches and then isolate the hardware from the network."
+    ],
+    "answer": 2,
+    "explanation": "End-of-life announcements typically mean that the equipment is no longer being produced or sold. The equipment will typically have a longer supported life, so Ana can continue to use it but should plan for what to do when end-of-support occurs. At that time, replacing it, isolating it, or purchasing third-party support are all possible solutions depending on Ana's needs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q64",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 64,
+    "question": "What threat vector is most impacted by how Windows handles autorun.inf files?",
+    "choices": [
+      "Removable devices",
+      "Open service ports",
+      "Unsecure Wi-Fi",
+      "Watering hole attacks"
+    ],
+    "answer": 0,
+    "explanation": "Removable devices like USB thumb drives, digital picture frames, and even keyboards and mice with onboard storage rely on autorun.inf files to automatically run software they provide. While that functionality typically focuses on printing, opening folders, or running media players, it can also be leveraged to automatically run malware. For this reason, many organizations ban removable drives or prohibit autorun from working. Open service ports are commonly associated with applications and services, and autorun doesn't set up or run these, nor does it impact Wi-Fi. Watering hole attacks require attackers to compromise or gain access to a site that targets commonly visit so that they deliver malware to their targets. Threats, Vulnerabilities, and Mitigations 241",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q65",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 65,
+    "question": "Raj wants to reduce the attack surface for a newly purchased laptop. What hardening technique will help him reduce the possibility of remote exploits while also decreasing the amount of ongoing patch management he needs to do for the system?",
+    "choices": [
+      "Encrypt the system's boot drive.",
+      "Install EDR software.",
+      "Remove unnecessary software.",
+      "Change any default passwords."
+    ],
+    "answer": 2,
+    "explanation": "Raj knows that removing unnecessary software reduces a system's attack surface and also means that he won't have to patch and maintain the software he removes. Encrypting a drive, installing EDR, and changing default passwords won't reduce patch management, but EDR and changing default passwords could help with remote exploit prevention.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q66",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 66,
+    "question": "Mary has discovered that a web application used by her company does not always handle multithreading properly, particularly when multiple threads access the same variable. This could allow an attacker who discovered this vulnerability to exploit it and crash the server. What type of error has Mary discovered?",
+    "choices": [
+      "Buffer overflow",
+      "Logic bomb",
+      "Race conditions",
+      "Improper error handling"
+    ],
+    "answer": 2,
+    "explanation": "A race condition can occur when multiple threads in an application are using the same variable and the situation is not properly handled. A buffer overflow is attempting to put more data in a buffer than it is designed to hold. A logic bomb is malware that performs its misdeed when some logical condition is met. As the name suggests, improper error handling is the lack of adequate or appropriate error handling mechanisms within software.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q67",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 67,
+    "question": "Allan wants to detect brute-force physical attacks. What should he do if he wants to detect the broadest range of physical attacks?",
+    "choices": [
+      "Deploy a monitored security camera system.",
+      "Hire a guard to patrol the facility.",
+      "Conduct regular inspections of the facility.",
+      "Set up an alarm system. Threats, Vulnerabilities, and Mitigations 45"
+    ],
+    "answer": 0,
+    "explanation": "A monitored camera system will detect the broadest range of attacks. Guards will only detect brute-force attacks when they are in the area, and cameras can cover more spaces at once. Inspections may miss attacks where camera recordings and monitoring can show failed and successful attacks. An alarm system won't detect attacks by insiders, who may access spaces they have access to in order to perform malicious actions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q68",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 68,
+    "question": "Which of the following is not a common threat vector associated with SMS-based attacks?",
+    "choices": [
+      "Malicious links",
+      "SMS-based phishing",
+      "SMS-delivered images",
+      "MFA exploits"
+    ],
+    "answer": 2,
+    "explanation": "Images are not a common threat vector via SMS. Malicious links, phishing via text, and multifactor authentication (MFA) exploits, including sending MFA notices until the recipient approves an MFA request, are all common SMS-related threat vectors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q69",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 69,
+    "question": "During a regular review of logs, Jennifer notices that a regularly scheduled script that copies files to another server every hour has run multiple times within the last hour. What indicator of compromise should she categorize this as?",
+    "choices": [
+      "Concurrent session use",
+      "Out-of-cycle logging",
+      "Missing logs",
+      "Impossible travel"
+    ],
+    "answer": 1,
+    "explanation": "Jennifer should note this as out-of-cycle logging. It could simply indicate a flaw in the script or another innocuous issue, or it could indicate an attacker exploring scripts to identify what information can be obtained. Concurrent session use occurs when a session is in use from multiple browsers or systems, missing logs are when logs are entirely missing or empty rather than occurring with more frequency than expected, and impossible travel occurs when events or logins occur from different locations by the same user who could not have traveled that distance in the time between the events.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q70",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 70,
+    "question": "Pete uses a technique that injects code into memory used by another process to allow him to control what the host program does. What is this technique called for Windows dynamically linked libraries?",
+    "choices": [
+      "WinBuff attacks",
+      "DLL injection",
+      "A SYRINGE attack",
+      "A memory traversal attack"
+    ],
+    "answer": 1,
+    "explanation": "DLL injection forces a process to load and run code from a dynamically linked library (DLL) that was not originally used by the application or software. This can be used to modify behaviors of the program or to perform malicious actions through the application. WinBuff, SYRINGE, and memory traversal were all made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q71",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 71,
+    "question": "Kathleen wants to control network traffic between subnets using her Cisco network devices. What built-in capability can she use to allow or deny traffic based on port, protocol, and IP address?",
+    "choices": [
+      "A HIPS",
+      "ACLs",
+      "Least privilege lists",
+      "VLANs"
+    ],
+    "answer": 1,
+    "explanation": "Access control lists (ACLs) allow or deny traffic based on rules that include protocol, IP addresses, ports, and other details. They do not understand packet content and simply assess traffic based on these basic rules. A HIPS is a host-based intrusion prevention system and is not installed between subnets. Least privilege is a concept, not an application or security tool, and VLANs are used to segment traffic but do not themselves control traffic this way. Instead, VLANs are often combined with ACLs to control network traffic and ensure segmentation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q72",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 72,
+    "question": "What is the primary purpose of encryption as a control in enterprise environments?",
+    "choices": [
+      "To preserve availability",
+      "To support physical security",
+      "To preserve least privilege",
+      "To preserve confidentiality"
+    ],
+    "answer": 3,
+    "explanation": "Encryption is used to preserve confidentiality. Availability controls work to ensure that assets remain accessible and usable, and encryption can actually work against this in some circumstances, such as if a key is lost or the encrypted file becomes corrupted. Encryption is not used directly to preserve least privilege, nor does it preserve physical security.242 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q73",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 73,
+    "question": "What type of attack exploits the trust that a website has for an authenticated user to attack that website by spoofing requests from the trusted user?",
+    "choices": [
+      "Cross-site scripting",
+      "Cross-site request forgery",
+      "Bluejacking",
+      "Evil twin Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Cross-site request forgery (XSRF or CSRF) sends fake requests to a website that purport to be from a trusted, authenticated user. Cross-site scripting (XSS) exploits the trust the user has for the website and embeds scripts into that website. Bluejacking is a Bluetooth attack. Nothing in this scenario requires or describes an evil twin, which is an attack that uses a malicious access point that duplicates a legitimate AP.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q74",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 74,
+    "question": "Dana wants to use documented and published IoCs as part of her threat-hunting activities. What should she look for to integrate with her SIEM or other security tools?",
+    "choices": [
+      "Threat feeds",
+      "A real-time blackhole list",
+      "A vulnerability feed",
+      "An IP reputation feed"
+    ],
+    "answer": 0,
+    "explanation": "Both commercial and private threat feeds can be used by security tools like SIEM, EDR, and XDR systems to provide them with current information about indicators of compromise. A real-time blackhole list (RBL) and an IP reputation feed are examples of specific threat feeds but are not as broad as threat feeds. Vulnerability definitions are typically integrated with vulnerability scanners, but again are a narrower option than a threat feed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q75",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 75,
+    "question": "The malware that Joseph is working to counter has copied itself to workstations across his environment due to a central, shared fileshare. What type of malware is Joseph most likely fighting?",
+    "choices": [
+      "A Trojan",
+      "A virus",
+      "A keylogger",
+      "A rootkit"
+    ],
+    "answer": 1,
+    "explanation": "Joseph is most likely fighting a virus, which is capable of copying itself to new locations. A Trojan is malware that is disguised to look like desirable software, a keylogger captures keystrokes, and a rootkit is intended to allow attackers to retain access to compromised systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q76",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 76,
+    "question": "You are responsible for software testing at Acme Corporation. You want to check all software for bugs that might be used by an attacker to gain entrance into the software or your network. You have discovered a web application that would allow a user to attempt to put a 64-bit value into a 4-byte integer variable. What is this type of flaw?",
+    "choices": [
+      "Memory overflow",
+      "Buffer overflow",
+      "Variable overflow",
+      "Integer overflow"
+    ],
+    "answer": 3,
+    "explanation": "Placing a larger integer value into a smaller integer variable is an integer overflow. Memory overflow is not a term used, and memory leak is about allocating memory and not deallocating it. Buffer overflows often involve arrays. Variable overflow is not a term used in the industry.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q77",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 77,
+    "question": "The company that Keith works for uses a backoff algorithm that increases the time between when login attempts are allowed after each failed login. Keith has recently attempted to log in and found that his account is not able to log in again for 15 minutes. What should the security administrators at Keith's organization do to find potential indicators of malicious activity?",
+    "choices": [
+      "Review authentication logs.",
+      "Interview Keith about his recent logins.",
+      "Change Keith's password and check error logs.",
+      "Report an incident and start the incident response process."
+    ],
+    "answer": 0,
+    "explanation": "Until more is known, the best route for security administrators is to review the authentication logs in order to gather more information that can indicate whether an issue or security event has occurred. While Keith didn't indicate that he had failed login attempts, it's possible another user mistyped a user ID or that something else happened. Interviewing Keith might help but would provide less information if something malicious or accidental is happening, and the interview process would delay that analysis. Changing his password isn't immediately necessary as failed logins increase the time, not successful logins. Without more information, starting the incident response (IR) process may not be appropriate. If it can be shown that an attack occurred and was successful, the IR process should be started.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q78",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 78,
+    "question": "Grayson's organization is concerned about environmental attacks against their datacenter. What type of monitoring is best suited to detecting environmental attacks in a scenario like this?",
+    "choices": [
+      "Video cameras",
+      "Intrusion alarm systems",
+      "Temperature monitoring sensors",
+      "Log analysis Threats, Vulnerabilities, and Mitigations 47"
+    ],
+    "answer": 2,
+    "explanation": "Environmental monitoring involves things like temperature, water or flood sensors, and other detection capabilities that help organizations know if a natural disaster or other environmental issue has occurred. Video cameras cannot detect many of these and are not typically deployed to places where they would detect things like under-floor leaks or floods. Intrusion alarm systems do not provide this type of detection, and log analysis would require environmental monitoring sensors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q79",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 79,
+    "question": "Jack's team in HR is paying for an SaaS tool using their HR expense account credit cards without the knowledge of central IT. What type of threat actor does this make Jack's HR team?",
+    "choices": [
+      "Shadow IT",
+      "An inadvertent threat",
+      "Internal espionage actors",
+      "An insider threat"
+    ],
+    "answer": 0,
+    "explanation": "Jack's team has created a shadow IT scenario by purchasing and using software without the awareness or engagement of central IT. They may be an inadvertent threat, but the term is not used to describe threat actors. They're not an intentional threat, and thus aren't an insider threat, and internal espionage actors is not a term used for the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q80",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 80,
+    "question": "Amanda is assessing the potential for issues with her organization's recently adopted IaaS vendor. What cloud vulnerability should she worry about if her system administrators do not effectively manage security groups in AWS?",
+    "choices": [
+      "Insecure APIs",
+      "Misconfigurations",
+      "Malicious insiders",
+      "MFA-based attacks"
+    ],
+    "answer": 1,
+    "explanation": "Security groups are used like firewall rules in Amazon Web Services (AWS), and since Amanda's system administrators are not effectively managing security groups, this is most likely to create a misconfiguration issue. Application programming interfaces (APIs) are provided by the vendor, and thus their security is typically a vendor issue or a misconfiguration issue. Malicious insiders are not mentioned, and security group misconfiguration does not drive multifactor authentication (MFA)-based attacks. Threats, Vulnerabilities, and Mitigations 243",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q81",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 81,
+    "question": "Jared's organization runs Linux servers, and recent vulnerability scans show that the servers are vulnerable to an issue that is described as follows: CVE-2018-5703: tcp_v6_syn_recv_sock function in net/ipv6/tcp_ipv6.c in the Linux kernel through 4.14.11 allows attackers to cause a denial of service (slab out-of-bounds write) What is Jared's best option to remediate a kernel vulnerability like this?",
+    "choices": [
+      "Patch the application.",
+      "Install a HIPS with appropriate rules.",
+      "Segment the systems away from the Internet to reduce risk.",
+      "Patch the operating system."
+    ],
+    "answer": 3,
+    "explanation": "The Linux kernel is part of the operating system and needs to be handled with an OS patch. There is no application to patch, installing a HIPS might help, but the issue is dated 2018, meaning that a patch likely exists. If there wasn't a patch and this was a new vulnerability, segmentation might be a useful immediate response to reduce risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q82",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 82,
+    "question": "What is the likely outcome of a cryptographic collision attack?",
+    "choices": [
+      "Attackers can decrypt a file without the private key.",
+      "Two files that have the same encrypted output but are different files.",
+      "Two files that both have the same hash but have different contents.",
+      "Attackers can decrypt the file without the public key."
+    ],
+    "answer": 2,
+    "explanation": "Collision attacks target hashes and attempt to produce a file that results in the same hash algorithm output but with different content that they can control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q83",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 83,
+    "question": "Sarah is working with a small business and noticed that they have a consumer-grade wireless router serving their business. What common hardening checklist item should she validate first as part of securing the device?",
+    "choices": [
+      "Removing unnecessary software",
+      "Running a vulnerability scan",
+      "Ensuring the default password has been changed",
+      "Ensuring that unneeded ports have been disabled Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 2,
+    "explanation": "The first step in securing a consumer-grade router is to change the default password. Once that has been completed, updating the firmware, turning off unneeded services, and running a vulnerability scan are all common steps. Routers typically do not have unnecessary software running.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q84",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 84,
+    "question": "What technique most effectively prevents resource reuse concerns for storage in a virtual environment?",
+    "choices": [
+      "Firmware updates",
+      "Volume encryption",
+      "Minimizing cluster size",
+      "Reformatting drives"
+    ],
+    "answer": 1,
+    "explanation": "Ensuring that any volume that is used in a virtual environment is encrypted when created will prevent reuse concerns because data will be unrecoverable even if encrypted data was accessible when drive space was reallocated. Firmware updates, cluster sizes, and reformatting do not properly address this issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q85",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 85,
+    "question": "Michelle is modeling threat actor motivation for her organization and wants to describe ransomware actors. What motivation is not commonly associated with ransomware?",
+    "choices": [
+      "Data exfiltration",
+      "Blackmail",
+      "Revenge",
+      "Financial gain"
+    ],
+    "answer": 2,
+    "explanation": "Data exfiltration, blackmail, and financial gain are all common motivations for ransomware actors. Revenge is not a common ransomware actor motivation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q86",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 86,
+    "question": "Which of the following is commonly used in a distributed denial-of-service (DDoS) attack?",
+    "choices": [
+      "Phishing",
+      "Adware",
+      "Botnet",
+      "Trojan"
+    ],
+    "answer": 2,
+    "explanation": "Botnets are often used to launch DDoS attacks, with the attack coming from all the computers in the botnet simultaneously. Phishing attacks attempt to get the user to give up information, click on a link, or open an attachment. Adware consists of unwanted pop-up ads. A Trojan horse attaches malware to a legitimate program.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q87",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 87,
+    "question": "Amanda discovers that a member of her organization's staff has installed a remote-access Trojan on their accounting software server and has been accessing it remotely. What type of threat has she discovered?",
+    "choices": [
+      "Zero-day",
+      "Insider threat",
+      "Misconfiguration",
+      "Weak encryption"
+    ],
+    "answer": 1,
+    "explanation": "Amanda has discovered an insider threat. Insider threats can be difficult to discover, as a malicious administrator or other privileged user will often have the ability to conceal their actions or may actually be the person tasked with hunting for threats like this! This is not a zero-day attack-no vulnerability was mentioned, there was no misconfiguration since this was an intentional action, and encryption is not mentioned or discussed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q88",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 88,
+    "question": "Postings from Russian agents during the 2016 U.S. presidential campaign to Facebook and Twitter are an example of what type of effort?",
+    "choices": [
+      "Impersonation",
+      "Disinformation",
+      "Asymmetric warfare",
+      "A watering hole attack"
+    ],
+    "answer": 1,
+    "explanation": "Disinformation campaigns seek to achieve the goals of the attacker or owner of the campaign. They leverage social media using bots and groups of posters to support the ideas, concepts, or beliefs that align with the goals of the campaign. Impersonation is a type of social engineering attack where the attacker pretends to be someone else. A watering hole attack places malware or malicious code on a site or sites that are frequently visited by a targeted group. Asymmetric warfare is warfare between groups with significantly different power or capabilities.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q89",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 89,
+    "question": "Which of the following threat actors is most likely to be associated with an advanced persistent threat (APT)?",
+    "choices": [
+      "Hacktivists",
+      "Nation-state actors",
+      "Unskilled attacker",
+      "Insider threats Threats, Vulnerabilities, and Mitigations 49"
+    ],
+    "answer": 1,
+    "explanation": "Nation-state actors often have greater resources and skills, making them a more significant threat and far more likely to be associated with an advanced persistent threat actor. Unskilled attackers, also known as script kiddies, hacktivists, and insider threats, tend to be less capable and are all far less likely to be associated with an APT.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q90",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 90,
+    "question": "Erica wants to conduct an amplified DDoS attack against a system. What key step is required as part of her attack?",
+    "choices": [
+      "Reversing the target's IP address",
+      "Spoofing the target's IP address",
+      "Conducting an on-path attack to send traffic to the target",
+      "Spoofing responses from the amplification system to the target"
+    ],
+    "answer": 1,
+    "explanation": "Amplification attacks typically use spoofed User Datagram Protocol (UDP) queries sent to servers to increase the volume of traffic sent in response to the target. Erica's process might involve identifying large DNS responses she can get with a small query, then spoofing a target system's IP address in the packets she sends to DNS servers. They would then respond with244 Appendix Answers to Review Questions the large responses, amplifying her requests and creating a distributed denial-of-service attack by using many servers to amplify her traffic. This doesn't require reversing an IP address, conducting an on-path attack, or spoofing the responses from the servers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q91",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 91,
+    "question": "Daryl is investigating a recent breach of his company's web server. The attacker used sophisticated techniques and then defaced the website, leaving messages that were denouncing the company's public policies. He and his team are trying to determine the type of actor who most likely committed the breach. Based on the information provided, who was the most likely threat actor?",
+    "choices": [
+      "A script",
+      "A nation-state",
+      "Organized crime",
+      "Hacktivists"
+    ],
+    "answer": 3,
+    "explanation": "The fact that the website is defaced in a manner related to the company's public indicates that the attackers were most likely engaging in hacktivism to make a political or belief-based point. Scripts, nation-state actors, and organized crime actors don't account for the statements adverse to the company's policies, which is why hacktivism is the real cause.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q92",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 92,
+    "question": "Which of the following human vectors are most likely to be part of a voice call-based attack?",
+    "choices": [
+      "A watering hole attack",
+      "Pretexting",
+      "Disinformation",
+      "BEC"
+    ],
+    "answer": 1,
+    "explanation": "Pretexting and impersonation are common elements in voice call-based attacks. Watering hole attacks leverage commonly visited websites, disinformation is when incorrect information is intentionally provided to change public opinion and could be part of a voice campaign but is not the most common element, and business email compromise (BEC) requires an email to be used, not a voice call.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q93",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 93,
+    "question": "What is the primary difference in threat vectors between agent client-based and agentless software deployments?",
+    "choices": [
+      "Agentless software does not consume resources and thus cannot result in a resource consumption-based denial-of-service condition.",
+      "Client-based software provides a better view of system resources and is able to manage its resource consumption better to avoid issues.",
+      "Agentless software does not have an agent that may be potentially vulnerable to attack.",
+      "Client-based software allows for greater security because it can be patched."
+    ],
+    "answer": 2,
+    "explanation": "Agentless software does not have an agent installed that can be targeted. That means that the server or control system is the only target for attackers. Agentless software can still consume resources as queries and actions are taken by the server or control plane. Client-based software often has better insights into systems, and may offer additional security features if it is a security tool. Client-based software and agentless software can both be patched to address security issues.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q94",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 94,
+    "question": "Angela reviews the authentication logs for her website and sees attempts from many different accounts using the same set of passwords. What is this attack technique called?",
+    "choices": [
+      "Brute forcing",
+      "Password spraying",
+      "Limited login attacks",
+      "Account spinning Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Password spraying is a specific type of brute-force attack that uses a smaller list of common passwords for many accounts to attempt to log in. Although brute forcing is technically correct, the best match here is password spraying. When you encounter questions like this on the exam, make sure you provide the most accurate answer, rather than one that fits but that may not be the best answer. Limited login attacks is a made-up answer, and spinning an account refers to changing the password for an account, often because of a compromise or to prevent a user from logging back into it while preserving the account.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q95",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 95,
+    "question": "Charles discovers that an attacker has used a vulnerability in a web application that his company runs and has then used that exploit to obtain root privileges on the web server. What type of attack has he discovered?",
+    "choices": [
+      "Cross-site scripting",
+      "Privilege escalation",
+      "A SQL injection",
+      "A race condition"
+    ],
+    "answer": 1,
+    "explanation": "A privilege escalation attack can occur horizontally, where attackers obtain similar levels of privilege but for other users, or vertically where they obtain more advanced rights. In this case, Charles has discovered a vertical privilege escalation attack that has allowed the attacker to obtain administrative rights. Cross-site scripting and SQL injection are both common types of web application attacks, and a race condition occurs when data can be changed between when it is checked and when it is used.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q96",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 96,
+    "question": "Which of the following best describes a zero-day vulnerability?",
+    "choices": [
+      "A vulnerability that the vendor is not yet aware of",
+      "A vulnerability that has not yet been breached",
+      "A vulnerability that can be quickly exploited (i.e., in zero days)",
+      "A vulnerability that will give the attacker brief access (i.e., zero days)"
+    ],
+    "answer": 0,
+    "explanation": "A zero-day exploit or attack occurs before the vendor has knowledge of it. The remainder of the answers don't accurately describe a zero-day attack-just because it has not yet been breached does not make it a zero-day, nor is a zero-day necessarily quickly exploitable. Finally, a zero-day attack does not specify how long the attacker may have access.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q97",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 97,
+    "question": "You have discovered that there are entries in your network's domain name server that point legitimate domains to unknown and potentially harmful IP addresses. What best describes this type of attack?",
+    "choices": [
+      "A backdoor",
+      "An APT",
+      "DNS poisoning",
+      "A Trojan horse"
+    ],
+    "answer": 2,
+    "explanation": "DNS poisoning occurs when false DNS information is inserted into legitimate DNS servers, resulting in traffic being redirected to unwanted or malicious sites. A backdoor provides access to the system by circumventing normal authentication. An APT is an advanced persistent threat. A Trojan horse ties a malicious program to a legitimate program.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q98",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 98,
+    "question": "What technique drives image-based threat vectors?",
+    "choices": [
+      "Encryption",
+      "Hashing",
+      "Forgery",
+      "Steganography"
+    ],
+    "answer": 3,
+    "explanation": "Images can have data, including malware or exfiltrated organizational information using a technique called steganography that embeds data into images without losing the integrity of the image. Encryption, hashing, and forgery are not the direct driver of image-based threat vectors, although encryption is likely to be used as an additional layer to protect data from more advanced threat actors wishing to conceal what they are hiding. Threats, Vulnerabilities, and Mitigations 245",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q99",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 99,
+    "question": "Eric is conducting a penetration test and wants to release a malicious update for an organization's application. The organization uses public key encryption to sign updates. What does Eric need to deliver an update that systems will accept?",
+    "choices": [
+      "The private key for the signing certificate",
+      "A collision with the hashed value of a legitimate update",
+      "The public key for the signing certificate",
+      "A collision with the hashed value of a malicious update"
+    ],
+    "answer": 0,
+    "explanation": "In order to deliver a malicious update that uses a signing certificate, Eric will need to gain access to the private key for the signing certificate. The public key is exactly that- public-and having it will not allow Eric to sign the update. Hashes and collisions are not needed for this type of exploit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q100",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 100,
+    "question": "Mike is a network administrator with a small financial services company. He has received a pop-up window that states his files are now encrypted and he must pay .5 bitcoins to get them decrypted. He tries to check the files in question, but their extensions have changed, and he cannot open them. What best describes this situation?",
+    "choices": [
+      "Mike's machine has a rootkit.",
+      "Mike's machine has ransomware.",
+      "Mike's machine has a logic bomb.",
+      "Mike's machine has been the target of whaling. Threats, Vulnerabilities, and Mitigations 51"
+    ],
+    "answer": 1,
+    "explanation": "This is an example of ransomware, which demands payment to return your data. A rootkit provides access to administrator/root privileges. A logic bomb executes its malicious activity when some condition is met. This scenario does not describe whaling, which is a type of phishing attack aimed at leaders in an organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q101",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 101,
+    "question": "Your company is instituting a new security awareness program. You are responsible for educating end users on a variety of threats, including social engineering. Which of the following best defines social engineering?",
+    "choices": [
+      "Illegal copying of software",
+      "Gathering information from discarded manuals and printouts",
+      "Using people skills to obtain proprietary information",
+      "Phishing emails"
+    ],
+    "answer": 2,
+    "explanation": "Social engineering is about using people skills to get information you would not otherwise have access to. Illegal copying of software isn't social engineering, nor is gathering of discarded manuals and printouts, which describes dumpster diving. Phishing emails use some social engineering, but that is one example of social engineering, not a definition.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q102",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 102,
+    "question": "What type of malicious actor will typically have the least amount of resources available to them?",
+    "choices": [
+      "Nation-states",
+      "Unskilled actor",
+      "Hacktivists",
+      "Organized crime"
+    ],
+    "answer": 1,
+    "explanation": "Unskilled actors are the least resourced of the common threat actors listed. In general, they flow from nation-state actors as the most highly resourced, to organized crime, to hacktivists, to inside actors, and then to unskilled actors, otherwise known as script kiddies, as the least capable and least resourced actors. As with any scale like this, there is room for some variability between specific actors, but for the exam, you should track them in that order.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q103",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 103,
+    "question": "Jorge wants to brief his organization's leadership on common email threat vectors. Which of the following common threats should not be in his presentation?",
+    "choices": [
+      "Phishing",
+      "Malware sent via email",
+      "Email spoofing",
+      "Cross-site scripting"
+    ],
+    "answer": 3,
+    "explanation": "Common email threats include phishing, email spoofing, and malware sent via email. Cross-site scripting is done via trusted websites where scripts are injected into user-visible code, causing the user to run the scripts using their credentials.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q104",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 104,
+    "question": "Jared has discovered malware on the workstations of several users. This particular malware provides administrative privileges for the workstation to an external hacker. What best describes this malware?",
+    "choices": [
+      "Trojan horse",
+      "Logic bomb",
+      "Multipartite virus",
+      "Rootkit"
+    ],
+    "answer": 3,
+    "explanation": "Rootkits provide administrative access to systems, thus the \"root\" in rootkit. A Trojan horse combines malware with a legitimate program. A logic bomb performs its malicious activity when some condition is met. A multipartite virus infects the boot sector and a file.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q105",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 105,
+    "question": "Michelle discovers that a number of systems throughout her organization are connecting to a changing set of remote systems on TCP port 6667. What is the most likely cause of this, if she believes the traffic is not legitimate and that the systems are infected with malware?",
+    "choices": [
+      "An alternate service port for web traffic",
+      "Botnet command-and-control via IRC",
+      "Downloads via a peer-to-peer network",
+      "Remote-access Trojans"
+    ],
+    "answer": 1,
+    "explanation": "This question combines two pieces of knowledge: how botnet command-and-control works, and that IRC's default port is TCP 6667. Although this could be one of the other answers, the most likely answer given the information available is a botnet that uses Internet Relay Chat (IRC) as its command-and-control channel. 6667 is not a common alternate web traffic port, peer-to-peer network traffic is commonly done via HTTP or HTTPS in modern infections, and a remote access-Trojan is likely to behave differently and use another port as well.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q106",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 106,
+    "question": "Susan performs a vulnerability scan of a small business network and discovers that the organization's consumer-grade wireless router has a vulnerability in its web server. What issue should she address in her findings?",
+    "choices": [
+      "Firmware patch management",
+      "Default configuration issues",
+      "An unsecured administrative account",
+      "Weak encryption settings Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 0,
+    "explanation": "Software updates for consumer-grade wireless routers are typically applied as firmware updates, and Susan should recommend that the business owner regularly upgrade their wireless router firmware. If updates are not available, they may need to purchase a new router that will continue to receive updates and configure it appropriately. This is not a default configuration issue nor an unsecured administrative account-neither is mentioned, nor is encryption.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q107",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 107,
+    "question": "What type of phishing attack occurs via text messages?",
+    "choices": [
+      "Bluejacking",
+      "Smishing",
+      "Phonejacking",
+      "Text whaling"
+    ],
+    "answer": 1,
+    "explanation": "The word you will need to know for the Security+ exam for phishing via SMS is \"smishing,\" a term that combines SMS and phishing. Bluejacking sends unsolicited messages to Bluetooth devices, and phonejacking and text whaling were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q108",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 108,
+    "question": "John is analyzing a recent malware infection on his company network. He discovers malware that can spread rapidly via vulnerable network services and does not require any interaction from the user. What best describes this malware?",
+    "choices": [
+      "Worm",
+      "Virus",
+      "Logic bomb",
+      "Trojan horse"
+    ],
+    "answer": 0,
+    "explanation": "Worms spread themselves via vulnerabilities, making this an example of a worm. A virus is software that self-replicates. A logic bomb executes its malicious activity when some condition is met. A Trojan horse combines malware with a legitimate program.246 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q109",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 109,
+    "question": "While reviewing web logs for her organization's website, Kathleen discovers the entry shown here: GET http://example.com/viewarticle.php?view=../../../config.txt HTTP/1.1 What type of attack has she potentially discovered?",
+    "choices": [
+      "A directory traversal attack",
+      "A web application buffer overflow",
+      "A directory recursion attack",
+      "A slashdot attack"
+    ],
+    "answer": 0,
+    "explanation": "Directory traversal attacks attempt to exploit tools that can read directories and files by moving through the directory structure. The example would try to read the config.txt file three layers above the working directory of the web application itself. Adding common directory names or common filenames can allow attackers (or penetration testers) to read other files in accessible directories if they are not properly secured. The remainder of the options were made up for this question, although Slashdot is an actual website.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q110",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 110,
+    "question": "What two files are commonly attacked using offline brute-force attacks?",
+    "choices": [
+      "The Windows Registry and the Linux /etc/passwd file",
+      "The Windows SAM and the Linux /etc/passwd file",
+      "The Windows SAM and the Linux /etc/shadow file",
+      "The Windows Registry and the Linux /etc/shadow file"
+    ],
+    "answer": 2,
+    "explanation": "The Windows Security Account Manager (SAM) file and the /etc/shadow file for Linux systems both contain passwords and are popular targets for offline brute-force attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q111",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 111,
+    "question": "You have noticed that when in a crowded area, data from your cell phone is stolen. Later investigation shows a Bluetooth connection to your phone, one that you cannot explain. What describes this attack?",
+    "choices": [
+      "Bluejacking",
+      "Bluesnarfing",
+      "An evil twin attack",
+      "A remote-access Trojan"
+    ],
+    "answer": 1,
+    "explanation": "Bluesnarfing involves accessing data from a Bluetooth device when it is in range. Bluejacking involves sending unsolicited messages to Bluetooth devices when they are in range. Evil twin attacks use a rogue access point whose name is similar or identical to that of a legitimate access point. Nothing in this scenario points to a remote-access Trojan being the cause of the stolen data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q112",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 112,
+    "question": "Which of the following situations is not associated with race conditions?",
+    "choices": [
+      "Time-of-check",
+      "Time-of-change",
+      "Target-of-evaluation",
+      "Time-of-use Threats, Vulnerabilities, and Mitigations 53"
+    ],
+    "answer": 1,
+    "explanation": "There are three common situations associated with race conditions: time-of-check (TOC), time-of-use (TOU), and target-of-evaluation. Time-of-change is not commonly associated with race conditions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q113",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 113,
+    "question": "Gabby wants to protect a legacy platform with known vulnerabilities. Which of the following is not a common isolation or segmentation option that could be used to address this issue?",
+    "choices": [
+      "Disconnect it from the network.",
+      "Place the device behind a dedicated firewall and restrict inbound and outbound traffic.",
+      "Rely on the outdated OS to confuse attackers.",
+      "Move the device to a protected VLAN."
+    ],
+    "answer": 2,
+    "explanation": "Relying on an outdated OS to confuse attackers is not a common isolation or segmentation option used to protect vulnerable legacy platforms. Many organizations have legacy platforms in place that cannot be patched or upgraded but that are still an important part of their business. Security professionals are often asked to suggest ways to secure the systems while leaving them operational. Common options include moving the devices to an isolated virtual LAN (VLAN), disconnecting the devices from the network and ensuring they are not plugged back in, and using a firewall or other security device to ensure that the legacy system is protected from attacks and cannot browse the Internet or perform other actions that could result in compromise.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q114",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 114,
+    "question": "After running nmap against a system on a network, Lucca sees that TCP port 23 is open and a service is running on it. What issue and resolution should he identify?",
+    "choices": [
+      "Low ports should not be open to the Internet and should be disabled.",
+      "Telnet is an insecure protocol and should be disabled.",
+      "SSH is an insecure protocol and should be disabled.",
+      "Ports 1-1024 are well-known ports and must be firewalled."
+    ],
+    "answer": 1,
+    "explanation": "TCP port 23 is typically associated with Telnet, an unencrypted remote shell protocol. Since Telnet sends its authentication and other traffic in the clear (clear/plain text), it should not be used, and Lucca should identify this as a configuration issue involving an insecure protocol.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q115",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 115,
+    "question": "Charles sets the permissions on the /etc directory on a Linux system to 777 using the chmod command. If Alex later discovers this, what should he report his finding as?",
+    "choices": [
+      "Open or weak permissions",
+      "Improper file handling",
+      "A privilege escalation attack",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "Linux privileges can be set numerically, and 777 sets user, group, and world to all have read, write, and execute access to the entire /etc directory-a very insecure, and thus open or weak permission. Setting permissions like this is a common workaround when permissions aren't working but can expose data or make binaries executable by users who should not have access to them. When you set permissions for a system, remember to set them according to the rule of least privilege: only the permissions that are required for the role or task should be configured.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q116",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 116,
+    "question": "Under what circumstances are concurrent sessions most commonly considered indicators of compromise?",
+    "choices": [
+      "When they occur on the same system",
+      "When they occur on two different systems issued to the same user",
+      "When they occur in two different locations at the same time",
+      "When they occur in the same location at the same time"
+    ],
+    "answer": 2,
+    "explanation": "Concurrent sessions can be relatively common in some applications, so additional data is important when assessing if the event is an IoC. If the event occurs in two different locations, particularly if travel between them would be classified as impossible travel it would more likely be an indicator of compromise or misuse. Threats, Vulnerabilities, and Mitigations 247",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q117",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 117,
+    "question": "During a penetration test, Angela obtains the uniform of a well-known package delivery service and wears it into the target office. She claims to have a delivery for a C-level employee she knows is there and insists that the package must be signed for by that person. What social engineering technique has she used?",
+    "choices": [
+      "Impersonation",
+      "Whaling",
+      "A watering hole attack",
+      "Prepending Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 0,
+    "explanation": "Angela has impersonated an actual employee of the delivery service to gain access to the company. Company uniforms are a very useful element for in-person social engineering. Whaling is a type of phishing attack aimed at leaders in an organization. A watering hole attack deploys malware or other attack tools at a site or sites that a target group frequently uses. Prepending is not a common security term.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q118",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 118,
+    "question": "Frank's organization operates in a shared responsibility cloud environment. What can Frank do to determine if he is suffering from a denial-of-service (DoS) attack against his cloud hosting environment?",
+    "choices": [
+      "Nothing; cloud services do not provide security tools.",
+      "Call the cloud service provider to have them stop the DoS attack.",
+      "Review the cloud service provider's security tools and enable logging and anti-DoS tools if they exist.",
+      "Call the cloud service provider's Internet service provider (ISP) and ask them to enable DoS prevention."
+    ],
+    "answer": 2,
+    "explanation": "Frank's best option is to review the anti-denial-of-service and other security tools that his cloud hosting provider provides and to make appropriate use of them. The major infrastructure-as-a-service (IaaS) providers have a variety of security tools that can help both detect and prevent DoS attacks from taking down sites that are hosted in their infrastructure. Calling the cloud service provider's ISP will not work because the ISP works with the cloud provider, not with Frank! It is possible the cloud service provider might be able to assist Frank, but they are most likely to instruct him to use the existing tools that they already provide.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q119",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 119,
+    "question": "What is the typical goal intent or goal of hacktivists?",
+    "choices": [
+      "Increasing their reputation",
+      "Financial gain",
+      "Making a political statement",
+      "Gathering high-value data"
+    ],
+    "answer": 2,
+    "explanation": "The most common motivation for hacktivists is to make a political statement. Reputational gains are often associated with unskilled attackers/script kiddies, whereas financial gain is most commonly a goal of organized crime or insider threats. Gathering high-value data is typical of both nation-state actors and organized crime.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q120",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 120,
+    "question": "Ryan needs to verify that no unnecessary ports and services are available on his systems, but he cannot run a vulnerability scanner. What is his best option?",
+    "choices": [
+      "Passive network traffic capture to detect services",
+      "A configuration review",
+      "Active network traffic capture to detect services",
+      "Log review"
+    ],
+    "answer": 1,
+    "explanation": "Configuration reviews, either using automated tool or manual validation, can be a useful proactive way to ensure that unnecessary ports and services are not accessible. Configuration management tools can also help ensure that expected configurations are in place. Neither passive nor active network packet capture will show services that are not accessed, meaning that open ports could be missed, and log review won't show all open ports either.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q121",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 121,
+    "question": "John is a network administrator for Acme Company. He has discovered that someone has registered a domain name that is spelled just one letter different than his company's domain. The website with the misspelled URL is a phishing site. What best describes this attack?",
+    "choices": [
+      "Session hijacking",
+      "Cross-site request forgery",
+      "Typo squatting",
+      "Clickjacking"
+    ],
+    "answer": 2,
+    "explanation": "This is an example of typo squatting. The website is off by only one or two letters, and the attacker hopes that users of the real website mistype the URL and are taken to their fake website. Session hijacking is taking over an authenticated session. Cross-site request forgery sends fake requests to a website that purport to be from a trusted, authenticated user. Clickjacking attempts to trick users into clicking on something other than what they intended.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q122",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 122,
+    "question": "Which of the following best describes malware that will execute some malicious activity when a particular condition is met (i.e., if the condition is met, then executed)?",
+    "choices": [
+      "Boot sector virus",
+      "Logic bomb",
+      "Buffer overflow",
+      "Sparse infector virus Threats, Vulnerabilities, and Mitigations 55"
+    ],
+    "answer": 1,
+    "explanation": "A logic bomb performs malicious actions when a specific condition or conditions are met. A boot sector virus infects the boot sector of the hard drive. A buffer overflow occurs when the attacker attempts to put more data in a variable than it can hold. A sparse infector virus performs its malicious activity intermittently to make it harder to detect.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q123",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 123,
+    "question": "Una's company is assessing threats to their supply chain and wants to consider the most likely issues that their server hardware supplier may create. Which of the following is not a common concern for organizations assessing hardware providers?",
+    "choices": [
+      "Malicious hardware design",
+      "Injection of malicious firmware",
+      "Inability to deliver hardware in a timely manner",
+      "Malicious software added to default OS images"
+    ],
+    "answer": 0,
+    "explanation": "While malicious hardware does exist, few organizations face it as a common threat due to the complexity of the attack and the fact that most hardware providers want to avoid the reputational harm that compromised hardware would create. Malicious firmware and software added to the OS image as well as an inability to deliver hardware in a timely manner are all common concerns with hardware providers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q124",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 124,
+    "question": "Helen wants to prevent her staff from sideloading applications to their Android devices. What type of tool is best suited to preventing this type of issue without reducing other functionality for the device?",
+    "choices": [
+      "Disable the Google Play store.",
+      "Disable the manufacturer's store.",
+      "Use an EDR tool.",
+      "Use an MDM solution."
+    ],
+    "answer": 3,
+    "explanation": "A mobile device management (MDM) solution will allow settings and software to be managed centrally, allowing Helen to both control sideloading permissions and to prevent unwanted applications from being installed. Disabling either the hardware vendor or Google's store does not prevent sideloading from an external media like a microSD card, which can reduce the functionality of devices. An EDR is helpful to identify malicious software but doesn't manage devices and prevent sideloading.248 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q125",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 125,
+    "question": "Tori believes that the system she is investigating may have a rootkit resident on the system. What type of behavior is most likely to indicate a rootkit's presence?",
+    "choices": [
+      "Unusual network traffic",
+      "Network scanning",
+      "Displaying a ransom notice",
+      "Deletion of files"
+    ],
+    "answer": 0,
+    "explanation": "Rootkits are designed to help retain control of and access to a system without users noticing. That means that obtrusive behaviors like network scanning, displaying ransom notices, or deletion of files are unusual for rootkits to perform. Other malware components beyond the rootkit may perform these as part of a malicious actor's toolkit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q126",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 126,
+    "question": "Neil wants to deploy a host-intrusion prevention system that will use a third-party threat feed to servers in his datacenter. What concern might his system administrators express about the HIPS that he should consider before he makes the decision?",
+    "choices": [
+      "A HIPS may block traffic, causing an outage or disruption.",
+      "A HIPS may prevent least privilege configurations.",
+      "A HIPS may bypass application allow lists.",
+      "A HIPS may make use of segmentation less effective."
+    ],
+    "answer": 0,
+    "explanation": "A HIPS may block legitimate traffic if the traffic matches an existing rule or if a threat feed is used and has a detection that matches that traffic. That means that organizations that deploy HIPS in datacenters where disruptions could cause significant outages are careful about what rules they put in place and how threat feed data is used. A HIPS doesn't prevent least privilege and typically doesn't interact with application allow lists, and segmentation should not impact a HIPS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q127",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 127,
+    "question": "Organize the following threat actors by their typical level of sophistication from most sophisticated to least sophisticated: Hacktivists, Nation-state actors, Organized crime, Shadow IT",
+    "choices": [
+      "Hacktivists, Shadow IT, Organized crime, Nation-state actors",
+      "Nation-state actors, Organized crime, Hacktivists, Shadow IT",
+      "Organized crime, Hacktivists, Shadow IT, Nation-state actors",
+      "Shadow IT, Hacktivists, Organized crime, Nation-state actors Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Nation-state actors are typically the most sophistical adversaries organizations will face. Organized crime is the second most sophisticated actor in general, with hacktivists, then shadow IT following.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q128",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 128,
+    "question": "What is the most common file-based threat vector?",
+    "choices": [
+      "Phishing",
+      "BEC",
+      "Malware",
+      "XSS"
+    ],
+    "answer": 2,
+    "explanation": "Malware is the most common threat vector involving files. Business email and phishingrelated compromises that occur through files are typically due to malware. Cross-site scripting relies on embedding code in web pages that users will run when they view them, taking action as their logged-in account.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q129",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 129,
+    "question": "Drew wants to address a recent Windows vulnerability that has a CVE rating of 9.6. What should his first step be to address the vulnerability?",
+    "choices": [
+      "Isolate the impacted systems.",
+      "Disable the service.",
+      "Check to see if a patch is available.",
+      "Install a host-based firewall."
+    ],
+    "answer": 2,
+    "explanation": "The first step for most organizations when addressing a known vulnerability is to check whether a patch is available. Organizations will also assess the potential risks associated with the patch: has it been widely deployed and tested, are there known issues, and is there a likelihood of disruption due to patching? If there are known issues, other solutions like isolation or deploying additional security controls such as a host-based firewall or firewall rule, or even disabling the service if possible, may be employed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q130",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 130,
+    "question": "Clay is decommissioning a server and wants to ensure that the system is properly decommissioned. Once the drives have been wiped or destroyed, what step typically comes next?",
+    "choices": [
+      "Wiping memory",
+      "Removing the system from inventory",
+      "Removing the system from management",
+      "Removing memory"
+    ],
+    "answer": 1,
+    "explanation": "Systems are typically removed from management when they are shut down and before disks are wiped. Once they're off and will not return to service, they are wiped and then removed from inventory. Memory wipes and removal are not typical steps in decommissioning processes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q131",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 131,
+    "question": "Joe recently ran a port scan and found a service running on TCP port 1433. What type of attacks would he expect against this service?",
+    "choices": [
+      "Web-based attacks",
+      "Print-server attacks",
+      "Oracle database server attacks",
+      "Microsoft SQL Server attacks"
+    ],
+    "answer": 3,
+    "explanation": "TCP 1433 is the default service port for Microsoft SQL. Joe will want to take appropriate actions to protect his SQL server, including patching, properly configuration, firewall rules, and network segmentation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q132",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 132,
+    "question": "What type of virtualization attack can be prevented by encrypting storage volumes when they are created?",
+    "choices": [
+      "VM escape",
+      "Birthday attacks",
+      "Pass-the-hash",
+      "Resource reuse"
+    ],
+    "answer": 3,
+    "explanation": "Encryption prevents resource reuse attacks from occurring because the data will not be accessible to attackers after resources are released and reallocated to third parties. VM escape attacks target the underlying VM infrastructure and could still occur if it was vulnerable. Pass-the-hash attacks are used against authentication systems when a hash can be captured and sent to validate a session, and birthday attacks leverage the likelihood of finding a valid collision more quickly by guessing than by moving linearly through a solution set for a hash.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q133",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 133,
+    "question": "Tyler discovers that software his organization has deployed sends information about the workstations back to a central server. After capturing network traffic that is being sent, he discovers that it includes the workstation's IP address, operating system, screen resolution, and information about other installed software. What type of malware should Tyler classify this as?",
+    "choices": [
+      "A Trojan",
+      "Bloatware",
+      "A keylogger",
+      "Spyware Threats, Vulnerabilities, and Mitigations 57"
+    ],
+    "answer": 3,
+    "explanation": "Tyler has encountered spyware, software that gathers information to send back to a third party. While spyware is less outright malicious than other types of malware and may even have asked users to agree to release information as part of a click-through during installation, it is still considered malware because it sends information about users, systems, Threats, Vulnerabilities, and Mitigations 249 and networks to third parties that is not intended or desired. Trojans are intended to appear like desirable or legitimate software but are malicious; bloatware is preinstalled software that is not needed and takes up disk space, CPU, and memory; and keyloggers capture keystrokes from a keyboard to retain locally or send to a malicious actor.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q134",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 134,
+    "question": "Eden wants to check errors related to a new security tool installed on her Windows workstation. What log file in Windows contains errors with installed software?",
+    "choices": [
+      "The application log",
+      "The security log",
+      "The setup log",
+      "The system log"
+    ],
+    "answer": 0,
+    "explanation": "The application log typically contains information about software that is installed on a Windows workstation, including errors that Eden is trying to identify. The security log contains security events like logins and file deletions. The setup log contains information about the installation of Windows, and the system log contains system-related events like bootup errors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q135",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 135,
+    "question": "Trent's company has recently discovered that their DNS information was changed via their registrar. Investigation showed that an administrator's workstation was compromised and that the account details for domain administration were contained on the workstation. What type of DNS-based attack is this?",
+    "choices": [
+      "A DNS-based DoS attack",
+      "A DNS hijacking attack",
+      "A DNS amplification attack",
+      "A DNS-based DDoS attack"
+    ],
+    "answer": 1,
+    "explanation": "DNS hijacking can occur in a number of ways, including via the registrar, by changing your organization's DNS servers, or via changes to a local hosts file. DNS-based DoS attacks seek to disable or prevent DNS from working, whereas DNS-based DDoS attacks tend to be amplified and reflected by sending spoofed DNS queries with large results that will bog down the network connection of a targeted system or organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q136",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 136,
+    "question": "Giovanni wants to check to see if an impossible travel situation occurred for two logins on a Linux server. What log should he check to confirm or disprove his theory?",
+    "choices": [
+      "/var/log/messages",
+      "/var/log/auth.log",
+      "/var/log/cron.log",
+      "/var/log/travel"
+    ],
+    "answer": 1,
+    "explanation": "The auth.log or secure file contains authentication logs for Linux systems and will have such information as user ID, authentication time, and the IP address that the user connected from. Giovanni can use the IP addresses and times along with a geo-IP system to check for impossible travel. /messages contains general log messages, and cron.log contains cron job information. /travel is not a typical Linux log file.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q137",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 137,
+    "question": "Microsoft's Intune as well as tools like Jamf are examples of tools that provide what sort of mitigation functionality?",
+    "choices": [
+      "Decommissioning",
+      "Configuration enforcement",
+      "Segmentation",
+      "HIPS"
+    ],
+    "answer": 1,
+    "explanation": "Intune and Jamf provide a wide range of hardening functionality, including configuration enforcement.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q138",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 138,
+    "question": "Nora recently wanted to find information about a scientific discovery and queried an AI large-language model asking for a summary and references. The AI model provided a summary of the discovery and a number of citations. After Nora searched for the articles the AI cited, she discovered that they did not exist. How would this be classified?",
+    "choices": [
+      "As phishing",
+      "As misinformation",
+      "As disinformation",
+      "As brand impersonation Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Misinformation is incorrect information, but not purposefully so like disinformation. This is true regardless of the way the information is provided. Phishing is used to gather credentials and other sensitive information, and brand impersonation attacks focus on appearing like a legitimate brand or company.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q139",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 139,
+    "question": "Sandeep wants to address the potential for impersonation attacks against her helpdesk. What technique is most likely to prevent impersonation attacks from being successful with her support staff?",
+    "choices": [
+      "Require callers to verify their identity using non-public information.",
+      "Avoid publishing the help desk's phone number externally.",
+      "Require users to complete awareness training.",
+      "Require callers to provide a callback number and call back before completing tasks."
+    ],
+    "answer": 0,
+    "explanation": "Requiring callers to validate their identity using non-public information can help to prevent impersonation attacks. Not publishing a support number externally means that internal users will still have it and that it can be leaked or found. Requiring users to provide a callback number only works if business numbers are used, and this tends to prevent support from being effective for traveling users and others who may not be at a desk or able to use a soft phone due to technology issues. User awareness training won't protect the help desk staff from making mistakes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q140",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 140,
+    "question": "Bob is conducting a penetration test against a client's environment and he discovers TCP port 515 exposed to the Internet. What should he report to his client as a potential attack surface?",
+    "choices": [
+      "An exposed Internet connected camera",
+      "An exposed print server",
+      "An exposed IoT device",
+      "An exposed UPS management system"
+    ],
+    "answer": 1,
+    "explanation": "TCP port 515 is the LPR port, commonly used for print services. Bob knows that exposing printers to the Internet is not a common practice and should recommend that the print server be segmented away from the Internet so that only internal systems that need to can send print jobs to it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q141",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 141,
+    "question": "Which of the following is not a common cryptographic vulnerability?",
+    "choices": [
+      "Downgrade attacks",
+      "Magic key attacks",
+      "Collision attacks",
+      "Birthday attacks"
+    ],
+    "answer": 1,
+    "explanation": "The Security+ exam outline expects test takers to be familiar with three types of attacks: downgrade attacks that request weaker encryption types; collision attacks, which focus on finding collisions in hashes, allowing arbitrary changes to files that would normally be verified with hashes; and birthday attacks, which allow nonlinear guesses to be more likely to find a solution than simply progressing through key space. Magic key attacks were made up for this question.250 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q142",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 142,
+    "question": "Louis is investigating a malware incident on one of the computers on his network. He has discovered unknown software that seems to be opening a port, allowing someone to remotely connect to the computer. This software seems to have been installed at the same time as a small shareware application. Which of the following best describes this malware?",
+    "choices": [
+      "Trojan",
+      "Worm",
+      "Logic bomb",
+      "Rootkit"
+    ],
+    "answer": 0,
+    "explanation": "This is a remote-access Trojan, malware that opens access for someone to remotely access the system. A worm would have spread itself via a vulnerability, whereas a logic bomb runs when some logical condition is met. Finally, a rootkit provides root or administrative access to the system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q143",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 143,
+    "question": "Which of the following motivations is not commonly associated with advanced persistent threat actors?",
+    "choices": [
+      "Ethical",
+      "War",
+      "Data exfiltration",
+      "Espionage Threats, Vulnerabilities, and Mitigations 59"
+    ],
+    "answer": 0,
+    "explanation": "Ethical concerns are typically associated with hacktivists and some insider threats. APTs are typically nation-state actors and are commonly associated with war, data exfiltration, and espionage operations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q144",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 144,
+    "question": "Eve wants to protect against DLL injection attacks. Which of the following practices can help her prevent DLL injection?",
+    "choices": [
+      "Do not allow users to run DLLs.",
+      "Avoid using DLLs.",
+      "Use fully qualified paths for DLLs instead of searching paths.",
+      "Use a DLL vulnerability scanner."
+    ],
+    "answer": 2,
+    "explanation": "DLL injection requires that a DLL be loaded dynamically, and the ability to place a malicious DLL where it will be loaded is critical to the success of this type of attack. That means that using fully qualified DLL paths can help prevent the attack from succeeding. Preventing DLLs from being loaded by users and the programs they run or entirely avoiding using DLLs will cause functional issues for Windows, DLL vulnerability scanners are not a common solution, and avoiding the use of DLLs is not a common practice since DLLs are a key part of Windows systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q145",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 145,
+    "question": "Mackenzie wants to protect her organization from firmware vulnerabilities. What practice is most effective at preventing malicious firmware from being inadvertently downloaded and installed?",
+    "choices": [
+      "Only use digitally signed and validated firmware.",
+      "Scan firmware with an antivirus tool.",
+      "Only use encrypted firmware.",
+      "Avoid updating firmware and only use original firmware."
+    ],
+    "answer": 0,
+    "explanation": "Firmware providers often provide digitally signed firmware that can be validated before it is installed. Mackenzie should ensure that her organization's practices include validating firmware signatures before installation. Antivirus will typically not detect malicious code in firmware files, encrypted firmware without a digital signature does not provide the same protection as digitally signed firmware, and firmware updates should be installed to prevent vulnerabilities from being exploited.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q146",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 146,
+    "question": "Zoie wants to check for instances of concurrent session usage for her web application. Where should she look for these indicators?",
+    "choices": [
+      "Her firewall logs",
+      "Her antivirus (AV) logs",
+      "Her authentication logs",
+      "Her web application server logs"
+    ],
+    "answer": 3,
+    "explanation": "Zoie's best option is to review web application server logs to identify session IDs that are the same coming from different IP addresses. She will not see session IDs in firewall, AV, or authentication logs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q147",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 147,
+    "question": "Valerie knows that a system in her environment has been compromised and wants to take immediate action. Which of the following options should she select if she is worried about the system impacting other hosts on the network?",
+    "choices": [
+      "Deploy antimalware tools to the system and scan it.",
+      "Immediately isolate the system.",
+      "Immediately deploy any missing patches to the system.",
+      "Change default passwords and check for unexpected user accounts."
+    ],
+    "answer": 1,
+    "explanation": "Isolating the system is the best option for Valerie to select until she can investigate the system. Isolation will prevent the system from impacting other systems and will also prevent attackers from getting to it. Antimalware and patching are useful options further into the investigation and response process. Changing default passwords and checking for unexpected user accounts is a good practice but won't help protect other systems if the system is compromised.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q148",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 148,
+    "question": "Casey is worried about downgrade attacks against her Apache web servers. What should she do to most effectively prevent downgrade attacks?",
+    "choices": [
+      "Prevent TLS fallback.",
+      "Require current web browsers.",
+      "Run the most current version of Apache.",
+      "Use an IDS."
+    ],
+    "answer": 0,
+    "explanation": "Preventing fallback options from being used for encryption may stop some clients from connecting but will most effectively prevent downgrade attacks. Current browsers may be needed for this, but requiring that does not prevent attackers from using a downgrade attack if fallback options are allowed. Current web server software does not prevent settings from being weak. An IDS can detect downgrade attempts but cannot stop them.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q149",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 149,
+    "question": "What type of attack is based on sending more data to a target variable than the data can actually hold?",
+    "choices": [
+      "Bluesnarfing",
+      "Buffer overflow",
+      "Bluejacking",
+      "Cross-site scripting Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Buffer overflow attacks cram more data into a field or buffer than they can accept, overflowing into other memory locations and either crashing the system or application or potentially allowing code to be inserted into executable locations. Bluesnarfing and bluejacking are both Bluetooth attacks. Cross-site scripting attacks allow attackers to inject scripts into pages viewed by other users. Threats, Vulnerabilities, and Mitigations 251",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q150",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 150,
+    "question": "Which of the following is an attack that seeks to attack a website, based on the website's trust of an authenticated user?",
+    "choices": [
+      "XSS",
+      "XSRF",
+      "Buffer overflow",
+      "Directory traversal"
+    ],
+    "answer": 1,
+    "explanation": "Cross-site request forgery (XSRF or CSRF) sends forged requests to a website, supposedly from a trusted user. Cross-site scripting (XSS) is the injection of scripts into a website to exploit the users. A buffer overflow tries to put more data in a variable than the variable can hold. Directory traversal attempts to change directories through URL manipulation to access files that should not normally be accessible to the web server or application.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q151",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 151,
+    "question": "Mary wants to harden workstations she is responsible for against malware attacks. Which of the following is not a common solution to this?",
+    "choices": [
+      "Installing EDR",
+      "Limiting administrative access",
+      "Installing antivirus",
+      "Using disk encryption"
+    ],
+    "answer": 3,
+    "explanation": "Disk encryption does not prevent malware attacks under most circumstances. Use of endpoint detection and response tools, antivirus tools, and limiting administrative access are all common ways to counter malware.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q152",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 152,
+    "question": "Spyware is an example of what type of malware?",
+    "choices": [
+      "Trojan",
+      "Unwanted programs",
+      "RAT",
+      "Ransomware"
+    ],
+    "answer": 1,
+    "explanation": "Spyware and adware are both common examples of unwanted programs. Though not directly malicious, they can pose risks to user privacy as well as create annoyances like popups or other unwanted behaviors. Trojans appear to be legitimate programs or are paired with them, RATs provide remote access and are a subcategory of Trojans, and ransomware demands payment or other actions to avoid damage to files or reputation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q153",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 153,
+    "question": "Olivia has provisioned a new virtual machine in a cloud environment and is conducting forensic exercises to practice cloud forensic activities. She discovers data on her newly provisioned drive when she begins to analyze the drive. What issue has Olivia encountered?",
+    "choices": [
+      "A VM escape issue",
+      "Improper chain of custody",
+      "A resource reuse issue",
+      "Improper legal hold"
+    ],
+    "answer": 2,
+    "explanation": "Olivia has encountered a resource reuse issue. It is likely that the drive was reallocated without being securely wiped and that the previous user did not encrypt their drives. While this is unlikely with major cloud service providers now, it has been observed in the past and could still occur. There is no indication that a VM escape occurred that would run software on the host hypervisor, and no procedural issues around chain of custody or legal hold are described in the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q154",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 154,
+    "question": "Chuck wants to help his organization protect against business email compromise (BEC) attacks. Which of the following is not a common best practice to defend against BEC?",
+    "choices": [
+      "Delete all attachments from emails.",
+      "Use two-factor authentication.",
+      "Review suspicious email carefully for typos and other indicators.",
+      "Don't click URLs in unsolicited emails-visit URLs manually."
+    ],
+    "answer": 0,
+    "explanation": "While attachments are a common vector for BEC attacks, deleting all attachments is not a common practice. Instead, users should be taught to be careful about clicking on and opening attachments, particularly on unsolicited email. Using two-factor authentication, reviewing suspicious emails for potential indicators of BEC, and not clicking on URLs but instead visiting sites manually are all common anti-BEC practices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q155",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 155,
+    "question": "A penetration tester calls a staff member for her target organization and introduces herself as a member of the IT support team. She asks if the staff member has encountered a problem with their system, then proceeds to ask for details about the individual, claiming she needs to verify that she is talking to the right person. What type of social engineering attack is this?",
+    "choices": [
+      "Pretexting",
+      "A watering hole attack",
+      "Phishing",
+      "Shoulder surfing Threats, Vulnerabilities, and Mitigations 61"
+    ],
+    "answer": 0,
+    "explanation": "Pretexting is a type of social engineering that involves using a false motive and lying to obtain information. Here, the penetration tester lied about their role and why they are calling (impersonation), and then built some trust with the user before asking for personal information. A watering hole attack leverages a website that the targeted users all use and places malware on it to achieve their purpose. Phishing is the process of attempting to gain credentials or other information, typically via email or similar means. Shoulder surfing involves looking over an individual's shoulder or otherwise observing them entering sensitive information like passwords.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q156",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 156,
+    "question": "What type of attack targets a specific group of users by infecting one or more websites that group is specifically known to visit frequently?",
+    "choices": [
+      "A watercooler attack",
+      "A phishing net attack",
+      "A watering hole attack",
+      "A phish pond attack"
+    ],
+    "answer": 2,
+    "explanation": "Watering hole attacks target groups by focusing on common shared behaviors like visiting specific websites. If attackers can compromise the site or deliver targeted attacks through it, they can then target that group. Watercooler, phishing net, and phish pond attacks were all made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q157",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 157,
+    "question": "When a multithreaded application does not properly handle various threads accessing a common value, and one thread can change the data while another thread is relying on it, what flaw is this?",
+    "choices": [
+      "Memory leak",
+      "Buffer overflow",
+      "Integer overflow",
+      "Time-of-check/time-of-use"
+    ],
+    "answer": 3,
+    "explanation": "If access is not handled properly, a time-of-check (TOC)/time-of-use (TOU) condition can exist where the memory is checked, changed, then used. Memory leaks occur when memory is allocated but not deallocated. A buffer overflow is when more data is put into a variable than it can hold. An integer overflow occurs when an attempt is made to put an integer that is too large into a variable, such as trying to put a 64-bit integer into a 32-bit variable.252 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q158",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 158,
+    "question": "Geoff believes that a workstation on his network may have been the target of an on-path attack. What indicator is most likely to indicate this type of attack on a local network segment?",
+    "choices": [
+      "External DNS resolution shows an improper result.",
+      "The ARP table shows an alternate address for the gateway.",
+      "Encrypted traffic has been forced to use a less secure algorithm.",
+      "A website's URL has been modified."
+    ],
+    "answer": 1,
+    "explanation": "Local on-path attacks typically involve responding to ARP requests with a different gateway MAC address before the gateway itself can respond or through modification of local hosts files. External DNS should not be resolving local network DNS information. Encrypted traffic using a less secure algorithm is a downgrade attack. Website URLs being modified might be an example of typo squatting or another attack.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q159",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 159,
+    "question": "Kathleen's IPS flags traffic from two IP addresses as shown here: Source IP: 10.11.94.111 http://example.com/home/show.php?SESSIONID=a3fghbby Source IP: 192.168.5.34 http://example.com/home/show.php?SESSIONID=a3fghbby What type of attack should she investigate this as?",
+    "choices": [
+      "A SQL injection attack",
+      "A cross-site scripting attack",
+      "A session replay attack",
+      "A server-side request forgery attack"
+    ],
+    "answer": 2,
+    "explanation": "Session IDs should be unique for distinct users and systems. A very basic type of session replay attack involves providing a victim with a session ID and then using that session ID once they have used the link and authenticated themselves. Protections such as session timeouts and encrypting session data, as well as encoding the source IP, hostname, or other identifying information in the session key, can all help prevent session replay attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q160",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 160,
+    "question": "Andy is an end user in an organization that uses an application allow list to control what applications are used on workstations. What does Andy need to do if he wants to install an application on his workstation?",
+    "choices": [
+      "Download the application, then run the installer using an administrator account.",
+      "Manually add the application installer to the allow list for his workstation.",
+      "Request that the application be added to the allow list and have it installed by his organization's administrators.",
+      "Use a jailbreak to install the application. Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 2,
+    "explanation": "End users cannot add applications that are not on the allow list to their workstations in environments using an application allow list. Since Andy is an end user, not an administrator, he cannot install applications as an administrator, nor can he add the application to the allow list. Andy will need to request that the application be added and then administrators will need to install the application. Jailbreaks are used for mobile devices, not workstations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q161",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 161,
+    "question": "Frank is traveling and wants to connect to an unsecure wired network in his hotel. Which of the following is not a common threat he should consider how to prevent while on an unsecured hotel wired network?",
+    "choices": [
+      "Network packet capture",
+      "Network-based attacks",
+      "Evil twins",
+      "Worms"
+    ],
+    "answer": 2,
+    "explanation": "Evil twins are threats for wireless networks, not wired networks. Frank should consider how to keep all his traffic secure, likely by using a VPN that tunnels all his traffic to a trusted network exit point, and both worms and network-based attacks are possible from infected or malicious systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q162",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 162,
+    "question": "An attacker is trying to get access to your network. He is sending users on your network a link to a new game with a hacked license code program. However, the game files also include software that will give the attacker access to any machine that it is installed on. What type of attack is this?",
+    "choices": [
+      "Rootkit",
+      "Trojan horse",
+      "Spyware",
+      "Boot sector virus"
+    ],
+    "answer": 1,
+    "explanation": "The malware in this example is a Trojan horse-it pretends to be something desirable, or at least innocuous, and installs malicious software in addition to or instead of the desired software. A rootkit gives root or administrative access, spyware is malware that records user activities, and a boot sector virus is a virus that infects the boot sector of the hard drive.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q163",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 163,
+    "question": "Rae's company recently received an email from a former employee threatening to release company data that they copied before they left the organization if the organization does not pay them a severance package. What threat actor motivation should she categorize this as?",
+    "choices": [
+      "Espionage",
+      "Revenge",
+      "Blackmail",
+      "Service disruption"
+    ],
+    "answer": 2,
+    "explanation": "The former employee is threatening to release data making this blackmail. Espionage- including both nation-state driven and corporate-typically involves theft of data or other information, and there is no description of revenge or an attempt to disrupt services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q164",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 164,
+    "question": "Jack wants to sideload applications to his Android phone. What does he need to do first to allow this?",
+    "choices": [
+      "Jailbreak the phone.",
+      "Transfer the files to the phone.",
+      "Install a package manager.",
+      "Disable antimalware protection."
+    ],
+    "answer": 1,
+    "explanation": "Sideloading can be as simple as loading files on the phone, although some bundles and applications require installers or other tools. Jailbreaking, disabling antimalware protection, or even installing a package manager are not required to sideload applications for Android but may be done. Jailbreaking and package managers are commonly used for iOS devices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q165",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 165,
+    "question": "Jill is conducting a penetration test and uses the following query against a vulnerable web application. What data will she see if it succeeds? SELECT * FROM users WHERE category = 'customers' OR 1=1--'",
+    "choices": [
+      "A list of all customers",
+      "A list of all customers whose userID is 1 or larger",
+      "A list of all customers whose userID is 1",
+      "A list of all users Threats, Vulnerabilities, and Mitigations 63"
+    ],
+    "answer": 3,
+    "explanation": "If this query is successful, it will match all categories because it looks for categories that match customers or TRUE which is how OR 1=1 resolves. That means that any category will match, providing Jill with a list of all users, not just all customers or customers with specific userIDs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q166",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 166,
+    "question": "Greg's checklist for securing new Linux-based devices includes disabling unneeded ports and protocols. What primary purpose does this serve?",
+    "choices": [
+      "It speeds up port scans.",
+      "It reduces the number of logged events.",
+      "It prevents using up default ports.",
+      "It reduces the device's attack footprint."
+    ],
+    "answer": 3,
+    "explanation": "Disabling unnecessary ports and protocols reduced a device or system's attack footprint. The fewer targets attackers have, the less likely they are to be successful at finding a viable target. Reducing ports and protocols will speed up port scans and will reduce the number of logged events, but this is not the primary purpose of the change. Default ports are set for services based on common practice, and ports and protocols are not disabled to save default ports. Threats, Vulnerabilities, and Mitigations 253",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q167",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 167,
+    "question": "Nathaniel's organization has recently deployed multifactor authentication (MFA), which requires both a password and an MFA code to be provided to authenticate to critical services. Despite this, an attacker has recently logged into an administrative console using a password and MFA code belonging to a user. Which of the following types of malware is most likely to allow an attacker to successfully undertake this type of attack?",
+    "choices": [
+      "A virus",
+      "A worm",
+      "A logic bomb",
+      "A keylogger"
+    ],
+    "answer": 3,
+    "explanation": "Attackers are increasingly relying on keyloggers that can capture information entered at a keyboard and send it to them, allowing them to quickly use the information to log in before the user can use an MFA code. Viruses, worms, and logic bombs are not designed to provide this functionality.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q168",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 168,
+    "question": "Which of the following is not a common attribute of organized crime threat actors?",
+    "choices": [
+      "Internal",
+      "Well resourced",
+      "Sophisticated",
+      "External"
+    ],
+    "answer": 0,
+    "explanation": "Organized crime actors are typically external rather than internal actors. They are often well resourced and sophisticated.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q169",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 169,
+    "question": "Darryl is showing Valerie his iPhone and explains that his niece installed a package manager called Cydia on the device that allows him to install applications that are not available via the Apple App Store. What does Valerie know about his iPhone?",
+    "choices": [
+      "It has been infected with malware.",
+      "It can be remotely controlled via SSH.",
+      "It can be remotely controlled via a web interface.",
+      "It is jailbroken."
+    ],
+    "answer": 3,
+    "explanation": "Package managers like Cydia and Sileo are used to add applications and other functionality to jailbroken iPhones. If the phone is an organizationally owned phone or contains organizational data, Valerie may need to take action based on organizational policies. Cydia and other package managers do not open up remote management tools by default and are not malware, although they may not be permitted software for many organizational devices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q170",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 170,
+    "question": "Isaac is reviewing IPS rules used by his organization and notices rules that block the use of ' as well as OR 1=1 in HTTP queries. What type of attacks is Isaac's organization attempting to stop?",
+    "choices": [
+      "Buffer overflow attacks",
+      "SQL injection attacks",
+      "Replay attacks",
+      "Directory traversal attacks Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 1,
+    "explanation": "Simple SQL injection attacks often rely on the single quote or Boolean conditions like OR 1=1 as part of their attack. While these are simple examples and more complex options exist, Isaac's organization is wise to prevent simple attacks. Buffer overflow attacks target memory locations or variables, replay attacks re-send legitimate traffic, and directory traversal attacks attempt to access other file structures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q171",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 171,
+    "question": "Vicki is reviewing common BEC attack methods with her team. Which of the following is not a common BEC technique?",
+    "choices": [
+      "Using compromised email accounts",
+      "Using slightly modified spoofed email addresses",
+      "Sending email from the user's personal email account",
+      "Using malware to access email accounts"
+    ],
+    "answer": 2,
+    "explanation": "Sending email from a user's personal email account to them is not a common BEC exploit, but using compromised accounts, spoofing email with slightly modified email addresses, and using malware to gain access to accounts and send email are all common techniques.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q172",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 172,
+    "question": "Craig wants to control the applications employees can install on the laptops they are issued. If he wants the greatest level of control and is not concerned about flexibility or overhead to manage his solution, which of the following will best meet his needs?",
+    "choices": [
+      "An access control list",
+      "Application allow list",
+      "An application deny list",
+      "Segmentation"
+    ],
+    "answer": 1,
+    "explanation": "An application allow list provides the greatest control over what applications are installed on devices. Application deny lists are useful for preventing specific software from being installed but cannot handle the breadth of possible applications that users may find and use. Access control lists (ACLs) are used like firewall rules to apply rules to network traffic, and segmentation is used to separate systems based on various factors like data sensitivity or trust levels.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q173",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 173,
+    "question": "Ron wants to prevent users from using SSH between two network segments. Which of the following ACLs will prevent users in a segment 10.10.10.0/24 from using SSH to connect to the 10.10.20.0/24 network segment?",
+    "choices": [
+      "PERMIT IP 10.10.10.0/24 * 10.10.20.0/24 22",
+      "DENY IP 10.10.10.0/24 * 10.10.20.0/24 22",
+      "PERMIT IP 10.10.20.0/24 * 10.10.10.0/24 22",
+      "DENY IP 10.10.20.0/24 * 10.10.10.0/24 22"
+    ],
+    "answer": 1,
+    "explanation": "Ron wants to deny any source port to systems on the 10.10.20.0/24 network with a service port of TCP 22 for SSH.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q174",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 174,
+    "question": "Sam's organization uses a DNS black hole to prevent access to known malicious sites. The organization relies on a reputation service feed that is used to add the known malicious domains and IP addresses. DNS lookups that would go to those sites is sent to an internal redirect site that lets users know the site is inaccessible. Sam reviews the logs to determine if a system is trying to access those blocked sites regularly. What type of indicator of compromise is Sam looking for?",
+    "choices": [
+      "Blocked content",
+      "Resource inaccessibility",
+      "Missing logs",
+      "Published or documented indicators"
+    ],
+    "answer": 0,
+    "explanation": "Sam is using blocked content logging to determine what systems may be compromised and attempting to connect to malicious domains and if users are trying to access those IP addresses or domains. This can help Sam intervene with individual users and can also help identify infected systems. Resource inaccessibility is typically an unintentional indicator rather than a result of a security measure as described here. No logs are missing, and there is not a specific indicator of compromise that was described or published listed in the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q175",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 175,
+    "question": "Christina is reviewing a Linux system that she is responsible for, and notices that the /usr filesystem is 80 percent full. After review, she notices that a single user's home directory has hundreds of files in it that were recently added. What type of indicator of compromise should she categorize this as?",
+    "choices": [
+      "Resource inaccessibility",
+      "Blocked content",
+      "Impossible travel",
+      "Resource consumption Threats, Vulnerabilities, and Mitigations 65"
+    ],
+    "answer": 3,
+    "explanation": "While resource consumption alone may not indicate a compromise, unexpected consumption of resources may indicate unexpected or unwanted activity. Christina should look for other indicators of compromise to determine if she needs to declare a security incident. Resource inaccessibility would require the resource to not be available or working, and at 80% full a Linux filesystem will still work. There is no description of the content, and no content access was prevented, so this is not blocked content. Impossible travel occurs when logins or other resource usage occur in two locations at times that do not allow for travel between the locations.254 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q176",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 176,
+    "question": "What term is used to describe the unwanted but generally harmless programs that are commonly installed on consumer computers when they are purchased?",
+    "choices": [
+      "Spyware",
+      "Bloatware",
+      "Logic bombs",
+      "Firmware"
+    ],
+    "answer": 1,
+    "explanation": "Bloatware is a general term used to describe the unnecessary and unwanted programs that are installed on many PCs by manufacturers. Spyware is more harmful, sending information about the user, their browsing habits, or the computer back to the software's vendor or other organizations. Logic bombs are malware that take action under specific circumstances like a time, date, or other trigger, and firmware is the software that runs on top of hardware to provide basic underlying functionality.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q177",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 177,
+    "question": "Michael is performing a forensic analysis of a compromised workstation and discovers a copy of cmd.exe in the \\system32 folder on a Windows workstation that does not match the real cmd.exe file. When he looks at the file, he discovers that it is capable of running as an administrator. What type of attack has he discovered?",
+    "choices": [
+      "A buffer overflow attack",
+      "A Trojan attack",
+      "A privilege escalation attack",
+      "A replay attack"
+    ],
+    "answer": 2,
+    "explanation": "The ability to run a program as a privileged user like an administrator from an unexpected or uncommon location is a common indicator of a privilege escalation attack. A buffer overflow would push data into a variable to attempt to cause it to take a desired action, a Trojan would look like a wanted or desirable file but would be malware, and a replay attack would send successful authentication or other information again to gain access to a system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q178",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 178,
+    "question": "While reviewing logs, Chris sees an Apache web log that includes the following entry: https://www.example.com/viewer.php?filename=../../../etc/passwd%00.png What type of attack has Chris most likely uncovered, and what file will it return?",
+    "choices": [
+      "A replay attack, password00.png",
+      "A directory traversal attack, password00.png",
+      "A replay attack, passwd",
+      "A directory traversal attack, passwd"
+    ],
+    "answer": 3,
+    "explanation": "This is a directory traversal attack. The characteristic /../../ is the first indicator you should pay attention to. The %00 is a null byte, meaning that many applications will stop reading when they encounter it. You might not know that detail as you take the exam, but you should know that attackers would look for the passwd file, not a PNG of a password!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q179",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 179,
+    "question": "What common mitigation technique relies on VLANs to separate systems?",
+    "choices": [
+      "Encryption",
+      "Segmentation",
+      "Impossible travel",
+      "HIPS"
+    ],
+    "answer": 1,
+    "explanation": "VLANs are commonly used to provide segmentation for networks by placing them in separate logical networks. Encryption doesn't require or use VLANs, impossible travel describes logins and other activities from disparate physical locations in a time frame that would be impossible for travel to occur during, and a HIPS is a host intrusion prevention system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q180",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 180,
+    "question": "Mark's coworker recently discovered that he can use the Linux su command to run programs as one of his peers. What type of attack is this?",
+    "choices": [
+      "A replay attack",
+      "A vertical privilege escalation attack",
+      "A horizontal privilege escalation attack",
+      "A forgery attack Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 2,
+    "explanation": "Horizontal privilege escalation occurs when users at a similar level are able to use privileges or accounts belonging to peer users. Here, Mark's coworker is able to act as another similar user. Vertical privilege escalation focuses on greater privileges like administrative rights. Replay attacks re-send traffic to authenticate or otherwise repeat a transaction. Forgery attacks like cross-site request forgery (XSRF) leverage trusted sessions to allow malicious apps to take action due to the trust between a browser and a web application.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q181",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 181,
+    "question": "Jason is monitoring his network and notices that hundreds of different IP addresses are sending requests to one of his organization's servers. The requests are small, and when he inspects them he sees a simple HTTP GET command for a file. When the server responds, it sends back a very large response. What type of attack is likely occurring, and what is it attempting to accomplish?",
+    "choices": [
+      "A DoS attack and exploiting a vulnerable service",
+      "A DDoS and a buffer overflow",
+      "A DDoS and resource exhaustion",
+      "A DoS attack and an on-path attack"
+    ],
+    "answer": 2,
+    "explanation": "This is most likely a distributed denial-of-service (DDoS) attack since it is coming from many different IP addresses. Using small requests to generate large responses is an example of a resource exhaustion attack. Since this is coming from many addresses rather than one or a small number, it is more properly called a DDoS than a simple denial-of-service (DoS) attack. There is no indication that the service is vulnerable, the requests are small and no mention is made of a specific payload other than a HTTP GET for a file, and there is no traffic redirection as you would expect in an on-path attack.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q182",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 182,
+    "question": "Dan was recently troubleshooting a web server and deployed a firewall rule to his organization's datacenter firewall at the beginning of the ruleset. The rule reads: ALLOW FROM ANY:TCP 80 TO ANY:ANY What type of vulnerability should the security team at Dan's workplace label this as?",
+    "choices": [
+      "A jailbreak",
+      "A race condition",
+      "A misconfiguration",
+      "An injection attack"
+    ],
+    "answer": 2,
+    "explanation": "Allowing all TCP 80 traffic to any internal system is a common misconfiguration for firewalls when troubleshooting. Placing an overly broad rule in a firewall ruleset, particularly when it is processed early (at the top) of a ruleset is dangerous, even though it happens more than security practitioners want to think about! Jailbreaks are done on iOS-based mobile devices to bypass security; race conditions occur when the time-of-check (TOC) and time-of-use (TOU) of a variable, memory location, or other resource allows for changes when it shouldn't; and injection attacks are typically conducted against memory, code, or other resources, not firewall rules. Security Architecture 255",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q183",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 183,
+    "question": "Brian wants to protect files that are regularly sent via email as part of his organization's business practice. What type of encryption is best suited to this type of usage?",
+    "choices": [
+      "Full-disk encryption",
+      "File-level encryption",
+      "Volume encryption",
+      "Transport encryption"
+    ],
+    "answer": 1,
+    "explanation": "File-level encryption will allow Brian's organization to encrypt individual files rather than entire disks or volumes and will protect files even when they are not in transit, unlike transport encryption using TLS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q184",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 184,
+    "question": "Olivia has deployed Microsoft's Intune for her environment. What capability has she gained for her devices?",
+    "choices": [
+      "Malware detection and response",
+      "Configuration enforcement",
+      "Code versioning",
+      "Web application firewalling"
+    ],
+    "answer": 1,
+    "explanation": "Intune, formerly known as Microsoft Endpoint Manager and SCCM, provides configuration management, mobile app management, and other central system, software, and device management capabilities. It does not detect and respond to malware, but it can deploy configurations for Defender. It is not a code repository and versioning tool like git, and it does not provide web application firewalling.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q185",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 185,
+    "question": "Jill is concerned about supply chain attacks against her organization's service providers. Which of the following should be her most significant concern about her software-as-aservice (SaaS) service provider as she documents her supply chain risks?",
+    "choices": [
+      "Compromise of the SaaS vendor, leading to access to her data",
+      "Attacks against the SaaS vendor, leading to hours of downtime",
+      "Lack of availability of hardware from her SaaS vendor for delivery",
+      "Software vulnerabilities in tools provided by the vendor Threats, Vulnerabilities, and Mitigations 67"
+    ],
+    "answer": 0,
+    "explanation": "Data exposure is typically a more significant risk than downtime, particularly when the downtime is limited to hours. SaaS vendors do not typically sell or deliver hardware, as they provide services. Software vulnerabilities may exist, but without a known impact, compromise leading to data loss remains the most significant issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q186",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 186,
+    "question": "Elizabeth is investigating a network breach at her company. She discovers a program that was able to execute code within the address space of another process by using the target process to load a specific library. What best describes this attack?",
+    "choices": [
+      "A logic bomb",
+      "Session hijacking",
+      "Buffer overflow",
+      "DLL injection"
+    ],
+    "answer": 3,
+    "explanation": "In a DLL injection, the malware attempts to inject code into the running process of a library in memory. This is a rather advanced attack. A logic bomb executes its misdeed when some condition is met. Session hijacking is taking over an authenticated session. Buffer overflows are done by sending more data to a variable than it can hold.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d2-0-q187",
+    "domain": "Threats, Vulnerabilities, and Mitigations",
+    "questionNumber": 187,
+    "question": "Annie wants to prevent a TOC/TOU issue that occurs with her organization's business application. The issue occurs when scripts run as part of the application access a shared data file. Sometimes one instance of the script opens the file, checks that inventory is sufficient to meet customer needs, then waits for the customer's interaction. At the same time, another instance of the script checks, sees that there is sufficient inventory, and also provides that information to another customer. If both customers place orders, Annie's organization is unable to meet demand. If Annie wants to continue to grow her business's use of the application, which of the following options is the best way to prevent this issue?",
+    "choices": [
+      "Delete the resource after each use.",
+      "Only run one instance of the process.",
+      "Make multiple copies of the resource so each process has its own.",
+      "Lock the resource until the process is done with i Supply chain (Managed service providers [MSPs], Vendors, Suppliers) Human vectors/social engineering (Phishing, Vishing, Smishing, Misinformation/disinformation, Impersonation, Business email compromise, Pretexting, Watering hole, Brand impersonation, Typo squatting) 2.3 Explain various types of vulnerabilities Application (Memory injection, Buffer overflow, Race conditions, Time-of-check [TOC], Target of evaluation [TOE], Time-of-use [TOU], Malicious update) Operating system (OS)-based Web-based (Structured Query Language injection [SQLi], Cross-site scripting [XSS]) Hardware (Firmware, End-of-life, Legacy) Virtualization (Virtual machine [VM] escape, Resource reuse) Cloud-specific Supply chain (Service provider, Hardware provider, Software provider) Cryptographic Misconfiguration Mobile device (Side loading, Jailbreaking) Zero-day 2.4 Given a scenario, analyze indicators of malicious activity Malware attacks (Ransomware, Trojan, Worm, Spyware, Bloatware, Virus, Keylogger, Logic bomb, Rootkit) Physical attacks (Brute force, Radio frequency identification [RFID] cloning, Environmental) Network attacks (Distributed denial-of-service [DDoS], Amplified, Reflected, Domain Name System [DNS] attacks, Wireless, On-path, Credential replay, Malicious code) Application attacks (Injection, Buffer overflow, Replay, Privilege escalation, Forgery, Directory traversal) Cryptographic attacks (Downgrade, Collision, Birthday) Password attacks (Spraying, Brute force) Indicators (Account lockout, Concurrent session usage, Blocked content, Impossible travel, Resource consumption, Resource inaccessibility, Out-of-cycle logging, Published/documented, Missing logs) 2.5 Explain the purpose of mitigation techniques used to secure the enterprise Segmentation Access control (Access control list [ACL], Permissions) Application allow list Isolation Patching Encryption Monitoring Least privilege Configuration enforcement Decommissioning Hardening techniques (Encryption, Installation of endpoint protection, Host-based firewall, Hostbased intrusion prevention system [HIPS], Disabling ports/protocols, Default password changes, Removal of unnecessary software) Threats, Vulnerabilities, and Mitigations"
+    ],
+    "answer": 3,
+    "explanation": "Locking the resource until the action is completed is a common method of preventing TOC/TOU issues. Deleting the resource after each use doesn't allow resources to be persistent, preventing applications from using them on an ongoing basis. Running a single instance of the process will heavily limit the ability for Annie's business to scale the service. Making multiple copies doesn't allow for a shared resource.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q1",
+    "domain": "Security Architecture",
+    "questionNumber": 1,
+    "question": "Nancy wants to adopt a backup strategy that will meet her organization's desires about the amount of data that could be lost in a scenario where a restoration from backup was required and also wants to establish guidelines for how long a restoration should take. What two key objectives should she set?",
+    "choices": [
+      "An RPO and an RTO",
+      "An RFBT and an RPO",
+      "An RPO and an MTBF",
+      "An MTBF and an RFBT"
+    ],
+    "answer": 0,
+    "explanation": "Organizations set recovery point objectives (RPOs) which describe how much data is acceptable to lose in a data loss event, and recovery time objectives (RTOs), which describe the maximum amount of time that it should take to recover data. Together these two objectives help guide backup strategy and infrastructure design and implementation. MTBF (mean time before failure) describes the mean time before a device like a hard drive, power supply, or network switch will fail, typically described in hours of powered-on operation. RFBT was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q2",
+    "domain": "Security Architecture",
+    "questionNumber": 2,
+    "question": "John is running an IDS on his network. Users sometimes report that the IDS flags legitimate traffic as an attack. What describes this?",
+    "choices": [
+      "False positive",
+      "False negative",
+      "False trigger",
+      "False flag"
+    ],
+    "answer": 0,
+    "explanation": "When an intrusion detection system (IDS) or antivirus/antimalware mistakes legitimate traffic for an attack, this is called a false positive. A false negative is when the IDS mistakes an attack for legitimate traffic. It is the opposite of a false positive. Options C and D are both incorrect. Although these may be grammatically correct, these are not the terms used in the industry. In military operations, false flag operations attempt to transfer blame to another organization or adversary, thus a \"false flag.\"",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q3",
+    "domain": "Security Architecture",
+    "questionNumber": 3,
+    "question": "Enrique is concerned about backup data being infected by malware. The company backs up key servers to digital storage on a backup server. Which of the following would be most effective in preventing the backup data being infected by malware?",
+    "choices": [
+      "Place the backup server on a separate VLAN.",
+      "Air gap the backup server.",
+      "Place the backup server on a different network segment.",
+      "Use a honeynet."
+    ],
+    "answer": 1,
+    "explanation": "Air gapping refers to the server not being on a network. This means literally that there is \"air\" between the server and the network. This prevents malware from infecting the backup server. A separate virtual local area network (VLAN) or physical network segment can256 Appendix Answers to Review Questions enhance security but is not as effective as air gapping. A honeynet is used to detect attacks against a network, but it doesn't provide effective defense against malware in this scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q4",
+    "domain": "Security Architecture",
+    "questionNumber": 4,
+    "question": "What type of system is used to control and monitor power plant power generation systems?",
+    "choices": [
+      "IPG",
+      "SEED",
+      "SCADA",
+      "ICD"
+    ],
+    "answer": 2,
+    "explanation": "SCADA, or supervisory control and data acquisition systems, are commonly used to manage facilities like power plants. The remaining options were made up.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q5",
+    "domain": "Security Architecture",
+    "questionNumber": 5,
+    "question": "Geoff wants to establish a contract with a company to have datacenter space that is equipped and ready to go so that he can bring his data to the location in the event of a disaster. What type of disaster recovery site is he looking for?",
+    "choices": [
+      "A hot site",
+      "A cold site",
+      "A warm site",
+      "An RTO site"
+    ],
+    "answer": 2,
+    "explanation": "Geoff is looking for a warm site, which has some or all of the infrastructure and systems he needs but does not have data. If a disaster occurs, Geoff can bring any equipment that he needs or wants to the site along with his organization's data to resume operations. A hot site is a fully functional environment with all the hardware, software, and data needed to operate an organization. They are expensive to maintain and run but are used by organizations that cannot take the risk of downtime. A cold site is a location that can be brought online but does not have systems; cold sites typically have access to power and bandwidth but need to be fully equipped to operate after a disaster since they are just rented space. An RTO is a recovery time objective, and it measures how long it should take to resume operations; it is not a type of disaster recovery site.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q6",
+    "domain": "Security Architecture",
+    "questionNumber": 6,
+    "question": "Olivia needs to ensure an IoT device does not have its operating system modified by third parties after it is sold. What solution should she implement to ensure that this does not occur?",
+    "choices": [
+      "Set a default password.",
+      "Require signed and encrypted firmware.",
+      "Check the MD5sum for new firmware versions.",
+      "Patch regularly. Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "If Olivia wants to ensure that third parties will be unable to modify the operating system for Internet of Things (IoT) devices, requiring signed and encrypted firmware for operating system updates is an effective means of stopping all but the most advanced threats. Setting a default password means that a common password will be known. Checking the MD5sum for new firmware versions will help administrators validate that the firmware is legitimate, but signed and encrypted firmware is a much stronger control. Finally, regular patching may help secure the devices but won't prevent OS modifications.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q7",
+    "domain": "Security Architecture",
+    "questionNumber": 7,
+    "question": "Maria is a security engineer with a manufacturing company. During a recent investigation, she discovered that an engineer's compromised workstation was being used to connect to SCADA systems while the engineer was not logged in. The engineer is responsible for administering the SCADA systems and cannot be blocked from connecting to them. What should Maria do to mitigate this threat?",
+    "choices": [
+      "Install host-based antivirus/antimalware software on the engineer's system.",
+      "Implement account usage auditing on the SCADA system.",
+      "Implement an NIPS on the SCADA system.",
+      "Use FDE on the engineer's system."
+    ],
+    "answer": 1,
+    "explanation": "Maria should implement ongoing auditing of the account usage on the SCADA system. This will provide a warning that someone's account is being used when they are not actually using it. Host-based antivirus/antimalware is almost never a bad idea, but this scenario did not indicate that the compromise was due to malware, so antimalware may not address the threat. Since the engineer has access to the SCADA system, a network intrusion prevention system (NIPS) is unlikely to block them from accessing the system, and full-disk encryption (FDE) will not mitigate this threat because the system is live and running, meaning that the disk will be decrypted in use.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q8",
+    "domain": "Security Architecture",
+    "questionNumber": 8,
+    "question": "Mike is a security analyst and has just removed malware from a virtual server. What feature of virtualization would he use to return the virtual server to a last known good state?",
+    "choices": [
+      "Sandboxing",
+      "Hypervisor",
+      "Snapshot",
+      "Elasticity"
+    ],
+    "answer": 2,
+    "explanation": "A snapshot is an image of the virtual machine (VM) at some point in time. It is standard practice to periodically take a snapshot of a virtual system so that you can return that system to a last known good state. Sandboxing is the process of isolating a system or software. The hypervisor is the mechanism through which the virtual environment interacts with the hardware, and elasticity is the ability for the system to scale.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q9",
+    "domain": "Security Architecture",
+    "questionNumber": 9,
+    "question": "Which of the following is not an advantage of a serverless architecture?",
+    "choices": [
+      "It does not require a system administrator.",
+      "It can scale as function call frequency increases.",
+      "It can scale as function call frequency decreases.",
+      "It is ideal for complex applications."
+    ],
+    "answer": 3,
+    "explanation": "Serverless architectures do not require a system administrator because the provider manages the underlying function-as-a-service (FaaS) capability. It can also scale up or scale down as needed, allowing it to be very flexible. Serverless architectures are typically not ideal for complex applications and instead tend to work better for microservices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q10",
+    "domain": "Security Architecture",
+    "questionNumber": 10,
+    "question": "Which of the following is the most important benefit from implementing SDN?",
+    "choices": [
+      "It will stop malware.",
+      "It provides scalability.",
+      "It will detect intrusions.",
+      "It will prevent session hijacking."
+    ],
+    "answer": 1,
+    "explanation": "Software-defined networking (SDN) makes the network very scalable. It is relatively easy to add on new resources or remove unneeded resources, and it helps with high availability efforts. SDN does not stop malware, detect intrusions, or prevent session hijacking. Security Architecture 257",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q11",
+    "domain": "Security Architecture",
+    "questionNumber": 11,
+    "question": "Derek has been asked to implement his organization's service-oriented architecture as a set of microservices. What does he need to implement?",
+    "choices": [
+      "A set of loosely coupled services with specific purposes",
+      "A set of services that run on very small systems",
+      "A set of tightly coupled services with custom-designed protocols to ensure continuous operation",
+      "A set of services using third-party applications in a connected network enabled with industry standard protocols"
+    ],
+    "answer": 0,
+    "explanation": "A microservice architecture builds applications as a set of loosely coupled services that provide specific functions using lightweight protocols. It doesn't specifically define the size of the systems, but it is not a tightly coupled environment. Protocol choice is often open standards-based, but the emphasis is on lightweight protocols. There is not a requirement that services be in-house or third party exclusively.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q12",
+    "domain": "Security Architecture",
+    "questionNumber": 12,
+    "question": "Abigail is responsible for datacenters in a large, multinational company. She has to support multiple datacenters in diverse geographic regions. What would be the most effective way for her to manage these centers consistently across the enterprise?",
+    "choices": [
+      "Hire datacenter managers for each center.",
+      "Implement enterprise-wide SDN. Security Architecture 75",
+      "Implement infrastructure as code (IaC).",
+      "Automate provisioning and deprovisioning."
+    ],
+    "answer": 2,
+    "explanation": "The correct answer is to implement IaC. Infrastructure as code (IaC) is the process of managing and provisioning computer datacenters through machine-readable definition files, rather than physical hardware configuration or interactive configuration tools. Whether the datacenter(s) use physical machines or virtual machines, this is an effective way to manage the datacenters. Although datacenter managers may be needed, that won't necessarily provide consistent management across the enterprise. Software-defined networking (SDN) will not fix this problem, but it would help if Abigail needed to configure and manage her network based on usage and performance. Finally, this issue is not just about provisioning; it is about management.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q13",
+    "domain": "Security Architecture",
+    "questionNumber": 13,
+    "question": "Naomi wants to secure a real-time operating system (RTOS). Which of the following techniques is best suited to providing RTOS security?",
+    "choices": [
+      "Disable the web browser.",
+      "Install a host firewall.",
+      "Use secure firmware.",
+      "Install antimalware software."
+    ],
+    "answer": 2,
+    "explanation": "Using secure firmware, as well as using an RTOS with time and space partitioning, are both common methods to help ensure RTOS security. Unlike traditional operating systems, real-time operating systems are used in applications where they need to deal with inputs immediately. That means that adding additional load like firewalls and antimalware is not a typical component in RTOS applications. For similar reasons, you're unlikely to find a web browser on most devices running an RTOS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q14",
+    "domain": "Security Architecture",
+    "questionNumber": 14,
+    "question": "Ben has been asked to explain the security implications for an embedded system that his organization is considering building and selling. Which of the following is not a typical concern for embedded systems?",
+    "choices": [
+      "Limited processor power",
+      "An inability to patch",
+      "Lack of authentication capabilities",
+      "Lack of bulk storage"
+    ],
+    "answer": 3,
+    "explanation": "Embedded systems can bring a broad range of security implications, many of which are driven by the limited capabilities of the processors and hardware they are frequently built with. Low-power consumption designs may lack computational power and thus have challenges implementing strong cryptography, network connectivity, and other similar problems. Patching embedded systems can be challenging both because of where they are deployed and because of a lack of connectivity for them-in fact, in many environments, you may not want the devices to be connected to your network. Since many don't have a screen, keyboard, or a network connection, authentication is also a problem. Few embedded devices, however, need bulk storage, making the lack of bulk storage a problem that typically isn't a major concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q15",
+    "domain": "Security Architecture",
+    "questionNumber": 15,
+    "question": "Madhuri has configured a backup that will back up all of the changes to a system since the last time that a full backup occurred. What type of backup has she set up?",
+    "choices": [
+      "A snapshot",
+      "A full backup",
+      "An incremental backup",
+      "A differential"
+    ],
+    "answer": 3,
+    "explanation": "Differential backups back up all of the changes since the last full backup. An incremental backup backs up all changes since the last incremental backup. A snapshot captures machine state and the full drive at a bitwise level, and full backups are a complete copy of a system but typically do not include the memory state.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q16",
+    "domain": "Security Architecture",
+    "questionNumber": 16,
+    "question": "Devin is building a cloud system and wants to ensure that it can adapt to changes in its workload by provisioning or deprovisioning resources automatically. His goal is to ensure that the environment is not overprovisioned or underprovisioned and that he is efficiently spending money on his infrastructure. What concept describes this?",
+    "choices": [
+      "Vertical scalability",
+      "Elasticity",
+      "Horizontal scalability",
+      "Normalization"
+    ],
+    "answer": 1,
+    "explanation": "Elasticity is a cloud computing concept that matches resources to demand to ensure that an infrastructure closely matches the needs of the environment. Scalability is the ability to grow or shrink as needed but does not directly include the concept of matching to workload. Normalization is a code development concept used to ensure that data is in a consistent form.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q17",
+    "domain": "Security Architecture",
+    "questionNumber": 17,
+    "question": "Nathaniel wants to improve the fault tolerance of a server in his datacenter. If he wants to ensure that a power outage does not cause the server to lose power, what is the first control he should deploy from the following list?",
+    "choices": [
+      "A UPS",
+      "A generator",
+      "Dual power supplies",
+      "Managed power units (PDUs) Security Architecture"
+    ],
+    "answer": 0,
+    "explanation": "An uninterruptable power supply (UPS) should be Nathaniel's first priority. Ensuring that power is not disrupted during an outage and can be maintained for a short period until alternate power like a generator can come online is critical, and a UPS can provide that capability. A generator alone will take longer to come online, resulting in an outage. Dual power supplies can help to build resilience by allowing multiple power sources and avoiding issues258 Appendix Answers to Review Questions if a power supply does fail, but that is not the focus of the question. A managed power distribution unit (PDU) provides remote management and power monitoring but will not prevent power loss in an outage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q18",
+    "domain": "Security Architecture",
+    "questionNumber": 18,
+    "question": "George is a network administrator at a power plant. He notices that several turbines had unusual ramp-ups in cycles last week. After investigating, he finds that an executable was uploaded to the system control console and caused this. Which of the following would be most effective in preventing this from affecting the SCADA system in the future?",
+    "choices": [
+      "Implement SDN.",
+      "Improve patch management.",
+      "Place the SCADA system on a separate VLAN.",
+      "Implement encrypted data transmissions."
+    ],
+    "answer": 2,
+    "explanation": "Separating the SCADA (supervisory control and data acquisition) system from the main network makes it less likely that the SCADA system can be affected from the main network. This includes malware as well as human action. Software-defined networking (SDN) would make isolating the SCADA system easier but would not actually isolate it. Patch management is always important, but in this case, it would not have prevented the issue. Encrypted data transmissions, such as TLS, would have no effect on this situation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q19",
+    "domain": "Security Architecture",
+    "questionNumber": 19,
+    "question": "Mia is a network administrator for a bank. She is responsible for secure communications with her company's customer website. Which of the following would be the best for her to implement?",
+    "choices": [
+      "SSL",
+      "PPTP",
+      "IPSec",
+      "TLS"
+    ],
+    "answer": 3,
+    "explanation": "Transport Layer Security (TLS) provides a reliable method of encrypting web traffic. It supports mutual authentication and is considered secure. Although Secure Sockets Layer (SSL) can encrypt web traffic, TLS was created in 1999 as its successor. Although many network administrators still use the term SSL, in most cases today what you are using is actually TLS, not the outdated SSL. Point-to-point Tunneling Protocol (PPTP) and Internet Protocol Security (IPSec) are protocols for establishing a VPN, not for encrypting web traffic.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q20",
+    "domain": "Security Architecture",
+    "questionNumber": 20,
+    "question": "Nora has rented a building with access to bandwidth and power in case her organization ever experiences a disaster. What type of site has she established?",
+    "choices": [
+      "A hot site",
+      "A cold site",
+      "A warm site",
+      "A MOU site"
+    ],
+    "answer": 1,
+    "explanation": "Nora has established a cold site. A cold site is a location that can be brought online but does not have systems; cold sites typically have access to power and bandwidth, but they need to be fully equipped to operate after a disaster since they are just rented space. Warm sites have some or all of the infrastructure and systems Nora needs but does not have data. A hot site is a fully functional environment with all of the hardware, software, and data needed to operate an organization. They are expensive to maintain and run but are used by organizations that cannot take the risk of downtime. A MOU is a memorandum of understanding and is not a type of disaster recovery site.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q21",
+    "domain": "Security Architecture",
+    "questionNumber": 21,
+    "question": "Mike is concerned about data sovereignty for data that his organization captures and maintains. What best describes his concern?",
+    "choices": [
+      "Who owns the data that is captured on systems hosted in a cloud provider's infrastructure?",
+      "Can Mike's organization make decisions about data that is part of its service, or does it belong to users?",
+      "Is the data located in a country subject to the laws of the country where it is stored?",
+      "Does data have rights on its own, or does the owner of the data determine what rights may apply to it?"
+    ],
+    "answer": 2,
+    "explanation": "Data sovereignty refers to the concept that data that is collected and stored in a country is subject to that country's laws. This can be a complex issue with multinational cloud services and providers that may store data in multiple countries as part of their normal architecture. It may also create compliance and other challenges based on differences in national laws regarding data, data privacy, and similar issues.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q22",
+    "domain": "Security Architecture",
+    "questionNumber": 22,
+    "question": "What are the key limiting factors for cryptography on low-power devices?",
+    "choices": [
+      "There are system limitations on memory, CPU, and storage.",
+      "The devices cannot support public key encryption due to an inability to factor prime numbers.",
+      "There is a lack of chipset support for encryption.",
+      "Legal limitations for low-power devices prevent encryption from being supported. Security Architecture 77"
+    ],
+    "answer": 0,
+    "explanation": "Low-power devices typically have limited processor speed, memory, and storage, meaning that encryption can be a challenge. Fortunately, solutions exist that implement low-power cryptographic processing capabilities, and continued advances in processor design continue to make lower-power processors faster and more efficient. Legal limitations do not typically take into account whether a device is a low-power device, and public key encryption can be implemented on a wide range of CPUs and embedded systems, so factoring prime numbers is unlikely to be an issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q23",
+    "domain": "Security Architecture",
+    "questionNumber": 23,
+    "question": "Elaine wants to adopt appropriate response and recovery controls for natural disasters. What type of control should she use to prepare for a multi-hour power outage caused by a tornado?",
+    "choices": [
+      "A hot site",
+      "A generator",
+      "A PDU",
+      "A UPS"
+    ],
+    "answer": 1,
+    "explanation": "A generator is the most appropriate answer to a multi-hour outage. Although a hot site would allow her organization to stay online, the cost of a hot site is much higher than that of a generator. A PDU, or power distribution unit, is used to manage and distribute power, not to handle power outages. Finally, UPS systems are not typically designed to handle long outages. Instead, they condition power and ensure that systems remain online long enough for a generator to take over providing power. Security Architecture 259",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q24",
+    "domain": "Security Architecture",
+    "questionNumber": 24,
+    "question": "Tim wants to ensure that his web servers can scale horizontally during traffic increases, while also allowing them to be patched or upgraded without causing outages. What type of network device should he deploy?",
+    "choices": [
+      "A firewall",
+      "A switch",
+      "A horizontal scaler",
+      "A network load balancer"
+    ],
+    "answer": 3,
+    "explanation": "Network load balancers distribute traffic among systems, allowing systems to be added or removed, and making patching and upgrades easier by draining connections from systems and removing them from the pool when work needs to be done on them. They can also help monitor systems for performance, report on issues, and ensure that loads match the capabilities of the systems that they are in front of. Firewalls are used for security, switches are a network device used to transfer traffic to the correct system, and a horizontal scaler was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q25",
+    "domain": "Security Architecture",
+    "questionNumber": 25,
+    "question": "Nathaniel has deployed the control infrastructure for his manufacturing plant without a network connection to his other networks. What term describes this type of configuration?",
+    "choices": [
+      "Screened subnet",
+      "Air gap",
+      "Vaulting",
+      "A hot aisle"
+    ],
+    "answer": 1,
+    "explanation": "Nathaniel has created an air gap, a physical separation that will require manual transport of files, patches, and other data between the two environments. This helps to ensure that attackers cannot access critical systems and that insiders cannot export data from the environment easily. A screened subnet, also known as a demilitarized zone (DMZ), is a separate network segment or zone that is exposed to the outside world or other lower trust area. A vault is a secured space or room. Hot and cold isles are equipment arrangements used in server rooms or datacenters to efficiently circulate air and keep server racks and other equipment cool.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q26",
+    "domain": "Security Architecture",
+    "questionNumber": 26,
+    "question": "Chris is preparing to implement an 802.1X-enabled wireless infrastructure. He knows that he wants to use an Extensible Authentication Protocol (EAP)-based protocol that does not require client-side certificates. Which of the following options should he choose?",
+    "choices": [
+      "EAP-MD5",
+      "PEAP",
+      "LEAP",
+      "EAP-TLS"
+    ],
+    "answer": 1,
+    "explanation": "The option that best meets the needs described is PEAP, the Protected Extensible Authentication Protocol. PEAP relies on server-side certificates and on tunneling to ensure communications security. EAP-MD5 is not recommended for wireless networks and does not support mutual authentication of the wireless client and network. LEAP, the Lightweight Extensible Authentication Protocol, uses WEP keys for its encryption and is not recommended due to security issues. Finally, EAP-TLS, or EAP Transport Layer Security, requires certificates on both the client and server, consuming more management overhead.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q27",
+    "domain": "Security Architecture",
+    "questionNumber": 27,
+    "question": "Olivia is implementing a load-balanced web application cluster. Her organization already has a redundant pair of load balancers, but each unit is not rated to handle the maximum designed throughput of the cluster by itself. Olivia has recommended that the load balancers be implemented in an active/active design. What concern should she raise as part of this recommendation?",
+    "choices": [
+      "The load balancer cluster cannot be patched without a service outage.",
+      "The load balancer cluster is vulnerable to a denial-of-service attack.",
+      "If one of the load balancers fails, it could lead to service degradation.",
+      "The load balancer cannot handle the throughput due to having two active nodes. Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Olivia should make her organization aware that a failure in one of the active nodes would result in less maximum throughput and a potential for service degradation. Since services are rarely run at maximum capacity, and many can have maintenance windows scheduled, this does not mean that the load balancers cannot be patched. There is nothing in this design that makes the load balancers more vulnerable to denial-of-service than they would be under any other design. Having two active nodes will typically increase throughput over a single node.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q28",
+    "domain": "Security Architecture",
+    "questionNumber": 28,
+    "question": "Mark is responsible for managing his company's load balancer and wants to use a loadbalancing scheduling technique that will take into account the current server load and active sessions. Which of the following techniques should he choose?",
+    "choices": [
+      "Round-robin",
+      "Weighted response time",
+      "Least connection",
+      "Source IP hashing"
+    ],
+    "answer": 2,
+    "explanation": "Least connection-based load balancing takes load into consideration and sends the next request to the server with the least number of active sessions. Round-robin simply distributes requests to each server in order, whereas weighted time uses health checks to determine which server responds the most quickly on an ongoing basis and then sends the traffic to that server. Finally, source IP hashing uses the source and destination IP addresses to generate a hash key and then uses that key to track sessions, allowing interrupted sessions to be reallocated to the same server, and thus allowing the sessions to continue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q29",
+    "domain": "Security Architecture",
+    "questionNumber": 29,
+    "question": "Ramon is building a new web service and is considering which parts of the service should use Transport Layer Security (TLS). Components of the application include: 1. Authentication 2. A payment form 3. User data, including address and shopping cart 4. A user comments and reviews section Where should he implement TLS?",
+    "choices": [
+      "At points 1 and 2, and 4",
+      "At points 2 and 3, and 4",
+      "At points 1, 2, and 3",
+      "At all points in the infrastructure"
+    ],
+    "answer": 3,
+    "explanation": "The safest and most secure answer is that Ramon should simply implement TLS for the entire site. Although TLS does introduce some overhead, modern systems can handle large numbers of simultaneous TLS connections, making a secure website an easy answer in almost all cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q30",
+    "domain": "Security Architecture",
+    "questionNumber": 30,
+    "question": "Which device would most likely process the following rules? PERMIT IP ANY EQ 443 DENY IP ANY ANY",
+    "choices": [
+      "NIPS",
+      "HIPS",
+      "Content filter",
+      "Firewall"
+    ],
+    "answer": 3,
+    "explanation": "A firewall has two types of rules. One type is to allow specific traffic on a given port. The other type of rule is to deny traffic. What is shown here is a typical firewall rule. Options A, B, and C are incorrect. The rule shown is clearly a firewall rule.260 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q31",
+    "domain": "Security Architecture",
+    "questionNumber": 31,
+    "question": "Charles wants to use IPSec and needs to be able to determine the IPSec policy for traffic based on the port it is being sent to on the remote system. Which IPSec mode should he use?",
+    "choices": [
+      "IPSec tunnel mode",
+      "IPSec PSK mode",
+      "IPSec IKE mode",
+      "IPSec transport mode"
+    ],
+    "answer": 3,
+    "explanation": "Unlike IPSec's tunnel mode, IPSec transport mode allows different policies per port. The IP addresses in the outer header for transport mode packets are used to determine the policy applied to the packet. IPSec doesn't have a PSK mode, but WPA2 does. IKE is used to set up security associations in IPSec but doesn't allow this type of mode setting.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q32",
+    "domain": "Security Architecture",
+    "questionNumber": 32,
+    "question": "What two connection methods are used for most geofencing applications?",
+    "choices": [
+      "Cellular and GPS",
+      "USB and Bluetooth",
+      "GPS and Wi-Fi",
+      "Cellular and Bluetooth Security Architecture 79"
+    ],
+    "answer": 2,
+    "explanation": "Global Positioning System (GPS) data and data about local Wi-Fi networks are the two most commonly used protocols to help geofencing applications determine where they are. When a known Wi-Fi signal is gained or lost, the geofencing application knows it is within range of that network. GPS data is even more useful because it can work in most locations and provide accurate location data. Although Bluetooth is sometimes used for geofencing, its limited range means that it is a third choice. Cellular information would require accurate tower-based triangulation, which means it is not typically used for geofencing applications, and of course USB is a wired protocol.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q33",
+    "domain": "Security Architecture",
+    "questionNumber": 33,
+    "question": "Jason wants to implement a remote access virtual private network (VPN) for users in his organization who primarily rely on hosted web applications. What common VPN type is best suited to this if he wants to avoid deploying client software to his end-user systems?",
+    "choices": [
+      "A TLS VPN",
+      "An RDP (Remote Desktop Protocol) VPN",
+      "An Internet Control Message Protocol (ICMP) VPN",
+      "An IPSec VPN"
+    ],
+    "answer": 0,
+    "explanation": "A Transport Layer Security (TLS) VPN is frequently chosen when ease of use is important, and web applications are the primary usage mode. RDP is a remote access tool, not a VPN tool, and ICMP is used for things like ping, not for VPN. IPSec VPNs are used for site-to-site VPNs and for purposes where other protocols may be needed, because they make the endpoint system appear to be on the remote network.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q34",
+    "domain": "Security Architecture",
+    "questionNumber": 34,
+    "question": "Binary data is an example of what type of data?",
+    "choices": [
+      "Non-human-readable",
+      "Encrypted",
+      "Human-readable",
+      "Masked"
+    ],
+    "answer": 0,
+    "explanation": "Binary data is a form of non-human-readable data. Encrypted data may be in binary format, but not all binary data is encrypted. Binary data is not human-readable, nor is it masked, which hides elements of data to allow for it to be used without exposing the underlying data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q35",
+    "domain": "Security Architecture",
+    "questionNumber": 35,
+    "question": "What IP address does a load balancer provide for external connections to connect to web servers in a load-balanced group?",
+    "choices": [
+      "The IP address for each server, in a prioritized order",
+      "The load balancer's IP address",
+      "The IP address for each server in a round-robin order",
+      "A virtual IP address"
+    ],
+    "answer": 3,
+    "explanation": "Load balancers provide a virtual IP, or VIP. Traffic sent to the VIP is directed to servers in the pool based on the load-balancing scheme that that pool is using-often a round-robin scheme, but other versions that include priority order and capacity tracking or ratings are also common. The load balancer's IP address is normally used to administer the system, and individual IP addresses for the clustered hosts are shielded by the load balancer to prevent traffic from consistently going to those hosts, thus creating a failure or load point.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q36",
+    "domain": "Security Architecture",
+    "questionNumber": 36,
+    "question": "Matt has enabled port security on the network switches in his building. What does port security do?",
+    "choices": [
+      "Filters by MAC address",
+      "Prevents routing protocol updates from being sent from protected ports",
+      "Establishes private VLANs",
+      "Prevents duplicate MAC addresses from connecting to the network"
+    ],
+    "answer": 0,
+    "explanation": "Port security filters by MAC address, permitting allow listed MAC addresses to connect to the port and blocking block listed MAC addresses. Port security can be static, using a predetermined list or dynamically allowing a specific number of addresses to connect, or it can be run in a combination mode of both static and dynamic modes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q37",
+    "domain": "Security Architecture",
+    "questionNumber": 37,
+    "question": "Tom is responsible for VPN connections in his company. His company uses IPSec for VPNs. What is the primary purpose of AH in IPSec?",
+    "choices": [
+      "Encrypt the entire packet.",
+      "Encrypt just the header.",
+      "Authenticate the entire packet.",
+      "Authenticate just the header."
+    ],
+    "answer": 2,
+    "explanation": "Authentication headers (AHs) provide complete packet integrity, authenticating the packet and the header. Authentication headers do not provide any encryption at all, and authentication headers authenticate the entire packet, not just the header.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q38",
+    "domain": "Security Architecture",
+    "questionNumber": 38,
+    "question": "Abigail is responsible for setting up a network-based intrusion prevention system (NIPS) on her network. The NIPS is located in one particular network segment. She is looking for a passive method to get a copy of all traffic to the NIPS network segment so that it can analyze the traffic. Which of the following would be her best choice?",
+    "choices": [
+      "Using a network tap",
+      "Using port mirroring",
+      "Setting the NIPS on a VLAN that is connected to all other segments",
+      "Setting up a NIPS on each segment Security Architecture"
+    ],
+    "answer": 0,
+    "explanation": "Network taps copy all traffic to another destination, allowing traffic visibility without a device inline. They are completely passive methods of getting network traffic to a central location. Port mirroring would get all the traffic to the network-based intrusion prevention system (NIPS) but is not completely passive. It requires the use of resources on switches to route a copy of the traffic. Incorrect switch configurations can cause looping. Configuring loop detection can prevent looped ports. Putting a network NIPS on every segment can be very expensive and require extensive configuration work. Setting up a NIPS on each segment would also dramatically increase administrative efforts. Security Architecture 261",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q39",
+    "domain": "Security Architecture",
+    "questionNumber": 39,
+    "question": "Janice is explaining how IPSec works to a new network administrator. She is trying to explain the role of IKE. Which of the following most closely matches the role of IKE in IPSec?",
+    "choices": [
+      "It encrypts the packet.",
+      "It establishes the SAs.",
+      "It authenticates the packet.",
+      "It establishes the tunnel."
+    ],
+    "answer": 1,
+    "explanation": "Internet key exchange (IKE) is used to set up security associations (SAs) on each end of the tunnel. The security associations have all the settings (i.e., cryptographic algorithms, hashes) for the tunnel. IKE is not directly involved in encrypting or authenticating. IKE itself does not establish the tunnel-it establishes the SAs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q40",
+    "domain": "Security Architecture",
+    "questionNumber": 40,
+    "question": "Emily manages the IDS/IPS for her network. She has a network-based intrusion prevention system (NIPS) installed and properly configured. It is not detecting obvious attacks on one specific network segment. She has verified that the NIPS is properly configured and working properly. What would be the most efficient way for her to address this?",
+    "choices": [
+      "Implement port mirror/monitor mode for that segment.",
+      "Install a NIPS on that segment.",
+      "Upgrade to a more effective NIPS.",
+      "Isolate that segment on its own VLAN."
+    ],
+    "answer": 0,
+    "explanation": "The NIPS is not seeing the traffic on that network segment. By implementing port mirroring, the traffic from that segment can be copied to the segment where the NIPS is installed. Installing a network IPS on the segment would require additional resources. This would work but is not the most efficient approach. Nothing in this scenario suggests that the NIPS is inadequate. It just is not seeing all the traffic. Finally, isolating the segment to its own VLAN would isolate that network segment but would still not allow the NIPS to analyze the traffic from that segment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q41",
+    "domain": "Security Architecture",
+    "questionNumber": 41,
+    "question": "You are responsible for an e-commerce site. The site is hosted in a cluster. Which of the following techniques would be best in assuring availability?",
+    "choices": [
+      "A VPN concentrator",
+      "Aggregate switching",
+      "An SSL accelerator",
+      "Load balancing"
+    ],
+    "answer": 3,
+    "explanation": "Load-balancing the cluster will prevent any single server from being overloaded. And if a given server is offline, other servers can take on its workload. A VPN concentrator, as the name suggests, is used to initiate virtual private networks (VPNs). Aggregate switching can shunt more bandwidth to the servers but won't mitigate the threat of one or more servers being offline. SSL accelerators are a method of offloading processor-intensive public key encryption for Transport Layer Security (TLS) and Secure Sockets Layer (SSL) to a hardware accelerator.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q42",
+    "domain": "Security Architecture",
+    "questionNumber": 42,
+    "question": "Ryan is concerned about the security of his company's web application. Since the application processes confidential data, he is most concerned about data exposure. Which of the following would be the most important for him to implement?",
+    "choices": [
+      "WAF",
+      "TLS",
+      "NIPS",
+      "NIDS"
+    ],
+    "answer": 1,
+    "explanation": "The correct answer is to encrypt all the web traffic to this application using Transport Layer Security (TLS). This is one of the most fundamental security steps to take with any website. A web application firewall (WAF) is probably a good idea, but it is not the most important thing for Ryan to implement. While a network-based intrusion prevention system (NIPS) or network-based intrusion detection system (NIDS) may be a good idea, those should be considered after TLS is configured.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q43",
+    "domain": "Security Architecture",
+    "questionNumber": 43,
+    "question": "Claire has been notified of a zero-day flaw in a web application. She has the exploit code, including a SQL injection attack that is being actively exploited. How can she quickly react to prevent this issue from impacting her environment if she needs the application to continue to function?",
+    "choices": [
+      "Deploy a detection rule to her IDS.",
+      "Manually update the application code after reverse-engineering it.",
+      "Deploy a fix via her WAF.",
+      "Install the vendor-provided patch. Security Architecture 81"
+    ],
+    "answer": 2,
+    "explanation": "Claire's best option is to deploy a detection and fix via her web application firewall (WAF) that will detect the SQL injection (SQLi) attempt and prevent it. An intrusion detection system (IDS) only detects attacks and cannot stop them. Manually updating the application code after reverse-engineering it will take time, and she may not even have the source code or the ability to modify it. Finally, vendor patches for zero days typically take some time to come out even in the best of circumstances, meaning that Claire could be waiting on a patch for quite a while if that is the option she chooses.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q44",
+    "domain": "Security Architecture",
+    "questionNumber": 44,
+    "question": "Christina wants to ensure that session persistence is maintained by her load balancer. What is she attempting to do?",
+    "choices": [
+      "Ensure that all of a client's requests go to the same server for the duration of a given session or transaction.",
+      "Assign the same internal IP address to clients whenever they connect through the load balancer.",
+      "Ensure that all transactions go to the current server in a round-robin during the time it is the primary server.",
+      "Assign the same external IP address to all servers whenever they are the primary server assigned by the load balancer."
+    ],
+    "answer": 0,
+    "explanation": "Session persistence makes sure that all of a client's traffic for a transaction or session goes to the same server or service. The remaining options do not properly describe how session persistence works.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q45",
+    "domain": "Security Architecture",
+    "questionNumber": 45,
+    "question": "Next-generation firewalls include many cutting-edge features. Which of the following is not a common next-generation firewall capability?",
+    "choices": [
+      "Geolocation",
+      "IPS and/or IDS",
+      "Sandboxing",
+      "SQL injection"
+    ],
+    "answer": 3,
+    "explanation": "Although next-generation firewalls (NGFWs) provide may defensive capabilities, SQL injection (SQLi) is an attack instead of a defense. In addition to geolocation, intrusion detection system (IDS) and intrusion prevention system (IPS), and sandboxing capabilities, many next-generation firewalls include web application firewalls, load balancing, IP reputation and URL filtering, and antimalware and antivirus features.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q46",
+    "domain": "Security Architecture",
+    "questionNumber": 46,
+    "question": "Patrick has been asked to identify a UTM appliance for his organization. Which of the following capabilities is not a common feature for a UTM device?",
+    "choices": [
+      "IDS and or IPS",
+      "Antivirus/antimalware",
+      "MDM",
+      "DLP"
+    ],
+    "answer": 2,
+    "explanation": "UTM, or unified threat management, devices commonly serve as firewalls, intrusion detection system (IDS)/intrusion prevention system (IPS), antivirus/antimalware, web proxies, web application and deep packet inspection, secure email gateways, data loss prevention262 Appendix Answers to Review Questions (DLP), security information and event management (SIEM), and even virtual private networking (VPN) devices. They aren't mobile device management (MDM) or universal endpoint management devices, however, since their primary focus is on network security, not systems or device management.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q47",
+    "domain": "Security Architecture",
+    "questionNumber": 47,
+    "question": "Theresa implements a network-based IDS. What can she do to traffic that passes through the IDS?",
+    "choices": [
+      "Review the traffic based on rules and detect and alert about unwanted or undesirable traffic.",
+      "Review the traffic based on rules and detect and stop traffic based on those rules.",
+      "Detect sensitive data being sent to the outside world and encrypt it as it passes through the IDS.",
+      "All of the above."
+    ],
+    "answer": 0,
+    "explanation": "IDSs, or intrusion detection systems, can only detect unwanted and malicious traffic based on the detection rules and signatures that they have. They cannot stop traffic or modify it. An IPS, or intrusion prevention system, that is placed in line with network traffic can take action on that traffic. Thus, IDSs are often used when it is not acceptable to block network traffic, or when a tap or other network device is used to clone traffic for inspection.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q48",
+    "domain": "Security Architecture",
+    "questionNumber": 48,
+    "question": "Murali is building his organization's container security best practices document and wants to ensure that he covers the most common items for container security. Which of the following is not a specific concern for containers?",
+    "choices": [
+      "The security of the container host",
+      "Securing the management stack for the container",
+      "Insider threats",
+      "Monitoring network traffic to and from the containers for threats and attacks Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Although insider threats are a concern, they're not any different for containers than any other system. Ensuring container host security, securing the management stack, and making sure that network traffic to and from containers is secure are all common container security concerns.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q49",
+    "domain": "Security Architecture",
+    "questionNumber": 49,
+    "question": "Fred sets up his authentication and authorization system to apply the following rules to authenticated users: Users who are not logging in from inside the trusted network must use multifactor authentication. Users who have logged in from geographic locations that are more than 100 miles apart within 15 minutes will be denied. What type of access control is Fred using?",
+    "choices": [
+      "Geographic restrictions",
+      "Time-based logins",
+      "Supervisory control",
+      "Role-based access"
+    ],
+    "answer": 0,
+    "explanation": "This is an example of using geographic restrictions to protect data. Fred has rules that require additional authentication for those who are off-site and also those who may be performing impossible travel. Time is not part of both rules, there's no role description, and supervisory control is not a term used for this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q50",
+    "domain": "Security Architecture",
+    "questionNumber": 50,
+    "question": "Maria is responsible for security at a small company. She is concerned about unauthorized devices being connected to the network. She is looking for a device authentication process. Which of the following would be the best choice for her?",
+    "choices": [
+      "CHAP",
+      "Kerberos",
+      "802.11i",
+      "802.1X"
+    ],
+    "answer": 3,
+    "explanation": "802.1X is the IEEE standard for port-based network access control. This protocol is frequently used to authenticate devices. Challenge Handshake Authentication Protocol (CHAP) is an authentication protocol but not the best choice for device authentication. Kerberos is an authentication protocol but not the best choice for device authentication. 802.11i is the Wi-Fi security standard and is fully implemented in WPA2 and WPA3. It is not a device authentication procedure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q51",
+    "domain": "Security Architecture",
+    "questionNumber": 51,
+    "question": "Jason is considering deploying a network intrusion prevention system (IPS) and wants to be able to detect advanced persistent threats (APTs). What type of IPS detection method is most likely to detect the behaviors of an APT after it has gathered baseline information about normal operations?",
+    "choices": [
+      "Signature-based IPS detections",
+      "Heuristic-based IPS detections",
+      "Malicious tool hash IPS detections",
+      "Anomaly-based IPS detections"
+    ],
+    "answer": 3,
+    "explanation": "Anomaly-based detection systems build a behavioral baseline for networks and then assess differences from those baselines. They may use heuristic capabilities on top of those, but the question specifically asks about baselined operations pointing to an anomaly-based system. Heuristic-based detections look for behaviors that are typically malicious, and signature-based or hash-based detections look for known malicious tools or files.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q52",
+    "domain": "Security Architecture",
+    "questionNumber": 52,
+    "question": "Mila wants to generate a unique digital fingerprint for a file, and needs to choose between a checksum and a hash. Which option should she choose and why should she choose it?",
+    "choices": [
+      "A hash, because it is unique to the file",
+      "A checksum, because it verifies the contents of the file",
+      "A hash, because it can be reversed to validate the file",
+      "A checksum, because it is less prone to collisions than a hash"
+    ],
+    "answer": 0,
+    "explanation": "Mila should select a hash because a hash is designed to be unique to each possible input. That means that multiple files could have the same checksum value, whereas a hashing algorithm will be unique for each file that it is run against.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q53",
+    "domain": "Security Architecture",
+    "questionNumber": 53,
+    "question": "Mila gives her team a scenario, and then asks them questions about how they would respond, what issues they expect they might encounter, and how they would handle those issues. What type of exercise has she conducted?",
+    "choices": [
+      "A tabletop exercise",
+      "A walk-through",
+      "A simulation",
+      "A drill Security Architecture 83"
+    ],
+    "answer": 0,
+    "explanation": "Tabletop exercises are used to talk through a process. Unlike walk-throughs, which focus on a step-by-step review of an incident, Mila will focus more on how her team responds and on learning from those answers. A tabletop exercise can involve gaming out a situation. A simulation actually emulates an event or incident, either on a small or a large scale. Drills are not defined as part of the Security+ exam outline.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q54",
+    "domain": "Security Architecture",
+    "questionNumber": 54,
+    "question": "Jerome needs to explain the key difference between high availability and fault tolerance to his management. What is the major difference between the two?",
+    "choices": [
+      "High availability is designed to avoid service interruptions almost entirely, whereas faulttolerant environments have minimal service disruptions.",
+      "High availability provides services, whereas fault tolerance handles issues.",
+      "High availability focuses on data, whereas fault tolerance focuses on infrastructure.",
+      "High availability has minimal service interruptions, whereas fault-tolerant environments are designed to avoid service interruptions almost entirely."
+    ],
+    "answer": 3,
+    "explanation": "High-availability designs are less expensive because they attempt to minimize service interruptions, whereas fault-tolerant designs seek to avoid service interruptions almost entirely, and thus cost significantly more. Both focus on service availability and typically use both hardware and software tools to meet their goals. Security Architecture 263",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q55",
+    "domain": "Security Architecture",
+    "questionNumber": 55,
+    "question": "What element of the CIA triad is geographic dispersion intended to help with?",
+    "choices": [
+      "Confidentiality",
+      "Integrity",
+      "Assurance",
+      "Availability"
+    ],
+    "answer": 3,
+    "explanation": "Geographic dispersion is intended to help with availability by ensuring that a single disaster does not take multiple datacenters or other facilities offline. It does not directly impact confidentiality or integrity, and assurance is not part of the CIA triad.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q56",
+    "domain": "Security Architecture",
+    "questionNumber": 56,
+    "question": "Valentine wants to choose an appropriate obfuscation method to allow her customer service representatives to validate credit card numbers without exposing the full number to the staff member. What obfuscation method should she select?",
+    "choices": [
+      "Masking",
+      "Tokenization",
+      "Steganography",
+      "Hashing"
+    ],
+    "answer": 0,
+    "explanation": "Masking replaces some characters with an alternate character, allowing tasks like validating credit card numbers without exposing all of a data field. Tokenization replaces values with a replacement value allowing data to be accessed without exposing the actual value. Steganography hides data in images and is not a useful solution in this scenario. Hashing is a mathematical technique that analyzes a file and computes a unique fingerprint, known as a message digest or hash, for that file.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q57",
+    "domain": "Security Architecture",
+    "questionNumber": 57,
+    "question": "Mateo wants to conduct a fail over test for his datacenter. What will he need to do to accomplish this?",
+    "choices": [
+      "Turn off all systems in his datacenter.",
+      "Simulate what would occur during a datacenter outage.",
+      "Force a fail over using his network or other systems.",
+      "Cause an outage of a critical system."
+    ],
+    "answer": 2,
+    "explanation": "Datacenters should have a fail over process that can be manually executed in case of emergency. Mateo should use that process to fail over to his organization's fail over site. Turning off every system in a datacenter is not recommended as this may lead to other unexpected failures. Simulation is not a fail over test, and creating an outage of a critical system typically will not cause an entire datacenter to fail over.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q58",
+    "domain": "Security Architecture",
+    "questionNumber": 58,
+    "question": "Casey's organization has proprietary information models that they use to analyze the market that they operate in. What data type best describes this information?",
+    "choices": [
+      "Trade secret",
+      "Regulated",
+      "Financial information",
+      "Public information"
+    ],
+    "answer": 0,
+    "explanation": "Trade secrets are intellectual property that is commercially valuable and is limited to a small group of individuals. Regulated information is controlled by law or has legal requirements around it. Financial information involves things related to monetary transactions or accounts. Public information is not controlled and is available to the public or could be without causing harm or concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q59",
+    "domain": "Security Architecture",
+    "questionNumber": 59,
+    "question": "Nicole wants to protect her SMTP email exchanges from being read by others while on the wire. What can she implement to protect SMTP?",
+    "choices": [
+      "SPF",
+      "TLS",
+      "DKIM",
+      "EXIF Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "Implementing Transport Layer Security (TLS) to encapsulate Simple Mail Transfer Protocol (SMTP) would allow the traffic to be encrypted in transit, protecting it from being read. Sender Policy Framework (SPF) and DomainKeys Identified Mail (DKIM) are both used to prevent spoofing, and Exchangeable Image File Format (EXIF) is information found in an image file.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q60",
+    "domain": "Security Architecture",
+    "questionNumber": 60,
+    "question": "Brandon deploys a server in a VLAN used for IoT devices. He then creates firewall rules that allow users in a system administration network to SSH to that server so that they can manage systems in the protected network segment. What type of solution has Brandon deployed?",
+    "choices": [
+      "A UTM",
+      "A jump server",
+      "An ICS server",
+      "A VPN"
+    ],
+    "answer": 1,
+    "explanation": "Jump servers are used to access secured zones and are typically carefully controlled and monitored because they are the single point of entry from untrusted environments. A Unified Threat Management (UTM) is a security device that combines firewall features with a variety of other security functions. ICS stands for Industrial Control System. This is not an ICS, although the IoT devices it allows connections to may be a form of ICS. VPNs, or virtual private networks, encapsulate and protect network traffic as it moves through untrusted networks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q61",
+    "domain": "Security Architecture",
+    "questionNumber": 61,
+    "question": "What protocol is commonly used to allow for secured tunnels between corporate networks through untrusted networks?",
+    "choices": [
+      "RTOS",
+      "SHA-1",
+      "IPSec",
+      "RSA"
+    ],
+    "answer": 2,
+    "explanation": "IPSec virtual private networks are commonly established to tunnel through public or untrusted networks. A RTOS, or real-time operating system, is used for embedded systems. SHA-1 is a hashing algorithm, and RSA is an encryption algorithm that is used for IPSec as part of its authentication process. IPSec tunnels themselves commonly use AES, but may use other algorithms as well.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q62",
+    "domain": "Security Architecture",
+    "questionNumber": 62,
+    "question": "Asher's organization has created a list of potential customers based on an analysis of their use of their site, buying habits, and ability to spend money on new products. What type of data is a list like this?",
+    "choices": [
+      "Legal information",
+      "Trade secrets",
+      "Regulated data",
+      "Classified data"
+    ],
+    "answer": 1,
+    "explanation": "Intellectual property that would have value to competitors and that is kept confidential to preserve it for competitive advantage is a trade secret. Legal information is typically related to contracts, regulations, or similar matters. Regulated data is covered by law, and classified data is used by governments.264 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q63",
+    "domain": "Security Architecture",
+    "questionNumber": 63,
+    "question": "Eva wants to deploy a network security device that will provide firewall services as well as IPS and email filtering. Which device should she deploy?",
+    "choices": [
+      "A UTM",
+      "An FWSM",
+      "A WAF",
+      "An ELB"
+    ],
+    "answer": 0,
+    "explanation": "A unified threat management (UTM) device combines multiple security services including firewall, IDS or IPS, antivirus/antimalware, email filtering, WAF, and similar services into a single solution. An FWSM, or firewall service module, is an older Cisco chassis-based firewall; a WAF is a web application firewall; and an ELB is Elastic Load Balancer, a loadbalancing service available via AWS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q64",
+    "domain": "Security Architecture",
+    "questionNumber": 64,
+    "question": "Ramon wants to conduct an exercise for his organization with the least potential to cause disruption. Which of the following testing methodologies is least likely to cause potential issues with service delivery?",
+    "choices": [
+      "Tabletop exercises",
+      "Fail over exercises",
+      "Simulation exercises",
+      "Parallel processing exercises"
+    ],
+    "answer": 0,
+    "explanation": "Tabletop exercises do not involve an actual technical system and instead are gamed out in a room. This means they're least likely to cause disruptions. Fail over and parallel processing exercises can have actual impact to live systems, and simulation exercises require care because simulated calls and actions may inadvertently become real if staff are not fully aware of the scenario being an exercise or accidentally execute a command that can cause actual impact.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q65",
+    "domain": "Security Architecture",
+    "questionNumber": 65,
+    "question": "Cassandra is considering transitioning from an on-premises to a hybrid cloud environment. Which of the following concerns will she need to consider that would not have been required in a single on-premises datacenter previously?",
+    "choices": [
+      "RPOs",
+      "Data sovereignty",
+      "RTOs",
+      "Power resilience Security Architecture 85"
+    ],
+    "answer": 1,
+    "explanation": "Data sovereignty is a new concern for organizations that host services and data outside of their local area, including across state or national boundaries. Recovery point objectives (RPOs), recovery time objectives (RTOs), and power resilience are all common concerns for on-premises datacenters.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q66",
+    "domain": "Security Architecture",
+    "questionNumber": 66,
+    "question": "Nick wants to protect Microsoft Excel files in transit across a network. Which of the following is not a method he could use to protect data in transit?",
+    "choices": [
+      "TLS",
+      "VPN",
+      "File encryption",
+      "Disk encryption"
+    ],
+    "answer": 3,
+    "explanation": "Disk encryption is used to protect data at rest, not data in use or data in transit. TLS, VPNs, and file encryption can all be used to protect files that are sent via a network.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q67",
+    "domain": "Security Architecture",
+    "questionNumber": 67,
+    "question": "Dani wants to protect HTTP traffic that is sent from SCADA devices on her network to a cloud-hosted controller. The devices don't natively support an HTTPS connection. What could she do to transparently protect the data?",
+    "choices": [
+      "Set up a VPN connection from each SCADA device to the remote server.",
+      "Set up a TLS-enabled proxy between the devices and the server.",
+      "Set up SD-WAN.",
+      "Install X.509 certificates on each SCADA device."
+    ],
+    "answer": 1,
+    "explanation": "A TLS-enabled proxy between the devices and server doesn't require anything else to be installed on the devices, which is typically impossible with SCADA devices. That means the VPN connection and the X.509 certificates are unlikely to work. SD-WAN helps to manage external connectivity, not to directly protect traffic in this scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q68",
+    "domain": "Security Architecture",
+    "questionNumber": 68,
+    "question": "Selah's organization is conducting a simulation exercise. Which of the following is not a common element of a simulation?",
+    "choices": [
+      "Testing of notification processes",
+      "Testing of procedures",
+      "Testing of fail over capabilities",
+      "Testing of communication systems"
+    ],
+    "answer": 2,
+    "explanation": "Simulations try to avoid causing potential outages and work to simulate a scenario. They may validate that notification processes communication systems and procedures all work.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q69",
+    "domain": "Security Architecture",
+    "questionNumber": 69,
+    "question": "Which of the following is not a common practice used to secure data in transit?",
+    "choices": [
+      "Encryption",
+      "TLS",
+      "Geolocation",
+      "VPN"
+    ],
+    "answer": 2,
+    "explanation": "Geolocation is used to control where data can be accessed from but does not protect data in transit. Encrypting data, encapsulating via TLS, or use of a VPN are all common methods to protect data in transit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q70",
+    "domain": "Security Architecture",
+    "questionNumber": 70,
+    "question": "Olivia wants to deploy a new firewall. What type of firewall should she select if the ability to operate at layer 7 is important to her?",
+    "choices": [
+      "A WAF",
+      "An NGFW",
+      "A stateful firewall",
+      "A packet filter"
+    ],
+    "answer": 1,
+    "explanation": "Next-generation firewalls (NGFWs) typically provide the ability to inspect traffic at both the transport layer (layer 4) and the application layer (layer 7). This means an NGFW will best fit the need. Web application firewalls also work at this level, but only focus on web applications, which does not fully meet the broad application inspection requirement in the question. Stateful firewalls and packet filters both operate at layer 4 only.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q71",
+    "domain": "Security Architecture",
+    "questionNumber": 71,
+    "question": "Marcellus wants to ensure that his organization has sufficient capacity to handle the failure of a web server. What type of technology could he deploy to ensure that individual web server failures are handled gracefully without using an overly complex solution?",
+    "choices": [
+      "Platform diversity",
+      "A multi-cloud system",
+      "A load balancer",
+      "A warm site Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "A load balancer can help handle individual web server failures gracefully by moving load to the functioning web servers in a cluster. In scalable environments, this can also result in more servers being instantiated. Platform diversity helps to protect against failures or vulnerabilities in a single vendor, platform, or system. Multi-cloud systems could help in this case but are much more complex than required by the relatively simple need to handle an individual web server's failure. A warm site would be suited to a datacenter failure, not a single web server failing.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q72",
+    "domain": "Security Architecture",
+    "questionNumber": 72,
+    "question": "What failure mode is typically preferred for in-line network taps?",
+    "choices": [
+      "Fail-open",
+      "Fail over",
+      "Fail-closed",
+      "Fail-reset"
+    ],
+    "answer": 0,
+    "explanation": "In-line network taps are typically configured to fail-open since they are used to create a copy of the network traffic. Devices that provide in-line security like IPS systems may be Security Architecture 265 configured to fail-closed because their failure removes critical security functionality. Fail over describes the ability to fail to another device, which is not a common function for an in-line tap. Fail-reset was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q73",
+    "domain": "Security Architecture",
+    "questionNumber": 73,
+    "question": "What key network technology is the core of an SASE implementation?",
+    "choices": [
+      "TLS",
+      "VLANs",
+      "IPSec",
+      "SD-WAN"
+    ],
+    "answer": 3,
+    "explanation": "Software-defined wide area networks (SD-WANs) are the core component of secure access, secure edge technology. Additional tools like zero trust functionality, cloud access security brokers, and firewalls are all combined to build a complete SASE implementation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q74",
+    "domain": "Security Architecture",
+    "questionNumber": 74,
+    "question": "Mikayla wants to prevent unauthorized users from plugging network devices into her wired network. What control would be most effective for this if she needs Ethernet jacks to be available in publicly accessible spaces for her staff to plug devices in as they move around the facility, but also wants to ensure those devices are secure?",
+    "choices": [
+      "NAC",
+      "Port security",
+      "IPS",
+      "Jump servers"
+    ],
+    "answer": 0,
+    "explanation": "Network access control (NAC) has the ability to both profile device security and validate that a given user is authorized to plug a device into a specific Ethernet jack makes this the best solution for Mikayla's use case. Port security's list of recognized MAC addresses is both potentially vulnerable to MAC spoofing and does not meet the device security check requirements described. An IPS can help prevent network attacks but does not control port-level access, and jump servers are used to allow access to secured network segments, not to protect individual network jacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q75",
+    "domain": "Security Architecture",
+    "questionNumber": 75,
+    "question": "Mark's organization is preparing to move to an infrastructure as code model. He's worried about what to do if a change in code causes issues. What common IaC practice will help the most with this?",
+    "choices": [
+      "Threat modeling",
+      "Least privilege",
+      "Version control",
+      "Artifact signing"
+    ],
+    "answer": 2,
+    "explanation": "Version control will allow staff from Mark's organization to identify a bad version and revert to a previous known-good version if needed. Threat modeling, least privilege, and artifact signing are all common best practices for IaC, but don't directly impact version changes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q76",
+    "domain": "Security Architecture",
+    "questionNumber": 76,
+    "question": "The company that Alex works for is preparing to adopt a platform as a service tool for their customer relationship management needs. Alex knows that third-party vendors are responsible for some, but not all, security in a PaaS environment. Which of the following is the PaaS vendor responsible for?",
+    "choices": [
+      "Network security",
+      "Endpoint security",
+      "User account security",
+      "Application security"
+    ],
+    "answer": 0,
+    "explanation": "PaaS vendors are responsible for the underlying service and platform, including the networks, systems, and infrastructure that it runs on, including their security. Customers are responsible for their use of the platform, including endpoints, users, and applications built on the platform, again including their security.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q77",
+    "domain": "Security Architecture",
+    "questionNumber": 77,
+    "question": "Nick's organization houses tape-based backups for their critical data in their primary datacenter. What resilience issue could result in the event of a major disaster?",
+    "choices": [
+      "The tapes may not have been validated and might not be able to be restored.",
+      "A single disaster could destroy both the facility and the tapes.",
+      "The tapes may not last for the expected lifetime of the backups.",
+      "Tapes are relatively slow and may not allow for timely restoration. Security Architecture 87"
+    ],
+    "answer": 1,
+    "explanation": "The biggest issue for resilience is that placing backups in the same facility as the devices or systems they are backing up means that a single disaster could destroy both. Nick should consider off-site backup storage. Tape recovery can be slow, but this is a restoration timeframe issue, not a resilience issue. Tape lifetime is typically quite long, and backups are usually rolled over in time periods shorter than a year for most organizations. Finally, validation of backups can be a concern, but there is no description in the question that would lead to conclusions about testing.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q78",
+    "domain": "Security Architecture",
+    "questionNumber": 78,
+    "question": "Charles wants to adopt an encryption tool. What encryption standard should he look for the tool to support to ensure that he is using a current secure standard to protect his data?",
+    "choices": [
+      "AES-512",
+      "AES-256",
+      "AES-128",
+      "AES-192"
+    ],
+    "answer": 1,
+    "explanation": "AES-256 is the current mainstream standard for encryption. AES 128 and 192 are both less secure, and AES-512 is not an implemented or commonly used standard.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q79",
+    "domain": "Security Architecture",
+    "questionNumber": 79,
+    "question": "Which of the following is not a common security concern with real-time operating systems?",
+    "choices": [
+      "Inability to install security tools",
+      "Lack of updates or patches",
+      "Likelihood of malware infection",
+      "Vulnerability concerns"
+    ],
+    "answer": 2,
+    "explanation": "While RTOS issues with vulnerabilities, the inability to install security tools. and a lack of patches for RTOS-based devices are all common security concerns, they are not as frequently targeted by malware infections.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q80",
+    "domain": "Security Architecture",
+    "questionNumber": 80,
+    "question": "Chris wants to create a token to substitute for data in a database. Which of the following is not a common attribute for tokens?",
+    "choices": [
+      "They don't have exploitable meaning themselves.",
+      "They are easily reversible to identify the original data, even without the tokenization scheme.",
+      "They frequently rely on one-way hash functions.",
+      "Tokens must be mapped to matching original data."
+    ],
+    "answer": 1,
+    "explanation": "Tokens should not be easily reversible. Instead, they should require access to the original tokenization function or a mapping to the original data. Tokens should not have intrinsic meaning or value, and frequently rely on hash functions as part of their generation process to ensure this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q81",
+    "domain": "Security Architecture",
+    "questionNumber": 81,
+    "question": "Pete's organization has had a system fail and Pete wants to recover from backup. Which of the following backup methods will typically result in the fastest restoration timeframe?",
+    "choices": [
+      "Snapshots",
+      "Replication",
+      "Journaling",
+      "Tape backup"
+    ],
+    "answer": 1,
+    "explanation": "Replication is typically the fastest means to recovery since the replica system is running and ready to take over. Snapshot recovery is normally the next fastest, followed by restoration from other storage. Journaling can introduce additional slowdowns depending on how266 Appendix Answers to Review Questions long it has been since the last backup, as the journal is replayed from the time that occurred to the time of failure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q82",
+    "domain": "Security Architecture",
+    "questionNumber": 82,
+    "question": "Henry accesses a database server from his workstation. What data state best describes the data while it is on the network?",
+    "choices": [
+      "Data at rest",
+      "Data in use",
+      "Data on the wire",
+      "Data in transit"
+    ],
+    "answer": 3,
+    "explanation": "The Security+ exam outline recognizes three data states: data at rest, data in transit, and data in use. When Henry accesses the data and it is transferred via the network, it is data in transit. When he is working with the data, including modifying or otherwise using it, it is data in use. When it resides on the drives the database is stored in, it is data at rest. Data on the wire is not a common term for this-data in motion and data in transit are both common in industry usage, and the Security+ exam outline uses data in transit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q83",
+    "domain": "Security Architecture",
+    "questionNumber": 83,
+    "question": "Theresa's organization operates in multiple countries. She knows that there are different laws that apply to her organization's use of data in each country they operate in. What concept describes this?",
+    "choices": [
+      "Obfuscation",
+      "Legal hold",
+      "Data sovereignty",
+      "Geographic restrictions Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Data sovereignty means that governments have the ability to control data within their borders via law and regulations. Theresa's organization will need to comply with the laws of each country they operate in. Obfuscation refers to making something difficult to understand or read. Legal holds are used to require preservation of data when legal action is occurring or pending. Geographic restriction is used to limit where data can be accessed from and is a technical control used by organizations as part of data security efforts.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q84",
+    "domain": "Security Architecture",
+    "questionNumber": 84,
+    "question": "Hrant is deploying a network tap that supports an IPS for monitoring. If he wants to ensure that his organization's security remains the same even if the tap and IPS fails, and prefers downtime to a lack of monitoring, what type of failure mode and monitoring deployment should he select?",
+    "choices": [
+      "In-line, fail-closed",
+      "In-line, fail-open",
+      "Tap, fail-closed",
+      "Tap, fail-open"
+    ],
+    "answer": 0,
+    "explanation": "Hrant's use of an IPS means he wants to be in-line to allow him to block traffic. Since he prefers that a failure remain secure rather than potentially allowing attacks through, he should select a fail-closed implementation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q85",
+    "domain": "Security Architecture",
+    "questionNumber": 85,
+    "question": "Troy wants to physically isolate a device. What does he need to do to accomplish this?",
+    "choices": [
+      "Move it to a secure VLAN.",
+      "Implement 802.1X.",
+      "Create a physical air gap.",
+      "Unplug the device from power and the network."
+    ],
+    "answer": 2,
+    "explanation": "Physical isolation requires the creation of an air gap. This means unplugging the device from the network. A secure VLAN won't accomplish this, nor will 802.1X. Unplugging the device from power isn't required for physical isolation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q86",
+    "domain": "Security Architecture",
+    "questionNumber": 86,
+    "question": "Yasmine wants to ensure that her organization has appropriate connectivity as part of their infrastructure design for their primary site. Which of the following concerns should she review to ensure that physical disasters do not disable her company's operations?",
+    "choices": [
+      "Service provider path diversity",
+      "Ensuring both fiber and copper connectivity are used",
+      "Implementing SD-WAN",
+      "Geographic dispersion"
+    ],
+    "answer": 0,
+    "explanation": "Path diversity ensures that the connectivity to the facility does not take the same path. This helps to prevent the moment network managers dread when a single accident-or construction equipment in the wrong place-tears up multiple fiber or copper paths, taking organizations offline. Diversity of the cabling type is not a requirement or need, SD-WAN does not directly address physical disasters, and geographic dispersion is not possible at a single site.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q87",
+    "domain": "Security Architecture",
+    "questionNumber": 87,
+    "question": "Carlos uses a remote desktop tool to connect to a server through a firewall that protects his organization's database servers. He then uses software on the server to manage the database servers. What type of solution is Carlos using?",
+    "choices": [
+      "A network tap",
+      "SASE",
+      "SD-WAN",
+      "A jump server"
+    ],
+    "answer": 3,
+    "explanation": "Carlos is using a jump server that is used to connect from an untrusted or lower trust zone from outside of a firewall. A network tap is used to provide copies of network traffic for analysis. SASE combines SD-WAN and other security technologies to provide network security services regardless of where systems are for enterprises. SD-WAN (software-defined wide area networking) is used to manage network connectivity through commodity Internet providers and other services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q88",
+    "domain": "Security Architecture",
+    "questionNumber": 88,
+    "question": "Alaina is planning how to staff her warm site in the case of a natural disaster that disables her primary site. What concern is most likely to impact her capacity planning for staff in this scenario?",
+    "choices": [
+      "Whether staff will be able to reach the site",
+      "Whether staff will be impacted by the disaster",
+      "Whether the site will be impacted by the disaster",
+      "Whether generator fuel will be available"
+    ],
+    "answer": 1,
+    "explanation": "Capacity planning for disaster operations needs to take the impact on staff themselves into account. While modern operations can frequently be conducted remotely, reducing the number of staff required to be physically able to reach the site, staff members may not have power, Internet access, or even housing in disaster scenarios. The remote site's ability to operate is not directly a staff capacity planning issue, nor is how generators will be fueled.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q89",
+    "domain": "Security Architecture",
+    "questionNumber": 89,
+    "question": "Which of the following is not a common type of incident response exercise?",
+    "choices": [
+      "Drills",
+      "Simulations",
+      "Tabletop",
+      "Walk-throughs Security Architecture 89"
+    ],
+    "answer": 0,
+    "explanation": "Typical exercise types for most organizations include simulations that emulate an actual incident response process, walk-throughs that guide staff through an event, and tabletop exercises that are gamed out without taking actual action. Drills are classified as more focused on specific actions or functions, and they are less common because they can result in inadvertent action or mistakes and do not cover the breadth of an incident. Security Architecture 267",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q90",
+    "domain": "Security Architecture",
+    "questionNumber": 90,
+    "question": "Jack wants to ensure that files have not changed. What technique can he use to compare current versions of the files to an original copy?",
+    "choices": [
+      "Encryption.",
+      "Check the file size.",
+      "Check the file metadata.",
+      "Compare hashes of the files."
+    ],
+    "answer": 3,
+    "explanation": "Comparing hashes is an effective way of determining if a file is different from the original. While file length may be the same and metadata can be modified, hashes will still show changes. Encrypting the files does not compare them, and should not be used for this purpose.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q91",
+    "domain": "Security Architecture",
+    "questionNumber": 91,
+    "question": "Yuri wants to use an off-site backup location. What challenge can off-site backup locations create for organizations?",
+    "choices": [
+      "It is difficult to validate the integrity of the backups.",
+      "Retrieving the backups may slow down recovery.",
+      "The backups cannot be easily updated.",
+      "Off-site backups may be impacted by the same disaster."
+    ],
+    "answer": 1,
+    "explanation": "Off-site backup locations are typically chosen so that they will not be impacted by the same disaster. That means that recovery may be slow if the backups either need to be physically retrieved or must be downloaded via an Internet connection. Backup integrity is typically verified as part of the backup process, and this can be checked easily. Off-site backups are typically updated as part of the backup process, and this should not be an issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q92",
+    "domain": "Security Architecture",
+    "questionNumber": 92,
+    "question": "Which of the following is a common part of technology capacity planning for resilience?",
+    "choices": [
+      "Cross-training staff",
+      "Using load balancers",
+      "Using multiple geographically diverse datacenters",
+      "Deploying uninterruptible power supplies"
+    ],
+    "answer": 1,
+    "explanation": "Load balancers are commonly used to help provide resilience by allowing applications and servers to be clustered. Cross-training staff is a people- or staff-based capacity planning solution. Both geographically diverse datacenters and UPS are examples of infrastructure resilience options.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q93",
+    "domain": "Security Architecture",
+    "questionNumber": 93,
+    "question": "Which of the following data types best describes data covered by the European Union's GDPR?",
+    "choices": [
+      "Trade secrets",
+      "Intellectual property",
+      "Regulated data",
+      "Legal information"
+    ],
+    "answer": 2,
+    "explanation": "The European Union's (EU) General Data Protection Regulation (GDPR) is a privacy regulation, and thus, data covered by the GDPR is regulated data. The GDPR does include language that addresses not adversely impacting the rights of others, including intellectual property rights, particularly in terms of software, but the best answer remains that this is regulated data. Trade secrets and legal information are not broad enough to describe this data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q94",
+    "domain": "Security Architecture",
+    "questionNumber": 94,
+    "question": "What is the biggest downside of using journaling as part of a backup restoration process?",
+    "choices": [
+      "Larger volumes of data may be lost.",
+      "The time it takes to restore from a journal.",
+      "Journals cannot be encrypted for security.",
+      "Journaling does not support live databases."
+    ],
+    "answer": 1,
+    "explanation": "Journaling replays transactions, which can take an extended period of time if the time between the last backup and the data loss event was longer and there was a high volume of transactions. Journals typically minimize the amount of transaction data that is lost; they can be encrypted, although care must be taken to ensure that they can be recovered; and journaling is used with live databases to ensure transactions are recoverable to as close to the point in time of a data loss event as possible.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q95",
+    "domain": "Security Architecture",
+    "questionNumber": 95,
+    "question": "Jill wants to design her organization for high availability. Which of the following design elements best supports power resilience for a high-availability environment for an on-site datacenter?",
+    "choices": [
+      "Using generators",
+      "Using UPS systems",
+      "Using UPS systems backed up by generators",
+      "Using a warm site on a separate power grid Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Using UPS with generators will allow systems to remain online during a power outage even if the power outage extends for some time. Generators alone will not spin up fast enough to avoid an outage, and UPS systems will run out of battery power in extended outages. A warm site requires setup time to bring it online, resulting in an outage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q96",
+    "domain": "Security Architecture",
+    "questionNumber": 96,
+    "question": "Valerie is concerned that the data obfuscation technique that her organization is using to ensure customer data is not visible to staff members who do not need to see it for their jobs may be vulnerable to client-side tampering. Which of the following techniques is most likely to be vulnerable to client-side tampering resulting in de-obfuscation?",
+    "choices": [
+      "Masking",
+      "Tokenization",
+      "Encryption",
+      "Hashing"
+    ],
+    "answer": 0,
+    "explanation": "Masking may be conducted in client-side code, resulting in potential exposures of data. Secure designs require masking to occur in server-side code rather than in the client-side web application. Tokenization typically relies on a separate database or field, making it less likely to be a problem. Encryption and hashing are both unlikely to have problems with client-side tampering, making them less secure.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q97",
+    "domain": "Security Architecture",
+    "questionNumber": 97,
+    "question": "Which of the following is not a commonly used business data classification?",
+    "choices": [
+      "Sensitive",
+      "Confidential",
+      "Top Secret",
+      "Public"
+    ],
+    "answer": 2,
+    "explanation": "Top Secret and Secret are examples of government classifications. Businesses typically use classifications like sensitive, confidential, and public.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q98",
+    "domain": "Security Architecture",
+    "questionNumber": 98,
+    "question": "Malia is reviewing potential considerations for her ICS deployment. Which of the following is typically not a consideration that Malia can control or change for embedded devices?",
+    "choices": [
+      "Ease of deployment",
+      "Patch availability",
+      "Risk transference",
+      "Compute"
+    ],
+    "answer": 3,
+    "explanation": "Compute is rarely a significant concern for embedded systems. They're designed to function for long periods of time performing a specific function and do not have additional software or functions added. How easy they are to deploy, if they can be patched and updated, and the support lifespan as guaranteed or promised by the vendor, and risk transference by engaging third-party vendors are all likely concerns for a major industrial control system (ICS) deployment that Malia can control through the selection process.268 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q99",
+    "domain": "Security Architecture",
+    "questionNumber": 99,
+    "question": "What layer is Layer 7 in the OSI model?",
+    "choices": [
+      "The physical layer",
+      "The application layer",
+      "The transport layer",
+      "The session layer"
+    ],
+    "answer": 1,
+    "explanation": "Layer 7 is the application layer. In order the layers are: 1 - physical, 2 - data link, 3 - network, 4 - transport, 5 - session, 6 - presentation, and 7 - application. The Security+ exam outline only focuses on Layer 4 and Layer 7 in the context of network security devices that can operate at those layers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q100",
+    "domain": "Security Architecture",
+    "questionNumber": 100,
+    "question": "Network connected devices built into washing machines, microwaves, and other household appliances are examples of what type of network device?",
+    "choices": [
+      "ICS",
+      "SCADA",
+      "Embedded systems",
+      "Virtualization"
+    ],
+    "answer": 2,
+    "explanation": "These are all examples of embedded systems, computers built into devices to allow them to function. Other examples include computers built into cars, digital cameras, and thermostats. They often receive fewer (or no) updates, and are required to function for long periods of time as part of other devices or systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q101",
+    "domain": "Security Architecture",
+    "questionNumber": 101,
+    "question": "What term best describes a set of loosely coupled, fine-grained services that communicate via lightweight protocols, allowing organizations to easily build new services without additional dependencies or infrastructure?",
+    "choices": [
+      "Containerization",
+      "IoT",
+      "Software-defined infrastructure",
+      "Microservices Security Architecture 91"
+    ],
+    "answer": 3,
+    "explanation": "Microservices are loosely coupled and fine-grained, and they are intended to be easy to deploy without significant overhead or dependencies. They rely on lightweight protocols like HTTP to make them easier to deploy in common infrastructures. Containers are used to allow applications to be easily deployed without moving a complete operating system but with the required libraries and components to function. The Internet of Things (IoT) describes Internet-enabled devices of all sorts, including embedded systems. Softwaredefined infrastructure is commonly used for cloud services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q102",
+    "domain": "Security Architecture",
+    "questionNumber": 102,
+    "question": "What type of backup is done to update a full backup with changes made after the full backup occurred?",
+    "choices": [
+      "Incremental",
+      "Partial",
+      "Daily",
+      "Snapshots"
+    ],
+    "answer": 0,
+    "explanation": "Incremental backups only include the data that has changed since the last full backup. To restore a backup using incremental backups, the full backup is restored, then incremental backups are applied in order from oldest to most recent. Partial backups describe a backup of only certain data or parts of a system. Daily backups are just that- daily-and may be full or incremental. Snapshots are point-in-time images of a system's or a device's data and memory.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q103",
+    "domain": "Security Architecture",
+    "questionNumber": 103,
+    "question": "As part of an exercise for her organization, Sharon calls a team member and asks them to check the status of critical systems. The team member, who is aware of the exercise, does not actually validate the systems but responds that specific systems are down based on the scenario. What type of exercise is Sharon most likely part of?",
+    "choices": [
+      "A tabletop exercise",
+      "A fail over exercise",
+      "A simulation exercise",
+      "A parallel processing test"
+    ],
+    "answer": 2,
+    "explanation": "Sharon is most likely part of a simulation exercise, where organizations test how they would respond to a scenario without taking actual actions. This is safer than a fail over or parallel processing test but is closer to a real event than a tabletop exercise.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q104",
+    "domain": "Security Architecture",
+    "questionNumber": 104,
+    "question": "Zhuri wants to ensure that her organization's datacenter remains online during an extended power outage. What power resilience option is best suited to extended outages?",
+    "choices": [
+      "Generators",
+      "Solar",
+      "UPS",
+      "PDUs"
+    ],
+    "answer": 0,
+    "explanation": "Generators are used by organizations that need to handle extended power outages. They are commonly paired with UPS systems that handle the immediate power outage, allowing the generator to start and stabilize. Solar power alone is not a good solution without a significant battery system, and datacenter-scale battery systems paired with solar are not yet common. PDUs (power distribution units) are used to distribute and control power in a datacenter but do not provide power generation or backup capabilities.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q105",
+    "domain": "Security Architecture",
+    "questionNumber": 105,
+    "question": "Cesar wants to ensure that his organization's SCADA and ICS devices remain secure. What is the most effective way to ensure that network attacks cannot impact his operation's critical infrastructure?",
+    "choices": [
+      "Separate VLANs",
+      "TLS",
+      "Physical isolation",
+      "SDN"
+    ],
+    "answer": 2,
+    "explanation": "Physically isolating the network for the SCADA and ICS systems can prevent attacks from outside of the network. In critical infrastructure like power generation stations, this is a common technique to ensure that external attacks cannot cause outages to critical physical infrastructure. Separate VLANs is a common logical control, but attacks against the network or using VLAN hopping techniques can allow attackers to bypass the separation. TLS is useful for protecting traffic but does not meet the security requirement described, and SDN is useful for managing networks but again does not meet the enhanced security requirements in the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q106",
+    "domain": "Security Architecture",
+    "questionNumber": 106,
+    "question": "What key data element is used to validate which systems are allowed to use Ethernet ports where port security is enabled?",
+    "choices": [
+      "Their IP address",
+      "The network card's manufacturer",
+      "The user's password",
+      "Their MAC address"
+    ],
+    "answer": 3,
+    "explanation": "Hardware addresses, known as MAC addresses, are used for port security to determine which systems can connect to a port. Their IP address, the network card manufacturer, and the user's password are not used by port security. Security Architecture 269",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q107",
+    "domain": "Security Architecture",
+    "questionNumber": 107,
+    "question": "Which of the following is not a common concern for extended power outages where generators are providing power to a datacenter they were designed to support during outages?",
+    "choices": [
+      "Fuel availability",
+      "Generator maintenance",
+      "Generator capacity",
+      "Physical redundancy Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Generators are typically sized to the datacenter they support, so capacity is rarely a primary concern. Fuel availability, maintenance and maintenance cycles for extended runs, and ensuring physical redundancy so that a secondary generator can take over during maintenance cycles for long outages are all common concerns.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q108",
+    "domain": "Security Architecture",
+    "questionNumber": 108,
+    "question": "Rafael wants to protect his data from being accessed by unauthorized users. Which of the following is not well suited to preventing attacks by insider threats?",
+    "choices": [
+      "Encryption",
+      "Geographic restrictions",
+      "Tokenization",
+      "Permission restrictions"
+    ],
+    "answer": 1,
+    "explanation": "Geographic restrictions are rarely helpful for insider threats because insiders are likely to already be in the same location as authorized users in most organizations. Encryption, tokenization, and permission restrictions can all be used to ensure that only authorized users gain access to the data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q109",
+    "domain": "Security Architecture",
+    "questionNumber": 109,
+    "question": "Malia wants to protect data in use. Which technique is not a good solution to ensuring that data in use is protected?",
+    "choices": [
+      "Encryption",
+      "Control access to the data",
+      "Hashing data",
+      "Limiting where data is processed"
+    ],
+    "answer": 2,
+    "explanation": "Use of encryption through secure enclaves and restricted processing environments, controlling access to the data, and limiting where data is processed are all useful controls. Hashing the data does not leave it in a usable form since hashes transform the data, and thus is not a useful solution.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q110",
+    "domain": "Security Architecture",
+    "questionNumber": 110,
+    "question": "Lisa wants to ensure that her organization's datacenter can properly handle short power disruptions and temporary undervoltage events. What power resilience solution is best suited to her needs?",
+    "choices": [
+      "Generators",
+      "UPS systems",
+      "PDUs",
+      "Solar power"
+    ],
+    "answer": 1,
+    "explanation": "UPS systems are perfectly suited to handling short power outages and temporary undervoltage events. They sit between systems and grid power, ensuring clean, reliable power is available. Generators take time to start, meaning that a UPS + generator solution is used for longer outages. PDUs (power distribution units) are used to distribute and manage power in datacenters. Solar power is increasingly used by datacenters to help offset their power consumption but is not a solution during nighttime hours.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q111",
+    "domain": "Security Architecture",
+    "questionNumber": 111,
+    "question": "Valentine has containerized her applications. What will not be part of the container?",
+    "choices": [
+      "The operating system",
+      "The application",
+      "Needed libraries",
+      "Configuration files"
+    ],
+    "answer": 0,
+    "explanation": "Containers do not include an operating system, but do contain applications, libraries, and configuration files.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q112",
+    "domain": "Security Architecture",
+    "questionNumber": 112,
+    "question": "Jaime wants to manage connectivity, including both MPLS and broadband Internet services, for her organization. What technology should she select to enable her to manage multiple connection types using a software-based control system?",
+    "choices": [
+      "SASE",
+      "SDN",
+      "SD-WAN",
+      "VSAN"
+    ],
+    "answer": 2,
+    "explanation": "SD-WAN, or software-defined wide area network, is a virtual wide area network architecture that relies on a software-based controller to manage multiple connections and connection types. MPLS, LTE, and broadband are commonly managed using SD-WAN technology. SASE, or Secure Access Service Edge, is used to provide end-to-end security in modern environments with systems and users spread throughout many locations and networks. SDN, or software-defined networking, is a code-based network management scheme. However, SD-WAN is the correct answer for wide area networks that rely on things like MPLS and broadband rather than on-premises networks. VSAN, or virtual SAN, is a virtual storage area network.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q113",
+    "domain": "Security Architecture",
+    "questionNumber": 113,
+    "question": "Cassandra wants to deploy a network security device that can detect and stop attacks. What type of network security device should she use if she wants to stop attacks based on behaviors and threat feeds?",
+    "choices": [
+      "An IDS",
+      "A proxy server",
+      "An IPS",
+      "A jump server Security Architecture 93"
+    ],
+    "answer": 2,
+    "explanation": "An IPS, or intrusion prevention system, can stop attacks based on behaviors and threat feed data. An IDS can detect attacks using the same information but cannot stop them. Proxy servers are used to filter content but do not meet this requirement, and jump servers are used for secure access into higher trust environments.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q114",
+    "domain": "Security Architecture",
+    "questionNumber": 114,
+    "question": "Contracts, NDAs, and SOWs are all examples of what type of data?",
+    "choices": [
+      "Legal information",
+      "Trade secrets",
+      "Regulated",
+      "Financial"
+    ],
+    "answer": 0,
+    "explanation": "Contracts, nondisclosure agreements (NDAs), and statements of work (SOWs) are all examples of legal information. They may include trade secrets or financial information but do not have to. Regulated data is regulated by law and is not the same as legal information.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q115",
+    "domain": "Security Architecture",
+    "questionNumber": 115,
+    "question": "Jackson has deployed a next-generation firewall. Which of the following features is most likely to help him prevent new attacks without having to create individual rules to stop them?",
+    "choices": [
+      "Threat feeds",
+      "Application awareness",
+      "Deep packet inspection",
+      "High throughput"
+    ],
+    "answer": 0,
+    "explanation": "Using threat feeds allows administrators to have rules that automatically block new threats using IP reputation and other services. Those detections may rely on application awareness or deep packet inspection, but without the feed information new rules will have to be crafted to address specific new threats. High throughput allows NGFW devices to deal with significant load as well as the demands of deep packet inspection and application awareness.270 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q116",
+    "domain": "Security Architecture",
+    "questionNumber": 116,
+    "question": "Which of the following is not provided by an IPSec VPN?",
+    "choices": [
+      "Confidentiality",
+      "Authentication",
+      "Availability",
+      "Integrity"
+    ],
+    "answer": 2,
+    "explanation": "IPSec VPNs provide encryption, which allows for confidentiality and integrity through hashing. They also provide authentication because both ends authenticate as part of the VPN connection process. Availability is not a feature of an IPSec connection, and it must be designed and built into the hardware and network infrastructure that the IPSec VPN relies on.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q117",
+    "domain": "Security Architecture",
+    "questionNumber": 117,
+    "question": "What technologies are most frequently used to help enforce geographic restrictions?",
+    "choices": [
+      "Wi-Fi and Bluetooth",
+      "GPS and Wi-Fi",
+      "GPS and encryption",
+      "DNS and GPS"
+    ],
+    "answer": 1,
+    "explanation": "GPS and Wi-Fi are commonly used to enforce geofencing by determining where individual devices are. Bluetooth may be used in some cases as well, but Wi-Fi and GPS are the dominant options. DNS is not used as part of geographic restrictions, nor is encryption.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q118",
+    "domain": "Security Architecture",
+    "questionNumber": 118,
+    "question": "In the cloud responsibility matrix, what three areas is the provider always responsible for in an IaaS environment?",
+    "choices": [
+      "Data, devices, and accounts",
+      "Identities, applications, and network controls",
+      "Operating systems, applications, and physical hosts",
+      "Datacenters, networks, and physical hosts"
+    ],
+    "answer": 3,
+    "explanation": "Infrastructure-as-a-service (IaaS) providers are responsible for the underlying infrastructure, including datacenters, networks, and physical hosts. In some cases, they may also be responsible for some operating systems, network controls, applications, and Identity and Access Management (IAM) infrastructure. Customers are always responsible for data and accounts, but may be responsible for applications, network controls, and operating systems as well.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q119",
+    "domain": "Security Architecture",
+    "questionNumber": 119,
+    "question": "Kirk's organization contracts with a cloud service provider. Kirk is concerned about third-party vendors that his cloud service provider uses. How can Kirk best address these concerns?",
+    "choices": [
+      "Through direct contracts with the third-party vendors",
+      "By requiring regular audits of third-party vendors",
+      "Through the contract with his cloud service provider",
+      "By performing vulnerability scans of the third-party vendors Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Ensuring that third-party vendors are held to appropriate standards is best accomplished through contracts with direct suppliers. Since the third-party vendors sign contracts with Kirk's cloud provider, not with Kirk's organization, the only way to have influence over them is through the cloud service provider. Audits and vulnerability scans will typically not be allowed by organizations that do not have a contract with a vendor.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q120",
+    "domain": "Security Architecture",
+    "questionNumber": 120,
+    "question": "Frankie wants to connect two remote sites so that they appear to be on the same local network segment. What type of solution is best suited to this requirement if she wants traffic sent between the locations to be secure despite traversing the public Internet?",
+    "choices": [
+      "Establish a VLAN between the two locations.",
+      "Use TLS to encapsulate each service provided between the two locations.",
+      "Set up a VPN tunnel between the two locations.",
+      "Reclassify the data as public and send the data as normal."
+    ],
+    "answer": 2,
+    "explanation": "VPNs, or virtual private networks, are commonly established between two locations to provide a secure connection that can make the networks appear to be on the same network segment. A VLAN may then be used if desired, but a VLAN alone does not provide encryption and cannot be set up across a public connection. TLS encapsulating each service would provide security, but that would not make the two sites appear to be on the same network segment. Reclassifying the data does not secure the data or make the networks appear to be on the same segment, either.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q121",
+    "domain": "Security Architecture",
+    "questionNumber": 121,
+    "question": "Which of the following best describes replication as a resilience strategy?",
+    "choices": [
+      "It makes a complete backup copy of live data that can be restored from media if needed, then journaled changes can be replayed to catch up to the moment of failure.",
+      "It creates a continuous copy of live data either asynchronously or synchronously.",
+      "It uses a series of snapshots to provide disaster recovery for virtual machines.",
+      "It requires high-speed media to keep up with live data."
+    ],
+    "answer": 1,
+    "explanation": "Replication can be synchronous or asynchronous but focuses on keeping an up-do-date copy of live data. It does not require high-speed media but does require storage media that is fast enough to keep up with the speed of change from the production environment. Replication does not rely on journaling or snapshots.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q122",
+    "domain": "Security Architecture",
+    "questionNumber": 122,
+    "question": "Sade works for a large organization that wants to ensure that their connectivity is properly secured. What type of security device should she select if throughput and advanced security capabilities are both important factors in selection?",
+    "choices": [
+      "A UTM device",
+      "An NGFW device",
+      "A WAF",
+      "A proxy server"
+    ],
+    "answer": 1,
+    "explanation": "NGFW devices are typically deployed where throughput and advanced security features are both needed. UTM devices are more common in small to mid-sized organizations where they can be set up and will often require less management and configuration. A WAF is appropriate for web services, but does not provide enough protection for an entire organization's Internet connectivity. A proxy server is useful for filtering traffic but has the same issues with limited functionality.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q123",
+    "domain": "Security Architecture",
+    "questionNumber": 123,
+    "question": "Barb's organization has a recovery point objective of 6 hours. At least how often should Barb conduct incremental backups to meet this RPO?",
+    "choices": [
+      "Once every hour",
+      "Once every 6 hours",
+      "Once every 12 hours",
+      "Once a day"
+    ],
+    "answer": 1,
+    "explanation": "Barb needs to back up her data at least once every 6 hours to meet a 6-hour RPO, and Barb might even choose to run her backups slightly more often to ensure the RPO can be met. Running backups every hour significantly exceeds that target, and may have other implications on performance time to recover, so a more aggressive timeframe would need to be carefully reviewed. Every 12 or 24 hours would not meet the RPO set by Barb's company. Security Architecture 271",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q124",
+    "domain": "Security Architecture",
+    "questionNumber": 124,
+    "question": "Geoff's data is stored in a cloud service's database. What data state is the data in?",
+    "choices": [
+      "It is at rest.",
+      "It is in transit.",
+      "It is in use.",
+      "It is sovereign."
+    ],
+    "answer": 0,
+    "explanation": "Since the data is not actively being moved between systems or via a network, and it is not being processed, it is data at rest. If the database was being actively accessed, the data might be in transit when it was sent to an application server and in use as the server processed it. Data sovereignty is the concept that countries can regulate data within their own borders.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q125",
+    "domain": "Security Architecture",
+    "questionNumber": 125,
+    "question": "Tara's web development team has written code that allows sensitive customer information to be hidden from users who do not have the right permissions. When individuals who do not have the proper rights to view sensitive information use the application, the data is displayed as a series of asterisks: Account number: ****-******-** Security Architecture 95 What data obfuscation technique has Tara's team employed to help protect her organization's data?",
+    "choices": [
+      "Encryption",
+      "Data classification",
+      "Hashing",
+      "Masking"
+    ],
+    "answer": 3,
+    "explanation": "Masking replaces some characters with an alternate character, allowing tasks like validating credit card numbers without exposing all of a data field. Encryption and hashing would transform the data, not replace it with an alternate character. Data classification is involved, but it's not a data obfuscation technique.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q126",
+    "domain": "Security Architecture",
+    "questionNumber": 126,
+    "question": "Ed is building a continuity of operations plan (COOP) for his organization. What three scenarios does a COOP address?",
+    "choices": [
+      "Loss of personnel, loss of systems, loss of availability",
+      "Natural disasters, human-made disasters, mistakes or errors",
+      "Loss of access to a facility, damage to a facility, natural disasters",
+      "Loss of access to a facility, loss of personnel, and loss of services"
+    ],
+    "answer": 3,
+    "explanation": "COOP plans address loss of access to some or all of a facility, personnel, or services. Other items may cause those losses, but the focus is on continued operations addressing the key components of an organization's business or purpose-facilities, staff, and services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q127",
+    "domain": "Security Architecture",
+    "questionNumber": 127,
+    "question": "Which of the following properly describes a SPAN port configured on a switch or router for monitoring?",
+    "choices": [
+      "Active and inline",
+      "Passive and inline",
+      "Active and a monitor",
+      "Passive and a monitor"
+    ],
+    "answer": 2,
+    "explanation": "Switch Port Analyzer (SPAN) ports, also known as mirrored ports, configured on a network switch or router are active because the device is powered and are a monitor because they simply copy traffic rather than being inline.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q128",
+    "domain": "Security Architecture",
+    "questionNumber": 128,
+    "question": "Renee wants to choose a control that will protect her organization against SQL injection attacks. Which of the following is likely to be the most effective control for attacks that are announced without prior notice and that require a very quick response?",
+    "choices": [
+      "Web application penetration testing",
+      "A WAF",
+      "Static code review",
+      "SASE"
+    ],
+    "answer": 1,
+    "explanation": "A major advantage of WAFs is the ability to use thread and rule feeds from vendors that quickly respond to new threats and attacks. At the same time, Renee can also build WAF rules faster than it would take to deploy code fixes in many cases. Penetration testing and static code review are both slow processes and are not suited to the rapid respond described. SASE is used to protect diverse endpoints in many locations, not to counter SQL injection (SQLi) against a web service.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q129",
+    "domain": "Security Architecture",
+    "questionNumber": 129,
+    "question": "Maria wants to deploy a web application firewall that will stop new attacks against her organization. What should she do to make sure that her web application firewall rules are as current as possible?",
+    "choices": [
+      "Manually add new rules based on email updates.",
+      "Deploy rules based on the OWASP Top 10.",
+      "Subscribe to a threat feed and deploy rules based on the feed.",
+      "Subscribe to the vendor's managed WAF rule service."
+    ],
+    "answer": 3,
+    "explanation": "Many vendors offer a managed service that provides rules that stop trending and new attacks. Maria can subscribe to the service, but needs to be aware that sometimes rules may cause outages or issues if they block legitimate traffic accidentally. Manually deploying rules is slow and requires careful crafting. The Open Worldwide Application Security Project (OWASP) Top 10 is a short list and it is not updated quickly. Threat feeds are useful as a way to write rules but will be less effective than a managed service in most cases due to the variety of attacks and new threats.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q130",
+    "domain": "Security Architecture",
+    "questionNumber": 130,
+    "question": "Gary's organization provides Wi-Fi network connectivity for customers, employees, and IoT building automation devices. What should he implement if he needs each of the three groups to have access to the same resources at times without the three groups of users being able to connect to each other?",
+    "choices": [
+      "Fail-closed networks",
+      "Security zones",
+      "Data classification",
+      "Fail-open networks Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "Each network segment should be considered a separate security zone that can be managed and secured appropriately for its ongoing use. Networks are not typically considered fail-open or fail-closed-devices are. Data classification is used to label data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q131",
+    "domain": "Security Architecture",
+    "questionNumber": 131,
+    "question": "Kendra is designing a web application infrastructure and wants to use a load balanced cluster. Which of the following considerations is not directly addressed by using a load balancer?",
+    "choices": [
+      "Availability",
+      "Responsiveness",
+      "Scalability",
+      "Risk transference"
+    ],
+    "answer": 3,
+    "explanation": "Load balancers can help with availability by automatically removing failed notes from a load balanced group. They can help with responsiveness by distributing load to the least loaded systems in a load balanced pool, and they can help with scalability by allowing systems to transparently be added or removed from the pool. They don't directly help with risk transference since risk transference usually requires a contract or insurance.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q132",
+    "domain": "Security Architecture",
+    "questionNumber": 132,
+    "question": "Angie is logging in to a server. What data state is her authentication information in?",
+    "choices": [
+      "Data in storage",
+      "Data at rest",
+      "Data in validation",
+      "Data in use"
+    ],
+    "answer": 3,
+    "explanation": "When Angie logs in, her authentication data is processed, making it data in use. Data at rest is data that is stored and not in active use or processing. Data in storage and data in validation were made up for this question and are not typically considered data states.272 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q133",
+    "domain": "Security Architecture",
+    "questionNumber": 133,
+    "question": "Patrick wants to deploy a virtual private networking (VPN) technology that is as easy for end users to use as possible. What type of VPN should he deploy?",
+    "choices": [
+      "An IPSec VPN",
+      "An SSL/TLS VPN",
+      "An HTML5 L2TP VPN",
+      "An SAML VPN"
+    ],
+    "answer": 1,
+    "explanation": "A TLS-based VPN (often called an SSL-based VPN, despite SSL being outmoded) provides the easiest way for users to use VPN since it does not require a client. SSL VPNs also work only for specific applications rather than making a system appear as though it is fully on a remote network. HTML5 is not a VPN technology, but some VPN portals may be built using HTML5. Security Assertion Markup Language (SAML) is not a VPN technology. IPSec VPNs require a client or configuration and are thus harder for end users to use in most cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q134",
+    "domain": "Security Architecture",
+    "questionNumber": 134,
+    "question": "Servers in redundant clusters are typically not placed in the same server rack in case of a water leak or other issue that impacts the rack. What consideration describes this type of design decision?",
+    "choices": [
+      "Connectivity",
+      "Geographic dispersion",
+      "Device placement",
+      "Attack surface"
+    ],
+    "answer": 2,
+    "explanation": "Device placement can matter due to physical risks or because of concerns about latency, access to services, or other considerations. Connectivity concerns focus on whether an organization can obtain a network connection and whether it meets the organization's needs, including throughput and reliability. Geographic dispersion refers to the distance between locations that helps to ensure that a single disaster does not take an organization offline. Attack surface is the set of services, ports, and physical access that an attacker could leverage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q135",
+    "domain": "Security Architecture",
+    "questionNumber": 135,
+    "question": "Akio is considering a decentralized model to manage her organization's multiple datacenters. What key advantage could this provide for her organization?",
+    "choices": [
+      "Reductions in cost",
+      "Increased resilience",
+      "Reductions in complexity",
+      "Increased complexity"
+    ],
+    "answer": 1,
+    "explanation": "Decentralized approaches can provide increased resilience since a failure or compromise of the management plane or services in a single location will not disrupt other locations. Unfortunately, this normally comes with increased cost and complexity. Increased complexity is not an advantage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q136",
+    "domain": "Security Architecture",
+    "questionNumber": 136,
+    "question": "Kim's organization operates a cloud-hosted IaaS environment and uses an infrastructure as code model to deploy systems. A vulnerability has been found in the web server software that the organization uses. What process should her team use to remediate the vulnerability?",
+    "choices": [
+      "Manually patch each web server.",
+      "Update the underlying base image for the servers and redeploy the web servers. Security Architecture 97",
+      "Add the patch to the code repository for the servers, transfer the load to other servers, and replace unpatched servers with patched versions by reinstantiating them.",
+      "Update the underlying base image, drain the load from working servers, and replace with new instances."
+    ],
+    "answer": 2,
+    "explanation": "In an infrastructure as code (IaC) environment, updating the code that defines what a fully patched server is, then replacing servers in a cluster one at a time will be the least disruptive option while also ensuring that future instances will have the patches installed. Rebuilding a base image each time a patch comes out is not efficient, and manually patching is not a best practice in IaC environments and may lead to human error.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q137",
+    "domain": "Security Architecture",
+    "questionNumber": 137,
+    "question": "Jason's organization wants to classify data that the organization regularly uses. The data is customer data, and could cause harm to the company if it was released. Which of the following data classifications best fits this type of data?",
+    "choices": [
+      "Confidential",
+      "Restricted",
+      "Critical",
+      "Public"
+    ],
+    "answer": 0,
+    "explanation": "The data should not be released or exposed and could cause harm. This means that confidential best describes this data from the list of available terms. Restricted data is typically limited to a subset of staff, but that is not reflected in the question. The data is also not described as being critical to the operations of the organization; instead the emphasis is on confidentiality. Since this data must remain confidential, it is not public data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q138",
+    "domain": "Security Architecture",
+    "questionNumber": 138,
+    "question": "Which of the following is not a common consideration for legacy devices?",
+    "choices": [
+      "Cost",
+      "Ease of recovery",
+      "Patch availability",
+      "Inability to patch"
+    ],
+    "answer": 0,
+    "explanation": "Legacy devices typically cannot be purchased, so their cost becomes irrelevant. Whether they can be recovered, if patches are available, and the issues that lack of patching may cause are all common issues for legacy devices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q139",
+    "domain": "Security Architecture",
+    "questionNumber": 139,
+    "question": "Which of the following is not a common service provided by a UTM device?",
+    "choices": [
+      "Firewall",
+      "SD-WAN",
+      "IPS",
+      "Antivirus/antimalware"
+    ],
+    "answer": 1,
+    "explanation": "UTM devices commonly provide firewall, IPS, antivirus/antimalware, and a variety of other services. They are also commonly part of SD-WAN architectures, but do not themselves provide the SD-WAN service.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q140",
+    "domain": "Security Architecture",
+    "questionNumber": 140,
+    "question": "Nick wants to enable remote access for his organization and wants users to have a simple experience without significant overhead when connecting. What type of solution should he implement?",
+    "choices": [
+      "A TLS VPN",
+      "SD-WAN",
+      "SDN",
+      "An IPSec VPN"
+    ],
+    "answer": 0,
+    "explanation": "TLS VPNs are typically easier to set up and don't require clients to be installed, unlike an IPSec VPN. SD-WAN is used to manage external connectivity, and software-defined networking (SDN) is used to manage networks and their performance, not to allow remote access by users.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q141",
+    "domain": "Security Architecture",
+    "questionNumber": 141,
+    "question": "Jaime has deployed smart lighting and thermostats to her new buildings. What technique will have the largest impact if she wants to harden the devices?",
+    "choices": [
+      "Applying an industry standard baseline configuration",
+      "Moving the devices to a separate security zone",
+      "Fully patching the devices when they are deployed",
+      "Vulnerability scanning, then remediating the devices on a regular basis Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "Moving devices to an isolated network segment that has appropriate controls in place to protect devices that may not be able to be secured or that may not receive regular patches is the best option available. Baselines, patching, and even scanning and remediation only help Security Architecture 273 if the devices can be secured, patched, and otherwise protected. IoT devices are often not able to be secured this way, particularly as they age and both lighting and thermostats have relatively long useful lifespans.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q142",
+    "domain": "Security Architecture",
+    "questionNumber": 142,
+    "question": "Chuck has deployed a cloud-based security environment that combines SD-WAN, zero trust, cloud access security broker (CASB), and firewall services to replace traditional VPNs. What sort of service has Chuck deployed?",
+    "choices": [
+      "SaaS",
+      "SASE",
+      "SONET",
+      "SCM"
+    ],
+    "answer": 1,
+    "explanation": "Secure access service edge (SASE) deployments combine SD-WAN with a variety of cloud-hosted security services, including zero trust and CASB tools to replace VPNs. This provides an edge device-oriented security architecture with end-to-end security. SaaS is involved but is not a specific enough answer. SONET is a communication protocol used for fiber networks. Supply chain management (SCM) is not a term used in this context.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q143",
+    "domain": "Security Architecture",
+    "questionNumber": 143,
+    "question": "Lucca wants to fully validate his organization's hot site's ability to perform as needed in the event of an outage. What type of testing should he run to ensure that the hot site is completely tested as though an actual disaster has occurred?",
+    "choices": [
+      "Fail over",
+      "Simulation",
+      "Tabletop",
+      "Parallel processing"
+    ],
+    "answer": 0,
+    "explanation": "Fail over testing goes beyond parallel processing and completely takes over running services. This is the most complex and risky testing mode, but also the only one that completely tests failure scenarios in a real-world exercise. Simulations and tabletops are more abstract and would not test the site, instead focusing on practices and behaviors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q144",
+    "domain": "Security Architecture",
+    "questionNumber": 144,
+    "question": "Christina's organization has purchased a remote facility that they intend to use in case of a major disaster. The building has basic utilities, including Internet connectivity, but no other preparation has been made. What type of site is this?",
+    "choices": [
+      "A warm site",
+      "A hot site",
+      "A cold site",
+      "A dispersion site"
+    ],
+    "answer": 2,
+    "explanation": "Cold sites are spaces that are ready to be used in a disaster but without equipment or other necessary items in place to quickly take over production if needed. A warm site would have some hardware ready to be used, but the hardware would not be configured or otherwise ready for immediate resumption of service. A hot site is prepared to take over processing for an organization immediately, and infrastructure is running in parallel with your production site. Geographic dispersion is used to ensure that a single disaster does not impact multiple sites.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q145",
+    "domain": "Security Architecture",
+    "questionNumber": 145,
+    "question": "Which of the following is not commonly part of a tabletop exercise?",
+    "choices": [
+      "A discussion of roles",
+      "A discussion of likely actions",
+      "Simulated calls to resources",
+      "A guided conversation"
+    ],
+    "answer": 2,
+    "explanation": "Tabletop exercises are not simulations and typically do not involve simulated calls to resources. Simulations are a different type of exercise and have the potential for disruptions if staff are not aware of the exercise being conducted.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q146",
+    "domain": "Security Architecture",
+    "questionNumber": 146,
+    "question": "Helen has deployed both Cisco and Juniper routers in her organization to ensure that a vulnerability in one vendor's products does not result in a complete outage of her organization. What is this type of design called?",
+    "choices": [
+      "Platform agnostic",
+      "Platform diversity",
+      "Multi-cloud",
+      "Parallel processing"
+    ],
+    "answer": 1,
+    "explanation": "This type of architecture leverages the idea of platform diversity. Having multiple vendors and platforms helps to ensure that a single vendor's failure or vulnerability does not prevent an organization from continuing to function. Platform agnostic is not on the Security+ exam but typically means that organizations don't have a vested interest in which platform is selected or used. Multi-cloud environments run in multiple cloud vendors' tools, but this question involves physical router hardware. Parallel processing is a failure testing mode where two or more sites run at the same time during a test.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q147",
+    "domain": "Security Architecture",
+    "questionNumber": 147,
+    "question": "Kaito has deployed a system that accepts traffic from web browsers and distributes it to systems based on the number of connections that each server has. He has assigned each server a rating based on how powerful it is. Each time a new request comes in, requests Security Architecture 99 are sent to the system with the lowest number of connections after taking into account the relative rating of each server. What type of load balancing is Kaito using?",
+    "choices": [
+      "Source IP hashing",
+      "Resource-based",
+      "Weighted least connection",
+      "Round-robin"
+    ],
+    "answer": 2,
+    "explanation": "Kaito is using a weighted least connection load balancing approach, which distributes traffic based on both a server weight and connection number count. Source IP hashing uses a hash of the source and destination IP addresses to determine which server receives the connection. This also allows for interrupted sessions to go to the same server. Resourcebased load balancing takes into account the availability of resources like CPU, memory, and network bandwidth for a server. Round-robin load balancing simply distributes connections as they come in by moving through a list of servers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q148",
+    "domain": "Security Architecture",
+    "questionNumber": 148,
+    "question": "Jessica has port-scanned a multifunction printer and has discovered that the device provides services on ports 80, 443, 515, and 9100. Which of the following terms best describes this?",
+    "choices": [
+      "The printer's attack surface",
+      "The printer's security zone",
+      "The printer's scalability",
+      "The printer's resilience"
+    ],
+    "answer": 0,
+    "explanation": "Attack surfaces are the potential points for an attack to occur. For devices, this is often the open services. For organizations, attack surfaces can include open ports and services, physical security concerns, and human vectors. Security zones are a way for organizations to categorize and manage different devices and systems based on security classification. Scalability describes whether a service or system can grow or shrink to handle demand or load. Resilience describes if a system or service can tolerate issues that might otherwise result in outages.274 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q149",
+    "domain": "Security Architecture",
+    "questionNumber": 149,
+    "question": "Geoff is considering whether to deploy on-premises infrastructure or cloud-hosted infrastructure. His most important requirements in order are: Ease of scalability Management overhead Cost If Geoff wants to run a containerized service that can handle very large loads, what model should he select?",
+    "choices": [
+      "SaaS",
+      "PaaS",
+      "IaaS",
+      "On-premises"
+    ],
+    "answer": 2,
+    "explanation": "An infrastructure-as-a-service (IaaS) cloud-hosted model where a third-party provider focuses on scalability and administration of a containerization service will meet Geoff's needs. When scaling from low to very large load is a common event, the ability to grow or shrink in a cloud environment can also provide significant cost savings over paying for an on-premises option that can handle the full scaling event. Software as a service (SaaS) and platform as a service (PaaS) provide full applications or platforms, not containerization environments.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q150",
+    "domain": "Security Architecture",
+    "questionNumber": 150,
+    "question": "Bank account numbers, credit card numbers, and invoice information are all examples of what type of data?",
+    "choices": [
+      "Intellectual property",
+      "Financial",
+      "Public",
+      "Trade secrets"
+    ],
+    "answer": 1,
+    "explanation": "Financial data includes transactions, accounts, and many other types of information related to finances. Intellectual property is a broad category of data created by humans. Public information is information that is available to the public, and trade secrets are kept private to a limited number of individuals in a company for competitive advantage or other purposes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q151",
+    "domain": "Security Architecture",
+    "questionNumber": 151,
+    "question": "John has deployed three servers that all respond as though they're the same device to provide service he runs. What term best describes this configuration?",
+    "choices": [
+      "Load balancing",
+      "Clustering",
+      "Fail-open",
+      "Fail-closed Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "Clustering involves using two or more systems to provide a service as though they're a single server. Load balancing spreads workloads across multiple independent systems while front-ending them with a load balancer device or service to distribute load. Fail-open means that if a network device fails, traffic continues to pass through it. Fail-closed devices stop traffic if they fail. Decisions about fail-open and fail-closed are made based on security in most cases, with fail-closed being more secure if the organization relies on the device for security.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q152",
+    "domain": "Security Architecture",
+    "questionNumber": 152,
+    "question": "Alaina's organization is required to comply with the PCI DSS standard. What type of data is she most likely dealing with?",
+    "choices": [
+      "Intellectual property",
+      "Trade secrets",
+      "Financial information",
+      "Regulated information"
+    ],
+    "answer": 2,
+    "explanation": "PCI DSS is a credit card data security standard, meaning that Alaina is most likely dealing with financial information. PCI DSS does not directly address intellectual property or trade secrets, and it's not a regulation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q153",
+    "domain": "Security Architecture",
+    "questionNumber": 153,
+    "question": "Theresa wants to back up her virtualization environment. What backup scheme is most frequently used for virtual machines?",
+    "choices": [
+      "Journaling",
+      "Snapshots",
+      "Replication",
+      "Grandfather/Father/Son"
+    ],
+    "answer": 1,
+    "explanation": "Snapshots are used to copy both the data and machine state for virtual machines. Journaling is used for databases and similar uses where replaying actions can be useful to recover if an issue occurs. Replication copies the data synchronously or asynchronously, allowing for a separate copy to be available at all times. Grandfather/Father/Son is a backup cycle commonly used for tape backup.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q154",
+    "domain": "Security Architecture",
+    "questionNumber": 154,
+    "question": "What is the primary reason an organization might choose a parallel processing testing scenario over a fail over testing scenario?",
+    "choices": [
+      "Parallel processing allows for more throughput.",
+      "Fail over does not fully test redundant systems.",
+      "Fail over requires organizations to create a significant issue to allow for the fail over to occur.",
+      "Parallel processing typically handles issues without outages."
+    ],
+    "answer": 3,
+    "explanation": "Parallel processing allows for systems to be tested without taking them offline. This means that in the event of an issue with the backup systems or facility, the primary facility can continue to operate. Parallel processing does allow for more throughput, but organizations should not rely on this as parallel processing environments need to be able to handle the full load for the organization if the primary or backup fails. Fail over does test redundant systems and does not require organizations to create a significant issue. Instead, manual fail over processes are used to conduct fail over tests.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q155",
+    "domain": "Security Architecture",
+    "questionNumber": 155,
+    "question": "Brent wants to monitor traffic using an IPS. He needs to prevent attack traffic from impacting his datacenter and wants to minimize the amount of traffic that the IPS device has to filter. Where should he place the device to best match these requirements based on the following figure? Internet A B C D Border firewall Core router Datacenter firewall Datacenter router",
+    "choices": [
+      "Position A",
+      "Position B",
+      "Position C",
+      "Position D"
+    ],
+    "answer": 3,
+    "explanation": "Placing the IPS inline at position D will reduce the amount of traffic it has to filter while still allowing it to filter traffic bound for the datacenter. Points A, B, and C will all have more traffic, although point A will have the most, with reductions likely at points C and D.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q156",
+    "domain": "Security Architecture",
+    "questionNumber": 156,
+    "question": "Marco is preparing to brief his organization's leadership about challenges that may result from adopting a hybrid cloud design. Which of the following is the primary concern that he should highlight?",
+    "choices": [
+      "Jurisdictional challenges",
+      "Increased complexity",
+      "Increased cost",
+      "Regulatory challenges Security Architecture 101"
+    ],
+    "answer": 1,
+    "explanation": "Increased complexity can include jurisdictional challenges, increased cost, and regulatory challenges as well as visibility challenges, management overhead increases, and a wide range of additional challenges from operating in multiple locations and models. Security Architecture 275",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q157",
+    "domain": "Security Architecture",
+    "questionNumber": 157,
+    "question": "Julia is designing her organization's external connectivity as part of infrastructure capacity planning. She knows that the organization typically uses approximately 7 gigabits per second of connectivity from their primary site. Julia has the following connectivity options, what should she select?",
+    "choices": [
+      "A 10 Gbps primary and a 5 Gbps secondary connection",
+      "A 5 Gbps primary and a 5 Gbps secondary connection",
+      "A 100 Gbps primary and a 10 Gbps secondary connection",
+      "A 10 Gbps primary and a 10 Gbps secondary connection"
+    ],
+    "answer": 3,
+    "explanation": "In general, fail over connections should be able to handle an organization's full throughput. Overprovisioning for 100 Gbps will typically create significantly more cost not only for connectivity but also for network devices that can handle high speeds, and underprovisioning at 5 Gbps will mean that traffic would need to be reduced in a fail over scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q158",
+    "domain": "Security Architecture",
+    "questionNumber": 158,
+    "question": "Daria wants to establish a disaster recovery site that can immediately take over for her organization's primary datacenter in the event of a disaster. What sort of site should she build out?",
+    "choices": [
+      "A hot site",
+      "A warm site",
+      "A cold site",
+      "A dispersion site"
+    ],
+    "answer": 0,
+    "explanation": "A hot site is prepared to take over processing for on organization immediately, and infrastructure is running in parallel with your production site. A warm site would have some hardware ready to be used, but the hardware would not be configured or otherwise ready for immediate resumption of service. Cold sites are spaces that are ready to be used in a disaster but without equipment or other necessary items in place to quickly take over production if needed. The term dispersion site is not commonly used, but the concept of geographic dispersion describes placement of sites with sufficient distance between them to make the likelihood of a single disaster impacting both quite low.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q159",
+    "domain": "Security Architecture",
+    "questionNumber": 159,
+    "question": "Cathy wants to build a high-availability infrastructure for her midsize company's headquarters building network. Which of the following is not a common element for a highavailability network core?",
+    "choices": [
+      "Redundant routers",
+      "Generators",
+      "Geographic dispersion",
+      "Multiple connectivity providers"
+    ],
+    "answer": 2,
+    "explanation": "Geographic dispersion is unlikely for a single building's network core. Redundancy, power backups, and multiple connectivity options are commonly part of designing a highly available network.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q160",
+    "domain": "Security Architecture",
+    "questionNumber": 160,
+    "question": "The GDPR, HIPAA, FERPA, and the GLBA all impact what type of data?",
+    "choices": [
+      "Intellectual property",
+      "Classified data",
+      "Regulated data",
+      "Trade secrets"
+    ],
+    "answer": 2,
+    "explanation": "The General Data Protection Regulation (GDPR), Health Insurance Portability and Accountability Act (HIPAA), Family Educational Rights and Privacy Act (FERPA), and the Gramm-Leach-Bliley Act (GLBA) are all regulations, meaning that data they cover is regulated data. Intellectual property is the result of human creativity, classified data is a designation used by governments, and trade secrets are proprietary data with limited access often used by organizations for competitive advantage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q161",
+    "domain": "Security Architecture",
+    "questionNumber": 161,
+    "question": "Jacob is concerned about attacks against his virtual machines that would target the hypervisor. What term describes this type of attack?",
+    "choices": [
+      "VM escape",
+      "Hypervisor escalation",
+      "VM shell attacks",
+      "Container breaches"
+    ],
+    "answer": 0,
+    "explanation": "Virtual machine (VM) escape attacks attempt to access or gain control of the underlying hypervisor through virtual machines. While uncommon, if this occurred it could result in serious issues due to the number of systems run on a single hypervisor host particularly in cloud or shared environments. The other options were made up for the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q162",
+    "domain": "Security Architecture",
+    "questionNumber": 162,
+    "question": "Jill knows that IPSec uses a number of common protocols. Which of the following is not a key IPSec protocol?",
+    "choices": [
+      "AH",
+      "ISA",
+      "ESP",
+      "IKE Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "AH (Authentication Header), ESP (Encapsulating Security Payload), and IKE (Internet Key Exchange) are all important IPSec (Internet Protocol Security) protocols. ISA is not an IPSec protocol.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q163",
+    "domain": "Security Architecture",
+    "questionNumber": 163,
+    "question": "An IDS is an example of what type of network device?",
+    "choices": [
+      "Active",
+      "Air gapped",
+      "Fail-closed",
+      "Passive"
+    ],
+    "answer": 3,
+    "explanation": "Intrusion detection systems are considered passive systems because they cannot block traffic. Active systems like firewalls, IPS, and proxies all have the ability to directly interact with and stop or allow traffic. Air gapped devices do not have a physical connection to a network, or they are on a separate network that is not connected to other networks. Failclosed devices stop traffic when they fail. Most IPS systems are not deployed inline since they do not need to be interactive and having them inline only creates another potential failure point.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q164",
+    "domain": "Security Architecture",
+    "questionNumber": 164,
+    "question": "Why can't hashing be used to securely store data that needs to be accessed in its original form?",
+    "choices": [
+      "Hashing takes too long to reverse.",
+      "Hashing uses symmetric encryption.",
+      "Hashing uses a one-way function.",
+      "Hashing uses asymmetric encryption."
+    ],
+    "answer": 2,
+    "explanation": "Hashing uses a one-way function and should not be able to be reversed. This means that you can use hashing to securely store a password because you can hash the password, then compare hashes without needing to know the password. If you hash a database field, however, there's no way to know what the original data was from the hash. Hashing should not be reversible, and it does not use symmetric or asymmetric encryption.276 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q165",
+    "domain": "Security Architecture",
+    "questionNumber": 165,
+    "question": "Jerome wants to use an obfuscation method to protect data in his database. His organization works with sensitive customer data and does not want to run the risk of that data being exposed via their web application, but still wants to use the rest of their customer data in the application. What obfuscation process or tool should he use to ensure that the data can be matched to customers while remaining secure?",
+    "choices": [
+      "Use a steganographic program to modify the data, then use that data for the web application.",
+      "Use a masking algorithm to completely mask the data, then use a single database.",
+      "Tokenize the data and use the tokenized data in a database set up for the web application.",
+      "Hash the data in the original database, then use the database for the web application."
+    ],
+    "answer": 2,
+    "explanation": "Tokenizing the data in a separate database will allow both the original unaltered database and a secured database to be used. This reduces risk while retaining data integrity where required. Steganography hides data in images and does not fit this use case. Masking only conceals data and does not protect it against attacks against the underlying application or database in many cases. Hashing the original database will transform the data, and using a single database remains risky.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q166",
+    "domain": "Security Architecture",
+    "questionNumber": 166,
+    "question": "Jules is planning a SCADA deployment for her organization. Which of the following is most likely to be a major concern over the lifetime of the SCADA system?",
+    "choices": [
+      "Cost",
+      "Scalability",
+      "Inability to patch",
+      "Availability"
+    ],
+    "answer": 2,
+    "explanation": "SCADA and ICS systems often suffer from a lack of patches and updates. Cost is typically amortized over long periods of time, and SCADA and ICS systems are critical to organizational functions. Scalability is rarely a concern for embedded devices, and SCADA and ICS devices are designed for long life cycles and reliability.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q167",
+    "domain": "Security Architecture",
+    "questionNumber": 167,
+    "question": "Susan has deployed a network using software-defined networking. What part of her network is most critical to secure as part of this architecture?",
+    "choices": [
+      "The routers",
+      "The switches",
+      "The SDN controller",
+      "The SD-WAN connections"
+    ],
+    "answer": 2,
+    "explanation": "In a SDN environment, the SDN controller provides manages and controls all the network devices, including switches and routers. That means that a compromise of the SDN controller would result in compromise of the entire network. No mention is made of SD-WAN in the question, so we don't know the connectivity or relative importance of SD-WAN in the scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q168",
+    "domain": "Security Architecture",
+    "questionNumber": 168,
+    "question": "The ability to obtain third-party support for a device or system is an example of which consideration?",
+    "choices": [
+      "Availability",
+      "Risk transference",
+      "Compute",
+      "Responsiveness Security Architecture 103"
+    ],
+    "answer": 1,
+    "explanation": "Third-party support availability is an example of risk transference where the support contract moves the risk to the contractor. Availability and responsiveness may be considerations for the contractor, but the ability to obtain support doesn't imply either of these. Compute is most commonly a concern where embedded devices or hardware solutions may not have sufficient computational power to meet new needs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q169",
+    "domain": "Security Architecture",
+    "questionNumber": 169,
+    "question": "Yarif wants to create security zones in his network. Which of the following technologies is best suited to doing this based on roles and user identities?",
+    "choices": [
+      "NAC and VLANs",
+      "802.1X and containerization",
+      "SDN and MAC address filtering",
+      "SD-WAN and VLANs"
+    ],
+    "answer": 0,
+    "explanation": "Network access control (NAC) tools that can allow for authentication and authorization based on user groups or roles and VLANs that separate groups based on those roles once they're on the network exactly fit the needs Yarif has. 802.1X can also be helpful with this, but containerization is used to allow applications to be deployed without worrying about the application environment. SDN and MAC address filtering doesn't account for user authentication and identities, just machine hardware addresses. SD-WAN is for external connectivity, not internal networks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q170",
+    "domain": "Security Architecture",
+    "questionNumber": 170,
+    "question": "Elle is conducting an exercise for her organization and wants to run an exercise that is as close to an actual event as possible. What type of event should she run to help her organization get this type of real-world practice?",
+    "choices": [
+      "A simulation",
+      "A tabletop exercise",
+      "A walk-through",
+      "A wargame"
+    ],
+    "answer": 0,
+    "explanation": "A simulation is the closest you can get to a real-world event without having one. A tabletop exercise has personnel discussing scenarios, whereas a walk-through goes through checklists and procedures. A wargame is not a common exercise type.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q171",
+    "domain": "Security Architecture",
+    "questionNumber": 171,
+    "question": "What security advantage does a serverless model provide?",
+    "choices": [
+      "Cost savings",
+      "No need to patch infrastructure",
+      "No vulnerable functions",
+      "No need to log events"
+    ],
+    "answer": 1,
+    "explanation": "Serverless deployments remove the need to patch underlying infrastructure. They may still have vulnerable functions and should be logged. Cost savings is not a direct security advantage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q172",
+    "domain": "Security Architecture",
+    "questionNumber": 172,
+    "question": "Laura is planning for continuity of operations. What personnel concern should she plan to handle for her hot site in the event of a large-scale natural disaster in the area where her primary facility is?",
+    "choices": [
+      "Lack of facility power",
+      "Inability to authenticate personnel",
+      "Insider threats",
+      "Lack of available personnel"
+    ],
+    "answer": 3,
+    "explanation": "In a large-scale disaster scenario, personnel may be unwilling or unable to report to work. Organizations planning for disaster in an area where their personnel live and work often need to identify ways to ensure staffing in a scenario that impacts their staff. Lack of facility power is not a personnel issue. Authentication should be part of the hot-site capability. Insider threats are not a common concern during disasters.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q173",
+    "domain": "Security Architecture",
+    "questionNumber": 173,
+    "question": "Which of the following is not a common means of enforcing segmentation on a network?",
+    "choices": [
+      "ACLs",
+      "VLANs",
+      "Firewalls",
+      "Air gaps"
+    ],
+    "answer": 3,
+    "explanation": "ACLs, VLANs, and firewalls are all commonly used to implement network segmentation. Due to the operational challenges that air gaps create, they are far less commonly implemented and are only used when absolutely necessary. Security Architecture 277",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q174",
+    "domain": "Security Architecture",
+    "questionNumber": 174,
+    "question": "Binary files are an example of what type of data?",
+    "choices": [
+      "Human-readable",
+      "Restricted",
+      "Non-human-readable",
+      "Confidential Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Binary files like executable programs are examples of non-human-readable data. That's one of the reasons encoding schemes like XML were created for data files that can allow both machines and humans to read and interact with data. Restricted and confidential are both classification schemes that businesses may use to describe their organizational data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q175",
+    "domain": "Security Architecture",
+    "questionNumber": 175,
+    "question": "Erin uses a journaling backup scheme for her database. After a system outage she needs to restore from her backups. If her organization uses a daily backup scheme that runs at midnight, and the issue occurred at 2 a.m., how much data is Erin likely to lose?",
+    "choices": [
+      "Two hours of data",
+      "One day and two hours of data",
+      "One week of data",
+      "Little or no data"
+    ],
+    "answer": 3,
+    "explanation": "Journaling tracks transactions as they occur. Unless the journal itself was lost, Melissa should be able to restore the backup, then replay the journal to ensure the organization loses very little data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q176",
+    "domain": "Security Architecture",
+    "questionNumber": 176,
+    "question": "Which of the following is typically used to manage an ICS?",
+    "choices": [
+      "SDN",
+      "SCADA",
+      "Active Directory",
+      "SD-WAN"
+    ],
+    "answer": 1,
+    "explanation": "SCADA systems are often used to manage industrial control systems (ICSs). SDN and SD-WAN are used to manage networks and connectivity respectively, whereas Active Directory is used to manage Windows servers and workstations in a domain environment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q177",
+    "domain": "Security Architecture",
+    "questionNumber": 177,
+    "question": "Maria's organization uses a cloud backup provider and performs encrypted backups for their IaaS infrastructure and data. If the data needs to be restored, what will Maria need to do?",
+    "choices": [
+      "Ask the vendor for the recovery key.",
+      "Provide the recovery key.",
+      "Restore the recovery key from backup and use it.",
+      "Generate a new recovery key and restore from backup."
+    ],
+    "answer": 1,
+    "explanation": "Encrypted backups require the encryption key, so Maria's organization will need to preserve and protect the recovery key in a secure manner that does not rely on the backups. This is often done via multiple physical copies of the key stored in secured locations with geographic diversity or using both physical and cloud secure storage like a key management system (KMS).",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q178",
+    "domain": "Security Architecture",
+    "questionNumber": 178,
+    "question": "What two major differences separate backups and replication?",
+    "choices": [
+      "Replication is periodic, but does not require restoration processes before data is able to be used.",
+      "Backups are continuous but require restoration processes before data is able to be used.",
+      "Backups are periodic and do not require restoration before data is able to be used",
+      "Replication is continuous and does not require restoration processes before data is able to be used."
+    ],
+    "answer": 3,
+    "explanation": "Replication is a continuous process and because of this it does not require restoration processes like restoring differential backups or journals to allow data to be used. Backups are periodic, and they typically require additional restoration work in order to be used.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q179",
+    "domain": "Security Architecture",
+    "questionNumber": 179,
+    "question": "Erin's organization uses a backup schedule that creates a full backup once a week, then creates differential backups once a day on all other days. If the full backup was done four days ago, and Erin needs to restore from it, how many backups will she have to restore in total?",
+    "choices": [
+      "One",
+      "Two",
+      "Three",
+      "Four"
+    ],
+    "answer": 3,
+    "explanation": "Erin will need to restore the full backup, then apply the differential backups from each of the remaining three days for a total of four backups.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q180",
+    "domain": "Security Architecture",
+    "questionNumber": 180,
+    "question": "What advantage does an IPSec VPN have over a TLS VPN when protecting traffic?",
+    "choices": [
+      "It operates at the network layer rather than the transport layer.",
+      "It supports stronger encryption types.",
+      "It does not rely on tunneling.",
+      "It does not provide advantages over TLS, and TLS should be used instead when possible. Security Architecture 105"
+    ],
+    "answer": 0,
+    "explanation": "IPSec VPNs operate at the network layer instead of the transport layer. That means less information is visible to potential attackers. Both support strong encryption, IPSec VPNs do support tunneling, and not relying on tunneling is not an advantage in most use cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q181",
+    "domain": "Security Architecture",
+    "questionNumber": 181,
+    "question": "Vera wants to manage multiple commercial Internet services for her organization to ensure connectivity. What technology should she select to manage and maintain this?",
+    "choices": [
+      "SASE",
+      "SDN",
+      "IPSec",
+      "SD-WAN"
+    ],
+    "answer": 3,
+    "explanation": "Vera can use a SD-WAN, or software-defined wide area network, to manage multiple connections dynamically, ensuring connectivity and performance for her organization. SASE is used to secure networks and device connectivity in modern organizations with complex and mobile boundaries. SDN is software-defined networking and manages networks as code. IPSec is a suite of protocols used to secure network traffic.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q182",
+    "domain": "Security Architecture",
+    "questionNumber": 182,
+    "question": "Katie is considering deploying embedded devices. Which of the following limitations is most commonly associated with embedded devices?",
+    "choices": [
+      "Compute limitations",
+      "Responsiveness limitations",
+      "Availability issues",
+      "Cost issues"
+    ],
+    "answer": 0,
+    "explanation": "Embedded devices typically have minimal CPUs, memory, and storage. They prioritize responsiveness for their core functions, and thus availability and responsiveness are typically met with the device. Cost for embedded devices is typically associated with the larger device they're part of rather than the embedded device itself as they are there to monitor or operate the system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q183",
+    "domain": "Security Architecture",
+    "questionNumber": 183,
+    "question": "What term best describes intangible assets created by staff members of a company like designs and concepts?",
+    "choices": [
+      "Trade secrets",
+      "Sensitive data",
+      "Intellectual property",
+      "Trademarks"
+    ],
+    "answer": 2,
+    "explanation": "Intellectual property is intangible creations by the human mind. Patents, copyrights, trademarks, and trade secrets are all examples of intellectual property. Intellectual property is not necessarily sensitive data, but it could be.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q184",
+    "domain": "Security Architecture",
+    "questionNumber": 184,
+    "question": "Jaime is concerned about the volume of logs that her new application may create. What capacity planning item should she focus on?",
+    "choices": [
+      "Compute",
+      "Power",
+      "Storage",
+      "People"
+    ],
+    "answer": 2,
+    "explanation": "Storage capacity should be part of Jaime's infrastructure planning to ensure that large volumes of logs do not overwhelm her infrastructure. Compute is typically not an issue with logs, but it could be with log analysis later in her design process. People and power are not directly impacted by logging, but people might be needed for log analysis later as well.278 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q185",
+    "domain": "Security Architecture",
+    "questionNumber": 185,
+    "question": "Henry's organization relies on remote workers in multiple regions. Each region has an office where workers work part-time, and the organization's core services rely on a variety of SaaS providers. What network model best describes this type of usage model?",
+    "choices": [
+      "Centralized",
+      "Decentralized",
+      "On-premises",
+      "Logically segmented"
+    ],
+    "answer": 1,
+    "explanation": "This organization is using a decentralized model where there is no datacenter or primary hosting or operational facility. With remote workers making up much of the company, as well as flexible working locations, this design makes sense for the company but introduces additional complexity because endpoints will need to be secured wherever they are, regardless of what network they are on. A centralized design can somewhat simplify that, but modern application stacks and working conditions often make that less likely. This is not an on-premises design since workers and cloud tools are remote. There is no description of segmentation in the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q186",
+    "domain": "Security Architecture",
+    "questionNumber": 186,
+    "question": "Tom wants to use geographic restrictions as part of his security design. What type of tool is commonly used to manage geographic restrictions for mobile devices?",
+    "choices": [
+      "EDR",
+      "MDM",
+      "802.1X",
+      "VPNs Security Architecture"
+    ],
+    "answer": 1,
+    "explanation": "Mobile device management (MDM) tools are often used to enforce geographic restrictions on devices by using GPS and Wi-Fi to determine where they are and to limit their access to sensitive systems or data if they are not in an allowed geographic boundary. This often matches being in a specific office building with known Wi-Fi for highly sensitive access or work hour requirements. Endpoint detection and response (EDR) is used to counter ransomware and other malicious software, 802.1X is used to control access to networks, and VPNs are used to provide site-to-site connectivity through untrusted networks as well as to location shift devices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q187",
+    "domain": "Security Architecture",
+    "questionNumber": 187,
+    "question": "Jack has deployed a load balancer for his organization. When a new connection is made, the load balancer assigns the connection to the next server in a list, moving through the list over time as it distributes connections. What type of load balancing algorithm is in use?",
+    "choices": [
+      "Capacity-based",
+      "Round-robin",
+      "Least load",
+      "User pinning"
+    ],
+    "answer": 1,
+    "explanation": "Round-robin load balancer algorithms spread load by assigning incoming connections to servers or services on a list. This helps to spread the load evenly even without awareness of the relative load each connection creates or that the server is under simply by relying on connections evening out over time. Load-based and capacity-based models use more knowledge of the state of the servers or services. User pinning is not a load balancing model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q188",
+    "domain": "Security Architecture",
+    "questionNumber": 188,
+    "question": "What is the best way to protect data at rest?",
+    "choices": [
+      "Classification",
+      "Segmentation",
+      "Encryption",
+      "Hashing"
+    ],
+    "answer": 2,
+    "explanation": "Encryption is the most effective way to protect data at rest. Classification is useful to ensure data is handled in appropriate ways, but does not directly protect the data. Segmentation can help keep data in the right locations with appropriate controls around it, but again does not directly protect the data if the server or data store is accessible. Hashing is a one-way function and does not leave data in a usable state for most purposes that rely on the data being intact and in its original form.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q189",
+    "domain": "Security Architecture",
+    "questionNumber": 189,
+    "question": "Kathleen wants to monitor her datacenter's environmental status. What solution should she invest in to meet this need?",
+    "choices": [
+      "An HVAC system",
+      "UPS systems",
+      "Environmental sensor appliances",
+      "A load balancer"
+    ],
+    "answer": 2,
+    "explanation": "Environmental sensor appliances are frequently deployed to datacenters and network closets to monitor for potential issues like high temperatures. Heating, ventilation, and air-conditioning (HVAC) systems monitor and control temperatures, but datacenters commonly add additional monitoring tools in case the HVAC system fails or other issues arise. UPS systems are not used for environmental monitoring, and load balancers are used to distribute load to servers and services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q190",
+    "domain": "Security Architecture",
+    "questionNumber": 190,
+    "question": "Danielle's organization has experienced a total power outage. The datacenter is currently running on its UPS. What concern should Danielle have if the UPS is her organization's only power resilience control?",
+    "choices": [
+      "The generator may not start.",
+      "The UPS batteries may run out before the outage is over.",
+      "The generator may run out of fuel in a long outage.",
+      "The UPS may not handle the surge when power resumes."
+    ],
+    "answer": 1,
+    "explanation": "Organizations typically deploy both a UPS and a generator (or generators!). Long power outages will drain the batteries that a UPS relies on. Since UPS systems are typically intended to run for minutes, rather than hours, for datacenters this should be Danielle's first concern. No generator was mentioned, and in fact the UPS is her only power resilience control. While a UPS may experience issues with surges when power resumes, temporary drops in voltage, and power outages are not uncommon even on well-maintained power grids, and UPS systems are designed to handle them under normal circumstances while protecting the systems they provide emergency power to. Security Architecture 279",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q191",
+    "domain": "Security Architecture",
+    "questionNumber": 191,
+    "question": "Valerie wants to connect one of her company's remote locations back to the organization's main network. What type of solution can she use for a persistent connection between the networks that will securely tunnel data across a commodity Internet connection?",
+    "choices": [
+      "A TLS VPN",
+      "A web proxy",
+      "An IPSec VPN",
+      "An 802.1X tunnel"
+    ],
+    "answer": 2,
+    "explanation": "An IPSec VPN is a common option for organizations that need to create a secure VPN tunnel between two locations. A VPN connection is established by network devices at both locations and traffic is able to travel securely over commodity Internet connections. TLS VPNs are more commonly used for individuals to connect to an organization's network. Web proxies are used to filter and control web traffic, not for this purpose. 802.1X is used to authenticate to networks and protect them from unauthorized connections, not to create secure, multisite tunnels.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q192",
+    "domain": "Security Architecture",
+    "questionNumber": 192,
+    "question": "What does port security use to determine what machines or devices can connect to a network port?",
+    "choices": [
+      "A list of userIDs",
+      "A multifactor token code for each user",
+      "A list of MAC addresses",
+      "A list of IP addresses Security Architecture 107"
+    ],
+    "answer": 2,
+    "explanation": "Port security associates a list of allowed hardware (MAC) addresses with a port and only allows systems with permitted MAC addresses to connect to and send traffic through the network port. 802.1X uses authentication, which can include userIDs and multifactor. IP addresses are not a way that port security filters systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q193",
+    "domain": "Security Architecture",
+    "questionNumber": 193,
+    "question": "Valerie wants to provide remote access to her organization's applications to users who are traveling or working remotely. She wants to ensure that users have a secure way to work with organizational data, but also wants to provide the simplest and easiest secure means of access. What should Valerie implement?",
+    "choices": [
+      "An IPSec VPN",
+      "A jump server",
+      "A TLS VPN",
+      "An SD-WAN controller"
+    ],
+    "answer": 2,
+    "explanation": "TLS VPNs provide an easier user experience from the browser without installing additional software or additional configuration like an IPSec VPN typically requires. A jump server is used for access to secure zones but isn't ideal for traveling and remote employees- often a VPN is used to access a jump server in scenarios like that. SD-WAN is useful to manage connectivity options, not for individual users.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q194",
+    "domain": "Security Architecture",
+    "questionNumber": 194,
+    "question": "Which of the following is not available as part of a snapshot?",
+    "choices": [
+      "The underlying hypervisor's configuration",
+      "The virtual machine's power state",
+      "The virtual machine's memory state",
+      "The virtual machine's disks"
+    ],
+    "answer": 0,
+    "explanation": "The virtual machine's power state, memory state, and disk are all captured as part of a snapshot. The underlying hypervisor's configuration is not captured by a snapshot.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q195",
+    "domain": "Security Architecture",
+    "questionNumber": 195,
+    "question": "What role does geolocation play in considerations related to data?",
+    "choices": [
+      "It determines if data is at rest.",
+      "It impacts data sovereignty concerns.",
+      "It determines if data is in use.",
+      "It determines the data's criticality."
+    ],
+    "answer": 1,
+    "explanation": "Data sovereignty concerns are driven by where the data resides, and geolocation can help understand the applicable law or regulations. Data can be at rest, in use, or in transit in any given location. Data criticality is determined by an organization, not by its location.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q196",
+    "domain": "Security Architecture",
+    "questionNumber": 196,
+    "question": "Dane works for an energy provider that manages devices throughout a large geographic region using a control system that monitors and controls power infrastructure. The system operates from a central command center and uses cellular, broadband, and other connectivity methods to connect devices to the control center. What type of system is Dane's company using?",
+    "choices": [
+      "RTOS",
+      "Embedded systems",
+      "IoT",
+      "SCADA"
+    ],
+    "answer": 3,
+    "explanation": "SCADA manages complex systems by combining central and local control systems with communication systems to manage large-scale industrial processes. The endpoint devices described may be embedded systems, Internet of Things (IoT), or real-time operating systems (RTOSs), but together they are a SCADA system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q197",
+    "domain": "Security Architecture",
+    "questionNumber": 197,
+    "question": "Jorge wants to assess his organization's Internet-accessible attack surface. Which of the following methods is most likely to provide a complete understanding?",
+    "choices": [
+      "Open source intelligence (OSINT) review",
+      "Threat feeds",
+      "Vulnerability scanning",
+      "Penetration testing"
+    ],
+    "answer": 3,
+    "explanation": "Penetration tests will typically include vulnerability scanning as well as other activities that can provide a more complete view of an organization's Internet-facing attack surface. OSINT alone will not provide technical testing. Threat feeds do not provide information about a specific organization's attack surface, and vulnerability scanning may not reveal other issues like application issues.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q198",
+    "domain": "Security Architecture",
+    "questionNumber": 198,
+    "question": "Brent has deployed multiple brands of IoT devices across his organization to ensure that if an issue with one type of device or device vendor occurs others will still function. What is the largest concern he should address with this design that focuses on platform diversity?",
+    "choices": [
+      "Complexity of management",
+      "Availability",
+      "Resilience",
+      "Ease of deployment Security Architecture"
+    ],
+    "answer": 0,
+    "explanation": "IoT devices are typically deployed for long periods of time, meaning that over time the complexity of managing a multiple device and vendor environment is the largest concern. Initial concerns about ease of deployment would exist but could be overcome. Availability and resilience are both typically helped by platform diversity as outages or issues found with one device or vendor should not impact others.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q199",
+    "domain": "Security Architecture",
+    "questionNumber": 199,
+    "question": "Mark wants to protect data in use. Which of the following options should he select to protect data in use?",
+    "choices": [
+      "Hashing",
+      "A secure enclave",
+      "Containerization",
+      "Tunneling data"
+    ],
+    "answer": 1,
+    "explanation": "A secure enclave is one way of protecting data in use. This relies on secured hardware that stores data that is in use and that only allows processes that run in the enclave from accessing data. Hashing, containerization, and using tunneling do not provide security for data in use.280 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q200",
+    "domain": "Security Architecture",
+    "questionNumber": 200,
+    "question": "The following figure shows two simplified design concepts. What security architecture is shown in Model 2? Web servers Model 1 Web servers Model 2 Private network Private network",
+    "choices": [
+      "Logical segmentation",
+      "Air gapped",
+      "Serverless",
+      "On-premises"
+    ],
+    "answer": 1,
+    "explanation": "There is no connection between the two network security zones in Model 2. This is an air gapped model with physical isolation. Logical segmentation would show VLANs or other logical segmentation options. Servers are shown, easily dismissing serverless as an option, and there is no indication of whether this is an on-premises or an off-site design.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q201",
+    "domain": "Security Architecture",
+    "questionNumber": 201,
+    "question": "Masking, encryption, and tokenization are all examples of what?",
+    "choices": [
+      "Data encryption methods",
+      "Data classification methods",
+      "Data obfuscation methods",
+      "Data tagging methods Security Architecture 109"
+    ],
+    "answer": 2,
+    "explanation": "Masking, encryption, and tokenization are all examples of data obfuscation methods that protect against data exposure. None of these are encryption or classification methods, and none of them are tagging methods, although classification often involves tagging data if it will be managed or monitored using automated methods.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q202",
+    "domain": "Security Architecture",
+    "questionNumber": 202,
+    "question": "Liana wants to deploy a load balancer and wants to ensure that if a session is interrupted users have the highest chance of being reconnected to the same server. What algorithm should she select?",
+    "choices": [
+      "Round-robin",
+      "IP hash",
+      "Weighted least connection",
+      "Resource-based"
+    ],
+    "answer": 1,
+    "explanation": "IP hash relies on a hash of the client and server's IP addresses to associate them with a server. Even if you're not familiar with load-balancing techniques, you can rule out roundrobin, which simply distributes sessions through a list in order; weighted least connection, which looks at which servers have the least traffic and a weight assigned to the server; and resource-based, which looks at how heavily loaded a server is.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q203",
+    "domain": "Security Architecture",
+    "questionNumber": 203,
+    "question": "Kyle wants to authenticate users who plug into his network, then assign them to a VLAN based on their role. What technology could he use to do this?",
+    "choices": [
+      "802.1X",
+      "Port security",
+      "VLAN tagging",
+      "EAP"
+    ],
+    "answer": 0,
+    "explanation": "802.1X allows for authentication via EAP, then assignment to a VLAN based on a role or other attributes. EAP alone does not perform this function, port security leverages MAC addresses to determine if a system is allowed to connect, and VLAN tagging is part of how traffic is labeled for a specific VLAN but does not support authentication or role-based labels directly.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q204",
+    "domain": "Security Architecture",
+    "questionNumber": 204,
+    "question": "Using VLANs is an example of what type of segmentation?",
+    "choices": [
+      "Air gapping",
+      "Logical segmentation",
+      "Physical segmentation",
+      "Physical isolation"
+    ],
+    "answer": 1,
+    "explanation": "Logical segmentation uses software to define and create segmentation. VLANs are defined at the network layer using VLAN tags. Air gapping would remove network connectivity between a system or systems and other networks to prevent access via the network. Physical segmentation would require separate network infrastructure. Physical isolation typically means removing a system from a network.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q205",
+    "domain": "Security Architecture",
+    "questionNumber": 205,
+    "question": "Lucca has deployed an SD-WAN controller. Which of the following types of connectivity will not typically be managed with an SD-WAN solution?",
+    "choices": [
+      "Wi-Fi",
+      "MPLS",
+      "Broadband",
+      "LTE"
+    ],
+    "answer": 0,
+    "explanation": "Wi-Fi and other on premises network solutions are not typically part of an SD-WAN implementation. SD-WAN focuses on wide area networks, which are outside the onpremises network borders of organizations, and thus technologies like MPLS, broadband, and LTE are used with SD-WAN controllers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q206",
+    "domain": "Security Architecture",
+    "questionNumber": 206,
+    "question": "The information that is found on Kirk's company's Internet-facing website needs to be classified as part of his organization-wide data classification process. What classification should he apply?",
+    "choices": [
+      "Public",
+      "Internal",
+      "Confidential",
+      "Restricted"
+    ],
+    "answer": 0,
+    "explanation": "Information that is available without restriction or authentication and that is available on an Internet-facing website should be considered public information. Internal, confidential, and restricted information all require additional controls and handling practices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q207",
+    "domain": "Security Architecture",
+    "questionNumber": 207,
+    "question": "Jim wants to design his network for high availability (HA). What first step is commonly taken in HA designs for networks?",
+    "choices": [
+      "Configure a hot site.",
+      "Purchase redundant hardware.",
+      "Identify single points of failure.",
+      "Implement clustering. Security Architecture"
+    ],
+    "answer": 2,
+    "explanation": "Identifying single points of failure is a common first step in network high availability designs. This allows network designers to plan for failures and how to avoid them. Configuring a hot site, implementing clustering, and purchasing redundant hardware all occur much further into the design process when needs are identified and prioritized.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q208",
+    "domain": "Security Architecture",
+    "questionNumber": 208,
+    "question": "Theo wants to ensure that artifacts in his IaC environment have not been tampered with. What should he require as part of his version control check-in system?",
+    "choices": [
+      "Artifact signing",
+      "Container image scanning",
+      "Dependency checks",
+      "Static analysis"
+    ],
+    "answer": 0,
+    "explanation": "Having artifacts signed after they have made it through the build and validation process helps ensure that they haven't been modified and that the artifact has had the organization's checks done. Container image scanning helps to find issues like malware and dependency issues. Dependency checks can validate things like open source tool risks or issues. Static analysis requires manual review of code. Security Architecture 281",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q209",
+    "domain": "Security Architecture",
+    "questionNumber": 209,
+    "question": "Angela is considering using encryption as part of the security controls applied to her backups. In the event of a major disaster, what concern should she address about having encrypted backups?",
+    "choices": [
+      "Time to decrypt the backups",
+      "Cost of encrypting the backups",
+      "Ensuring the key is recoverable in a disaster",
+      "The amount of space that the encryption adds to the backups"
+    ],
+    "answer": 2,
+    "explanation": "A primary concern for organizations that encrypt their backups is whether the keys are available in a disaster. Ensuring that the keys are stored in a manner that ensures that they are recoverable if the backups are recoverable is critical. Modern backup encryption typically does not add a meaningful amount of time to backups, nor does it increase cost or space to such a significant degree that it is a primary concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q210",
+    "domain": "Security Architecture",
+    "questionNumber": 210,
+    "question": "Which of the following is not a common security issue with IoT devices?",
+    "choices": [
+      "Insecure communication",
+      "Data leaks",
+      "Ransomware",
+      "Device vulnerabilities"
+    ],
+    "answer": 2,
+    "explanation": "Ransomware concerns are typically found with desktops, laptops, mobile devices, and servers instead of IoT devices. IoT devices often don't have patches or aren't patched, send data to third parties that may not be desired, and may not use secure communications.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q211",
+    "domain": "Security Architecture",
+    "questionNumber": 211,
+    "question": "Jack is worried about outages that may disrupt service from his IaaS vendor's cloud environment. Which of the following options provides the greatest likelihood of avoiding service disruptions from an outage from his current IaaS vendor?",
+    "choices": [
+      "Deploying to multiple availability zones (AZs)",
+      "Deploying to multiple regions",
+      "Deploying to multiple cloud vendors",
+      "Requiring contractual terms around uptime"
+    ],
+    "answer": 2,
+    "explanation": "In circumstances where a single vendor's outages are a major concern, multi-cloud deployments may be appropriate. This is more common when the application is containerized or otherwise easily portable. The more customized to the current cloud vendor the application or service is, the more difficult it is to move to other cloud vendors and the more costly the move will be. In addition, multi-cloud can drive additional costs for overhead services, making multi-cloud a choice organizations undertake cautiously. Deploying in multiple AZs or regions will not avoid an outage if the IaaS vendor has a cloud-wide issue, and contractual obligations won't stop outages-they will typically just provide penalties if there is an outage longer than the contract allows.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q212",
+    "domain": "Security Architecture",
+    "questionNumber": 212,
+    "question": "Chuck is responsible for an on-site datacenter. He wants to ensure that the datacenter has appropriate network connectivity to ensure resilience and performance. Which of the following will have the greatest impact on meeting that requirement?",
+    "choices": [
+      "Contract for a higher bandwidth connection from a single vendor.",
+      "Deploy a UPS.",
+      "Contract with two separate network service providers.",
+      "Install a generator."
+    ],
+    "answer": 2,
+    "explanation": "Meeting both resilience and performance requirements can be best addressed in this scenario by contracting with two separate network service providers. This allows for both resilience and the possibility of sending traffic through both connections for greater performance. Both a generator and a UPS can help with power resilience, but the focus of this question is network connectivity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q213",
+    "domain": "Security Architecture",
+    "questionNumber": 213,
+    "question": "Ben has grouped his data based on use cases and sensitivity and has applied different security practices based on those groupings. What data security technique is he using?",
+    "choices": [
+      "Segmentation",
+      "Obfuscation",
+      "Masking",
+      "Tokenization Security Architecture 111"
+    ],
+    "answer": 0,
+    "explanation": "Segmentation of data separates data based on factors like use cases, sensitivity, roles, and types or classifications of information. Obfuscation attempts to conceal or hide information. Masking replaces information with other data like asterisks or X's when displayed, allowing partial data to be displayed for business purposes. Tokenization replaces data with an alternate value, often based on a hashing algorithm that allows the alternate value to be used as an index or reference without the actual data visible.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q214",
+    "domain": "Security Architecture",
+    "questionNumber": 214,
+    "question": "Monica wants to prevent users from sharing data and cares more about control than flexibility. What type of access control model is best suited to ensuring central control over file access?",
+    "choices": [
+      "Role BAC",
+      "DAC",
+      "MAC",
+      "Rule BAC"
+    ],
+    "answer": 2,
+    "explanation": "Mandatory access control (MAC) is used in scenarios where users should not have the ability to grant access to files. Role-based access control and rule-based access control both provide more flexibility, and they are more commonly used than mandatory access control in cases where that is desired. Discretionary access control (DAC) allows users to grant access to other users and does not fit the requirements either.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q215",
+    "domain": "Security Architecture",
+    "questionNumber": 215,
+    "question": "Tara is monitoring web traffic to her organization's website from a local public library and notices that all of the logins seem to come from the same IP address. She knows that the library provides multiple workstations for public use as well as public Wi-Fi. What type of network appliance might be in use?",
+    "choices": [
+      "A jump server",
+      "A proxy server",
+      "A load balancer",
+      "A DLP system"
+    ],
+    "answer": 1,
+    "explanation": "A proxy server is likely to be used in an environment where the ability to filter searches may be required, such as a library with public workstations. A jump server is used to access more secure zones, a load balancer is typically used to allow multiple systems to provide a service, and a DLP system is used to prevent unauthorized data exfiltration.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q216",
+    "domain": "Security Architecture",
+    "questionNumber": 216,
+    "question": "What three responsibilities are typically shared in PaaS environments according to the cloud responsibility matrix?",
+    "choices": [
+      "Identity infrastructure, applications, and network controls",
+      "Data, devices, and accounts",
+      "Physical hosts, physical networks, and physical datacenters",
+      "Operating systems, applications, and data"
+    ],
+    "answer": 0,
+    "explanation": "In platform-as-a-service (PaaS) environments, customers and providers typically share responsibility for identity and directory infrastructure, applications, and network controls. Customers are responsible for data, devices, and accounts, and the provider is responsible for the underlying systems, including operating systems and physical infrastructure.282 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q217",
+    "domain": "Security Architecture",
+    "questionNumber": 217,
+    "question": "Marco wants to build a set of services for financial transactions for his company. The services need to be capable of scaling quickly to very large numbers of transactions, and need to be able to operate without major dependencies on other components of the architecture. What architecture should he select to best meet these needs?",
+    "choices": [
+      "Containerization",
+      "Virtualization",
+      "Microservices",
+      "SCADA"
+    ],
+    "answer": 2,
+    "explanation": "A microservices design will allow for each component or service to be separate and lightweight, allowing them to be developed independently and thus easier to fix without complex dependencies. Containerization would allow for easy deployment of applications to different service environments, but the focus for containerization is on portability, not on the design requirements listed. Virtualization requires even more resources because operating systems are virtualized, but it suffers from the same lack of a direct means of addressing the needs explained in the question. SCADA stands for supervisory control and data acquisition and is used to manage complex industrial or controls' environments, not service environments like the question describes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q218",
+    "domain": "Security Architecture",
+    "questionNumber": 218,
+    "question": "What major advantage does a monitoring port have over an inline network tap?",
+    "choices": [
+      "It is easier to configure.",
+      "It has higher performance.",
+      "It is more secure.",
+      "If it fails, it will not impact the network. Security Architecture"
+    ],
+    "answer": 3,
+    "explanation": "The biggest advantage of a monitoring port over an inline network tap is that if the monitoring port fails, it will not impact the network traffic flow. If an inline device fails, it may impact the network traffic even if it is designed to avoid that scenario. Inline taps don't have to rely on the performance of the switch, meaning that they are often higher performance; they can be passive, meaning that they cannot be attacked like a switch's operating system can be; and since inline passive devices simply copy traffic, they are often easier to configure since you merely plug them in.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q219",
+    "domain": "Security Architecture",
+    "questionNumber": 219,
+    "question": "Which of the following is not typically true of embedded systems?",
+    "choices": [
+      "They provide the ability to install additional software.",
+      "They have a long lifespan.",
+      "They have memory and CPU constraints.",
+      "They are not designed for end-user configuration and control."
+    ],
+    "answer": 0,
+    "explanation": "Embedded systems are often used for long periods of time, use relatively low-power CPUs and have limited memory and storage, and are typically not user configurable or manageable in meaningful ways. They typically don't have the ability to install additional software as they are purpose-built to serve a specific need.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q220",
+    "domain": "Security Architecture",
+    "questionNumber": 220,
+    "question": "Naomi wants to be able to easily move her application between cloud service providers and to use automation to allow for deployment of the application. What technology best allows for applications to be bundled with the libraries and other components they need without requiring additional overhead like an operating system?",
+    "choices": [
+      "Containerization",
+      "Snapshots",
+      "Embedded systems",
+      "Segmentation"
+    ],
+    "answer": 0,
+    "explanation": "Containerization technologies bundle the needed libraries and other components for an application together in a lightweight package format that can easily be deployed to a provider's containerization service. Snapshots are used to capture a virtual machine's state and data at a given point in time. Embedded systems are computers that are built into a device or system. Segmentation is the concept of dividing a network or system into separate parts, often with security and other boundaries between them.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q221",
+    "domain": "Security Architecture",
+    "questionNumber": 221,
+    "question": "What term describes the right of countries to pass laws that control the use of data within their borders?",
+    "choices": [
+      "Data classification",
+      "Treaty obligations",
+      "Treaty rights",
+      "Data sovereignty"
+    ],
+    "answer": 3,
+    "explanation": "Data sovereignty is the right of nations to pass laws that control the use of data within their borders. This means that organizations must follow each country's laws when they store, process, or otherwise handle data in the country they operate in. Data classification is a process of classifying data to set handling or other processes and practices around it. Treaties are not covered by the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q222",
+    "domain": "Security Architecture",
+    "questionNumber": 222,
+    "question": "Ian's organization uses a root certificate authority that only allows certificate signing locally. All certificates are transferred via USB drives because the system is not connected to the network. What type of security design is in use?",
+    "choices": [
+      "Port security",
+      "An air gapped design",
+      "Defense-in-depth",
+      "A zero-trust design"
+    ],
+    "answer": 1,
+    "explanation": "This is an example of air gapped design where there is no network connectivity. This prevents network-based attacks from being possible against the high-value certificate authority server. Port security is used to enable or disable network ports. Defense-in-depth is a design concept that relies on layers of defenses to ensure security. Zero trust requires continuous authentication and rights verification to provide ongoing security for a network or system architecture.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q223",
+    "domain": "Security Architecture",
+    "questionNumber": 223,
+    "question": "The company that Jayne works for has moved their web application infrastructure to a serverless model. Jayne's security team has informed her that they believe the application is undergoing a large-scale resource exhaustion-based distributed denial-of-service attack. If the application is running in Microsoft's serverless Azure environment, what is the most critical concern Jayne should have about the attack?",
+    "choices": [
+      "Loss of data",
+      "Cost of the resource usage",
+      "Inability to review logs",
+      "Vulnerabilities in the application . Security Architecture 113"
+    ],
+    "answer": 1,
+    "explanation": "A large-scale denial-of-service attack that is using resources can be costly. Microsoft's cloud will be able to scale to meet the demand, but Jayne's organization may spend large amounts of money without benefiting any legitimate customers. Loss of data is unlikely because the application is being heavily used without any underlying issue for the application's data. Log files will still be created, but the size and scale of the logs may drive cost. There is nothing in the scenario that demonstrates a vulnerability, and resource exhaustion attacks do not require a vulnerability to be successful. Security Operations 283",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q224",
+    "domain": "Security Architecture",
+    "questionNumber": 224,
+    "question": "Elaine knows that prior to 802.1X enabling a port, only EAP traffic is allowed through the port. What does this permit?",
+    "choices": [
+      "Vulnerability scanning",
+      "Authentication",
+      "Port scanning",
+      "System security status validation"
+    ],
+    "answer": 1,
+    "explanation": "EAP (Extensible Authentication Protocol) is used for 802.1X authentication before the port is enabled for other traffic. EAP does not permit vulnerability or port scanning, nor does it provide system security status validation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q225",
+    "domain": "Security Architecture",
+    "questionNumber": 225,
+    "question": "Tristan deploys the network device shown in the following figure. The organization's web browsing traffic is directed through it and the traffic is filtered as described in the image. What type of network appliance is shown? Conceals internal IP addresses for web traffic, blocks website ads, applies content control for websites",
+    "choices": [
+      "A web application firewall",
+      "A proxy server",
+      "A jump server",
+      "A load balancer"
+    ],
+    "answer": 1,
+    "explanation": "The functions shown are typical of a proxy server. The proxy can be used to apply content controls and to conceal the IP addresses of internal users. A web application firewall filters web traffic but is specifically targeting attacks and malicious behavior. A jump server is used between a low-trust and a higher-trust area to provide access, and this is not shown or described in the image or question. A load balancer is used to distribute traffic load between servers, and this is not shown in the image or reflected in the question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d3-0-q226",
+    "domain": "Security Architecture",
+    "questionNumber": 226,
+    "question": "Parvati wants to configure her web application firewall to prevent basic SQL injection attacks. Which of the following rules could she use to accomplish this?",
+    "choices": [
+      "Filter out all OR statements.",
+      "Filter out single quotes.",
+      "Block all SQL statements.",
+      "Block all AND statements"
+    ],
+    "answer": 1,
+    "explanation": "While blocking single quotes won't stop all SQL injection, it will stop many basic injection attacks. Preventing the use of SQL or AND and OR statements may break some applications, although secure web applications should be using stored queries.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q1",
+    "domain": "Security Operations",
+    "questionNumber": 1,
+    "question": "John wants to harden his organization's routers. If there are no currently known vulnerabilities or issues with the device, which of the following hardening options will provide the biggest benefit?",
+    "choices": [
+      "Moving their administrative interfaces to a protected VLAN",
+      "Disabling unnecessary services",
+      "Installing the most current patch level for the OS",
+      "Enabling SNMP-based logging"
+    ],
+    "answer": 0,
+    "explanation": "While all of these are best practices, moving the device's administrative interface to a protected VLAN will provide the most significant improvement in security since there are no known issues or vulnerabilities at the moment. If there were, patching or disabling services would quickly move up the list.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q2",
+    "domain": "Security Operations",
+    "questionNumber": 2,
+    "question": "Jackson is reviewing his organization's logs and discovers multiple new user accounts created after business hours using administrative credentials. What term describes searching for potential issues like this?",
+    "choices": [
+      "IoC creation",
+      "Threat hunting",
+      "Root cause analysis",
+      "Eradication"
+    ],
+    "answer": 1,
+    "explanation": "Threat hunting is the process of searching for threats, often using IoCs, threat intelligence, technological tools, and expertise to identify threats that might impact an organization. IoC creation involves documenting and defining an indicator of compromise. Root cause analysis looks for the underlying cause of an issue or event, and eradication is the complete removal of a threat or artifacts of malicious activity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q3",
+    "domain": "Security Operations",
+    "questionNumber": 3,
+    "question": "Cynthia is concerned about attacks against an application programming interface (API) that her company provides for its customers. What should she recommend to ensure that the API is only used by customers who have paid for the service?",
+    "choices": [
+      "Require authentication.",
+      "Install and configure a firewall.",
+      "Filter by IP address.",
+      "Install and use an IPS."
+    ],
+    "answer": 0,
+    "explanation": "The simplest way to ensure that APIs are only used by legitimate users is to require the use of authentication. API keys are one of the most frequently used methods for this. If an API key is lost or stolen, the key can be invalidated and reissued, and since API keys can be matched to usage, Cynthia's company can also bill customers based on their usage patterns if they want to. A firewall or IP restrictions may be able to help, but they can be fragile; customer IP addresses may change. An intrusion prevention system (IPS) can detect and prevent attacks, but legitimate usage would be hard to tell from those who are not customers using an IPS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q4",
+    "domain": "Security Operations",
+    "questionNumber": 4,
+    "question": "Greg wants to gain admission to a network which is protected by a network access control (NAC) system that recognized the hardware address of systems. How can he bypass this protection?",
+    "choices": [
+      "Spoof a legitimate IP address.",
+      "Conduct a denial-of-service attack against the NAC system.",
+      "Use MAC cloning to clone a legitimate MAC address.",
+      "None of the above."
+    ],
+    "answer": 2,
+    "explanation": "Greg can clone a legitimate Media Access Control (MAC) address if he can identify one on the network. Greg can do this by checking for a MAC label on some devices or by capturing traffic on the network if he can physically access it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q5",
+    "domain": "Security Operations",
+    "questionNumber": 5,
+    "question": "Melissa's organization has deployed a firewall that uses three interfaces to provide services. The first interface connects to the Internet, the second to a network where the organization's web servers reside, and the third to a secured network where the organization's workstations are connected. What type of firewall architecture has Melissa's organization deployed?",
+    "choices": [
+      "An ACL",
+      "A screened subnet Security Operations",
+      "A binary firewall",
+      "A multihomed, multiroute NGFW"
+    ],
+    "answer": 1,
+    "explanation": "Screened subnet designs use a firewall with three interfaces, one for the Internet or an untrusted network, one for a protected but front-facing network, and one for a shielded or protected network. ACLs (access control lists) use rules to control access. This design may use ACLs, but an ACL alone does not describe it. Binary firewalls were made up for this question, and while an NGFW may be multihomed, \"multiroute\" is not a term used to describe this design.284 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q6",
+    "domain": "Security Operations",
+    "questionNumber": 6,
+    "question": "CVE is an example of what type of feed?",
+    "choices": [
+      "A threat intelligence feed",
+      "A vulnerability feed",
+      "A critical infrastructure listing feed",
+      "A critical virtualization exploits feed"
+    ],
+    "answer": 1,
+    "explanation": "The Common Vulnerabilities and Exposures (CVE) list has entries that describe and provide references to publicly known cybersecurity vulnerabilities. A CVE feed will provide updated information about new vulnerabilities and a useful index number to cross reference with other services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q7",
+    "domain": "Security Operations",
+    "questionNumber": 7,
+    "question": "Amanda scans a Red Hat Linux server that she believes is fully patched and discovers that the Apache version on the server is reported as vulnerable to an exploit from a few months ago. When she checks to see if she is missing patches, Apache is fully patched. What has occurred?",
+    "choices": [
+      "A false positive",
+      "An automatic update failure",
+      "A false negative",
+      "An Apache version mismatch"
+    ],
+    "answer": 0,
+    "explanation": "This is an example of a false positive. A false positive can cause a vulnerability to show that was not actually there. This sometimes happens when a patch or fix is installed but the application does not change in a way that shows the change, and it has been an issue with updates where the version number is the primary check for a vulnerability. When a vulnerability scanner sees a vulnerable version number but a patch has been installed that does not update it, a false positive report can occur. A false negative would report a patch or fix where there was actually a vulnerability. Automatic updates were not mentioned, nor was a specific Apache version.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q8",
+    "domain": "Security Operations",
+    "questionNumber": 8,
+    "question": "Telnet, RSH, and FTP are all examples of what?",
+    "choices": [
+      "File transfer protocols",
+      "Unsecure protocols",
+      "Core protocols",
+      "Open ports"
+    ],
+    "answer": 1,
+    "explanation": "All of these protocols are unsecure. FTP has been replaced by secure versions in some uses (SFTP/FTPS), whereas Telnet has been superseded by SSH in modern applications. RSH is outmoded and should be seen only on truly ancient systems. If you find a system or device exposing these protocols, you will need to dig in further to determine why they are exposed and how they can be protected if they must remain open for a legitimate reason.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q9",
+    "domain": "Security Operations",
+    "questionNumber": 9,
+    "question": "What term describes data that is collected from publicly available sources that can be used in an intelligence context?",
+    "choices": [
+      "OPSEC",
+      "OSINT",
+      "STIX",
+      "IntCon"
+    ],
+    "answer": 1,
+    "explanation": "OSINT, or open source intelligence, is intelligence information obtained from public sources like search engines, websites, domain name registrars, and a host of other locations. OPSEC, or operational security, refers to habits such as not disclosing unnecessary information. STIX is the Structured Threat Intelligence Exchange protocol, and IntCon was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q10",
+    "domain": "Security Operations",
+    "questionNumber": 10,
+    "question": "Patrick has subscribed to a commercial threat intelligence feed that is only provided to subscribers who have been vetted and who pay a monthly fee. What industry term is used to refer to this type of threat intelligence?",
+    "choices": [
+      "Proprietary threat intelligence",
+      "OSINT Security Operations 127",
+      "ELINT",
+      "Corporate threat intelligence"
+    ],
+    "answer": 0,
+    "explanation": "Proprietary, or closed threat, intelligence is threat intelligence that is not openly available. OSINT, or open source threat intelligence, is freely available. ELINT is a military term for electronic and signals intelligence. Corporate threat intelligence was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q11",
+    "domain": "Security Operations",
+    "questionNumber": 11,
+    "question": "Susan receives $10,000 for reporting a vulnerability to a vendor who participates in a program to identify issues. What term is commonly used to describe this type of payment?",
+    "choices": [
+      "A ransom",
+      "A zero-day disclosure",
+      "A bug bounty",
+      "A payday"
+    ],
+    "answer": 2,
+    "explanation": "Bug bounties are increasingly common and can be quite lucrative. Bug bounty websites match vulnerability researchers with organizations that are willing to pay for information about issues with their software or services. Ransoms are sometimes demanded by attackers, but this is not a ransom since it was voluntarily paid as part of a reward system. A zero-day disclosure happens when a vulnerability is disclosed and the organization has not been previously informed and allowed to fix the issue. Finally, you might feel like $10,000 is a payday, but the term is not used as a technical term and doesn't appear on the exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q12",
+    "domain": "Security Operations",
+    "questionNumber": 12,
+    "question": "Ben runs a vulnerability scan using up-to-date definitions for a system that he knows has a vulnerability in the version the web server is running. The vulnerability scan does not show that issue when he reviews the report. What has Ben encountered?",
+    "choices": [
+      "A silent patch",
+      "A missing vulnerability update",
+      "A false negative",
+      "A false positive"
+    ],
+    "answer": 2,
+    "explanation": "A false negative occurs with a vulnerability scanning system when a scan is run and an issue that exists is not identified. This can be because of a configuration option, a firewall, or other security setting or because the vulnerability scanner is otherwise unable to detect the issue. A missing vulnerability update might be a concern if the problem did not specifically state that the definitions are fully up-to-date. Unless the vulnerability is so new that there is no definition, a missing update shouldn't be the issue. Silent patching refers to a patching technique that does not show messages to users that a patch is occurring. A false positive would have caused a vulnerability to show that was not actually there. This sometimes happens when a patch or fix is installed but the application does not change in a way that shows the change. Security Operations 285",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q13",
+    "domain": "Security Operations",
+    "questionNumber": 13,
+    "question": "Angela reviews bulletins and advisories to determine what threats her organization is likely to face. What type of activity is this associated with?",
+    "choices": [
+      "Incident response",
+      "Threat hunting",
+      "Penetration testing",
+      "Vulnerability scanning"
+    ],
+    "answer": 1,
+    "explanation": "Threat hunting can involve a variety of activities such as intelligence fusion, combining multiple data sources and threat feeds, and reviewing advisories and bulletins to remain aware of the threat environment for your organization or industry. Incident response happens once an incident has occurred, penetration testing tests security from an attacker's perspective, and vulnerability scanning seeks to identify vulnerabilities using testing through technical means like connecting to services or checking local version information.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q14",
+    "domain": "Security Operations",
+    "questionNumber": 14,
+    "question": "Frank is using the cloud hosting service's web publishing service rather than running his own web servers. Where will Frank need to look to review his logs to see what types of traffic his application is creating?",
+    "choices": [
+      "Syslog",
+      "Apache logs",
+      "The cloud service's web logs",
+      "None of the above"
+    ],
+    "answer": 2,
+    "explanation": "Since Frank is using the cloud service provider's web services, he will need to review the logs that they capture. If he has not configured them, he will need to do so, and he will then need a service or capability to analyze them for the types of traffic he is concerned about. Syslog and Apache logs are both found on a traditional web host, and they would be appropriate if Frank was running his own web servers in the infrastructure-as-a-service (IaaS) environment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q15",
+    "domain": "Security Operations",
+    "questionNumber": 15,
+    "question": "The following graphic shows a report from an OpenVAS vulnerability scan. What should Charles do first to determine the best fix for the vulnerability shown? Security Operations",
+    "choices": [
+      "Disable PHP-CGI.",
+      "Upgrade PHP to version 5.4.",
+      "Review the vulnerability descriptions in the CVEs listed.",
+      "Disable the web server."
+    ],
+    "answer": 2,
+    "explanation": "Although it may be tempting to immediately upgrade, reading and understanding the CVEs for a vulnerability is a good best practice. Once Charles understands the issue, he can then remediate it based on the recommendations for that specific problem. Disabling PHP or the web server would break the service, and in this case, only newer versions of PHP than 5.4 have the patch Charles needs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q16",
+    "domain": "Security Operations",
+    "questionNumber": 16,
+    "question": "Ian runs a vulnerability scan, which notes that a service is running on TCP port 8080. What type of service is most likely running on that port?",
+    "choices": [
+      "SSH",
+      "RDP",
+      "MySQL",
+      "HTTP Security Operations 129"
+    ],
+    "answer": 3,
+    "explanation": "Although 80 and 443 are the most common HTTP ports, it is common practice to run additional web servers on port 8080 when a nonstandard port is needed. SSH would be expected to be on port 22, RDP on 3389, and MySQL on 3306.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q17",
+    "domain": "Security Operations",
+    "questionNumber": 17,
+    "question": "Carolyn runs a vulnerability scan of a network device and discovers that the device is running services on TCP ports 22 and 443. What services has she most likely discovered?",
+    "choices": [
+      "Telnet and a web server",
+      "FTP and a Windows file share",
+      "SSH and a web server",
+      "SSH and a Windows file share"
+    ],
+    "answer": 2,
+    "explanation": "A network device running SSH on port 22 and a web server on TCP port 443 is a very typical discovery when running a vulnerability scan. Without any demonstrated issues, Carolyn should simply note that she saw those services. Telnet runs on port 21, an unencrypted web server will run on TCP 80 in most cases, and Windows file shares use a variety of ports, including TCP ports 135-139 and 445.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q18",
+    "domain": "Security Operations",
+    "questionNumber": 18,
+    "question": "Susan is responsible for application development in her company. She wants to have all web applications tested before they are deployed live. She wants to use a test system that is identical to the live server. What is this called?",
+    "choices": [
+      "A production server",
+      "A development server",
+      "A test server",
+      "A predeployment server"
+    ],
+    "answer": 2,
+    "explanation": "A test server should be identical to the production server. This can be used for functional testing as well as security testing, before deploying the application. The production server is the live server. A development server would be one the programmers use during development of a web application, and predeployment server is not a term typically used in the industry.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q19",
+    "domain": "Security Operations",
+    "questionNumber": 19,
+    "question": "Alexandra is preparing to run automated security tests against the code that developers in her organization have completed. Which environment is she most likely to run them in if the next step is to deploy the code to production?",
+    "choices": [
+      "Development",
+      "Test",
+      "Staging",
+      "Production"
+    ],
+    "answer": 2,
+    "explanation": "Staging environments, sometimes called preproduction environments, are typically used for final quality assurance (QA) and validation before code enters the production environment as part of a deployment pipeline. Staging environments closely mirror production, allowing realistic testing and validation to be done. Development and test environments are used to create the code and for testing while it is being developed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q20",
+    "domain": "Security Operations",
+    "questionNumber": 20,
+    "question": "Chris wants to limit who can use an API that his company provides and be able to log usage of the API uniquely to each organization that they provide access to. What solution is most often used to do this?",
+    "choices": [
+      "Firewalls with rules for each company's public IP address",
+      "User credentials for each company",
+      "API keys",
+      "API passwords"
+    ],
+    "answer": 2,
+    "explanation": "Application programming interface (API) keys are frequently used to meet this need. An API key can be issued to an individual or organization, and then use of the API can be tracked to each API key. If the API key is compromised or abused, it can be revoked and a new API key can be issued. Firewall rules written to use public IP addresses can be fragile, since IP addresses may change or organizations may have a broad range of addresses that may be in use, making it hard to validate which systems or users are using the API. Credentials, including passwords, are not as frequently used as API keys.286 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q21",
+    "domain": "Security Operations",
+    "questionNumber": 21,
+    "question": "Angela wants to ensure that IoT devices in her organization have a secure configuration when they are deployed and that they are ready for further configuration for their specific purposes. What term is used to describe these standard configurations used as part of her configuration management program?",
+    "choices": [
+      "A baseline configuration",
+      "An essential settings list",
+      "A preinstall checklist",
+      "A setup guide Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "Baseline configurations, per NIST 800-53: \"Baseline configurations serve as a basis for future builds, releases, and/or changes to information systems. Baseline configurations include information about information system components (e.g., standard software packages installed on workstations, notebook computers, servers, network components, or mobile devices; current version numbers and patch information on operating systems and applications; and configuration settings/parameters), network topology, and the logical placement of those components within the system architecture. Maintaining baseline configurations requires creating new baselines as organizational information systems change over time. Baseline configurations of information systems reflect the current enterprise architecture.\"",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q22",
+    "domain": "Security Operations",
+    "questionNumber": 22,
+    "question": "Chris is following the CIS Windows Server 2022 benchmark and notices that it recommends that Computer Configuration\\Policies\\Administrative Templates\\Windows Components\\ Search\\Allow indexing of encrypted files is set to disabled. What potential issue would this help to prevent?",
+    "choices": [
+      "Data leakage",
+      "Denial of service",
+      "Insecure service",
+      "Dark web access"
+    ],
+    "answer": 0,
+    "explanation": "Indexing encrypted files will mean that an unencrypted index is stored, potentially exposing the content of encrypted files. Disabling the indexing service for encrypted files helps to protect them. There is no denial-of-service scenario for this unless a vulnerability in the indexing service is discovered and none is mentioned. The service is not exposed via the network, and dark web access is not accomplished via indexing services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q23",
+    "domain": "Security Operations",
+    "questionNumber": 23,
+    "question": "Elizabeth wants to implement a cloud-based authorization system. Which of the following protocols is she most likely to use for that purpose?",
+    "choices": [
+      "OpenID",
+      "Kerberos",
+      "SAML",
+      "OAuth"
+    ],
+    "answer": 3,
+    "explanation": "OAuth is a common authorization service used for cloud services. It allows users to decide which websites or applications to entrust their information to without requiring them to give them the user's password. OpenID is frequently paired with OAuth as the authentication layer. Kerberos is more frequently used for on-site authentication, and SAML is Security Assertion Markup Language.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q24",
+    "domain": "Security Operations",
+    "questionNumber": 24,
+    "question": "Tony wants to implement a biometric system for entry access in his organization. Which of the following systems is likely to be most accepted by members of his organization's staff?",
+    "choices": [
+      "Fingerprint",
+      "Retina",
+      "Iris",
+      "Voice"
+    ],
+    "answer": 0,
+    "explanation": "Fingerprint reader systems are the most widely accepted biometric systems in common use for entry access and other purposes today. Facial recognition systems are increasingly in use and are also likely to be more accepted by user populations based on their broad deployment in phones, but they are not listed as an option. Both retina and iris scans are less likely to be accepted, whereas voice systems are both relatively uncommon and more disruptive for frequent usage.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q25",
+    "domain": "Security Operations",
+    "questionNumber": 25,
+    "question": "What is the primary threat model against static codes used for multifactor authentication?",
+    "choices": [
+      "Brute force",
+      "Collisions",
+      "Theft",
+      "Clock mismatch"
+    ],
+    "answer": 2,
+    "explanation": "Static codes are typically recorded in a secure location, but if they are not properly secured, or are otherwise exposed, they can be stolen. Brute-force attempts should be detected and prevented by backoff algorithms and other techniques that prevent attacks against multifactor authentication systems. Collisions exist with hashing algorithms, not with static multifactor codes, and clock mismatch issues occur for time-based one-time password (TOTP) codes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q26",
+    "domain": "Security Operations",
+    "questionNumber": 26,
+    "question": "Nadine's organization stores and uses sensitive information, including Social Security numbers. After a recent compromise, she has been asked to implement technology that can help prevent this sensitive data from leaving the company's systems and networks. What type of technology should Nadine implement?",
+    "choices": [
+      "Stateful firewalls",
+      "OEM",
+      "DLP",
+      "SIEM"
+    ],
+    "answer": 2,
+    "explanation": "The best answer from this list is DLP, or data loss prevention technology. DLP is designed to protect data from being exposed or leaking from a network using a variety of techniques and technology. Stateful firewalls are used to control which traffic is sent to or from a system, but will not detect sensitive data. OEM is an original equipment manufacturer, and security information and event management (SIEM) can help track events and incidents but will not directly protect data itself.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q27",
+    "domain": "Security Operations",
+    "questionNumber": 27,
+    "question": "Social login, the ability to use an existing identity from a site like Google, Facebook, or a Microsoft account, is an example of which of the following concepts?",
+    "choices": [
+      "Federation",
+      "AAA",
+      "Privilege creep",
+      "Identity and access management Security Operations 131"
+    ],
+    "answer": 0,
+    "explanation": "Social login is an example of a federated approach to using identities. The combination of identity providers and service providers, along with authorization management, is a key part of federation. AAA (authentication, authorization, and accounting) is typically associated with protocols like RADIUS. Privilege creep occurs as staff members change jobs and their privileges are not adjusted to only match their current role. IAM is a broader set of identity and access management practices. Although IAM may be involved in federated identity, this question does not directly describe IAM. Security Operations 287",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q28",
+    "domain": "Security Operations",
+    "questionNumber": 28,
+    "question": "Charles has configured his multifactor system to require both a PIN and a password. How many effective factors does he have in place once he presents both of these and his username?",
+    "choices": [
+      "One",
+      "Two",
+      "Three",
+      "Four"
+    ],
+    "answer": 0,
+    "explanation": "Although it may seem like Charles has presented two factors, in fact he has only presented two types of things he knows along with his identity. To truly implement a multifactor environment, he should use more than one of something you have, something you know, and something you are.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q29",
+    "domain": "Security Operations",
+    "questionNumber": 29,
+    "question": "Naomi is designing her organization's wireless network and wants to ensure that the design places access points in areas where they will provide optimum coverage. She also wants to plan for any sources of RF interference as part of her design. What should Naomi do first?",
+    "choices": [
+      "Contact the FCC for a wireless map.",
+      "Conduct a site survey.",
+      "Disable all existing access points.",
+      "Conduct a port scan to find all existing access points."
+    ],
+    "answer": 1,
+    "explanation": "A site survey is the process of identifying where access points should be located for best coverage and identifying existing sources of RF interference, including preexisting wireless networks and other devices that may use the same radio frequency spectrum. By conducting a site survey, Naomi can guide the placement of her access points as well as create a channel design that will work best for her organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q30",
+    "domain": "Security Operations",
+    "questionNumber": 30,
+    "question": "Charlene wants to provision her organization's standard set of marketing information to mobile devices throughout her organization. What MDM feature is best suited to this task?",
+    "choices": [
+      "Application management",
+      "Remote wipe",
+      "Content management",
+      "Push notifications"
+    ],
+    "answer": 2,
+    "explanation": "Mobile device management (MDM) suites often provide the ability to manage content on devices as well as applications. Using content management tools can allow Charlene to provision files, documents, and media to the devices that staff members in her organization are issued. Application management would be useful for apps. Remote wipe can remove data and applications from the device if it is lost or stolen, or an employee leaves the organization. Push notifications are useful when information needs to be provided to the device user.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q31",
+    "domain": "Security Operations",
+    "questionNumber": 31,
+    "question": "Denny wants to deploy antivirus for his organization and wants to ensure that it will stop the most malware. What deployment model should Denny select?",
+    "choices": [
+      "Install antivirus from the same vendor on individual PCs and servers to best balance visibility, support, and security.",
+      "Install antivirus from more than one vendor on all PCs and servers to maximize coverage.",
+      "Install antivirus from one vendor on PCs and from another vendor on the server to provide a greater chance of catching malware.",
+      "Install antivirus only on workstations to avoid potential issues with server performance."
+    ],
+    "answer": 2,
+    "explanation": "In this scenario, Denny specifically needs to ensure that he stops the most malware. In situations like this, vendor diversity is the best way to detect more malware, and installing a different vendor's antivirus (AV) package on servers like email servers and then installing a managed package for PCs will result in the most detections in almost all cases. Installing more than one AV package on the same system is rarely recommended, since this often causes performance issues and conflicts between the packages-in fact, at times AV packages have been known to detect other AV packages because of the deep hooks they place into the operating system to detect malicious activity!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q32",
+    "domain": "Security Operations",
+    "questionNumber": 32,
+    "question": "Madhuri's web application converts numbers that are input into fields by specifically typing them and then applies strict exception handling. It also sets a minimum and maximum length for the inputs that it allows and uses predefined arrays of allowed values for inputs like months or dates. What term describes the actions that Madhuri's application is performing?",
+    "choices": [
+      "Buffer overflow prevention",
+      "String injection",
+      "Input validation",
+      "Schema validation Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "The application includes input validation techniques that are used to ensure that unexpected or malicious input does not cause problems with the application. Input validation techniques will strip out control characters, validate data, and perform a variety of other actions to clean input before it is processed by the application or stored for future use. This validation may help prevent buffer overflows, but other techniques described here are not used for buffer overflow prevention. String injection is actually something this helps to prevent, and schema validation looks at data to ensure that requests match a schema, but again this is a narrower description than the broad range of input validation occurring in the description.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q33",
+    "domain": "Security Operations",
+    "questionNumber": 33,
+    "question": "You're outlining your plans for implementing a wireless network to upper management. What wireless security standard should you adopt if you don't want to use enterprise authentication but want to provide secure authentication for users that doesn't require a shared password or passphrase?",
+    "choices": [
+      "WPA3",
+      "WPA",
+      "WPA2",
+      "WEP"
+    ],
+    "answer": 0,
+    "explanation": "WPA3 supports SAE, or simultaneous authentication of equals, providing a more secure way to authenticate that limits the potential for brute-force attacks and allows individuals to use different passwords. WPA is not as secure as WPA2, and WEP is the oldest, and least secure, wireless security protocol. WPA2 is not as secure as WPA3 but remains in use due to broad deployment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q34",
+    "domain": "Security Operations",
+    "questionNumber": 34,
+    "question": "You are the chief security officer (CSO) for a large company. You have discovered malware on one of the workstations. You are concerned that the malware might have multiple functions and might have caused more security issues with the computer than you can currently detect. What is the best way to test this malware?",
+    "choices": [
+      "Leave the malware on that workstation until it is tested.",
+      "Place the malware in a sandbox environment for testing.",
+      "It is not important to analyze or test it; just remove it from the machine.",
+      "Place the malware on a honeypot for testing."
+    ],
+    "answer": 1,
+    "explanation": "The correct answer is to use a sandboxed environment to test the malware and determine its complete functionality. A sandboxed system could be an isolated virtual machine (VM) or an actual physical machine that is entirely isolated from the network. Leaving the malware on a production system is never the correct approach. You should test or analyze the malware to determine exactly what malware it is, allowing you to respond to the threat properly. A honeypot is used for luring and trapping attackers, not for testing malware.288 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q35",
+    "domain": "Security Operations",
+    "questionNumber": 35,
+    "question": "Isaac is reviewing his organization's secure coding practices document for customer-facing web applications and wants to ensure that their input validation recommendations are appropriate. Which of the following is not a common best practice for input validation?",
+    "choices": [
+      "Ensure validation occurs on a trusted server.",
+      "Validate all client-supplied data before it is processed.",
+      "Validate expected data types and ranges.",
+      "Ensure validation occurs on a trusted client."
+    ],
+    "answer": 3,
+    "explanation": "Isaac knows that trusting client systems to be secure is not a good idea, and thus ensuring that validation occurs on a trusted client is not an appropriate recommendation. Ensuring that validation occurs on a trusted server, that client data is validated, and that data types and ranges are reasonable are all good best practices for him to recommend.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q36",
+    "domain": "Security Operations",
+    "questionNumber": 36,
+    "question": "Isaac wants to prevent corporate mobile devices from being used outside of his company's buildings and corporate campus. What mobile device management (MDM) capability should he use to allow this?",
+    "choices": [
+      "Patch management",
+      "IP filtering",
+      "Geofencing",
+      "Network restrictions"
+    ],
+    "answer": 2,
+    "explanation": "Isaac can configure a geofence that defines his corporate buildings and campus. He can then set up a geofence policy that will only allow devices to work while they are inside that geofenced area. Patch management, IP filtering, and network restrictions are not suitable solutions for this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q37",
+    "domain": "Security Operations",
+    "questionNumber": 37,
+    "question": "Sophia wants to test her company's web application to see if it is handling business logic properly. Which testing method would be most effective for this?",
+    "choices": [
+      "Static code analysis",
+      "Fuzzing",
+      "Baselining",
+      "Version control Security Operations 133"
+    ],
+    "answer": 0,
+    "explanation": "Static code analysis can help identify business logic issues by leveraging expert knowledge and understanding of the business process and logic involved. Fuzzing is a technique whereby the tester intentionally enters incorrect values into input fields to see how the application will handle it but doesn't directly test business logic. Baselining is the process of establishing security standards, and version control simply tracks changes in the code-it does not test the code.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q38",
+    "domain": "Security Operations",
+    "questionNumber": 38,
+    "question": "Endpoint detection and response has three major components that make up its ability to provide visibility into endpoints. Which of the following is not one of those three parts?",
+    "choices": [
+      "Data search",
+      "Malware analysis",
+      "Data exploration",
+      "Suspicious activity detection"
+    ],
+    "answer": 1,
+    "explanation": "Endpoint detection and response (EDR) focuses on identifying anomalies and issues, but it is not designed to be a malware analysis tool. Instead, the ability to search and explore data, identify suspicious activities, and coordinate responses is what makes up an EDR tool.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q39",
+    "domain": "Security Operations",
+    "questionNumber": 39,
+    "question": "Carl has been asked to set up access control for a server. The requirements state that users at a lower privilege level should not be able to see or access files or data at a higher privilege level. What access control model would best fit these requirements?",
+    "choices": [
+      "MAC",
+      "DAC",
+      "RBAC",
+      "SAML"
+    ],
+    "answer": 0,
+    "explanation": "Mandatory access control (MAC) is the correct solution. It will not allow lower privileged users to even see the data at a higher privilege level. Discretionary access control (DAC) has each data owner configure their own security. Role-based access control (RBAC) could be configured to meet the needs, but it's not the best solution for these requirements. Security Assertion Markup Language (SAML) is not an access control model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q40",
+    "domain": "Security Operations",
+    "questionNumber": 40,
+    "question": "Jack wants to deploy a network access control (NAC) system that will stop systems that are not fully patched from connecting to his network. If he wants to have full details of system configuration, antivirus version, and patch level, what type of NAC deployment is most likely to meet his needs?",
+    "choices": [
+      "Agentless, preadmission",
+      "Agent-based, preadmission",
+      "Agentless, postadmission",
+      "Agent-based, postadmission"
+    ],
+    "answer": 1,
+    "explanation": "An agent-based, preadmission system will provide greater insight into the configuration of the system using the agent, and using a preadmission model will allow the system configuration to be tested before the system is allowed to connect to the network. Agentless NAC uses scanning and/or network inventory techniques and will typically not have as deep a level of insight into the configuration and software versions running on a system. Postadmission systems make enforcement decisions based on what users do after they gain admission to a network, rather than prior to gaining admission, allowing you to quickly rule out two of these options.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q41",
+    "domain": "Security Operations",
+    "questionNumber": 41,
+    "question": "Eric wants to provide company-purchased devices, but his organization prefers to provide end users with choices among devices that can be managed and maintained centrally. What mobile device deployment model best fits this need?",
+    "choices": [
+      "BYOD",
+      "COPE",
+      "CYOD",
+      "VDI"
+    ],
+    "answer": 2,
+    "explanation": "CYOD, or choose your own device, allows users to choose a device that is corporate owned and paid for. Choices may be limited to set of devices, or users may be allowed to choose essentially any device depending on the organization's deployment decisions. BYOD allows users to bring their own device, whereas COPE, or corporate-owned, personally enabled, provides devices to users that they can then use for personal use. VDI uses a virtual desktop infrastructure as an access layer for any security model where specialized needs or security requirements may require access to remote desktop or application services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q42",
+    "domain": "Security Operations",
+    "questionNumber": 42,
+    "question": "Claire is concerned about an attacker getting information regarding network devices and their configuration in her company. Which protocol should she implement that would be most helpful in mitigating this risk while providing management and reporting about network devices?",
+    "choices": [
+      "RADIUS",
+      "TLS",
+      "SNMPv3",
+      "SFTP Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "If Claire is using Simple Network Management Protocol (SNMP) to manage and monitor her network devices, she should make sure she is using SNMPv3 and that it is properly configured. SNMPv3 can provide information about the status and configuration of her network devices. Remote Authentication Dial-In User Service (RADIUS) might be used to authenticate to the network, but Transport Layer Security (TLS) and SSH File Transfer Protocol (SFTP) are not specifically used for the purposes described. Security Operations 289",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q43",
+    "domain": "Security Operations",
+    "questionNumber": 43,
+    "question": "Eric is responsible for his organization's mobile device security. They use a modern mobile device management (MDM) tool to manage a BYOD mobile device environment. Eric needs to ensure that the applications and data that his organization provides to users of those mobile devices remain as secure as possible. Which of the following technologies will provide him with the best security?",
+    "choices": [
+      "Storage segmentation",
+      "Containerization",
+      "Full-device encryption",
+      "Remote wipe"
+    ],
+    "answer": 1,
+    "explanation": "Containerization will allow Eric's company's tools and data to be run inside of an application-based container, isolating the data and programs from the self-controlled bring your own device (BYOD) devices. Storage segmentation can be helpful, but the operating system itself as well as the applications would remain a concern. Eric should recommend full-device encryption (FDE) as a security best practice, but encrypting the container and the data it contains can provide a reasonable security layer even if the device itself is not fully encrypted. Remote wipe is helpful if devices are lost or stolen, but the end user may not be okay with having the entire device wiped, and there are ways to work around remote wipes, including blocking cellular and Wi-Fi signals.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q44",
+    "domain": "Security Operations",
+    "questionNumber": 44,
+    "question": "Tara is concerned about staff in her organization sending email with sensitive information like customer Social Security numbers (SSNs) included in it. What type of solution can she implement to help prevent inadvertent exposures of this type of sensitive data?",
+    "choices": [
+      "FDE",
+      "DLP",
+      "S/MIME",
+      "POP3S"
+    ],
+    "answer": 1,
+    "explanation": "Data loss prevention (DLP) tools allow sensitive data to be tagged and monitored so that if a user attempts to send it, they will be notified, administrators will be informed, and if necessary, the data can be protected using encryption or other protection methods before it is sent. Full-disk encryption (FDE) would protect data at rest, and S/MIME and POP3S would protect mail being retrieved from a server but would not prevent the SSNs from being sent.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q45",
+    "domain": "Security Operations",
+    "questionNumber": 45,
+    "question": "Mason is responsible for security at a company that has traveling salespeople. The company has been using ABAC for access control to the network. Which of the following is an issue that is specific to ABAC and might cause it to incorrectly reject logins?",
+    "choices": [
+      "Geographic location.",
+      "Wrong password.",
+      "Remote access is not allowed by ABAC.",
+      "Firewalls usually block ABAC."
+    ],
+    "answer": 0,
+    "explanation": "Attribute-based access control (ABAC) looks at a group of attributes, in addition to the login username and password, to make decisions about whether or not to grant access. One of the attributes examined is the location of the person. Since the users in this company travel frequently, they will often be at new locations, and that might cause ABAC to reject their logins. Wrong passwords can certainly prevent login, but are not specific to ABAC. ABAC does not prevent remote access, and a firewall can be configured to allow, or prohibit, any traffic you wish.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q46",
+    "domain": "Security Operations",
+    "questionNumber": 46,
+    "question": "Darrell is concerned that users on his network have too many passwords to remember and might write down their passwords, thus creating a significant security risk. Which of the following would be most helpful in mitigating this issue?",
+    "choices": [
+      "Multifactor authentication",
+      "SSO",
+      "SAML",
+      "LDAP"
+    ],
+    "answer": 1,
+    "explanation": "Single sign-on (SSO) is designed specifically to address this risk and would be the most helpful. Users have only a single logon to remember; thus, they have no need to write down the password. OAuth (Open Authorization) is an open standard for token-based authentication and authorization on the Internet. It does not eliminate the use or need for multiple passwords. Multifactor authentication helps prevent risks due to lost passwords, but does not remove the need for multiple passwords by itself. Security Assertion Markup Language (SAML) and Lightweight Directory Access Protocol (LDAP) do not stop users from needing to remember multiple passwords.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q47",
+    "domain": "Security Operations",
+    "questionNumber": 47,
+    "question": "Frank is a security administrator for a large company. Occasionally, a user needs to access a specific resource that they don't have permission to access. Which access control methodology would be most helpful in this situation?",
+    "choices": [
+      "Mandatory access control (MAC)",
+      "Discretionary access control (DAC)",
+      "Role-based access control",
+      "Rule-based access control Security Operations 135"
+    ],
+    "answer": 3,
+    "explanation": "Rule-based access control applies a set of rules to an access request. Based on the application of the rules, the user may be given access to a specific resource that they were not explicitly granted permission to. MAC, DAC, and role-based access control wouldn't give a user access unless that user has already been explicitly given that access.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q48",
+    "domain": "Security Operations",
+    "questionNumber": 48,
+    "question": "Oliver needs to explain the access control scheme used by both the Windows and Linux filesystems. What access control scheme do they implement by default?",
+    "choices": [
+      "Role-based access control",
+      "Mandatory access control",
+      "Rule-based access control",
+      "Discretionary access control"
+    ],
+    "answer": 3,
+    "explanation": "Both the Windows and Linux filesystems work based on a discretionary access control scheme where file and directory owners can determine who can access, change, or otherwise work with files under their control. Role-based access controls systems determine rights based on roles that are assigned to users. Rule-based access control systems use a series of rules to determine which actions can occur, and mandatory access control systems enforce control at the operating system level.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q49",
+    "domain": "Security Operations",
+    "questionNumber": 49,
+    "question": "Stefan just became the new security officer for a university. He is concerned that student workers who work late on campus could try to log in with faculty credentials. Which of the following would be most effective in preventing this?",
+    "choices": [
+      "Time-of-day restrictions",
+      "Usage auditing",
+      "Password length",
+      "Credential management"
+    ],
+    "answer": 0,
+    "explanation": "Restricting each faculty account so that it is only usable when that particular faculty member is typically on campus will prevent someone from logging in with that account after hours, even if they have the password. Usage auditing may detect misuse of accounts but will not prevent it. Longer passwords are effective security, but a longer password can still be stolen. Credential management is always a good idea, but it won't address this specific issue.290 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q50",
+    "domain": "Security Operations",
+    "questionNumber": 50,
+    "question": "Chloe has noticed that users on her company's network frequently have simple passwords made up of common words. Thus, they have weak passwords. How could Chloe best mitigate this issue?",
+    "choices": [
+      "Increase minimum password length.",
+      "Have users change passwords more frequently.",
+      "Require password complexity.",
+      "Implement single sign-on (SSO)."
+    ],
+    "answer": 2,
+    "explanation": "Password complexity requires that passwords have a mixture of uppercase letters, lowercase letters, numbers, and special characters. This would be the best approach to correct the problem described in the question. Longer passwords are a good security measure but will not correct the issue presented here. Changing passwords won't make those passwords any stronger, and SSO will have no effect on the strength of passwords.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q51",
+    "domain": "Security Operations",
+    "questionNumber": 51,
+    "question": "A companywide policy is being created to define various security levels. Which of the following systems of access control would use documented security levels like Confidential or Secret for information?",
+    "choices": [
+      "RBAC",
+      "MAC",
+      "DAC",
+      "BAC"
+    ],
+    "answer": 1,
+    "explanation": "Mandatory access control (MAC) is based on documented security levels associated with the information being accessed. Role-based access control (RBAC) is based on the role the user is placed in. Discretionary access control (DAC) lets the data owner set access control. BAC is not an access control model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q52",
+    "domain": "Security Operations",
+    "questionNumber": 52,
+    "question": "Users in your network are able to assign permissions to their own shared resources. Which of the following access control models is used in your network?",
+    "choices": [
+      "DAC",
+      "RBAC",
+      "MAC",
+      "ABAC Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "Discretionary access control (DAC) allows data owners to assign permissions. Role-based access control (RBAC) assigns access based on the role the user is in. Mandatory access control (MAC) is stricter and enforces control at the OS level. Attribute-cased access control (ABAC) considers various attributes such as location, time, and computer in addition to username and password.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q53",
+    "domain": "Security Operations",
+    "questionNumber": 53,
+    "question": "Cynthia is preparing a new server for deployment, and her process includes turning off unnecessary services, setting security settings to match her organization's baseline configurations, and installing patches and updates. What is this process known as?",
+    "choices": [
+      "OS hardening",
+      "Security uplift",
+      "Configuration management",
+      "Endpoint lockdown"
+    ],
+    "answer": 0,
+    "explanation": "OS hardening is the process of securing an operating system by patching, updating, and configuring the operating system to be secure. Configuration management is the ongoing process of managing configurations for systems, rather than this initial security step. Both security uplift and endpoint lockdown were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q54",
+    "domain": "Security Operations",
+    "questionNumber": 54,
+    "question": "John is performing a port scan of a network as part of a security audit. He notices that the domain controller is using secure LDAP. Which of the following ports would lead him to that conclusion?",
+    "choices": [
+      "53",
+      "389",
+      "443",
+      "636"
+    ],
+    "answer": 3,
+    "explanation": "Secure Lightweight Directory Access Protocol (LDAPS) uses port 636 by default. DNS uses port 53, LDAP uses 389, and secure HTTP uses port 443.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q55",
+    "domain": "Security Operations",
+    "questionNumber": 55,
+    "question": "Which of the following access control methods grants permissions based on the user's position in the organization?",
+    "choices": [
+      "MAC",
+      "RBAC",
+      "DAC",
+      "ABAC"
+    ],
+    "answer": 1,
+    "explanation": "Role-based access control (RBAC) grants permissions based on the user's position within the organization. Mandatory access control (MAC) uses security classifications to grant permissions. Discretionary access control (DAC) allows data owners to set permissions. Attribute-based access control (ABAC) considers various attributes such as location, time, and computer, in addition to username and password.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q56",
+    "domain": "Security Operations",
+    "questionNumber": 56,
+    "question": "Gary is designing his cloud infrastructure and needs to provide a firewall-like capability for the virtual systems he is running. Which of the following cloud capabilities acts like a virtual firewall?",
+    "choices": [
+      "Security groups",
+      "Dynamic resource allocation",
+      "VPC endpoints",
+      "Instance awareness"
+    ],
+    "answer": 0,
+    "explanation": "Security groups are a virtual firewall for instances, allowing rules to be applied to traffic between instances. Dynamic resource allocation is a concept that allows resources to be applied as they are needed, including scaling up and down infrastructure and systems on the fly. Virtual private cloud (VPC) endpoints are a way to connect to services inside of a cloud provider without an Internet gateway. Finally, instance awareness is a concept that means that tools know about the differences between instances, rather than treating each instance in a scaling group as the same. This can be important during incident response processes and security monitoring for scaled groups, where resources may all appear identical without instance awareness.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q57",
+    "domain": "Security Operations",
+    "questionNumber": 57,
+    "question": "Henry is an employee at Acme Company. The company requires him to change his password every three months. He has trouble remembering new passwords, so he keeps switching between just two passwords. Which policy would be most effective in preventing this?",
+    "choices": [
+      "Password complexity",
+      "Password history",
+      "Password length",
+      "Multifactor authentication"
+    ],
+    "answer": 1,
+    "explanation": "If the system maintains a password history, that will prevent any user from reusing an old password. Password complexity and length are common security settings but would not prevent the behavior described. Multifactor authentication helps prevent brute-force attacks and reduces the potential impact of stolen passwords but would not help with this scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q58",
+    "domain": "Security Operations",
+    "questionNumber": 58,
+    "question": "Tracy wants to limit when users can log in to a stand-alone Windows workstation. What should Tracy do to meet this requirement?",
+    "choices": [
+      "Set login time restrictions.",
+      "Turn the system off automatically during hours it should not be used. Security Operations 137",
+      "Hire security guards to monitor the space.",
+      "Disable remote login during the hours the system should not be used."
+    ],
+    "answer": 0,
+    "explanation": "Setting login time restrictions is a common method to control when a system can be used. Turning off a system does not prevent it from being turned back on. Guards are expensive compared to a simple technical control limiting logins, and disabling remote login does not prevent local login. Security Operations 291",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q59",
+    "domain": "Security Operations",
+    "questionNumber": 59,
+    "question": "Lucas is looking for an XML-based open standard for exchanging authentication information. Which of the following would best meet his needs?",
+    "choices": [
+      "SAML",
+      "OAuth",
+      "RADIUS",
+      "NTLM"
+    ],
+    "answer": 0,
+    "explanation": "Security Assertion Markup Language (SAML) is an XML-based, open standard format for exchanging authentication and authorization data between parties. OAuth allows an end user's account information to be used by third-party services, without exposing the user's password. RADIUS is a remote access protocol. New Technology LAN Manager (NTLM) is not XML-based.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q60",
+    "domain": "Security Operations",
+    "questionNumber": 60,
+    "question": "Murali is preparing to acquire data from various devices and systems that are targets in a forensic investigation. Which of the following devices is the least volatile according to the order of volatility?",
+    "choices": [
+      "Backups",
+      "CPU cache",
+      "Local disk",
+      "RAM"
+    ],
+    "answer": 0,
+    "explanation": "Backups are considered to be the least volatile type of storage since they change at a much slower pace and, in fact, may be intentionally retained for long periods of time without changing. In this list, CPU cache will change the most frequently, then RAM, then local disk contents.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q61",
+    "domain": "Security Operations",
+    "questionNumber": 61,
+    "question": "What phase of the incident response process should be placed at point A in the following image? A Preparation Detection Containment Analysis Eradication Incident Response Process",
+    "choices": [
+      "Simulations",
+      "Review",
+      "Recovery",
+      "Patching Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "After eradication of the issue has been completed, recovery can begin. Recovery can include restoration of services and a return to normal operations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q62",
+    "domain": "Security Operations",
+    "questionNumber": 62,
+    "question": "Brent wants to use a tool to help him analyze malware and attacks and wants to cover a broad range of tactics and tools that are used by adversaries. Which of the following is broadly implemented in technical tools and covers techniques and tactics without requiring a specific order of operations?",
+    "choices": [
+      "The CIS Benchmark",
+      "The Dark Web Analysis Project",
+      "The MITRE ATT&CK framework",
+      "The CVSS standard"
+    ],
+    "answer": 2,
+    "explanation": "The MITRE ATT&CK framework focuses on techniques and tactics. CIS Benchmarks are security configuration baselines, the Dark Web Analysis Project was made up for this question, and the CVSS standard is a vulnerability scoring system and is not a useful framework for analyzing malware and attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q63",
+    "domain": "Security Operations",
+    "questionNumber": 63,
+    "question": "Ted needs to preserve a server for forensic purposes. Which of the following should he not do?",
+    "choices": [
+      "Turn the system off to ensure that data does not change.",
+      "Remove the drive while the system is running to ensure that data does not change.",
+      "Leave the machine connected to the network so that users can continue to use it.",
+      "All of the above."
+    ],
+    "answer": 3,
+    "explanation": "To properly preserve the system, Ted needs to ensure that it does not change. Turning off the system will cause anything in memory to be lost, which may be needed for the investigation. Removing the drive while a system is running can cause data to be lost. Instead, live-imaging the machine and its memory may be required. Allowing users to continue to use a machine will result in changes, which can also damage Ted's ability to perform a forensic investigation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q64",
+    "domain": "Security Operations",
+    "questionNumber": 64,
+    "question": "Jessica wants to review the network traffic that her Windows system has sent to determine if a file containing sensitive data was uploaded from the system. What Windows log file can she use to find this information?",
+    "choices": [
+      "The application log",
+      "The network log",
+      "The security log",
+      "None of the above"
+    ],
+    "answer": 3,
+    "explanation": "Windows does not log network traffic at a level of granularity that will show if a file has been uploaded. Basic traffic statistics can be captured, but without additional sensors and information-gathering capabilities, Jessica will not be able to determine if files are sent from a Windows system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q65",
+    "domain": "Security Operations",
+    "questionNumber": 65,
+    "question": "What term is used to describe the documentation trail for control, analysis, transfer, and final disposition of evidence for digital forensic work?",
+    "choices": [
+      "Evidence log",
+      "Paper trail",
+      "Chain of custody",
+      "Digital footprint"
+    ],
+    "answer": 2,
+    "explanation": "The chain of custody in forensic activities tracks who has a device, data, or other forensic artifact at any time, when transfers occur, who performed analysis, and where the item, system, or device goes when the forensic process is done. Evidence logs may be maintained by law enforcement to track evidence that is gathered. Paper trail and digital footprint are not technical terms used for digital forensics.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q66",
+    "domain": "Security Operations",
+    "questionNumber": 66,
+    "question": "Nathan needs to know how many times an event occurred and wants to check a log file for that event. Which of the following grep commands will tell him how many times the event happened if each occurrence is logged independently in the logfile.txt log file, and uses a unique event ID, event101?",
+    "choices": [
+      "grep logfile.txt -n 'event101'",
+      "grep -c 'event101' logfile.txt",
+      "grep logfile.txt -c 'event101'",
+      "grep -c event101 -i logfile.txt Security Operations 139"
+    ],
+    "answer": 1,
+    "explanation": "The -c flag for grep counts the number of occurrences for a given string in a file. The -n flag shows the matched lines and line numbers. Even if you're not sure about which flag is which, the syntax should help on a question like this. When using grep, the pattern comes before the filename, allowing you to rule out two of the options right away.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q67",
+    "domain": "Security Operations",
+    "questionNumber": 67,
+    "question": "Eric wants to determine how much bandwidth was used during a compromise and where the traffic was directed to. What technology can he implement before the event to help him see this detail and allow him to have an effective bandwidth monitoring solution?",
+    "choices": [
+      "A firewall",
+      "NetFlow",
+      "Packetflow",
+      "A DLP"
+    ],
+    "answer": 1,
+    "explanation": "Network flows using NetFlow or sFlow would provide the information that Eric wants, with details of how much traffic was used, when, and where traffic was directed. A firewall or data loss prevention (DLP) would not show the bandwidth detail, although a firewall may show the connection information for events. Packetflow was made up for this question and is not a technology used for this purpose.292 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q68",
+    "domain": "Security Operations",
+    "questionNumber": 68,
+    "question": "Naomi has acquired an image of a drive as part of a forensic process. She wants to ensure that the drive image matches the original. What should she create and record to validate this?",
+    "choices": [
+      "A third image to compare to the original and new image",
+      "A directory listing to show that the directories match",
+      "A photographic image of the two drives to show that they match",
+      "A hash of the drives to show that their hashes match"
+    ],
+    "answer": 3,
+    "explanation": "Hashing using MD5 or SHA1 is commonly used to validate that a forensic image matches the original drive. Many forensic duplicators automatically generate a hash of both drives when they complete the imaging process to ensure that there is a documentation chain for the forensic artifacts. A third image may be useful but does not validate this. Directory listings do not prove that drives match, and photos, though useful to document the drives and serial numbers, do not validate the contents of the drives.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q69",
+    "domain": "Security Operations",
+    "questionNumber": 69,
+    "question": "Ryan has been asked to run Nessus on his network. What type of tool has he been asked to run?",
+    "choices": [
+      "A fuzzer",
+      "A vulnerability scanner",
+      "A WAF",
+      "A protocol analyzer"
+    ],
+    "answer": 1,
+    "explanation": "Nessus is a popular vulnerability scanning tool. It is not a fuzzer, web application firewall (WAF), or protocol analyzer.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q70",
+    "domain": "Security Operations",
+    "questionNumber": 70,
+    "question": "Michelle wants to check for authentication failures on a RedHat Linux-based system. Where should she look for these event logs?",
+    "choices": [
+      "/var/log/auth.log",
+      "/var/log/fail",
+      "/var/log/events",
+      "/var/log/secure"
+    ],
+    "answer": 3,
+    "explanation": "Red Hat stores authentication log information in /var/log/secure instead of /var/ log/auth.log used by Debian and Ubuntu systems. Knowing the differences between the major distributions can help speed up your forensic and incident investigations, and consistency is one of the reasons that organizations often select a single Linux distribution for their infrastructure whenever it is possible to do so.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q71",
+    "domain": "Security Operations",
+    "questionNumber": 71,
+    "question": "Nelson has discovered malware on one of the systems he is responsible for and wants to test it in a safe environment. Which of the following tools is best suited to that testing?",
+    "choices": [
+      "strings",
+      "scanless",
+      "Cuckoo",
+      "Sn1per"
+    ],
+    "answer": 2,
+    "explanation": "Cuckoo, or Cuckoo Sandbox, is a malware analysis sandbox that will safely run malware and then analyze and report on its behavior. strings is a command-line tool that retrieves strings from binary data. scanless is a tool described as a port scraper, which retrieves port information without running a port scan by using websites and services to run the scan for you. Sn1per is a pen test framework.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q72",
+    "domain": "Security Operations",
+    "questionNumber": 72,
+    "question": "Lucca wants to review metadata related to a JPEG file. What will he need to do to review it?",
+    "choices": [
+      "Change the JPEG to a GIF to see the metadata.",
+      "Download the metadata file from the original author.",
+      "Use a metadata viewer.",
+      "Analyze the hash of the file. Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "Metadata viewing tools will allow Lucca to view the metadata that is embedded in the file itself. Metadata is not downloaded separately or available via the hash for a JPEG file.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q73",
+    "domain": "Security Operations",
+    "questionNumber": 73,
+    "question": "Jason is conducting a forensic investigation and has retrieved artifacts in addition to drives and files. What should he do to document the artifacts he has acquired?",
+    "choices": [
+      "Image them using dd and ensure that a valid MD5sum is generated.",
+      "Take a picture of them, label them, and add them to the chain-of-custody documentation.",
+      "Contact law enforcement to properly handle the artifacts.",
+      "Engage legal counsel to advise him how to handle artifacts in an investigation."
+    ],
+    "answer": 1,
+    "explanation": "When artifacts are acquired as part of an investigation, they should be logged and documented as part of the evidence related to the investigation. Artifacts could include a piece of paper with passwords on it, tools or technology related to an exploit or attack, smartcards, or any other element of an investigation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q74",
+    "domain": "Security Operations",
+    "questionNumber": 74,
+    "question": "Joseph is writing a forensic report and wants to be sure he includes appropriate detail. Which of the following would not typically be included while discussing analysis of a system?",
+    "choices": [
+      "Validation of the system clock's time settings",
+      "The operating system in use",
+      "The methods used to create the image",
+      "A picture of the person from whom the system was taken"
+    ],
+    "answer": 3,
+    "explanation": "Forensic reports should include appropriate technical detail. Analysis of a system does not include a picture of the person from whom the system was acquired.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q75",
+    "domain": "Security Operations",
+    "questionNumber": 75,
+    "question": "Elaine wants to determine what websites a user has recently visited using the contents of a forensically acquired hard drive. Which of the following locations would not be useful for her investigation?",
+    "choices": [
+      "The browser cache",
+      "The browser history",
+      "The browser's bookmarks",
+      "Session data"
+    ],
+    "answer": 2,
+    "explanation": "The browser cache, history, and session information will all contain information from recently visited sites. Bookmarks may indicate sites that a user has visited at some point, but a bookmark can be added without visiting a site at all.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q76",
+    "domain": "Security Operations",
+    "questionNumber": 76,
+    "question": "Susan has discovered evidence of a compromise that occurred approximately five months ago. She wants to conduct an incident investigation but is concerned about whether the data will exist. What policy guides how long logs and other data are kept in most organizations?",
+    "choices": [
+      "The organization's data classification policy",
+      "The organization's backup policy",
+      "The organization's retention policy",
+      "The organization's legal hold policy"
+    ],
+    "answer": 2,
+    "explanation": "Organizations define retention policies for different data types and systems. Many organizations use 30-, 45-, 90-, 180-, or 365-day retention policies, with some information required to be kept longer due to law or compliance reasons. Susan's organization may keep logs for as little as 30 days depending on storage limitations and business needs. Data classification policies typically impact how data is secured and handled. Backup policies determine how long backups are retained and rotated and may have an impact on data if the logs are backed up, but backing up logs are a less common practice due to the space they take up versus the value of having logs backed up. Legal hold practices are common, but policies are less typically defined for legal holds since requirements are set by law. Security Operations 293",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q77",
+    "domain": "Security Operations",
+    "questionNumber": 77,
+    "question": "Alaina sets her antimalware solution to move infected files to a safe storage location without removing them from the system. What type of setting has she enabled?",
+    "choices": [
+      "Purge",
+      "Deep-freeze",
+      "Quarantine",
+      "Retention"
+    ],
+    "answer": 2,
+    "explanation": "A quarantine process or setting will preserve malicious or dangerous files and programs without allowing them to run. This allows defenders to retrieve them for further analysis as well as to return them to use if they are determined not to be malicious, or if the malicious components can be removed from needed files. Purging, deep-freezing, and retention are not terms used to describe this behavior or setting.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q78",
+    "domain": "Security Operations",
+    "questionNumber": 78,
+    "question": "A senior vice president in the organization that Chuck works in recently lost a phone that contained sensitive business plans and information about suppliers, designs, and other important materials. After interviewing the vice president, Chuck finds out that the phone did not have a passcode set and was not encrypted, and that it could not be remotely wiped. Security Operations 141 What type of control should Chuck recommend for his company to help prevent future issues like this?",
+    "choices": [
+      "Use containment techniques on the impacted phones.",
+      "Deploy a DLP system.",
+      "Deploy an MDM system.",
+      "Isolate the impacted phones."
+    ],
+    "answer": 2,
+    "explanation": "Chuck should recommend a mobile device management (MDM) system to ensure that organizational devices can be managed and protected in the future. Data loss prevention (DLP) will not stop a lost phone from being a potential leak of data, isolating the phones is not a realistic scenario for devices that will actually be used, nor is containment because the phone is out of the organization's control once lost.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q79",
+    "domain": "Security Operations",
+    "questionNumber": 79,
+    "question": "Charles wants to ensure that the forensic work that he is doing cannot be repudiated. How can he validate his attestations and documentation to ensure nonrepudiation?",
+    "choices": [
+      "Encrypt all forensic output.",
+      "Digitally sign the records.",
+      "Create a MD5 checksum of all images.",
+      "All of the above."
+    ],
+    "answer": 1,
+    "explanation": "The most important action Charles can take while working with his forensic artifacts to provide nonrepudiation is to digitally sign the artifacts and information that he is creating in his evidence records. Encrypting the output will ensure its confidentiality but will not provide nonrepudiation by itself. MD5 checksums for images are commonly gathered but must then be signed so that they can be validated to ensure they have not been modified.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q80",
+    "domain": "Security Operations",
+    "questionNumber": 80,
+    "question": "Megan needs to conduct a forensic investigation of a virtual machine (VM) hosted in a VMware environment as part of an incident response effort. What is the best way for her to collect the VM?",
+    "choices": [
+      "As a snapshot using the VMware built-in tools",
+      "By using dd to copy the VM to an external drive",
+      "By using dd to copy the VM to an internal drive",
+      "By using a forensic imaging device after removing the server's drives"
+    ],
+    "answer": 0,
+    "explanation": "The best way to capture a virtual machine from a running hypervisor is usually to use the built-in tools to obtain a snapshot of the system. Imaging tools are not typically capable of capturing machine state, and dd is not designed to capture VMs. Removing a server's drives can be challenging due to possible RAID and other specific server configuration items, and doing so might impact all other running VMs and services on the system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q81",
+    "domain": "Security Operations",
+    "questionNumber": 81,
+    "question": "Which of the following groups is not typically part of an incident response team?",
+    "choices": [
+      "Law enforcement",
+      "Security analysts",
+      "Management",
+      "Communications staff"
+    ],
+    "answer": 0,
+    "explanation": "Law enforcement is not typically part of organizational incident response teams, but incident response teams often maintain a relationship with local law enforcement officers. Security analysts, management, and communication staff as well as technical experts are all commonly part of a core incident response team.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q82",
+    "domain": "Security Operations",
+    "questionNumber": 82,
+    "question": "Bob needs to block Secure Shell (SSH) traffic between two security zones. Which of the following Linux iptables firewall rules will block that traffic from the 10.0.10.0/24 network to the system the rule is running on?",
+    "choices": [
+      "iptables -A INPUT -p tcp --dport 22 -i eth0 -s 10.0.10.0/ 24 -j DROP",
+      "iptables -D OUTPUT -p udp -dport 21 -i eth0 -s 10.0.10 .255 -j DROP",
+      "iptables -A OUTPUT -p udp --dport 22 -i eth0 -s 10.0.10 .255 -j BLOCK",
+      "iptables -D INPUT -p udp --dport 21 -I eth0 -s 10.0.10.0/ 24 -j DROP Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "Even if you're not familiar with iptables, you can read through these rules and guess which rule includes the right details. DROP makes sense for a block, and you should know that SSH will be a TCP service on port 22.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q83",
+    "domain": "Security Operations",
+    "questionNumber": 83,
+    "question": "A Windows system that Maria is responsible for has been experiencing service outages. The outages correspond to processes run on another system in the datacenter, and Maria believes that unexpected traffic may be sent to the Windows system. Which of the following data sources should Maria use to best understand what is happening?",
+    "choices": [
+      "Perform a packet capture.",
+      "Enable a network firewall.",
+      "Use SIEM logs.",
+      "Perform a forensic drive copy."
+    ],
+    "answer": 0,
+    "explanation": "A packet capture will show attempts to connect to the service and will help Maria determine if there is unexpected traffic to the system. A network firewall could stop the traffic, but analyzing the actual traffic itself is best done with a packet capture. Logs may be useful as part of the analysis, but again, packet captures will provide more information. A forensic disk image is not useful for reviewing network traffic.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q84",
+    "domain": "Security Operations",
+    "questionNumber": 84,
+    "question": "Amanda's organization does not currently have an incident response plan. Which of the following reasons is not one she should present to management in support of creating one?",
+    "choices": [
+      "It will prevent incidents from occurring.",
+      "It will help responders react appropriately under stress.",
+      "It will prepare the organization for incidents.",
+      "It may be required for legal or compliance reasons."
+    ],
+    "answer": 0,
+    "explanation": "Incident response plans don't stop incidents from occurring, but they do help responders react appropriately and prepare the organization for incidents, and may be required for legal or compliance reasons.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q85",
+    "domain": "Security Operations",
+    "questionNumber": 85,
+    "question": "Which of the following scenarios is least likely to result in data recovery being possible?",
+    "choices": [
+      "A file is deleted from a disk.",
+      "A file is overwritten by a smaller file.",
+      "A hard drive is quick-formatted.",
+      "A disk is degaussed."
+    ],
+    "answer": 3,
+    "explanation": "Degaussing a drive uses strong magnetic fields to wipe it and is the least likely to result in recoverable data. Deleted files can often be recovered because only the file index information will be removed until that space is needed and is overwritten. Quick formats work in a similar way and will leave remnant data, and files that are overwritten by smaller files will also leave fragments of data that can be recovered and analyzed.294 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q86",
+    "domain": "Security Operations",
+    "questionNumber": 86,
+    "question": "Henry records a video of the removal of a drive from a system as he is preparing for a forensic investigation. What is the most likely reason for Henry to record the video?",
+    "choices": [
+      "To meet the order of volatility",
+      "To establish guilt beyond a reasonable doubt",
+      "To ensure data preservation",
+      "To document the chain of custody and provenance of the drive"
+    ],
+    "answer": 3,
+    "explanation": "Henry's most likely use for the video is to document the forensic process, part of the chain of custody and provenance of the forensic data he acquires. The order of volatility helps determine what devices or drives he would image first. There is no crime being committed, so establishing guilt is not relevant to this scenario, and the video will not ensure data is preserved on a drive during a forensic process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q87",
+    "domain": "Security Operations",
+    "questionNumber": 87,
+    "question": "Charlene wants to set up a tool that can allow her to see all the systems a given IP address connects to and how much data is sent to that IP by port and protocol. Which of the following tools is not suited to meet that need?",
+    "choices": [
+      "IPFIX",
+      "IPSec",
+      "sFlow",
+      "NetFlow"
+    ],
+    "answer": 1,
+    "explanation": "IPSec is not a tool used to capture network flows. sFlow, NetFlow, and IPFIX are all used to capture network flow information, which will provide the information Charlene needs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q88",
+    "domain": "Security Operations",
+    "questionNumber": 88,
+    "question": "Tools like PRTG and Cacti that monitor SNMP information are used to provide what type of information for an incident investigation?",
+    "choices": [
+      "Authentication logs",
+      "Bandwidth monitoring",
+      "System log information",
+      "Email metadata Security Operations 143"
+    ],
+    "answer": 1,
+    "explanation": "PRTG and Cacti are both network monitoring tools that can provide bandwidth monitoring information. Bandwidth monitors can help identify exfiltration, heavy and abnormal bandwidth usage, and other information that can be helpful for both incident identification and incident investigations. If you encounter a question like this on the exam, even if you're not familiar with either tool, you can use your knowledge of what Simple Network Management Protocol (SNMP) is used for to identify which of the categories is most likely correct.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q89",
+    "domain": "Security Operations",
+    "questionNumber": 89,
+    "question": "The company Charles works for has recently had a stolen company cell phone result in a data breach. Charles wants to prevent future incidents of a similar nature. Which of the following mitigation techniques would be the most effective?",
+    "choices": [
+      "Enable FDE via MDM.",
+      "A firewall change.",
+      "A DLP rule.",
+      "A new URL filter rule."
+    ],
+    "answer": 0,
+    "explanation": "A variety of configuration changes could be pushed to mobile devices to help: setting passcodes, enabling full-disk encryption (FDE) on mobile devices via organizationally deployed mobile device management (MDM), or even preventing some sensitive files from being downloaded or kept on those devices could all help. Firewall rules, data loss prevention (DLP) rules, and URL filters will not prevent a stolen device from being accessed and the data being exposed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q90",
+    "domain": "Security Operations",
+    "questionNumber": 90,
+    "question": "What incident response step is missing from point X in the following image? Preparation Detection Analysis X Recovery Lessons Learned Eradication Incident Response Process",
+    "choices": [
+      "Business continuity",
+      "Containment",
+      "Response",
+      "Discovery"
+    ],
+    "answer": 1,
+    "explanation": "The Security+ exam outline talks about seven incident response process steps: Preparation, Detection, Analysis, Containment, Eradication, Recovery, and Lessons Learned.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q91",
+    "domain": "Security Operations",
+    "questionNumber": 91,
+    "question": "Jill has been asked to perform data recovery due to her forensic skills. What should she tell the person asking to perform data recovery to give her the best chance of restoring lost files that were accidentally deleted?",
+    "choices": [
+      "Immediately reboot using the reset switch to create a lost file memory dump.",
+      "Turn off Secure Delete so that the files can be more easily recovered.",
+      "Do not save any files or make any changes to the system.",
+      "All of the above. Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "Jill wants the least possible changes to occur on the system, so she should instruct the user to not save any files or make any changes. Rebooting the system will not create a memory dump, and may cause new files to be written or changed if patches were waiting to install or other changes are set to occur during a reboot. Turning off Secure Delete or making other changes will not impact the files that were deleted prior to that setting change.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q92",
+    "domain": "Security Operations",
+    "questionNumber": 92,
+    "question": "Veronica has completed the recovery phase of her organization's incident response plan. What phase should she move into next?",
+    "choices": [
+      "Preparation",
+      "Lessons learned",
+      "Recovery",
+      "Documentation"
+    ],
+    "answer": 1,
+    "explanation": "The IR process used for the Security+ exam outline is Preparation, Detection, Analysis, Containment, Eradication, Recovery, and Lessons Learned. Veronica should move into the lessons learned phase.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q93",
+    "domain": "Security Operations",
+    "questionNumber": 93,
+    "question": "Michelle has been asked to sanitize a number of drives to ensure that sensitive data is not exposed when systems are removed from service. Which of the following is not a valid means of sanitizing hard drives?",
+    "choices": [
+      "Physical destruction",
+      "Degaussing",
+      "Quick-formatting the drives",
+      "Zero-wiping the drives"
+    ],
+    "answer": 2,
+    "explanation": "Quick formatting merely deletes file indexes rather than removing and overwriting files, making it inappropriate for sanitization. Physical destruction will ensure that the data is not readable, as will degaussing and zero wiping.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q94",
+    "domain": "Security Operations",
+    "questionNumber": 94,
+    "question": "Bart is investigating an incident, and needs to identify the creator of a Microsoft Office document. Where would he find that type of information?",
+    "choices": [
+      "In the filename",
+      "In the Microsoft Office log files",
+      "In the Windows application log",
+      "In the file metadata"
+    ],
+    "answer": 3,
+    "explanation": "Microsoft Office places information like the name of the creator of the file, editors, creation and change dates, and other useful information in the file metadata that is stored in each Office document. Bart can simply open the Office document to review this information, or he can use a forensic or file metadata tool to review it. Filenames may contain the creator's name, but this would only be if the creator included it. Microsoft Office does not create or maintain a log, and the application log for Windows does not contain this information. Security Operations 295",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q95",
+    "domain": "Security Operations",
+    "questionNumber": 95,
+    "question": "Nathaniel wants to allow Chrome through the Windows Defender firewall. What type of firewall rule change will he need to permit this?",
+    "choices": [
+      "Allow TCP 80 and 443 traffic from the system to the Internet.",
+      "Add Chrome to the Windows Defender Firewall allowed applications.",
+      "Allow TCP 80 and 443 traffic from the Internet to the system.",
+      "All of the above."
+    ],
+    "answer": 1,
+    "explanation": "Windows Defender Firewall operates on a per-application model and can filter traffic based on whether the system is on a trusted private network or a public network. Nathaniel should allow Chrome by name in the firewall, which will allow it to send traffic without needing to specify ports or protocols.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q96",
+    "domain": "Security Operations",
+    "questionNumber": 96,
+    "question": "What key forensic tool used to generate reports about what happened relies on correctly set system clocks to work properly?",
+    "choices": [
+      "Disk hashing",
+      "Timelining",
+      "Forensic disk acquisition",
+      "File metadata analysis"
+    ],
+    "answer": 1,
+    "explanation": "Building a timeline, particularly from multiple systems, relies on accurately set system clocks or adding a manually configured offset. Disk hashing and acquisition does not need an accurate system clock, and file metadata can be reviewed even without an accurate clock, although accurate clock information or knowing the offset can be useful for analysis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q97",
+    "domain": "Security Operations",
+    "questionNumber": 97,
+    "question": "Valerie is writing her organization's forensic playbooks and knows that the state that she operates in has a data breach notification law. Which of the following key items is most likely to be influenced by that law?",
+    "choices": [
+      "Whether Valerie calls the police for forensic investigation help",
+      "The maximum amount of time until she has to notify customers of sensitive data breaches",
+      "The certification types and levels that her staff have to maintain",
+      "The maximum number of residents that she can notify about a breach Security Operations 145"
+    ],
+    "answer": 1,
+    "explanation": "Data breach notification laws often build in a maximum length of time that can pass before notification is required. They also often include a threshold for notification, with a maximum number of exposed individuals before the state or other authorities must be notified. They do not include a maximum number of individuals who can be notified, nor do they typically have specific requirements about police involvement in forensic investigations or certification types or levels.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q98",
+    "domain": "Security Operations",
+    "questionNumber": 98,
+    "question": "As part of a breach response, Naomi discovers that Social Security numbers (SSNs) were sent in a spreadsheet via email by an attacker who gained control of a workstation at her company's headquarters. Naomi wants to ensure that more SSNs are not sent from her environment. What type of mitigation technique is most likely to prevent this while allowing operations to continue in as normal a manner as possible?",
+    "choices": [
+      "Antimalware installed at the email gateway",
+      "A firewall that blocks all outbound email",
+      "A DLP rule blocking SSNs in email",
+      "An IDS rule blocking SSNs in email"
+    ],
+    "answer": 2,
+    "explanation": "A data loss prevention (DLP) tool that can scan and review emails for SSN style data is the most effective tool listed here. Naomi may want to set the tool to block all emails with potential SSNs, and then review those emails manually to ensure that no further emails leave while allowing legitimate emails to pass through. An intrusion detection system (IDS) might look tempting as an answer, but an IDS can only detect, not stop, the traffic, which would allow the SSNs to exit the organization. Antimalware and firewalls will not stop this type of event.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q99",
+    "domain": "Security Operations",
+    "questionNumber": 99,
+    "question": "Troy wants to review metadata about an email he has received to determine what system or server the email was sent from. Where can he find this information?",
+    "choices": [
+      "In the email message's footer",
+      "In the to: field",
+      "In the email message's headers",
+      "In the from: field"
+    ],
+    "answer": 2,
+    "explanation": "Email headers contain a significant amount of metadata, including where the email was sent from. The from: field lists a sender but does not indicate where the email was actually sent from. The to: field lists who the email was sent to, and footers are not used to store this information for email.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q100",
+    "domain": "Security Operations",
+    "questionNumber": 100,
+    "question": "Isabelle wants to gather information about what systems a host is connecting to, how much traffic is sent, and similar details. Which of the following options would not allow her to perform that task?",
+    "choices": [
+      "IPFIX",
+      "NetFlow",
+      "NXLog",
+      "sFlow"
+    ],
+    "answer": 2,
+    "explanation": "NXLog is a log collection and centralization tool. IPFIX, NetFlow, and sFlow all gather data about network traffic, including source, destination, port, protocol, and amount of data sent to be collected.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q101",
+    "domain": "Security Operations",
+    "questionNumber": 101,
+    "question": "Valerie wants to check to see if a SQL injection attack occurred against her web application on a Linux system. Which log file should she check for this type of information?",
+    "choices": [
+      "The security log",
+      "The DNS log",
+      "The auth log",
+      "The web server log"
+    ],
+    "answer": 3,
+    "explanation": "SQL injection (SQLi) attempts are sent as HTTP or HTTPS requests to a web server, meaning that Valerie will be able to see the attacks in the web server log. Domain Name System (DNS) logs, if available, will not show these. Auth logs show logins, not web or SQL Server queries or requests. Unlike Windows, there is no security log file for Linux, although there is a secure log for some systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q102",
+    "domain": "Security Operations",
+    "questionNumber": 102,
+    "question": "Jean's company is preparing for litigation with another company that they believe has caused harm to Jean's organization. What type of legal action should Jean's lawyer take to ensure that the company preserves files and information related to the legal case?",
+    "choices": [
+      "A chain-of-custody demand letter",
+      "An e-discovery notice",
+      "A legal hold notice",
+      "An order of volatility Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "A legal hold notice will inform the company that they must preserve and protect information related to the case. None of the other items are terms used in this process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q103",
+    "domain": "Security Operations",
+    "questionNumber": 103,
+    "question": "What type of mitigation places a malicious file or application in a safe location for future review or study?",
+    "choices": [
+      "Containment",
+      "Quarantine",
+      "Isolation",
+      "Deletion"
+    ],
+    "answer": 1,
+    "explanation": "A quarantine setting will place a malicious or suspect file in a safe location and will keep it there until a set timeframe has passed or until an administrator takes action to deal with it. This can allow you to further analyze the file or to restore it if it was an incorrect identification or if the file is needed for another purpose. Containment is used to limit the extent of an incident or attack, isolation keeps a system or device from connecting to or accessing others, and deleting a file wouldn't keep it around.296 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q104",
+    "domain": "Security Operations",
+    "questionNumber": 104,
+    "question": "What phase of the incident response process often involves adding firewall rules and patching systems to address the incident?",
+    "choices": [
+      "Preparation",
+      "Detection",
+      "Recovery",
+      "Analysis"
+    ],
+    "answer": 2,
+    "explanation": "The recovery phase often involves adding firewall rules and patching systems in addition to rebuilding systems. Although preparation may involve configuring firewall rules or regular patching, it does not do so in response to an incident. Detection attempts to identify events and issues, and analysis involves investigating the events.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q105",
+    "domain": "Security Operations",
+    "questionNumber": 105,
+    "question": "Tim wants to check the status of malware infections in his organization using the organization's security information and event management (SIEM) device. What SIEM dashboard will tell him about whether there are more malware infections in the past few days than normal?",
+    "choices": [
+      "The alerts dashboard",
+      "The sensors dashboard",
+      "The trends dashboard",
+      "The bandwidth dashboard"
+    ],
+    "answer": 2,
+    "explanation": "Tim should look at the trend information for malware detections to check to see if there are more infections being detected than during recent weeks. This can be a useful indicator of a change, due to a new malware technique or package; a successful attack that has resulted in staff members clicking malicious links or opening malicious emails; or other paths into the organization. Tim could then check with users whose systems reported the malware to see what had occurred. Alerts might show the infections but would not show the data over time as easily as trends. Sensors will show individual places data is gathered, and bandwidth dashboards can show useful information about which systems are using more or less bandwidth, but the trends dashboard remains the right place for Tim to look in this situation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q106",
+    "domain": "Security Operations",
+    "questionNumber": 106,
+    "question": "Michelle has been asked to use the CIS benchmark for Windows as part of her system security process. What information will she be using?",
+    "choices": [
+      "Information on how secure Windows is in its default state",
+      "A set of recommended security configurations to secure Windows",
+      "Performance benchmark tools for Windows systems, including network speed and firewall throughput",
+      "Vulnerability scan data for Windows systems provided by various manufacturers"
+    ],
+    "answer": 1,
+    "explanation": "The Center for Internet Security (CIS) benchmarks provide recommendations for how to secure an operating system, application, or other covered technology. Michelle will find Windows-specific security configuration guidelines and techniques.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q107",
+    "domain": "Security Operations",
+    "questionNumber": 107,
+    "question": "All of your organization's traffic flows through a single connection to the Internet. Which of the following terms best describes this scenario?",
+    "choices": [
+      "Cloud computing",
+      "Load balancing",
+      "Single point of failure",
+      "Virtualization"
+    ],
+    "answer": 2,
+    "explanation": "A single point of failure (SPOF) is a single weakness that can bring down an entire system and prevent it from working. Cloud computing allows the delivery of hosted service over the Internet. Load balancing spreads traffic or other load between multiple systems or servers. Virtualization uses a system to host virtual machines that share the underlying resources such as RAM, hard drive, and CPU.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q108",
+    "domain": "Security Operations",
+    "questionNumber": 108,
+    "question": "Nina is tasked with putting radio frequency identification (RFID) tags on every new piece of equipment that enters her datacenter that costs more than $500. What type of organizational policy is most likely to include this type of requirement?",
+    "choices": [
+      "A change management policy",
+      "An incident response policy Security Operations 147",
+      "An asset management policy",
+      "An acceptable use policy"
+    ],
+    "answer": 2,
+    "explanation": "Asset management policies typically include all stages of an asset's life cycle, and asset tags like those described are used to track assets in many organizations. Change management, incident response, and acceptable use policies do not require asset tagging.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q109",
+    "domain": "Security Operations",
+    "questionNumber": 109,
+    "question": "Megan is reviewing her organization's datacenter network diagram as shown in the following image. What should she note for point A on the diagram? Internet Service Provider Internet Point A Point B Firewalls Routers Core Switches Edge Switches Point D Point C",
+    "choices": [
+      "A wireless link",
+      "A redundant connection",
+      "A wired link",
+      "A single point of failure"
+    ],
+    "answer": 3,
+    "explanation": "The diagram shows a fully redundant internal network with pairs of firewalls, routers, and core switches, but with a single connection to the Internet. This means that Megan should consider how her organization would connect to the outside world if that link was severed or disrupted. There is no indication whether this is a wired or wireless link, and the image does not show a redundant link.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q110",
+    "domain": "Security Operations",
+    "questionNumber": 110,
+    "question": "Juan's team is in charge of responding to potential phishing attacks and advertises an infosec@example.com email address to his organization to send examples of potential phishing attacks to. Which of the following is not a benefit Juan's team would get from automating the creation of tickets in their support tool based on these emails?",
+    "choices": [
+      "The ability to track whether they've been resolved",
+      "Automated phishing prevention",
+      "The ability to correlate multiple emails into a single event",
+      "The ability to trigger additional actions Security Operations"
+    ],
+    "answer": 1,
+    "explanation": "Support tools typically require additional steps or integrations to take action on a ticket and a human is often involved to ensure that legitimate emails do not result in the creation of unwanted rules or responses. Juan's team could use the ticketing system to track whether emails are dealt with, to correlate them, and potentially to trigger additional actions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q111",
+    "domain": "Security Operations",
+    "questionNumber": 111,
+    "question": "Valerie wants to implement an email security framework that will help to ensure that only authorized systems send email on behalf of her domains. Which of the following should she implement?",
+    "choices": [
+      "DKIM",
+      "DMARC",
+      "STP",
+      "SPF"
+    ],
+    "answer": 3,
+    "explanation": "The Sender Policy Framework (SPF) lists IP addresses of systems allowed to send email in DNS TXT records for a domain. DKIM (DomainKeys Identified Mail) validates a domain's identity using a public key pair, validating the authenticity of the sender. DMARC (domain-based message authentication, reporting, and conformance) controls how unauthenticated messages are handled by mailbox providers, including quarantining, rejecting, or rejecting messages. STP is not an email security framework. Security Operations 297",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q112",
+    "domain": "Security Operations",
+    "questionNumber": 112,
+    "question": "Jake is investigating a service outage and notices the following traffic using a Wireshark packet capture. Which of the following issues is most likely occurring?",
+    "choices": [
+      "An email phishing campaign",
+      "A SQL injection attack",
+      "A dropped network connection",
+      "A denial-of-service attack Security Operations 149"
+    ],
+    "answer": 3,
+    "explanation": "The packet capture shows a high volume of SYN packets, indicating a potential SYN flood, a type of denial-of-service attack. There is no information to indicate SMTP traffic for a phishing campaign, nor is there HTTP traffic for SQL injection against an application. While SYN traffic is commonly seen when a connection is lost, this traffic is repeated at a rapid pace rather than a typical reconnection attempt.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q113",
+    "domain": "Security Operations",
+    "questionNumber": 113,
+    "question": "Gary wants to deploy a tool that will allow him to identify and effectively respond to ransomware that might target systems that his company owns. He knows that he is likely to need to identify threats based on behavior rather than just using signatures, and he wants to have a dashboard-style view of his data. What tool should Gary select to meet this need?",
+    "choices": [
+      "IPS",
+      "NAC",
+      "DLP",
+      "EDR"
+    ],
+    "answer": 3,
+    "explanation": "Endpoint detection and response (EDR) tools combine behavior-based detection capabilities with centralized dashboards and advanced response capabilities. Intrusion prevention systems (IPSs) can detect network threats but aren't well suited to detecting behaviors on endpoint systems. NAC (network access control) is used to limit who can connect to a network. Data loss prevention (DLP) systems monitor for data exfiltration as well as data that is sent both inadvertently and on purpose outside the organization that shouldn't be.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q114",
+    "domain": "Security Operations",
+    "questionNumber": 114,
+    "question": "Carl wants to test his organization's incident response process. He conducts a tabletop exercise for his security team. Which of the following best describes this type of exercise?",
+    "choices": [
+      "A scenario is introduced and each member of the team takes actions that they would use to respond to the scenario.",
+      "Third-party penetration testers work with the security team to address issues they discovered during their penetration test.",
+      "The security team meets to talk through what they would do in a given scenario and takes notes on what works and what doesn't.",
+      "The organization's datacenter is manually forced to fail over to an alternate site to test the scenario's objectives."
+    ],
+    "answer": 2,
+    "explanation": "Tabletop exercises involve teams sitting down to talk through an exercise. Teams don't perform actions or even simulate them, third-party penetration testers are not reviewing their data, and no actual fail overs occur.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q115",
+    "domain": "Security Operations",
+    "questionNumber": 115,
+    "question": "Michelle wants to determine why attackers were able to take her organization's web server cluster offline after an incident occurred. What process should she and her team follow to determine this?",
+    "choices": [
+      "Threat hunting",
+      "Root cause analysis",
+      "A lessons learned analysis",
+      "Recovery"
+    ],
+    "answer": 1,
+    "explanation": "Root cause analysis is a process used to determine the underlying cause of an issue such as why attackers were able to successfully take down Michelle's web server cluster. Threat hunting is used to proactively look for threats using a variety of techniques, including OSINT and leveraging indicators of compromise. Lessons learned processes look for takeaways from events and incidents to allow organizations to improve their processes and procedures. Recovery is part of the incident response process but focuses on restoring the organization to normal operation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q116",
+    "domain": "Security Operations",
+    "questionNumber": 116,
+    "question": "Randy wants to harden mobile devices used by his organization. Which of the following is not a typical mobile device hardening step?",
+    "choices": [
+      "Disable Bluetooth.",
+      "Use strong screen lock passwords.",
+      "Install software updates.",
+      "Jailbreak the device."
+    ],
+    "answer": 3,
+    "explanation": "Jailbreaking is not a typical hardening process and is instead used to bypass device security to allow additional control of the device. While individuals may jailbreak devices, organizations rarely permit it. The NSA provides a guide to mobile device security practices at https://media.defense.gov/2021/Sep/16/2002855921/-1/-1/0/MOBILE_ DEVICE_BEST_PRACTICES_FINAL_V3%20-%20COPY.PDF, which includes many practices such as disabling Bluetooth, using strong passwords, and keeping device software up-to-date.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q117",
+    "domain": "Security Operations",
+    "questionNumber": 117,
+    "question": "Lucca wants to ensure that his organization's mobile device connections are secure. Which of the following connectivity options is the most secure choice?",
+    "choices": [
+      "WPA2 Personal",
+      "WPA3 Personal",
+      "WPA3 Enterprise",
+      "WPA4 Enterprise Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "WPA3 Enterprise is the most secure option. It provides for central authentication as well as encryption. WPA4 has not yet been released. WPA2 and WPA3 Personal are not centrally managed, giving Lucca's organization less control over who connects.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q118",
+    "domain": "Security Operations",
+    "questionNumber": 118,
+    "question": "The percentage of the value of an asset that is lost due to an incident or loss event is known as what?",
+    "choices": [
+      "Asset depreciation",
+      "Exposure factor",
+      "Annual loss event",
+      "Asset valuation adjustment"
+    ],
+    "answer": 1,
+    "explanation": "The EF (exposure factor) for an asset is the value of the asset that would be lost in the event of a loss or damage scenario. Depreciation is a financial term that writes down the cost of a capital item over a given lifespan; annualized loss expectancy is a risk-related term, not annual loss event; and asset valuation adjustment was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q119",
+    "domain": "Security Operations",
+    "questionNumber": 119,
+    "question": "Derek's organization has recently set up a notification process that sends a text message to system administrators when security exception log events occur on the systems they are responsible for. Unfortunately, Derek and his team have received dozens of alerts at all times of the day due to the log event happening for failed logins when users type their passwords incorrectly. What should Derek and his team do next to help with this?",
+    "choices": [
+      "Set alert thresholds.",
+      "Engage in alert tuning.",
+      "Disable the alerts.",
+      "Move the alerts to email."
+    ],
+    "answer": 1,
+    "explanation": "Derek's team needs to carefully consider what alerts should be sent, why, and how often. That will require alert tuning. Simply setting alert thresholds may miss critical events, disabling alerts will not achieve the goal of enabling this type of notification, and moving the alerts to email will typically result in a less timely response.298 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q120",
+    "domain": "Security Operations",
+    "questionNumber": 120,
+    "question": "Jill wants to configure her IPS to detect a SQL injection attack that has become increasingly common against an open source web application that her organization runs. What information would she need to create a signature for the attack?",
+    "choices": [
+      "The source IP address",
+      "The SQL code",
+      "The hash of the attack",
+      "The source port"
+    ],
+    "answer": 1,
+    "explanation": "Jill can build a signature if she has an example of the SQL code. IPS signatures require data to match against potential attack traffic. A source IP address would only match specific potential attackers instead of the many different potential sources. A hash of the attack would detect one specific version of the attack, but a SQL injection (SQLi) attack may have multiple versions or configurations. The source port will vary with each request and isn't useful in most cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q121",
+    "domain": "Security Operations",
+    "questionNumber": 121,
+    "question": "Ben's organization has hired a new HR supervisor, Jack. When Jack was hired, Ben was asked to provide Jack with the same rights and permissions as the other HR supervisor, Erin. What is the most important issue Ben should identify with this process if the organization wants to follow identity and access management best practices?",
+    "choices": [
+      "Jack's account should be provisioned based on his role, not on Erin's rights.",
+      "Jack may not be senior enough to have access to the same systems as Erin does.",
+      "Erin may work with a different staff than Jack does.",
+      "Jack should not have access to Erin's files."
+    ],
+    "answer": 0,
+    "explanation": "While all of these are potential problems, Jack's account should not be provisioned to match Erin. Instead, provisioning based on role is an IAM best practice. Jack's seniority, the staff he works with, and file access should all be determined by his role.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q122",
+    "domain": "Security Operations",
+    "questionNumber": 122,
+    "question": "Ian wants to deploy multifactor tokens to his organization. Which of the following provides the greatest security?",
+    "choices": [
+      "Hardware tokens",
+      "Application-based tokens",
+      "SMS multifactor",
+      "Extended password length Security Operations 151"
+    ],
+    "answer": 0,
+    "explanation": "Hardware tokens provide the greatest security because they need to be physically present to be used. Application-based tokens are more secure than SMS in many cases because SMS can be redirected or accessed through SIM-swapping and other attacks. Extending password length does not provide a second factor and is the least secure of these options by far.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q123",
+    "domain": "Security Operations",
+    "questionNumber": 123,
+    "question": "Gurvinder wants to explain the advantages of investing in automating security workflows to his organization's leadership. Recent audit findings have shown that systems are not all fully patched and that settings may vary between systems using the same operating system. Which common benefit of automation should he emphasize with leadership?",
+    "choices": [
+      "Enforcing baselines",
+      "Scaling in a secure manner",
+      "Improving reaction time",
+      "Automation's role as a workforce multiplier"
+    ],
+    "answer": 0,
+    "explanation": "The lack of consistency could be addressed by enforcing baselines across the organization. Gurvinder should emphasize this, then explain the other common benefits of security automation, including scaling in a secure manner, improving reaction time, automation's impact as a workforce multiplier, efficiency, employee retention advantages, and the ability to more easily standardize infrastructure configurations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q124",
+    "domain": "Security Operations",
+    "questionNumber": 124,
+    "question": "Jake wants to understand the root cause of a security incident. He knows a number of the events that occurred, but he wants to engage other staff members to define the root cause. What common root cause analysis (RCA) technique should he use?",
+    "choices": [
+      "The Five W's",
+      "A fishbone diagram",
+      "The Five Why's",
+      "A recursion analysis"
+    ],
+    "answer": 2,
+    "explanation": "The Five Why's process is well suited to interviews because it asks \"Why\" each time an answer is provided to get to a root cause. The Five W's are a common reference in journalism to who, what, when, where, and why-not a root cause analysis tool. Fishbone diagrams are commonly used for RCA, but are not as useful for an interview process. They're more likely to be used after the interview to see how answers and events fit together. Recursion analysis is not an RCA process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q125",
+    "domain": "Security Operations",
+    "questionNumber": 125,
+    "question": "Amanda is testing her company's incident response process and has her staff perform actual recovery actions without impacting production to validate how long it would take to accomplish them. What type of event has she conducted?",
+    "choices": [
+      "A fail over test",
+      "A simulation",
+      "A plan review",
+      "A tabletop exercise"
+    ],
+    "answer": 1,
+    "explanation": "Amanda has conducted a simulation, or walk-through, where actual recovery actions are simulated to ensure that recovery plans will work as expected. A fail over test moves production to a backup environment like a hot site, and a plan review is just that-a review of the response plan. A tabletop exercise involves discussions about the scenario and what would be done without taking any actual action.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q126",
+    "domain": "Security Operations",
+    "questionNumber": 126,
+    "question": "Liam's company has been notified of impending legal action and has been told to place a legal hold on related items. What must Liam's company do?",
+    "choices": [
+      "Continue their normal operations, including data life-cycle-related activities.",
+      "Identify data covered by the hold and preserve it, regardless of normal data life cycles or activities.",
+      "Engage a law firm to preserve the data required by the legal hold.",
+      "Contact law enforcement to allow them to gather the data required by the legal hold."
+    ],
+    "answer": 1,
+    "explanation": "Legal holds require organizations and individuals to preserve data related to pending or active litigation, regardless of its normal data life cycle once the hold notice is received. This means that Liam needs to identify and preserve the data and that normal processes like wiping drives or reusing backup media may not be possible. It does not necessarily mean that Liam's company must engage a lawyer to preserve the data, and law enforcement is not typically involved in legal holds.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q127",
+    "domain": "Security Operations",
+    "questionNumber": 127,
+    "question": "Paul wants to integrate his organization's web application with common cloud identity providers like Google and Microsoft. What authentication standard should he select if he wants to maximize interoperability?",
+    "choices": [
+      "OAuth",
+      "Kerberos",
+      "LDAP",
+      "Active Directory Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "OAuth is an open standard widely supported by cloud identity providers. Kerberos is used for internal use rather than for external integrations; LDAP is used for some services but is no longer a common choice for this type of integration with cloud service providers compared to options like OAuth, SAML, and OpenID-based integrations; and Active Directory is used by Microsoft but is not as interoperable. Security Operations 299",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q128",
+    "domain": "Security Operations",
+    "questionNumber": 128,
+    "question": "Jim wants to ensure that users who are located in his organization's London office have access to the building. What type of access control scheme should he select to best fit this specific need?",
+    "choices": [
+      "Rule BAC",
+      "ABAC",
+      "Role BAC",
+      "MAC"
+    ],
+    "answer": 1,
+    "explanation": "Attribute-based access control (ABAC) provides access based on attributes like location, age, rank, or other attributes of a user. Rule-based access control uses defined rules to make access decisions. Role-based access control uses a user's role in an organization to make access control decisions, and mandatory access control (MAC) enforces access control using centralized control.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q129",
+    "domain": "Security Operations",
+    "questionNumber": 129,
+    "question": "Dane wants to implement passwordless authentication for his organization. What type of device should he issue to his users to support this type of authentication?",
+    "choices": [
+      "A password manager",
+      "An RFID card",
+      "A security key",
+      "A biometric token"
+    ],
+    "answer": 2,
+    "explanation": "Security keys are commonly used for passwordless authentication since they can provide both a physical token and cryptographic login credentials that are unlocked using a password, fingerprint reader, or camera. A password manager does not provide this but does securely store and manage passwords. RFID cards are simply something you have, and biometrics are typically not tokens-they're data stored to match a user's biometric signature.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q130",
+    "domain": "Security Operations",
+    "questionNumber": 130,
+    "question": "Ensuring that inetd services like echo, time, rsh, and telnet are not enabled are all examples of what type of action?",
+    "choices": [
+      "Preventing SQL injection",
+      "Hardening a Linux system",
+      "Hardening a Windows system",
+      "Patching insecure services"
+    ],
+    "answer": 1,
+    "explanation": "Older, insecure services like chargen, daytime, echo, time, rsh, and telnet are all managed by inetd in Linux distributions. Disabling these services is a common item in security hardening benchmarks like the CIS benchmarks. These services are not Windows services, they are not SQL-related, and disabling them is not a type of patching.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q131",
+    "domain": "Security Operations",
+    "questionNumber": 131,
+    "question": "What mobile device deployment model provides the least control for the organization and leaves the end user with the greatest choice?",
+    "choices": [
+      "BYOD",
+      "COPE",
+      "CYOD",
+      "COBO"
+    ],
+    "answer": 0,
+    "explanation": "Bring your own device (BYOD) leaves the choice of device in the hands of the end user. Since the device is the end user's device, it often means that the organization has less, if any, control over the device. Corporate-owned, personally enabled (COPE) allows users to use organizationally owned devices for their own use. Choose your own device (CYOD) lets users choose a device that the organization owns. COBO, or company-owned, businessonly, is a model that only allows business use of business-provided devices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q132",
+    "domain": "Security Operations",
+    "questionNumber": 132,
+    "question": "Akio has set the Secure Cookie attribute as part of her web application's process for sending new cookies to users. What does this attribute do?",
+    "choices": [
+      "It encrypts the cookie's content when it is stored.",
+      "It stores the cookie on the server instead of on the remove device.",
+      "It removes the cookie after it has been used.",
+      "It requires that the cookie be sent only via HTTPS."
+    ],
+    "answer": 3,
+    "explanation": "The Secure Cookie attribute is intended to keep cookies secure in transit. That means that it requires secure cookies be sent only via HTTPS. It does not encrypt the cookie at rest, store it on the server instead of the remote system, nor does it remove the cookie after it has been used.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q133",
+    "domain": "Security Operations",
+    "questionNumber": 133,
+    "question": "Helen wants to sign her code. What will the output of code signing be?",
+    "choices": [
+      "An encrypted copy of the code using her private key",
+      "A signed hash of the software using her private key",
+      "A signed hash of the software using her public key",
+      "An encrypted copy of the code using her public key Security Operations 153"
+    ],
+    "answer": 1,
+    "explanation": "Code signing uses the signing organization or individual's private key to sign a hash of the code. This allows the code to be verified using the organization's or individual's public key. Signing code does not involve encrypting it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q134",
+    "domain": "Security Operations",
+    "questionNumber": 134,
+    "question": "Naomi's organization has recently acquired another company. Naomi is concerned about asset tracking and inventory because the acquired company does not have an inventory of their systems and devices. What major security concern should she express about this from a hardware asset management perspective?",
+    "choices": [
+      "There may not be an appropriate hardware life-cycle process.",
+      "Manufacturer support may not be possible without an inventory.",
+      "There is no way to know if systems are missing.",
+      "Vulnerability scans may not be accurate without an inventory."
+    ],
+    "answer": 2,
+    "explanation": "Without an inventory, organizations may misplace, lose, or even have devices stolen. That may result in data breaches or simply loss of assets. A hardware life cycle process is an operational concern; manufacturer support is typically tied to individual devices; and vulnerability scans are possible without an inventory, but Naomi may not know what the device itself is until she physically locates it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q135",
+    "domain": "Security Operations",
+    "questionNumber": 135,
+    "question": "As part of his CI/CD pipeline process, Felix reviews source code manually to identify any flaws or security concerns. What type of process is Felix following?",
+    "choices": [
+      "Dynamic analysis",
+      "Agile code development",
+      "Static analysis",
+      "Internal review"
+    ],
+    "answer": 2,
+    "explanation": "Static analysis processes for code involve reviewing the source code itself. Dynamic analysis processes use running code. Agile is a project management framework, and internal review is not a term used to describe this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q136",
+    "domain": "Security Operations",
+    "questionNumber": 136,
+    "question": "As part of his research, Pedro uses a TOR browser to access threat actors' sites. He is able to see information about recent breaches and can download data dumps provided by the threat actors. What information source is Pedro using?",
+    "choices": [
+      "The dark web",
+      "An information-sharing organization",
+      "Proprietary information",
+      "A threat feed"
+    ],
+    "answer": 0,
+    "explanation": "Sites accessible using TOR are considered part of the dark web. Information-sharing organizations like ISACs share information in an industry vertical or among other organizations that participate. Proprietary information is provided by vendors, typically as part of a contract or service. Threat feeds may be public or private and provide information about threats in a digestible format for use with security tools.300 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q137",
+    "domain": "Security Operations",
+    "questionNumber": 137,
+    "question": "Alaina has completed the eradication and recovery steps of the incident response process. What step commonly comes after these two phases?",
+    "choices": [
+      "A lessons learned session",
+      "Detection",
+      "Training",
+      "A tabletop exercise"
+    ],
+    "answer": 0,
+    "explanation": "A lessons learned session is commonly conducted at the end of an incident response process. Once eradication and recovery are complete, incident response processes are typically over and the response effort can be reviewed. The lessons learned are then leveraged as part of the preparation process to be ready for the next incident. That may involve more training, tabletop exercises, or additional detection methods.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q138",
+    "domain": "Security Operations",
+    "questionNumber": 138,
+    "question": "Lucca knows that the CVSS environmental score is made up of three components, including an impact metric. What three components does he need to consider as part of the impact metric score?",
+    "choices": [
+      "Confidentiality, integrity, and availability",
+      "Network, disk, and memory",
+      "Severity, likelihood, and impact",
+      "Probability, impact, and cost Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "The CVSS environmental score's impact metric takes into account confidentiality, integrity, and availability risks, with each rated between high, medium, and low levels. It is not a direct rating of network, disk, memory, severity, likelihood, probability, or cost.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q139",
+    "domain": "Security Operations",
+    "questionNumber": 139,
+    "question": "What tool is commonly used to allow for measurement and monitoring of security settings to align with NIST 800-53 controls?",
+    "choices": [
+      "SAML",
+      "CVE",
+      "CVSS",
+      "SCAP"
+    ],
+    "answer": 3,
+    "explanation": "The Security Content Automation Protocol (SCAP) is frequently used to allow for monitoring and measurement of NIST 800-53-based controls. SAML is used for authorization and authentication, and CVE and CVSS are used to identify and rank vulnerabilities.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q140",
+    "domain": "Security Operations",
+    "questionNumber": 140,
+    "question": "Adam has implemented a WPA3 Enterprise network. What type of encryption will be used to protect data sent across the Wi-Fi connection?",
+    "choices": [
+      "AES",
+      "3DES",
+      "SHA-1",
+      "SHA-256"
+    ],
+    "answer": 0,
+    "explanation": "WPA3 Enterprise uses Advanced Encryption Standard (AES) and can use 128-, 192-, and 256-bit keys. It does not support 3DES, and both SHA-1 and SHA-256 are hashing algorithms.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q141",
+    "domain": "Security Operations",
+    "questionNumber": 141,
+    "question": "Tom wants to set up an authentication service for network devices. Which of the following is commonly used for authentication to enterprise network devices?",
+    "choices": [
+      "Kerberos",
+      "SAML",
+      "TKIP",
+      "OpenID"
+    ],
+    "answer": 0,
+    "explanation": "Kerberos is one of a small number of commonly used AAA protocols for network devices. SAML and OpenID are more commonly used for federated services, and TKIP is an encryption method.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q142",
+    "domain": "Security Operations",
+    "questionNumber": 142,
+    "question": "Ian wants to test embedded device web servers for potential security issues with the version of the web server software. What tool should he select to do this most effectively across his large organization's network of IoT devices?",
+    "choices": [
+      "A WAF",
+      "Pentesting",
+      "A vulnerability scanner",
+      "A port scanner"
+    ],
+    "answer": 2,
+    "explanation": "Vulnerability scanners are perfectly suited to this type of task and can be configured to specifically test the web servers that are part of the IoT devices to increase the speed of the scan. A WAF is used to protect web applications and servers, not to assess vulnerabilities and security issues. Pentesting can identify these problems but is typically not fast or scalable. Port scanners identify open ports and service but don't identify vulnerabilities as effectively as a dedicated vulnerability scanning tool will.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q143",
+    "domain": "Security Operations",
+    "questionNumber": 143,
+    "question": "Tom wants his email servers to reject email that is not authenticated in a way to prevent spoofing. Which of the following should he implement?",
+    "choices": [
+      "SPF",
+      "DMARC",
+      "DKIM",
+      "TLS"
+    ],
+    "answer": 1,
+    "explanation": "DMARC, or Domain-based Message Authentication, Reporting, and Conformance, controls how unauthenticated messages are handled by mailbox providers, including quarantining, rejecting, or rejecting messages. SPF (Sender Policy Framework) lists IP addresses of systems allowed to send email in DNS TXT records for a domain. DomainKeys Identified Mail (DKIM) validates a domain's identity using a public key pair, validating the authenticity of the sender. TLS (Transport Layer Security) is used to encrypt data in motion.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q144",
+    "domain": "Security Operations",
+    "questionNumber": 144,
+    "question": "Wayne has identified a vulnerable server that is part of his organization's critical infrastructure but that is no longer supported by the vendor and for which no additional patches exist. Every time Wayne scans the server using his vulnerability scanner, the services on the device crash. What should Wayne do?",
+    "choices": [
+      "Report the server as vulnerable and suggest that it be replaced immediately.",
+      "Disable the network connection on the device and isolate the server to protect it. Security Operations 155",
+      "Identify a third-party insurance provider who will insure the organization against potential issues with the server.",
+      "Document an exemption, remove the server from automated scans, and implement compensating controls."
+    ],
+    "answer": 3,
+    "explanation": "In most organization, Wayne's next steps should be to document the exemption due to the criticality of the server and its extenuating circumstances. Removing the server from scans will prevent it from being effectively impacted by a denial-of-service attack each time a scan occurs, but this also means that compensating controls should be implemented if possible. Reporting the server as vulnerable and suggesting it be replaced does not remediate the server or protect it, and will continue to allow it to fail based on future scans. Disabling the device's network connection will also cause a service outage. Insurance will not prevent service outages or protect the device.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q145",
+    "domain": "Security Operations",
+    "questionNumber": 145,
+    "question": "Valentine's organization wants to ensure that users who sign up for their web services are who they claim to be. As part of the process they ask for information like birth date, Social Security number, and previous addresses. What type of activity is Valentine's organization engaging in?",
+    "choices": [
+      "Provisioning user accounts",
+      "Identity proofing",
+      "Deprovisioning user accounts",
+      "Social identity"
+    ],
+    "answer": 1,
+    "explanation": "Identity proofing is used to validate a user's claim to an identity. Here, Valentine's company uses information that only a legitimate owner of that identity should have easy access to. Provisioning is the process of creating an account and providing it with Security Operations 301 appropriate resources and rights. Deprovisioning removes accounts and rights. Social identity is the process of using existing user accounts like those found through Facebook or Google to create accounts for existing users at other organizations like Valentine's.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q146",
+    "domain": "Security Operations",
+    "questionNumber": 146,
+    "question": "Sam has completed patching of a critical vulnerability. What step is often performed next to ensure that the patching occurred properly?",
+    "choices": [
+      "Noting false positives",
+      "Rebooting the system",
+      "Rescanning the system",
+      "Performing an audit"
+    ],
+    "answer": 2,
+    "explanation": "Organizations often immediately rescan a system after patching to ensure that the patching worked. While this isn't an absolutely certain means of validating the patch, it helps to quickly ensure that patching was effective across many machines. Noting false positives may occur if the patch was successful, but systems continue to show as vulnerable. Rebooting may be done but doesn't necessarily validate the patching installation's success, and performing an audit may be done but is a less common next step.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q147",
+    "domain": "Security Operations",
+    "questionNumber": 147,
+    "question": "Joan's organization has recently remediated issues in their credit card processing environment. If Joan wants to be able to attest to the security of the environment, what action might she need to take to prove the security of the environment to customers?",
+    "choices": [
+      "Have third-party auditors validate the remediation.",
+      "Rescan the systems and document the differences between the scans.",
+      "Rescan the systems and provide updated reports to customers.",
+      "Allow customers to scan the systems to validate the changes."
+    ],
+    "answer": 0,
+    "explanation": "Third-party audit documentation is a common practice for organizations that want to attest to their customers that they have a secure environment. Rescanning systems and providing vulnerability scans is not a common practice, nor is allowing customers to conduct their own scans of production systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q148",
+    "domain": "Security Operations",
+    "questionNumber": 148,
+    "question": "Alan wants to configure his firewall to allow Microsoft SQL traffic through to the database server from web application servers in a screened subnet design. What is the minimum set of ports that he should port to allow this?",
+    "choices": [
+      "TCP 3389 and 1433",
+      "TCP 1433",
+      "TCP 8080",
+      "TCP 139 and 445"
+    ],
+    "answer": 1,
+    "explanation": "TCP port 1433 is the minimum port requirement for a Microsoft SQL server connection. TCP 3389 is used for Remote Desktop Protocol (RDP). TCP 8080 is a common alternate port for web servers, and TCP 139 and 445 are used for SMB connections.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q149",
+    "domain": "Security Operations",
+    "questionNumber": 149,
+    "question": "Which of the following terms refers to the process of establishing a standard for security?",
+    "choices": [
+      "Baselining",
+      "Security evaluation",
+      "Hardening",
+      "Normalization Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "Baselining is the process of establishing a standard for security. A change from the original baseline configuration is referred to as baseline deviation. Security evaluations or audits check security but don't establish security standards. Hardening is the process of securing a given system, but it does not establish security standards. Normalization is the process of removing redundant entries from a database.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q150",
+    "domain": "Security Operations",
+    "questionNumber": 150,
+    "question": "Zhen's new organization has informed him that they used a COPE model for their mobile devices. What does this tell Zhen about what he can do with the device?",
+    "choices": [
+      "He can choose what device he uses, but the organization will own it.",
+      "He will be provided with a device but can use it for reasonable personal use.",
+      "He will be provided with a device and can only use it for business purposes.",
+      "He will have to bring his own device but can use it for personal and business use."
+    ],
+    "answer": 1,
+    "explanation": "COPE, or company-owned, personally enabled, models allow staff to use organizationally owned devices for reasonable personal use. CYOD, or choose your own device, allows users to pick their company-owned device from a list of approved devices. COBO, or company-owned, business-only, is just that-users can only use the devices for business purposes. BYOD asks users to bring their own device, often leaving organizations with limited or no control of the device.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q151",
+    "domain": "Security Operations",
+    "questionNumber": 151,
+    "question": "The Windows Task Manager can be used to identify malware through what technique?",
+    "choices": [
+      "Dynamic analysis",
+      "Process auditing",
+      "CVSS matching",
+      "Vulnerability scanning"
+    ],
+    "answer": 1,
+    "explanation": "Process auditing involves reviewing processes to identify unknown or unexpected processes. During incident response scenarios, this is often initially done via the Task Manager. Dynamic analysis is a code review process that uses running code. CVSS matching was made up for this question, and vulnerability scanning tests open services and doesn't involve the Task Manager.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q152",
+    "domain": "Security Operations",
+    "questionNumber": 152,
+    "question": "Ujama wants to deploy a network device that will allow him to use policy-based controls for email as well as active defenses against phishing attacks before email is delivered to his users. Which of the following devices is best suited to this purpose?",
+    "choices": [
+      "A web application firewall",
+      "An email security gateway",
+      "A DKIM appliance",
+      "A DMARC appliance"
+    ],
+    "answer": 1,
+    "explanation": "Email security gateways are appliances or software virtual appliances that provide antispam, anti-phishing, and other email security-related services. They're purpose-built to deliver exactly the capabilities that Ujama is looking for. A WAF (web application firewall) is used to protect web applications. DKIM and DMARC are both email security frameworks, but they're not implemented as appliances themselves.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q153",
+    "domain": "Security Operations",
+    "questionNumber": 153,
+    "question": "Allison wants to aggregate her logs and have them automatically correlated and reported on. What sort of tool should she acquire for her organization?",
+    "choices": [
+      "MDM",
+      "A jump server",
+      "SDN",
+      "SIEM"
+    ],
+    "answer": 3,
+    "explanation": "A SIEM (security information and event management) tool is designed to aggregate, analyze, correlate, alert on, and report on log entries. MDM (mobile device management) is used to manage mobile devices, jump servers provide access from less secure zones to more secure zones, and SDN is software-defined networking.302 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q154",
+    "domain": "Security Operations",
+    "questionNumber": 154,
+    "question": "Natasha's staff have been complaining about repetitive tasks that must be manually accomplished to secure endpoint devices, then they are deployed. What could Natasha ask her team to do to address this?",
+    "choices": [
+      "Leverage automation and scripting.",
+      "Deploy fewer devices.",
+      "Leverage baselines.",
+      "Move devices to the cloud."
+    ],
+    "answer": 0,
+    "explanation": "Leveraging automation and scripting to increase employee happiness and retention as well as improving efficiency and realizing time savings is a common strategy in situations like this. Deploying fewer devices only works if the organization needs fewer devices, baselines are most useful when paired with automation and scripting for deployment, and a physical endpoint device typically can't be moved to the cloud.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q155",
+    "domain": "Security Operations",
+    "questionNumber": 155,
+    "question": "Which of the following methods typically provides the greatest insight into vulnerabilities that exist on systems owned by a company?",
+    "choices": [
+      "Penetration tests",
+      "Authenticated scans",
+      "Unauthenticated scans",
+      "Port scans Security Operations 157"
+    ],
+    "answer": 1,
+    "explanation": "Authenticated scans can identify vulnerabilities that are not visible to unauthenticated scans. Penetration testers may not be able to obtain access equivalent to authenticated scans, so an authenticated scan is more likely to provide detailed data. Port scans do not provide deep vulnerability data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q156",
+    "domain": "Security Operations",
+    "questionNumber": 156,
+    "question": "Quarantine and isolation are both common options in what phase of the incident response process?",
+    "choices": [
+      "Detection",
+      "Analysis",
+      "Containment",
+      "Eradication"
+    ],
+    "answer": 2,
+    "explanation": "Quarantine and isolation are both commonly used in the containment phase of an incident to ensure that impacted systems are unable to impact other systems or parts of the organization. Files may also be quarantined to prevent further impact from malware. Detection and analysis typically do not involve quarantine and isolation, but quarantine and isolation may carry through into the eradication phase before systems are returned to normal operation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q157",
+    "domain": "Security Operations",
+    "questionNumber": 157,
+    "question": "Rick is reviewing Linux system permissions and finds a directory that is set to: -rwxr--r-- Who will have access to the directory to read the file?",
+    "choices": [
+      "The user",
+      "The user and their group",
+      "All users",
+      "No users except root"
+    ],
+    "answer": 2,
+    "explanation": "Linux permissions are read left to right for user, group, and other. With r's at each location, this means everyone can read the contents of the directory. Only the user can write and execute files in the directory.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q158",
+    "domain": "Security Operations",
+    "questionNumber": 158,
+    "question": "Beena is granted access to her organization's customer information because she is a data steward; her access occurs between 8 a.m. and 5 p.m., and it is occurring from a known workstation that has passed security checks. What type of access control scheme is in use?",
+    "choices": [
+      "Rule-based access control",
+      "Role-based access control",
+      "Mandatory access control",
+      "Attribute-based access control"
+    ],
+    "answer": 0,
+    "explanation": "A set of rules that defines who can access the data has determined if Beena is granted access. Here, rules assess her role, the time of day, and the workstation's status. This is not accomplished using a classification or clearance system like MAC uses, and it does not rely on just an attribute like Beena's location or other information about her.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q159",
+    "domain": "Security Operations",
+    "questionNumber": 159,
+    "question": "Juan wants to use his IDS to detect anomalous behavior. What type of detection technique would most effectively help him identify unknown new attacks?",
+    "choices": [
+      "Trend analysis",
+      "Signature-based detection",
+      "IP-based detection",
+      "Port-based detection"
+    ],
+    "answer": 0,
+    "explanation": "Trend analysis is commonly used as part of behavior-based detections, which can help identify new attacks. Signatures require knowledge of existing attacks to match signatures. IP- and port-based detection is useful for known attacks but not typically useful for unknown attacks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q160",
+    "domain": "Security Operations",
+    "questionNumber": 160,
+    "question": "Geenah wants to identify where Wi-Fi signals are weakest in her building. What should she create to visually display signal coverage and strength throughout her building?",
+    "choices": [
+      "A war walk",
+      "A spectrum analysis",
+      "An SSID plot",
+      "A heatmap"
+    ],
+    "answer": 3,
+    "explanation": "Heatmaps are used to show signal strength and coverage, allowing organizations to identify areas where there may be poor coverage or where multiple signals may conflict. War walking (and war driving) are techniques used to map wireless access points to geographic locations. Spectrum analysis and SSID plots are not terms used for this type of activity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q161",
+    "domain": "Security Operations",
+    "questionNumber": 161,
+    "question": "What term describes the concept that individuals should be given the minimum permissions necessary to accomplish their role or tasks?",
+    "choices": [
+      "Zero trust",
+      "Provisioning",
+      "Least privilege",
+      "Deprovisioning Security Operations"
+    ],
+    "answer": 2,
+    "explanation": "The concept of least privilege is that only the minimum rights or privileges required to accomplish a role or task are provided. Zero trust requires continuous authentication and authorization, and least privilege is part of a zero trust environment, but zero trust goes beyond least privilege. Provisioning and deprovisioning are part of the account life cycle, and provisioning should respect the concept of least privilege.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q162",
+    "domain": "Security Operations",
+    "questionNumber": 162,
+    "question": "Joanna wants to explain the advantages of automation for user and resource provisioning. Which of the following is not an advantage of automation over manual processes for provisioning?",
+    "choices": [
+      "Automation ensures consistency in the provisioning process.",
+      "Automation provides faster provisioning.",
+      "Automation decreases mistakes in provisioning.",
+      "Automation provides auditability of provisioning."
+    ],
+    "answer": 3,
+    "explanation": "Automation provides many advantages for the provisioning process, including improving consistency, decreasing the potential for mistakes, and providing faster provisioning. It does not specifically address auditability in ways that manual processes cannot. Regardless of how provisioning is done, audit logs and trails should be created for all events, not just automated ones. Security Operations 303",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q163",
+    "domain": "Security Operations",
+    "questionNumber": 163,
+    "question": "Bug bounty programs are an example of what type of program?",
+    "choices": [
+      "Contracted penetration testing",
+      "Responsible disclosure",
+      "Third-party bounty",
+      "Trusted threat"
+    ],
+    "answer": 1,
+    "explanation": "Bug bounty programs are frequently part of responsible disclosure programs intended to provide a way for third parties to report security issues and to be incentivized to report them in responsible ways. Bug bounties can help identify flaws, but they're not typically part of contracted penetration testing engagements. Third-party bounty is not a typical way of describing them, and trusted threat programs were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q164",
+    "domain": "Security Operations",
+    "questionNumber": 164,
+    "question": "Jack is hardening a Cisco switch based on the CIS IOS benchmark. As part of the configuration process, he configures settings including ntp authenticate and ntp trusted-key. Why would Jack configure this on his network switches?",
+    "choices": [
+      "To ensure that the switch has Network Terminal Protocol enabled",
+      "To prevent attackers from modifying logs",
+      "To prevent attackers from capturing network time traffic",
+      "To ensure that network time is from a trusted source"
+    ],
+    "answer": 3,
+    "explanation": "Even if you're not familiar with specific Cisco IOS commands and configuration you can quickly determine that this is a Network Time Protocol (NTP)-related setting. Authenticating NTP and ensuring a trusted key is enabled would help to ensure that network time is trusted and secure. This prevents attackers from conducting attacks that rely on modifying network time or the switch recording incorrect time in its logs. There is no Network Terminal Protocol, this does not impact logs, and network time traffic is not encrypted.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q165",
+    "domain": "Security Operations",
+    "questionNumber": 165,
+    "question": "Tony wants to use a cellular connection to transfer data to his organization. What should he do to ensure that his data is as secure as possible?",
+    "choices": [
+      "Make sure he is connected to his cellular provider's towers.",
+      "Fully patch the phone.",
+      "Use a VPN.",
+      "Deploy a security baseline to the phone."
+    ],
+    "answer": 2,
+    "explanation": "Using a VPN is a best practice over any untrusted or potentially untrusted network connection. Patching the phone and deploying a security baseline are good for the phone's security, but they won't help directly with the security of data in transit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q166",
+    "domain": "Security Operations",
+    "questionNumber": 166,
+    "question": "The hospital that Isabella works for leverages threat information from the Health-ISAC as part of their security team's work. What type of threat information provider is the Health-ISAC?",
+    "choices": [
+      "An OSINT provider",
+      "A dark web source",
+      "An information-sharing organization",
+      "A proprietary threat data source"
+    ],
+    "answer": 2,
+    "explanation": "ISACs, or Information Sharing and Analysis Centers, are information-sharing organizations established to connect organizations in verticals like health care, government, utilities, and higher education. While it may provide OSINT information, they go far beyond that. They are not typically found via the dark web and don't require TOR to access their information, and they are not commercial or proprietary threat data sources.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q167",
+    "domain": "Security Operations",
+    "questionNumber": 167,
+    "question": "Mark presents his driver's license as part of the creation of his user account for a secure online service. What process requires this type of information to validate ownership of an identity?",
+    "choices": [
+      "Attestation",
+      "Provisioning",
+      "SSO",
+      "De-provisioning Security Operations 159"
+    ],
+    "answer": 0,
+    "explanation": "Attestation is the verification of ownership or that a person matches who they claim to be. In this case, Mark presents his driver's license to attest to his own identity. Provisioning is the creation of accounts and the granting of rights, and deprovisioning is the removal of accounts and rights for accounts. SSO is single sign-on.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q168",
+    "domain": "Security Operations",
+    "questionNumber": 168,
+    "question": "Hector is concerned about Bluetooth security. Which of the following is a legitimate security concern about Bluetooth?",
+    "choices": [
+      "It is not encrypted.",
+      "Bluetooth is only useful at short range.",
+      "Bluejacking may occur.",
+      "Bluetooth devices can be fingerprinted."
+    ],
+    "answer": 3,
+    "explanation": "Bluetooth devices can be fingerprinted relatively easily, making it easy to identify individual users who have Bluetooth turned on. Modern Bluetooth traffic is encrypted, its relatively short range is not a security concern, and Bluejacking sends unwanted spam, which isn't a direct data security issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q169",
+    "domain": "Security Operations",
+    "questionNumber": 169,
+    "question": "Privileged access management (PAM) tools provide functions for enterprise access management. Which of the following is not a common PAM component?",
+    "choices": [
+      "Just-in-time permissions",
+      "Password vaulting",
+      "Ephemeral credentials",
+      "Password persistence"
+    ],
+    "answer": 3,
+    "explanation": "PAM tools provide a variety of capabilities, including just-in-time permissions, password vaulting, and ephemeral credentials. Password persistence was made up for this question and is not a typical feature.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q170",
+    "domain": "Security Operations",
+    "questionNumber": 170,
+    "question": "What role do port scans play in asset tracking?",
+    "choices": [
+      "Enumeration of assets.",
+      "They provide OSINT.",
+      "Version tracking for assets.",
+      "They do not play a role in asset tracking."
+    ],
+    "answer": 0,
+    "explanation": "Port scans can help with enumeration of assets when an inventory does not exist. They do not provide OSINT; OSINT is a passive information-gathering process and a scan is an active process. Version tracking via port scans is inaccurate and does not provide full information. Identifying assets via port scans is a reasonably common part of asset management, particularly for initial discovery.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q171",
+    "domain": "Security Operations",
+    "questionNumber": 171,
+    "question": "A fingerprint is an example of what type of authentication factor?",
+    "choices": [
+      "Something you know",
+      "Something you have",
+      "Something you are",
+      "Somewhere you are"
+    ],
+    "answer": 2,
+    "explanation": "Fingerprints are biometric factors and are something you are. Something you know is a knowledge factor like a password or PIN. Something you have is a hardware token, RFID card, or other similar factor. Somewhere you are is a geographic factor based on location such as GPS coordinates.304 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q172",
+    "domain": "Security Operations",
+    "questionNumber": 172,
+    "question": "Dana wants to ensure that her software acquisition process for open source software is as secure as possible. What should she to do validate the security of the open source software?",
+    "choices": [
+      "Ensure that the software source code is escrowed.",
+      "Review the source code for the software.",
+      "Check dependencies for known vulnerabilities.",
+      "Purchase the software from a software vendor."
+    ],
+    "answer": 2,
+    "explanation": "Dependency checking for open source software is a common best practice to help ensure that underlying components do not have known security vulnerabilities. There are dependency security checking applications and tools available that Dana could use to help with this process. Software source code escrow is often used to ensure that organizations can obtain the software code if a company goes out of business or other adverse events occur that might endanger the company relying on the code. Reviewing the source code for an entire application is outside of the scope and capability of the majority of organizations, particularly when other dependencies are included. Purchasing software from a known vendor can help, but does not necessarily ensure that the software is secure and dependencies don't introduce or include known issues.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q173",
+    "domain": "Security Operations",
+    "questionNumber": 173,
+    "question": "Sharon wants to implement WPA3 Enterprise. What technology will she need to use for authorization after wireless devices associate with access points?",
+    "choices": [
+      "LDAP",
+      "802.1X",
+      "Kerberos",
+      "SAML Security Operations"
+    ],
+    "answer": 1,
+    "explanation": "Sharon knows that Enterprise mode authentication is typically done with 802.1X. LDAP and Kerberos are not typically used for this, and SAML is more frequently part of federated and cloud services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q174",
+    "domain": "Security Operations",
+    "questionNumber": 174,
+    "question": "What purpose do the password history and password minimum age settings have in Windows?",
+    "choices": [
+      "To prevent attackers from resetting passwords",
+      "To prevent brute-force attacks",
+      "To prevent password reuse",
+      "To ensure proper password expiration"
+    ],
+    "answer": 2,
+    "explanation": "Windows supports both password history and a minimum password age to help prevent users from simply resetting their password over and over again until they can reuse their preferred password. This does not prevent attackers from resetting passwords or using brute-force attacks and doesn't ensure password expiration.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q175",
+    "domain": "Security Operations",
+    "questionNumber": 175,
+    "question": "A CVSS score is based on what three metric groups of data?",
+    "choices": [
+      "Scope, Impact, Environmental",
+      "Base, Temporal, and Environmental",
+      "Risk, Threat, Impact",
+      "Time, Risk, Scope"
+    ],
+    "answer": 1,
+    "explanation": "CVSS scores are based on base metrics like the attack vector; complexity; scope; user interaction required and privileges required; the temporal group, which includes exploit code maturity, remediation level, and report confidence; and the environmental group, including confidentiality, availability, and integrity requirements. While scope, impact, risk, and threat all play into these elements, CVSS calls the three metric groups Base, Temporal, and Environmental.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q176",
+    "domain": "Security Operations",
+    "questionNumber": 176,
+    "question": "Quentin wants to decommission solid-state drives (SSDs). What process should he follow if he wants to be absolutely certain that the data cannot be recovered?",
+    "choices": [
+      "Zero wiping",
+      "Destruction",
+      "Sanitation",
+      "Reformatting"
+    ],
+    "answer": 1,
+    "explanation": "In scenarios where the data needs to be guaranteed to be unrecoverable, physical destruction is a common choice. Zero wiping and reformatting both leave remnant data on SSDs, and sanitization processes are reasonably secure but cannot always be guaranteed to result in total data removal.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q177",
+    "domain": "Security Operations",
+    "questionNumber": 177,
+    "question": "What challenge is commonly encountered when organizations want to harden IoT devices?",
+    "choices": [
+      "The devices have limited security options.",
+      "The devices cannot run current operating systems.",
+      "Industry benchmarks for security are not up-to-date.",
+      "Central management tools only support new devices."
+    ],
+    "answer": 0,
+    "explanation": "IoT devices often have very limited security options, if any. That means that hardening them using built-in tools and configurations is limited, if not impossible. IoT devices typically use their own OS; benchmarks are rarely available, not just out-of-date; and central management for many IoT devices is frequently not available.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q178",
+    "domain": "Security Operations",
+    "questionNumber": 178,
+    "question": "Guillermo wants to establish his organization's security baseline for Linux systems. After selecting the CIS benchmark that best matches his organization's commonly used Linux distribution, what should he do next?",
+    "choices": [
+      "Deploy the benchmark to a test system to see how it performs in normal use.",
+      "Install SELinux to allow for the baseline to be implemented fully.",
+      "Review the baseline to determine any settings that are not a good fit for the organization's usage.",
+      "Identify the deployment method for the baseline to the Linux systems."
+    ],
+    "answer": 2,
+    "explanation": "Reviewing any baseline to determine its fit for the organization and how the organization's systems and services operate is an appropriate next step after selecting a benchmark. Deploying SELinux may be necessary for some features depending on the distribution in use, but nothing in the question indicates that this is required. Once the benchmark has been modified to purpose and suitability, it can be tested, and further modifications can be made if necessary. Finally, it can be deployed and managed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q179",
+    "domain": "Security Operations",
+    "questionNumber": 179,
+    "question": "Renee has implemented WPA3 Enterprise, and she wants to use an EAP protocol for secure authentication. What EAP version should she implement?",
+    "choices": [
+      "LEAP",
+      "EAP-TLS",
+      "EAP-PSK",
+      "EAP-PWD"
+    ],
+    "answer": 1,
+    "explanation": "EAP-TLS provides TLS-based Transport Layer Security as part of a secure authentication implementation. LEAP is the Lightweight Extensible Authentication Protocol, which was in use before 802.11i but is now largely outdated. EAP-PSK uses a preshared key for mutual authentication and does not rely on public key encryption, but it is not supported in WPA3 deployments. EAP-PWD uses a shared password for authentication and, like EAPPSK, is not supported by WPA3. Security Operations 305",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q180",
+    "domain": "Security Operations",
+    "questionNumber": 180,
+    "question": "The organization that Chris works for has recently acquired another company. As part of the acquisition, Chris is preparing to address the data that the newly acquired company Security Operations 161 used, including setting up rules to handle it in his data loss prevention (DLP) system. What step is commonly required prior to data being protected by a DLP system?",
+    "choices": [
+      "Hashing the data and creating signatures",
+      "Encrypting the data",
+      "Classifying and tagging the data",
+      "Applying a mandatory access control scheme to the data"
+    ],
+    "answer": 2,
+    "explanation": "DLP systems often rely on classification, tagging, and metadata to help them identify sensitive data that the organization handles and which could be exfiltrated or sent inadvertently outside of the organization. Hashing and creating signatures is more commonly associated with filesystem-monitoring tools. Encrypting the data is not required by a DLP and may actually make it harder for the DLP to identify the data. Applying a mandatory access control scheme to the data is not a typical step in preparing for DLP-based protection.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q181",
+    "domain": "Security Operations",
+    "questionNumber": 181,
+    "question": "Mark wants to have a way to determine if attackers have modified files on a critical web application server. What type of tool should he deploy if he wants to be able to check for changes of this nature?",
+    "choices": [
+      "Drive encryption",
+      "File availability monitoring",
+      "File encryption",
+      "File integrity monitoring"
+    ],
+    "answer": 3,
+    "explanation": "File integrity monitoring tools use hashes to validate that files match their original content. If the files change, the hashes will not match, allowing the tool to alert administrators that a change has occurred. Drive encryption and file encryption both protect the confidentiality of data but don't indicate changes without a signature. File availability monitoring is not a typical tool, although system or service availability monitoring is.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q182",
+    "domain": "Security Operations",
+    "questionNumber": 182,
+    "question": "Katie's organization uses an IoC feed that helps her to identify new threats. A recent feed update includes the following hash for Emotet malware: cecc5bba6193d744837e689e68bc25c43eda7235 Where is Katie most likely going to be able to use this hash to identify potential attacks?",
+    "choices": [
+      "Via her EDR tools",
+      "Via her firewall",
+      "Via her system logs",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "Endpoint detection and response (EDR) tools are most likely to use hashing to match known malicious files like this. Firewalls may provide the capability, but system logs do not, ruling out the \"all of the above\" option.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q183",
+    "domain": "Security Operations",
+    "questionNumber": 183,
+    "question": "Which of the following tools is best suited to deploying and maintaining a secure baseline for Windows systems for an entire enterprise?",
+    "choices": [
+      "PowerShell",
+      "Group Policy",
+      "Manual configuration",
+      "Script-based deployments"
+    ],
+    "answer": 1,
+    "explanation": "Group Policy is the most common way of deploying baselines throughout Windows organizations. Group Policy Objects (GPOs) are set and managed across the entire Active Directory organization, allowing them to be modified for groups or specific purposes while inheriting most settings from the top of the organizational structure. PowerShell is a scripting tool, and both PowerShell and Group Policy are commonly used for specific purposes, but GPOs are typically preferred at scale. Manual configuration is not recommended for an entire organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q184",
+    "domain": "Security Operations",
+    "questionNumber": 184,
+    "question": "Perry wants to ensure that an unsecure protocol is secured when in transit through his local network. What solution could he adopt to ensure that this traffic is protected?",
+    "choices": [
+      "Use SD-WAN.",
+      "Wrap the protocol using TLS.",
+      "Encrypt all files that are sent using AES.",
+      "Encrypt all files that are sent using SHA-1."
+    ],
+    "answer": 1,
+    "explanation": "A common technique to ensure that traffic sent via unsecure protocols remains secure is to wrap it using TLS. SD-WAN is used to manage external connectivity, and there is no mention of files, only of an unsecure protocol. Even if files were encrypted, the rest of the traffic might leak information. Hashing does not leave data recoverable, making it unusable for this type of use in almost all cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q185",
+    "domain": "Security Operations",
+    "questionNumber": 185,
+    "question": "Annie wants to implement a passwordless authentication system. Which of the following would not meet her needs?",
+    "choices": [
+      "Windows Hello",
+      "A PIN-based factor",
+      "A cell-phone authenticator application",
+      "A FIDO2 security key Security Operations"
+    ],
+    "answer": 1,
+    "explanation": "Passwordless authentication avoids making users provide a password or PIN by using a proof of identity from a device or token. Windows Hello, cell-based authenticator applications, and FIDO2 security keys all support this, but entering a PIN does not.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q186",
+    "domain": "Security Operations",
+    "questionNumber": 186,
+    "question": "Laura wants to harden an ICS and SCADA devices her organization uses to manage critical infrastructure. The devices are old and unsupported, without recent updates. What hardening techniques are most likely to be available to her to help deal with these devices?",
+    "choices": [
+      "Isolation",
+      "Segmentation",
+      "Adding host-based firewalls",
+      "Configuring host-based IPS"
+    ],
+    "answer": 1,
+    "explanation": "Since ICS and SCADA devices need connectivity as part of their design, Laura knows that using segmentation to place the devices in a secure network is likely her best hardening option. Isolating the devices would break the functionality of ICS/SCADA systems. Neither ICS nor SCADA devices typically have support for host-based firewalls or host-based IPS.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q187",
+    "domain": "Security Operations",
+    "questionNumber": 187,
+    "question": "Bob uses an IoC feed to allow his SIEM to identify and correlate common malicious activity. What phase of the incident response process best describes this?",
+    "choices": [
+      "Preparation",
+      "Detection",
+      "Containment",
+      "Eradication"
+    ],
+    "answer": 1,
+    "explanation": "The detection and analysis phases of the incident response process both commonly leverage IoCs to detect and then correlate information to identify incidents. Preparation might involve setting up threat feeds and building automations to help notify security administrators of issues. Containment and eradication may leverage threat data to help understand common actions taken by threat actors, but the SIEM detecting and correlating events is not typically part of containment or eradication.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q188",
+    "domain": "Security Operations",
+    "questionNumber": 188,
+    "question": "Yael's organization has received a very convincing phishing email that has resulted in staff clicking on a malicious link. If Yael can't remove the email from inboxes, which of the following options will allow her to quickly prevent users from being compromised?",
+    "choices": [
+      "Set up DNS filtering using the URL from the email.",
+      "Disable the organization's Internet connection.",
+      "Block inbound traffic from the phishing email's source IP.",
+      "Enable reputation services for the email."
+    ],
+    "answer": 0,
+    "explanation": "Enabling DNS filtering based on the URL from the email is the most effective option listed. Disabling the organization's Internet connection will result in additional disruption. Blocking the email's source IP for an already received email will not be effective, nor will enabling reputation services for email after the email has already been received.306 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q189",
+    "domain": "Security Operations",
+    "questionNumber": 189,
+    "question": "Nick is reviewing his system configurations and notes that logon event auditing settings on the system are set as shown in the example figure. What concern should he express about the setting? Security Operations 163",
+    "choices": [
+      "Log files may fill up quickly.",
+      "Successful authentication will not be logged.",
+      "Failed authentication will not be logged.",
+      "Policy may not be enforced properly."
+    ],
+    "answer": 1,
+    "explanation": "Successful authentications will not be logged based on these settings. Having access to both successes and failures can be useful when investigating incidents, particularly if attackers have stolen credentials. Text-based log files take up minimal space on most workstations and servers and should not be a significant concern. While the message notes that the policy may be overridden, Nick's primary concern should be missing log data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q190",
+    "domain": "Security Operations",
+    "questionNumber": 190,
+    "question": "Brian is reviewing vulnerabilities discovered as part of a vulnerability scan. He sees a score for a vulnerability of 3.0. What does he know about this vulnerability based on its score?",
+    "choices": [
+      "It is a high-severity vulnerability and should be addressed quickly.",
+      "It is a low-severity vulnerability and may not need to be addressed.",
+      "It is a medium-severity vulnerability and should be reviewed before being addressed.",
+      "It is a critical vulnerability and should be addressed immediately."
+    ],
+    "answer": 1,
+    "explanation": "CVSS scores range from 0 to 10.0, with 10.0 being the most critical. A score of .1-3.9 is considered a low rating, meaning that Brian can take his time to review and remediate the risk. Scores of 4.0-6.9 are medium, 7.0-8.9 are high, and 9.0-10.0 are critical.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q191",
+    "domain": "Security Operations",
+    "questionNumber": 191,
+    "question": "Nick wants to allow email servers to validate that email from his servers is actually from them. What email security framework should he adopt to allow this?",
+    "choices": [
+      "DKIM",
+      "DMARC",
+      "SPF",
+      "SMTP"
+    ],
+    "answer": 0,
+    "explanation": "DKIM (DomainKeys Identified Mail) validates a domain's identity using a public key pair, validating the authenticity of the sender. DMARC (Domain-based Message Authentication, Reporting, and Conformance) controls how unauthenticated messages are handled by mailbox providers, including quarantining, rejecting, or rejecting messages. The Sender Policy Framework (SPF) lists IP addresses of systems allowed to send email in DNS TXT records for a domain. STP is not an email security framework. The Simple Mail Transfer Protocol (SMTP) is the default email protocol.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q192",
+    "domain": "Security Operations",
+    "questionNumber": 192,
+    "question": "Jack wants to configure a Linux system to use mandatory access controls. What tool should he select that is commonly used to provide this functionality?",
+    "choices": [
+      "Group Policy",
+      "CIS benchmarks",
+      "SELinux",
+      "Containerization"
+    ],
+    "answer": 2,
+    "explanation": "SELinux is a Linux kernel module that provides a variety of security capabilities and access control methods, including support for MAC (mandatory access control) for Linux systems. Group Policy is a Windows tool, the CIS benchmarks provide security configuration recommendations for systems but do not directly provide mandatory access control, and containerization is used to make application installations portable.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q193",
+    "domain": "Security Operations",
+    "questionNumber": 193,
+    "question": "What process is commonly used with open source tools to ensure that dependencies are secure?",
+    "choices": [
+      "Static analysis",
+      "Package monitoring",
+      "Fagan testing",
+      "Port scanning"
+    ],
+    "answer": 1,
+    "explanation": "Package monitoring tools review the dependencies and packages that make up open source tools to identify vulnerable components. Static analysis is manual review of code. Fagan testing is a formal code analysis process. Port scanning is not used to monitor for dependency security.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q194",
+    "domain": "Security Operations",
+    "questionNumber": 194,
+    "question": "Yarif wants to harden his SaaS cloud infrastructure. Which of the following hardening techniques is he most likely to be able to implement in an SaaS environment?",
+    "choices": [
+      "Host-based firewalls",
+      "Least privilege",
+      "Operating system security configuration",
+      "Physical security for systems Security Operations"
+    ],
+    "answer": 1,
+    "explanation": "SaaS environments allow customers to manage information, data, devices, accounts, and identities. That means that ensuring least privilege is used is possible through use of accounts and identities. Host-based firewalls, OS configurations, and physical security are all the responsibility of the SaaS provider.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q195",
+    "domain": "Security Operations",
+    "questionNumber": 195,
+    "question": "Which of the following is not a technical control used to address a vulnerability?",
+    "choices": [
+      "Insurance",
+      "Patching",
+      "Segmentation",
+      "Firewalling"
+    ],
+    "answer": 0,
+    "explanation": "Unlike the other controls listed, insurance simply transfers the risk to another organization at a cost. It does not take any action to prevent the risk from occurring. Patching, segmentation, and firewalling are all technical controls.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q196",
+    "domain": "Security Operations",
+    "questionNumber": 196,
+    "question": "Kelsey's organization has established an asset and inventory management process for servers. Which of the following is not a common part of asset tracking?",
+    "choices": [
+      "Data classification",
+      "Identifying owners",
+      "Documenting acquisition dates",
+      "Sanitization"
+    ],
+    "answer": 3,
+    "explanation": "Sanitization is part of decommissioning and disposal processes, not asset management. Tracking data classification used on systems, identifying owners, and documenting acquisition dates for warranty and life-cycle tracking are all common parts of this process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q197",
+    "domain": "Security Operations",
+    "questionNumber": 197,
+    "question": "Kirk needs to allow system administrators to access root passwords in emergencies. What type of solution could he implement to allow them to check out passwords when needed while also tracking those checkouts and requiring the passwords to be changed after use?",
+    "choices": [
+      "EAP",
+      "Multifactor authentication",
+      "An enterprise password manager",
+      "Passwordless"
+    ],
+    "answer": 2,
+    "explanation": "Enterprise password managers provide functionality just like this, allowing passwords to be stored securely and tracked on use. EAP is an authentication protocol; multifactor authentication adds one or more factors, increasing security, but doesn't provide the functionality described; and passwordless isn't designed for a checkout and reset function. Security Operations 307",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q198",
+    "domain": "Security Operations",
+    "questionNumber": 198,
+    "question": "Selah wants to prevent staff in her organization from visiting malicious websites while they're in the office. If she wants to use the most up-to-date threat data, what web filter capability should she take advantage of?",
+    "choices": [
+      "Agent-based web filtering",
+      "Reputation tools",
+      "A centralized web filtering proxy",
+      "URL scanning"
+    ],
+    "answer": 1,
+    "explanation": "Using threat data from reputation tools will best fit Selah's needs. Agent-based web filtering is used when systems will be mobile or connected to networks that are not controlled centrally. Centralized web filtering proxies and URL scanning are useful general controls, but reputation tools answer the specific need more directly.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q199",
+    "domain": "Security Operations",
+    "questionNumber": 199,
+    "question": "Joe has configured ACLs on a Cisco network device. The ACL he has configured is as follows: interface ethernet0 ip access-group 111 in ! access-list 111 deny tcp any any eq http access-list 111 permit ip any any access-list 111 deny tcp any any eq https What does this ACL do?",
+    "choices": [
+      "Blocks HTTP traffic",
+      "Blocks both HTTP and HTTPS traffic",
+      "Prevents web application attacks",
+      "Allows for inspection of web traffic Security Operations 165"
+    ],
+    "answer": 0,
+    "explanation": "ACLs are interpreted in the order they are listed. This ACL is not properly written if it is intended to block HTTPS because the ACL order includes a rule that allows any traffic after the rule that blocks HTTP is processed. This means that traffic will first be checked to see if it is HTTP traffic. If it is not, it will be allowed, and thus will bypass the HTTPS block. It will not prevent web application attacks since HTTPS can pass the ACL, and no specific configuration is set for inspection of web traffic.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q200",
+    "domain": "Security Operations",
+    "questionNumber": 200,
+    "question": "The use of machine learning and algorithms to analyze user behavior in order to identify anomalous behavior is a feature of what specialized type of tool?",
+    "choices": [
+      "UEBA",
+      "SIEM",
+      "EDR",
+      "DMARC"
+    ],
+    "answer": 0,
+    "explanation": "User and entity behavior analytics (UEBA) tools are specifically designed to use behavior-based analytic tools leveraging machine learning and algorithmic analysis. SIEM is used to correlate events and log data as part of ongoing monitoring. EDR focuses on malicious behavior detection on endpoints. DMARC is used for email security.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q201",
+    "domain": "Security Operations",
+    "questionNumber": 201,
+    "question": "What password best practice is supported by the ability to set password history in Windows?",
+    "choices": [
+      "Password length",
+      "Password complexity",
+      "Password reuse",
+      "Password age"
+    ],
+    "answer": 2,
+    "explanation": "Password history is intended to prevent password reuse in Windows. It is commonly paired with a minimum password age to prevent users from simply resetting their password multiple times until they can reuse their password, and a longer history is used to make this more difficult too. It does not influence password length or complexity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q202",
+    "domain": "Security Operations",
+    "questionNumber": 202,
+    "question": "Donna is reviewing a script that was found on a Windows system. What does the following script do? $ip = \"10.1.1.101\" $svc_name = \"WinDefend\" get-service -ComputerName $ip | Where-Object {$_.Name -eq $svc_name} | Stop-Service | Set-Service -StartupType Disabled",
+    "choices": [
+      "Stops the Windows Defender service",
+      "Starts the Windows Defender service",
+      "Stops and disables the Windows Defender service",
+      "Enables the Windows Defender service"
+    ],
+    "answer": 2,
+    "explanation": "This script will stop and disable the Windows Defender service on a system with IP address 10.1.1.101. You can identify both the Stop-Service and StartupType Disabled values in the script to determine what it is likely to do. It does not start Windows Defender, nor does it enable the service.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q203",
+    "domain": "Security Operations",
+    "questionNumber": 203,
+    "question": "Batu has been asked to build scripts that will allow automated ticket creation through a new help desk tool for his organization. As he considers the lifespan of the scripts, which of the following concerns should he address to ensure that the scripts do not become an issue over time?",
+    "choices": [
+      "Their initial creation cost",
+      "Their ongoing supportability",
+      "Existing technical debt",
+      "Whether they're a single point of failure"
+    ],
+    "answer": 1,
+    "explanation": "Since Batu has been asked to consider the lifespan of the scripts, ensuring that they're supportable in an ongoing manner is the biggest concern. Initial cost is typically small compared to the ongoing benefit of scripts like these. Existing technical debt is not a major concern for automated ticket creation with a new tool, and while having a single point of failure can be a concern, automated ticket outages are a point-in-time concern not a lifetime-centered concern.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q204",
+    "domain": "Security Operations",
+    "questionNumber": 204,
+    "question": "Alex is responsible for his organization's vulnerability management program. A recent vulnerability scan shows that IoT devices that are used for building automation are vulnerable to a known issue with their built-in web server. After reviewing the manufacturer's website, Alex is unable to find an updated operating system or software update. He chooses to move the IoT devices to a protected VLAN and require a jump server to access them. What vulnerability remediation option has he used?",
+    "choices": [
+      "A compensating control",
+      "Patching",
+      "Insurance",
+      "An exemption Security Operations"
+    ],
+    "answer": 0,
+    "explanation": "Alex has used a compensating control because he cannot remediate the underlying vulnerability. This reduces the risk by preventing the devices from being available on the network to untrusted devices and users. He cannot patch, no insurance was purchased, and no exemption was granted or registered.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q205",
+    "domain": "Security Operations",
+    "questionNumber": 205,
+    "question": "Wiping a drive and reinstalling from known good media is an example of what incident response option?",
+    "choices": [
+      "Recovery",
+      "Containment",
+      "Eradication",
+      "Root cause elimination"
+    ],
+    "answer": 2,
+    "explanation": "Eradication efforts focus on completely removing all artifacts of a compromise or event. Wiping drives to ensure that no remnant malware or other artifacts remain, then reinstalling using known good media are examples of eradication processes. Restoring the system to service after it has been remediated occurs after eradication. Containment efforts attempt to limit the potential spread or ongoing impact of an incident, and root cause analysis is used to determine the underlying causes of an issue, incident, or event. Root cause elimination is not a commonly used term for this.308 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q206",
+    "domain": "Security Operations",
+    "questionNumber": 206,
+    "question": "Melissa's company wants to contract with a third-party organization to oversee their hardware decommissioning and disposal process. What should she ask the company to do to prove that the disposal process was done properly?",
+    "choices": [
+      "Certification.",
+      "Follow a data retention policy.",
+      "Provide photographic evidence.",
+      "Keep a log of devices."
+    ],
+    "answer": 0,
+    "explanation": "Certification of destruction can include photographic evidence, logs, and other data that demonstrate the disposal contract was followed. Data retention policies are applied internally, not to third-party companies that are contracted for disposal.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q207",
+    "domain": "Security Operations",
+    "questionNumber": 207,
+    "question": "Sally wants to identify a way to prioritize vulnerabilities discovered by her vulnerability scanner. Which of the following options will allow her to prioritize vulnerabilities effectively while taking her own organization's needs into account?",
+    "choices": [
+      "Use CVSS base and temporal metrics.",
+      "Use a qualitative risk assessment process.",
+      "Use CVSS scores that include environmental metrics.",
+      "Use a quantitative risk assessment process."
+    ],
+    "answer": 2,
+    "explanation": "CVSS environmental scores help organizations take their own requirements and risks into account. That means that Sally can use numeric scores to prioritize risk while using her organization's needs and unique threat model. Qualitative and quantitative risk assessments are useful, but they are not as well suited to leveraging data from a vulnerability scanner in a timely manner.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q208",
+    "domain": "Security Operations",
+    "questionNumber": 208,
+    "question": "Henry wants to prevent password reuse outside of his organization from impacting the accounts his staff use. Which of the following password settings can have the largest impact if passwords are reused outside of his organization and they are breached due to a security issue at the third-party site or service?",
+    "choices": [
+      "Password expiration policies",
+      "Password length policies",
+      "Password complexity policies",
+      "Password minimum age policies"
+    ],
+    "answer": 0,
+    "explanation": "Password expiration polices help reduce the length of time a password could be exposed for. Henry knows that if his staff change their password periodically that it can help avoid issues with reuse on other sites. He also knows that multifactor is a more effective solution and that he should focus his time there as well. Password length and complexity don't matter if the password was compromised elsewhere, and minimum age policies are used to prevent reuse in the organization by resetting passwords over and over again to return to an original desired password. Note that policies like this don't stop reuse outside of a user's organization on 3rd party sites!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q209",
+    "domain": "Security Operations",
+    "questionNumber": 209,
+    "question": "Fuzzing is an example of what type of code analysis?",
+    "choices": [
+      "Static analysis",
+      "Code review",
+      "Pentesting",
+      "Dynamic analysis"
+    ],
+    "answer": 3,
+    "explanation": "Fuzzing, the process of feeding unexpected and random input to programs to see how they behave, is an example of dynamic analysis where the code is actually run to test it. Static analysis involves reviewing the code, as does code review. Fuzzing is typically done as part of software testing rather than penetration testing, but it may be used by pentesters.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q210",
+    "domain": "Security Operations",
+    "questionNumber": 210,
+    "question": "Steve's organization is concerned about the potential for devices they are purchasing to be modified before they reach the organization. Which of the following solutions will help the most in preventing this potential issue?",
+    "choices": [
+      "Buying from a value-added reseller",
+      "Buying directly from the OEM Security Operations 167",
+      "Buying from a gray market seller",
+      "Buying from a local reseller"
+    ],
+    "answer": 1,
+    "explanation": "Ensuring supply chain security can be challenging, but buying directly from a vendor can remove opportunities for devices to be modified. Trusted value-added resellers are the second best choice. Buying from the gray market or a reseller typically adds additional opportunities for device modification.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q211",
+    "domain": "Security Operations",
+    "questionNumber": 211,
+    "question": "What password setting has the greatest impact when attempting to prevent brute-force password cracking?",
+    "choices": [
+      "Password history settings",
+      "Password length increases",
+      "Password expiration settings",
+      "Password length decreases"
+    ],
+    "answer": 1,
+    "explanation": "Increasing password length makes it harder to crack. Decreasing the password length would make passwords easier to crack. History and expiration do not influence brute-force attacks unless the expiration happens to land during the time the password cracking was attempted.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q212",
+    "domain": "Security Operations",
+    "questionNumber": 212,
+    "question": "Jill wants to identify a potential network-based distributed denial-of-service (DDoS) attack. Which of the following log sources is most likely to provide information that will allow her to identify the attack?",
+    "choices": [
+      "OS-specific security logs",
+      "Endpoint logs",
+      "IDS/IPS logs",
+      "Authentication logs"
+    ],
+    "answer": 2,
+    "explanation": "IDS and IPS devices are the only network security device in this list. Other common logs used to identify potential DDoS attacks include network logs and firewall logs. Application and web server logs may be useful if the DDoS is associated with an application. OSspecific security logs, endpoint logs, and authentication logs are not typical places to find useful information for a network-based DDoS attack.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q213",
+    "domain": "Security Operations",
+    "questionNumber": 213,
+    "question": "Jake has configured WPA3 Personal for his network. What feature makes WPA3 more secure than WPA2's PSK mode?",
+    "choices": [
+      "SAE",
+      "PKI",
+      "TLS",
+      "EAP"
+    ],
+    "answer": 0,
+    "explanation": "SAE (Simultaneous Authentication of Equals) provides a secure authentication mode that replaced WPA2's preshared key session key negotiation process. PKI is public key encryption and is not the solution in use. TLS is Transport Layer Security, used to encrypt data in motion, and EAP is an authentication protocol.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q214",
+    "domain": "Security Operations",
+    "questionNumber": 214,
+    "question": "Molly wants to harden embedded systems in her environment. Which of the following options is most likely to be available?",
+    "choices": [
+      "Hardening benchmarks.",
+      "Central management tools.",
+      "Add-on security software.",
+      "None; embedded systems have very limited hardening options."
+    ],
+    "answer": 3,
+    "explanation": "Embedded systems typically have few, if any hardening options because of their purpose-built functionality. Benchmarks are rarely available for them, and most are not designed for central management or adding on security software. Security Program Management and Oversight 309",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d4-0-q215",
+    "domain": "Security Operations",
+    "questionNumber": 215,
+    "question": "Jean wants to use an identity proofing process as part of her user account creation process. Which of the following is most likely to be useful for identity proofing?",
+    "choices": [
+      "A Google email account",
+      "A state or nationally issued ID",
+      "A Facebook account",
+      "A credit car Deployment models Bring your own device (BYOD) Corporate-owned, personally enabled (COPE) Choose your own device (CYOD) Connection methods Cellular Wi-Fi Bluetooth Wireless security settings Wi-Fi Protected Access 3 (WPA3) AAA/Remote Authentication Dial-In User Service (RADIUS) Cryptographic protocols Authentication protocols Application security Input validation Secure cookies Static code analysis Code signing Sandboxing Monitoring 4.2 Explain the security implications of proper hardware, software, and data asset management Acquisition/procurement process Assignment/accounting Ownership Classification Monitoring/asset tracking Inventory Enumeration Disposal/decommissioning Sanitization Destruction Certification Data retention 4.3 Explain various activities associated with vulnerability management Identification methods Vulnerability scan Application security Static analysis Dynamic analysis Package monitoring Threat feed Open-source intelligence (OSINT) Proprietary/third-party Information-sharing organization Dark web Penetration testing Responsible disclosure program Bug bounty program System/process audit Analysis Confirmation False positive False negative Prioritize Common Vulnerability Scoring System (CVSS) Common Vulnerability Enumeration (CVE) Vulnerability classification Exposure factor Environmental variables Industry/organizational impact Risk tolerance Vulnerability response and remediation Patching Insurance Segmentation Compensating controls Exceptions and exemptions Validation of remediation Rescanning Audit Verification Reporting 4.4 Explain security alerting and monitoring concepts and tools Monitoring computing resources Systems Applications Infrastructure Activities Log aggregation Alerting Scanning Reporting Archiving Alert response and remediation/validation Quarantine Alert tuning Tools Security Content Automation Protocol (SCAP) Benchmarks Agents/agentless Security information and event management (SIEM) Antivirus Data loss prevention (DLP) Simple Network Management Protocol (SNMP) traps NetFlow Vulnerability scanners 4.5 Given a scenario, modify enterprise capabilities to enhance security Firewall Rules Access lists Ports/protocols Screened subnets IDS/IPS Trends Signatures Web filter Agent-based Centralized proxy Universal Resource Locator (URL) scanning Content categorization Block rules Reputation Operating system security Group Policy SELinux Implementation of secure protocols Protocol selection Port selection Transport method DNS filtering Email security Domain-based Message Authentication Reporting and Conformance (DMARC) DomainKeys Identified Mail (DKIM) Sender Policy Framework (SPF) Gateway File integrity monitoring DLP Network access control (NAC) Endpoint detection and response (EDR)/extended detection and response (XDR) User behavior analytics 4.6 Given a scenario, implement and maintain identity and access management Provisioning/de-provisioning user accounts Permission assignments and implications Identity proofing Federation Single sign-on (SSO) Lightweight Directory Access Protocol (LDAP) Open authorization (OAuth) Security Assertions Markup Language (SAML) Interoperability Attestation Access controls Mandatory Discretionary Role-based Rule-based Attribute-based Time-of-day restrictions Least privilege Multifactor authentication Implementations Biometrics Hard/soft authentication tokens Security keys Factors Something you know Something you have Something you are Somewhere you are Password concepts Password best practices Length Complexity Reuse Expiration Age Password managers Passwordless Privileged access management tools Just-in-time permissions Password vaulting Ephemeral credentials 4.7 Explain the importance of automation and orchestration related to secure operations Use cases of automation and scripting User provisioning Resource provisioning Guard rails Security groups Ticket creation Escalation Enabling/disabling services and access Continuous integration and testing Integrations and Application programming interfaces (APIs) Benefits Efficiency/time saving Enforcing baselines Standard infrastructure configurations Scaling in a secure manner Employee retention Reaction time Workforce multiplier Other considerations Complexity Cost Single point of failure Technical debt Ongoing supportability 4.8 Explain appropriate incident response activities Process Preparation Detection Analysis Containment Eradication Recovery Lessons learned Training Testing Tabletop exercise Simulation Root cause analysis Threat hunting Digital forensics Legal hold Chain of custody Acquisition Reporting Preservation E-discovery 4.9 Given a scenario, use data sources to support an investigation Log data Firewall logs Application logs Endpoint logs OS-specific security logs IPS/IDS logs Network logs Metadata Data sources Vulnerability scans Automated reports Dashboards Packet captures Security Operations 125"
+    ],
+    "answer": 1,
+    "explanation": "Identity proofing uses information about a user to prove that they are who they claim to be. A state or nationally issued ID is a better proof than a Facebook or Google account which can be created under any name without validation. Credit cards are not a form of identity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q1",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 1,
+    "question": "The company that Scott works for has experienced a data breach, and the personal information of thousands of customers has been exposed. Which of the following impact categories is not a concern as described in this scenario?",
+    "choices": [
+      "Reputation",
+      "Financial",
+      "Availability loss",
+      "Data loss"
+    ],
+    "answer": 2,
+    "explanation": "This description does not include any risk to availability since there is no information about systems or services being down or offline. This scenario would likely result in reputational, financial, and data loss impacts for Scott's company.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q2",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 2,
+    "question": "Sameer wants to assess whether the key risk indicators (KRIs) his team have suggested are appropriate for his organization. Which of the following is not a common characteristic of a useful KRI?",
+    "choices": [
+      "Actionable",
+      "Measurable",
+      "Relevant",
+      "Inexpensive"
+    ],
+    "answer": 3,
+    "explanation": "KRIs, or key risk indicators, need to be actionable so that the organization can use them to control or manage risk, they need to be measurable so that they can be assessed, and they must be relevant to the risks that they measure. They don't necessarily have to be inexpensive, as organizations may make choices about costs based on their risks and business models.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q3",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 3,
+    "question": "Jill's organization wants to ensure that services and systems are back online and functioning normally within 4 hours of an event or incident. What term best describes this goal?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF"
+    ],
+    "answer": 0,
+    "explanation": "A recovery time objective (RTO) is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. Mean time to repair (MTTR) is the average time it takes to repair a system or device. A recovery point objective (RPO) describes how much data can be lost in the event of an outage or issue, and the mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q4",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 4,
+    "question": "Eric's organization has created a policy document that describes how users can and cannot use the organization's network, systems, and services. What type of policy has he created?",
+    "choices": [
+      "Business continuity policy.",
+      "An acceptable use policy.",
+      "An incident response policy.",
+      "This is a standard, not a policy."
+    ],
+    "answer": 1,
+    "explanation": "Acceptable use policies (AUPs) describe how and what users can use organizational resources, systems, and services for. Business continuity policies describe how an organization approaches business continuity, and incident response policies focus on how organizations respond to incidents. A standard acts as the rules to achieve an intent, while policies describe the organization's intent. This policy describes intent, not specific implementations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q5",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 5,
+    "question": "Angie is performing a penetration test and has gathered information using the Shodan search engine about her target. What type of reconnaissance has she performed?",
+    "choices": [
+      "Active",
+      "Commercial",
+      "Scanner-based",
+      "Passive"
+    ],
+    "answer": 3,
+    "explanation": "Angie has conducted passive reconnaissance. She did not perform a scan or otherwise take direct active action to gather her information. Instead, she used the existing Shodan engine to gather information. While Shodan is a commercial product and does gather information using scans, databases like Shodan are considered passive reconnaissance, and the Security+ exam objectives recognize two types of reconnaissance: active and passive.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q6",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 6,
+    "question": "What role do data processors have in an organization?",
+    "choices": [
+      "They determine how data is processed.",
+      "They own the data.",
+      "They process data on behalf of a controller.",
+      "They contract with third parties to use the data. Security Program Management and Oversight 177"
+    ],
+    "answer": 2,
+    "explanation": "Data processors do just that-they process the data on behalf of a data controller, who determines how data is processed and what purposes it is used for. They do not own the data, and they are typically contracted to process the data rather than contracting with third parties themselves.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q7",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 7,
+    "question": "Ginger's personal data is used by an organization, including identifiable information like her name, address, and Social Security number. What term best describes Ginger?",
+    "choices": [
+      "Data owner",
+      "Data controller",
+      "Data processor",
+      "Data subject"
+    ],
+    "answer": 3,
+    "explanation": "Ginger is a data subject, a person who can be identified by her personally identifiable information (PII). Data owners are responsible for protection, usage, and quality310 Appendix Answers to Review Questions of datasets. Data controllers determine how data will be used, and processors do the actual data processing.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q8",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 8,
+    "question": "Hong's company conducts regular risk assessments. As part of their assessment process, they gather a team of experts who assess risks on a scale from low to high based on their knowledge and experience. What type of risk assessment is Hong's company conducting?",
+    "choices": [
+      "Ad hoc",
+      "Quantitative",
+      "Qualitative",
+      "Continuous"
+    ],
+    "answer": 2,
+    "explanation": "Qualitative risk assessment uses knowledge and expertise to assess risk rather than assigning numeric values and calculations like a quantitative assessment process would. Ad hoc risk assessment is done when risks need to be assessed for a specific, immediate need unlike the planned, regular risk assessments described. Continuous risk assessment is ongoing, whereas this is conducted regularly.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q9",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 9,
+    "question": "How is likelihood measured in qualitative risk assessments?",
+    "choices": [
+      "A scale like high, medium, low",
+      "A numeric scale from 0 to 1",
+      "By calculating loss events per year",
+      "A numeric scale from 1 to 100"
+    ],
+    "answer": 0,
+    "explanation": "Qualitative risk assessments measure likelihood on a descriptive scale like high, medium, or low. Quantitative assessments measure likelihood on a numeric scale using known event occurrence rates where possible.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q10",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 10,
+    "question": "Grace wants to establish a governance structure that will leverage third-party experts who are paid by her organization. What governance structure should she select?",
+    "choices": [
+      "Board-based",
+      "Committee-based",
+      "Government-based",
+      "Market-based"
+    ],
+    "answer": 0,
+    "explanation": "Boards often include external members who may have industry or other experience and expertise that will benefit the organization, and they are sometimes, but not always, paid as part of their work on the board. Committees are frequently composed of internal staff; government-based governance occurs through laws or as part of public service. Market-based is not a type of governance outlined by the Security+ exam objectives.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q11",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 11,
+    "question": "Carmen's organization wants to purchase cybersecurity insurance to offset the cost of potential breaches. What risk management strategy has her organization adopted?",
+    "choices": [
+      "Transfer",
+      "Accept",
+      "Avoid",
+      "Mitigate"
+    ],
+    "answer": 0,
+    "explanation": "Risk transfer options move the costs of risks to another organization such as through insurance. Acceptance involves management acknowledging that the risk and its impacts may occur, and that the organization will move forward despite that chance. Avoidance seeks to prevent the risk from occurring. Mitigation works to limit the impact of a risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q12",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 12,
+    "question": "Marissa has been recruited to a group that provides oversight for an organization but that doesn't engage in the day-to-day operations of the organization. The group focuses on strategy and direction for the organization and meets a few times a year. What type of governance group is Marissa part of?",
+    "choices": [
+      "An activist investor's group",
+      "A committee",
+      "A board",
+      "A regulator Security Program Management and Oversight"
+    ],
+    "answer": 2,
+    "explanation": "Boards provide strategic oversight and direction for organizations. Boards may form subcommittees to accomplish specific tasks or to provide oversight over specific areas. Regulators oversee an industry based on law. Activist investor's groups are not covered by the exam, but typically they own stock in an organization and seek to direct the organization through their activism and stock ownership.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q13",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 13,
+    "question": "Governance at Selah's organization is delegated to business units. This allows the units to determine how to balance their operational needs against their governance processes. What type of governance is this?",
+    "choices": [
+      "Centralized",
+      "Board-based",
+      "Decentralized",
+      "Committee-based"
+    ],
+    "answer": 2,
+    "explanation": "This governance approach is a decentralized approach with each unit or area providing their own governance. While flexible, this can be problematic because of a lack of consistency and overhead due to unique circumstances and requirements. Centralized designs do not delegate authority and instead place authority in a central place, organization, or individual. There is no mention of a board or committee.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q14",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 14,
+    "question": "Sharon's organization wants to understand the risks that it will experience due to acquiring a new subsidiary, but it needs to conduct the assessment quickly while leveraging their industry expertise. Which of the following risk assessment options should Sharon recommend to address this need?",
+    "choices": [
+      "Conduct an ad hoc risk assessment.",
+      "Conduct a one-time risk assessment.",
+      "Conduct a third-party risk assessment.",
+      "Build a continuous risk assessment process."
+    ],
+    "answer": 1,
+    "explanation": "A one-time risk assessment that addresses the acquisition will best meet Sharon's needs. Ad hoc assessments are less formal, and they are often used to quickly assess a system or other potential risk. There is no requirement listed for third-party assessment, and they can be both expensive and time-consuming. Continuous risk assessment efforts are typically built into ongoing processes and are not suited to this type of one-time review.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q15",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 15,
+    "question": "What term describes a third party that takes actions on behalf of a data controller?",
+    "choices": [
+      "Data subject",
+      "Data owner",
+      "Data processor",
+      "Data administrator"
+    ],
+    "answer": 2,
+    "explanation": "Data processors process data on behalf of controllers. Data subjects are the individuals or organizations that data describes. Data owners create and are responsible for data, and data administrator is not a broadly or consistently used term in this context.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q16",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 16,
+    "question": "Which of the following will provide a customer the opportunity to engage a third party to deliver an SOC 2, Type 1 report created by third-party assessors?",
+    "choices": [
+      "A penetration testing agreement",
+      "A risk assessment agreement",
+      "A vulnerability scan clause",
+      "A right-to-audit clause"
+    ],
+    "answer": 3,
+    "explanation": "Right-to-audit clauses provide customers with the right to have an audit of their vendor like an SOC 2, Type 1 assessment performed. SOC 2, Type 1 reports are not penetration testing reports, vulnerability scan reports, or risk assessment reports. Security Program Management and Oversight 311",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q17",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 17,
+    "question": "Isaac has been asked to be his organization's data owner for customer data. Which of the following is not a typical part of that role?",
+    "choices": [
+      "Processing the data",
+      "Classifying data",
+      "Protecting data",
+      "Ensuring the quality of the data"
+    ],
+    "answer": 0,
+    "explanation": "Data owners are responsible for data, including classifying it, protecting it, overseeing the use of it, and ensuring the quality of the overall data. They are not, however, responsible for directly processing the data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q18",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 18,
+    "question": "Pedro's organization uses industrial machinery, which runs an RTOS that is no longer supported. His organization's policies require systems to be removed from service if they cannot be patched for security issues, and the RTOS has a known vulnerability. The machines are Security Program Management and Oversight 179 very expensive and are a core part of the organization's industrial processes. What risk process would Pedro follow if he wanted to retain the devices, despite the risk?",
+    "choices": [
+      "Transfer the risk.",
+      "Seek an exception.",
+      "Document the risk.",
+      "Mitigate the risk."
+    ],
+    "answer": 1,
+    "explanation": "Risk exceptions are granted when a risk is accepted by the organization, despite not following typical organizational policies or processes. This is not a transfer or mitigation, and simply documenting the risk does not cause it to be accepted.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q19",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 19,
+    "question": "Jake's team has begun handling new data related to customers, including their personally identifiable information. Jake takes on a new role that has responsibilities including classifying each data element gathered about customers. What is Jake's role in the data handling process?",
+    "choices": [
+      "Controller",
+      "Custodian",
+      "Owner",
+      "Processor"
+    ],
+    "answer": 2,
+    "explanation": "Data owners classify, protect, oversee the use of, and ensure the quality of data. Controllers are responsible for the procedures and purposes of data use, often described as the why and how. Custodians are the staff and teams who handle data, and processors work with data on behalf of a controller.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q20",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 20,
+    "question": "Which of the following measures is not commonly used as part of a business impact analysis?",
+    "choices": [
+      "RTO",
+      "MTTR",
+      "ARO",
+      "MTBF"
+    ],
+    "answer": 2,
+    "explanation": "There are four commonly used business impact analysis (BIA) measures that are part of the Security+ exam objectives: recovery time objectives (RTOs), recovery point objectives (RPOs), mean time to repair (MTTR), and mean time between failures (MTBF). ARO, or annual rate of occurrence, is associated with risk assessment, not BIA.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q21",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 21,
+    "question": "As part of her organization's marketing efforts, Julie's team gathers information about customers and others who visit their website. Julie has engaged an analytics company that uses the data gathered to identify trends and potential new market opportunities. What data role does this third-party company play?",
+    "choices": [
+      "Data owner",
+      "Data processor",
+      "Data controller",
+      "Data custodian"
+    ],
+    "answer": 1,
+    "explanation": "Data processors process data for data controllers. In this scenario, Julie or a member of her staff is the data controller and the third-party organization is a processor. They do not own the data, and they are not custodians who are responsible for the data on an ongoing basis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q22",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 22,
+    "question": "Neil's organization has signed a contract that includes guarantees of 99.9 percent uptime. What type of agreement has Neil's organization created?",
+    "choices": [
+      "An MSA",
+      "An NDA",
+      "A MTBF",
+      "An SLA"
+    ],
+    "answer": 3,
+    "explanation": "Service level agreements (SLAs) set forth the expected service level as well as penalties for nonperformance. A master services agreement (MSA) is a broad agreement that additional work may be performed under. An NDA, or nondisclosure agreement, sets forth what information may and may not be shared or disclosed. The mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q23",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 23,
+    "question": "Which of the following best describes a data controller?",
+    "choices": [
+      "Manages the flow of data between custodians",
+      "Creates and formats data when it is collected or created",
+      "Any system that handles data",
+      "Determines the purpose and methods of processing data Security Program Management and Oversight"
+    ],
+    "answer": 3,
+    "explanation": "Data controllers determine the purpose and methods of data processing. They may be individuals, groups, or organizations. This is defined by the General Data Protection Regulation (GDPR). That may involve how data flows, and the formats or other details of data, but the best-and legally defined-role of a controller is the one set by the GDPR.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q24",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 24,
+    "question": "As part of his role, Augie is responsible for implementation of business rules related to data, as well as for storage, and use of data and datasets. What data-related role does Augie hold?",
+    "choices": [
+      "Data owner",
+      "Data custodian",
+      "Data processor",
+      "Data subject"
+    ],
+    "answer": 1,
+    "explanation": "Augie is a data custodian. In this role he is responsible for data's use in the business, including storing and properly handling data. Data owners are responsible and accountable for data as well as ensuring that custodians and others are handling the data appropriately. Data processors do actual data processing, and may be an individual, organization, or group. Data subjects are the people who the data describes or is about.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q25",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 25,
+    "question": "Which of the following penalties is most typically imposed on a country rather than on a company?",
+    "choices": [
+      "Fines",
+      "Loss of license",
+      "Sanctions",
+      "Mandatory reporting"
+    ],
+    "answer": 2,
+    "explanation": "Sanctions are typically applied to countries rather than companies or individuals. Fines and loss of license are typically aimed at companies and individuals, and mandatory reporting is not a penalty included in the Security+ exam.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q26",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 26,
+    "question": "Which of the following is not a commonly used term to describe risk appetite?",
+    "choices": [
+      "Intentional",
+      "Neutral",
+      "Expansionary",
+      "Conservative"
+    ],
+    "answer": 0,
+    "explanation": "Terms used for risk appetite in the Security+ exam objectives include conservative, neutral, and expansionary. Intentional is not a term used for risk appetite.312 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q27",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 27,
+    "question": "What does a data steward do?",
+    "choices": [
+      "Create data.",
+      "Carry out data use and security policies.",
+      "Explain compliance requirements for data.",
+      "Oversee data throughout its life cycle."
+    ],
+    "answer": 1,
+    "explanation": "Data stewards are responsible for the data in their charge. That means they carry out data usage and security policies and ensure that data is handled appropriately. Creating data is typically done by data owners, who also explain and set data security policies. Multiple roles oversee data throughout its life cycle, not just a data steward.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q28",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 28,
+    "question": "Marcus determines what organizationally owned data is used for a given purpose and how it is processed. What data role does he have in his organization?",
+    "choices": [
+      "He is a data controller.",
+      "He is a supervisory authority.",
+      "He is a data protection officer.",
+      "He is a data processor."
+    ],
+    "answer": 0,
+    "explanation": "Data controllers determine what data is used and how it is processed. Supervisory authorities are public authorities in the European Union (EU) that monitor for compliance with the General Data Protection Regulation (GDPR). Data protection officers are required by the GDPR and oversee data protection strategies and their implementation. Data processors do just that-they process the data on behalf of a data controller who determines how data is processed and what purposes it is used for. They do not own the data, and are typically contracted to process the data rather than contracting with third parties themselves.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q29",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 29,
+    "question": "Colleen's organization has deployed web application firewalls (WAFs) to protect their web services from being impacted by a known SQL injection attack. What risk management strategy has the organization adopted?",
+    "choices": [
+      "Transfer",
+      "Accept",
+      "Avoid",
+      "Mitigate Security Program Management and Oversight 181"
+    ],
+    "answer": 2,
+    "explanation": "Avoidance seeks to prevent the risk from occurring. In this case, the WAF is a method of preventing the attack, thus avoiding the risk. Risk transfer options move the costs of risks to another organization such as through insurance. Acceptance involves management acknowledging that the risk and its impacts may occur and that the organization will move forward despite that chance. Mitigation works to limit the impact of a risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q30",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 30,
+    "question": "Requiring all web traffic to be sent via HTTPS is an example of what type of standard?",
+    "choices": [
+      "Access control",
+      "Encryption",
+      "Password",
+      "Physical security"
+    ],
+    "answer": 1,
+    "explanation": "HTTPS using TLS is a form of encryption for data in motion. Encryption standards often require specific ways to use encryption, encryption algorithms, settings or configurations for encryption, or times and places where encryption must be used. Access control standards focus on how access is controlled, by whom, and who is impacted. Password standards define settings and requirements related to passwords, and physical security standards address physical security requirements.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q31",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 31,
+    "question": "Why are cloud IaaS vendors unlikely to agree to including a right-to-audit clause in their contracts?",
+    "choices": [
+      "The risk to their other customers is too great.",
+      "The cost of the assessment is too high.",
+      "They may not pass the audit.",
+      "They have competing regulatory requirements."
+    ],
+    "answer": 0,
+    "explanation": "Cloud vendors rarely agree to right-to-audit clauses, instead choosing to provide their own third-party audit results. This reduces the chances of an audit or assessment causing issues with their other customers. Third-party audit costs covered by right-to-audit clauses are often borne by the customers, not the vendor. Not passing an audit is unlikely for major vendors, regulatory requirements are more likely to require audits, and regulations rarely limit auditability.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q32",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 32,
+    "question": "Chuck's organization requires that user accounts only be able to log in during the staff member's working hours. What type of standard would drive a setting like this?",
+    "choices": [
+      "Access control",
+      "Encryption",
+      "Password",
+      "Physical security"
+    ],
+    "answer": 0,
+    "explanation": "Access control standards often define how and when users can access or use systems and services. Defining user access to only be allowed during working hours is an example of an access control standard. Encryption standards often require specific ways to use encryption, encryption algorithms, settings or configurations for encryption, or times and places where encryption must be used. Password standards define settings and requirements related to passwords, and physical security standards address physical security requirements.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q33",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 33,
+    "question": "Frankie wants to establish her organization's encryption standard. Which of the following should she recommend for a default encryption algorithm for general use if cryptographic strength is a critical feature?",
+    "choices": [
+      "AES-128",
+      "SHA-1",
+      "AES-256",
+      "SHA-2"
+    ],
+    "answer": 2,
+    "explanation": "The Advanced Encryption Standard (AES) is the most commonly accepted and used encryption standard as of this writing. Selecting a longer key length like 256 over a 128-bit option provides greater resistance to brute-force attacks. SHA-1 and SHA-2 are hashing algorithms, not encryption algorithms.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q34",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 34,
+    "question": "Jill's organization has selected Agile with a CI/CD process for their organization. What type of policy would document this selection?",
+    "choices": [
+      "Business continuity",
+      "Disaster recovery",
+      "Incident response",
+      "Software development life cycle"
+    ],
+    "answer": 3,
+    "explanation": "Agile, along with continuous integration/continuous delivery (CI/CD) pipelines, describes a software development life cycle. Business continuity, disaster recovery, and incident response policies may mention the Agile process and impacts on the CI/CD pipeline, but it is not the primary focus of those types of policies. Security Program Management and Oversight 313",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q35",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 35,
+    "question": "Megan's organization wants to create a change management policy. Which of the following is not a typical change type found in a change policy?",
+    "choices": [
+      "Preauthorized changes",
+      "Emergency changes",
+      "Legislated changes",
+      "Standard changes Security Program Management and Oversight"
+    ],
+    "answer": 2,
+    "explanation": "Change management practices often include options for preapproved changes, emergency changes, and standard changes. Changes required by legislation or other external factors are not typically built into most change management processes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q36",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 36,
+    "question": "Liz wants to assess the critical functions of her business and ensure that the systems that are part of those functions are assessed to determine how often they are likely to fail, how long it would take to restore them, and what recovery objectives will be. What process should she engage in?",
+    "choices": [
+      "A quantitative risk assessment",
+      "A business impact analysis",
+      "A qualitative risk assessment",
+      "A penetration test"
+    ],
+    "answer": 1,
+    "explanation": "A business impact analysis (BIA) is a formal process used to identify mission-critical functions and to ensure that critical systems that support those functions are identified and assessed. Risk assessment seeks to identify risks and their probability and impact, and a penetration test attempts to emulate how attackers might gain access to or otherwise impact systems and services.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q37",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 37,
+    "question": "What describes the key difference between policies and standards?",
+    "choices": [
+      "Policies are defined by third parties; standards are defined by organizations.",
+      "Policies are defined by organizations; standards are defined by third parties.",
+      "Policies are a statement of intent; standards define how rules help enforce policy.",
+      "Policies are legally enforceable; standards are optional."
+    ],
+    "answer": 2,
+    "explanation": "Policies are a statement of organizational intent. Standards are defined to help organization achieve that intent through the use of rules. Policies are typically defined by an organization, and standards may be adopted from third parties or created by the organization itself. Policies might be defined by law but are not required to be defined that way.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q38",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 38,
+    "question": "Sophie wants to ensure that her vendor meets their SLA. What does Sophie need to do?",
+    "choices": [
+      "Ensure performance targets are defined in the contract with appropriate penalties.",
+      "Establish key performance indicators (KPIs) for her team and assess them regularly.",
+      "Ensure that security levels are not reduced when performing maintenance.",
+      "Determine if supply chain levels are met in order to meet demand."
+    ],
+    "answer": 0,
+    "explanation": "Service level agreements set forth the expected service level as well as penalties for nonperformance. That means that Sophie needs to determine whether her vendor is meeting their promised delivery levels or availability levels and to claim appropriate penalties as defined in the contract if they are not met. KPIs may be involved but would be measured against her vendor's performance, not her team's performance. Security levels and supply chain availability levels are not the only potential items covered by an SLA.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q39",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 39,
+    "question": "Tuan is assessing risk and knows that he needs to be able to explain risk to his management. What two factors are combined to describe risk?",
+    "choices": [
+      "Impact and acceptance",
+      "Likelihood and ALE",
+      "Probability and impact",
+      "Probability and SLE"
+    ],
+    "answer": 2,
+    "explanation": "Probability and impact are used to describe risk. ALE is the annual loss expectancy, or how much risks will likely cost an organization per year, and SLE is the single loss expectancy, or how much a single risk will cost if it occurs. Acceptance is a risk-handling process, not a way of describing risks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q40",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 40,
+    "question": "Marco wants to conduct active reconnaissance of a target for a penetration test. Which of the following is an appropriate action based on this desire?",
+    "choices": [
+      "Looking up information in Shodan",
+      "Conducting a nmap scan",
+      "Querying local DNS for the organization",
+      "Using public records to gather information"
+    ],
+    "answer": 1,
+    "explanation": "The only active reconnaissance task listed here is the nmap scan. Looking up information in Shodan, querying local DNS, and using public records are all examples of passive information gathering that does not actively probe the organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q41",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 41,
+    "question": "Beth is a data owner in her company. Which of the following is not a typical part of the role of data owner?",
+    "choices": [
+      "They categorize data.",
+      "They are responsible for processing data.",
+      "They are responsible for protecting data.",
+      "They are responsible for data quality. Security Program Management and Oversight 183"
+    ],
+    "answer": 1,
+    "explanation": "Data owners are responsible for categorizing, overseeing the usage of, and protecting data, but are typically not directly responsible for processing it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q42",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 42,
+    "question": "NIST SP 800-63B, Digital Identity Guidelines, provides advice on passwords and password standards. Why does the guide recommend that knowledge-based authentication like \"What was your mother's maiden name?\" not be used for processes like password reset and recovery?",
+    "choices": [
+      "Users may not remember the answer.",
+      "Knowledge-based authentication information is often easily discovered through searches and social media.",
+      "Knowledge-based authentication information is not a valid factor for MFA.",
+      "Attackers can easily recover knowledge-based information from compromised authentication stores."
+    ],
+    "answer": 1,
+    "explanation": "Knowledge-based authentication information is often easily available via social media or searches. Thus, using it as part of password recovery processes is problematic for organizations. Users will typically remember answers to knowledge-based authentication questions. While knowledge-based authentication isn't typically used for multifactor, something you know is a legitimate option, and knowledge-based authentication information could be recovered from compromised organizations, but this is not a common threat model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q43",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 43,
+    "question": "The company that Leon works for has experienced a significant malware infection and has segmented their network to prevent further spread. What risk mitigation strategy have they chosen?",
+    "choices": [
+      "Avoid",
+      "Transfer",
+      "Accept",
+      "Mitigate"
+    ],
+    "answer": 3,
+    "explanation": "Mitigation works to limit the impact of a risk, such as by taking action like segmenting the network to prevent further malware spread. Avoidance seeks to prevent the risk from occurring. Risk transfer options move the costs of risks to another organization such as through insurance. Acceptance involves management acknowledging that the risk and its impacts may occur, and that the organization will move forward despite that chance.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q44",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 44,
+    "question": "Not using hints, preventing password expiration, storing passwords only in a hashed and salted form, and using minimum password length settings are all examples of what?",
+    "choices": [
+      "Password standards",
+      "Multifactor authentication",
+      "Establishing knowledge-based passwords",
+      "Biometrics"
+    ],
+    "answer": 0,
+    "explanation": "Password standards typically include elements like the NIST 800-63B recommendations, not using password hints, not expiring passwords, storing passwords in a secure way,314 Appendix Answers to Review Questions and establishing a minimum password length of at least 8 characters for user-generated passwords.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q45",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 45,
+    "question": "Anastasia works for a government entity that requires very strong risk controls and that has significant regulatory requirements it must meet. What risk appetite model should she expect her organization to adopt?",
+    "choices": [
+      "Expansionary",
+      "Conservative",
+      "Authoritarian",
+      "Legislative"
+    ],
+    "answer": 1,
+    "explanation": "Organizations that focus on reducing risk and that have significant compliance requirements are likely to adopt a conservative risk appetite. Expansionary risk appetite is rare when compliance and risk reduction are primary goals of the organization. Authoritarian and legislative are not typically used terms to describe risk appetite.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q46",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 46,
+    "question": "Jack recently joined his organization's security team. A system was identified as likely being impacted by ransomware, and Jack was given a document that described the organization's ransomware handling practices. What common security document has he been given?",
+    "choices": [
+      "The IR policy",
+      "A ransomware cookbook",
+      "A ransomware playbook",
+      "A disaster recovery handbook Security Program Management and Oversight"
+    ],
+    "answer": 2,
+    "explanation": "Detailed guides to organization practices for security events are called playbooks. In this case, Jack received the organization's ransomware playbook. A policy would include highlevel statements of intent, cookbooks are not a typical term used for documents like these, and this situation involves ransomware, not a disaster recovery scenario.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q47",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 47,
+    "question": "Connie wants to explain the consequences of noncompliance with data regulations to her organization's management. Which of the following is the most common statutory consequence of noncompliance with regulations?",
+    "choices": [
+      "Data breaches",
+      "Reputational damage",
+      "Contractual impacts",
+      "Fines"
+    ],
+    "answer": 3,
+    "explanation": "Regulations most commonly have fines and sanctions as their primary punishments levied against noncompliant organizations. Data breaches and reputational damage may occur, but are they are not enforced by regulation. Contractual impacts may occur, but again are not directly enforced by regulations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q48",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 48,
+    "question": "Hank wants to create a playbook for his incident response process. What will he create?",
+    "choices": [
+      "A detailed process for incident response",
+      "A legal document describing incident response",
+      "A high-level statement of purpose for incident response",
+      "A document describing the general incident response (IR) process"
+    ],
+    "answer": 0,
+    "explanation": "Playbooks are detailed documents describing how to respond to a type of incident or event. An example is the CISA's Cybersecurity Incident and Vulnerability Response playbook, which includes steps like identifying anomalous activity, identifying root cause, and analyzing for common adversary TTPs (www.cisa.gov/sites/default/files/publications/ Federal_Government_Cybersecurity_Incident_and_Vulnerability_ Response_Playbooks_508C.pdf). They are not legal documents, are detailed instead of high-level like a policy, and are more detailed than a general IR process document.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q49",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 49,
+    "question": "What type of agreement is used by organizations that want to protect their proprietary data while working with third parties or individuals who will have access to the data?",
+    "choices": [
+      "SLAs",
+      "NDAs",
+      "MSAs",
+      "BPAs"
+    ],
+    "answer": 1,
+    "explanation": "Nondisclosure agreements (NDAs) are used to protect sensitive data. Service level agreements (SLAs) determine service levels and penalties if they are not met. Master service agreements (MSAs) are foundational documents determining how organizations will work together as a foundation for specific work covered in SOWs (statements of work). BPAs (business partners agreements) are used when two organizations want to do business as a partnership.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q50",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 50,
+    "question": "Oliver has joined an organization and has completed employee orientation, has received his username and password, and has reviewed the new employee security training. What process has he participated in?",
+    "choices": [
+      "Identity proofing",
+      "Mandatory access control",
+      "Onboarding",
+      "Biometric enrollment"
+    ],
+    "answer": 2,
+    "explanation": "Onboarding processes commonly include things like new employee orientation, creation of user accounts and provisioning of rights for the employee's account, and ensuring the employee has completed security training. Identity proofing may be part of that process, but was not mentioned here. Mandatory access control is an access control model, and biometric enrollment involves capturing information about an individual's biometric markers or profile.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q51",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 51,
+    "question": "What GDPR provision allows individuals to ask organization to delete their personal data?",
+    "choices": [
+      "The right to be forgotten",
+      "The right to deletion",
+      "The right to privacy",
+      "The right to ownership"
+    ],
+    "answer": 0,
+    "explanation": "The GDPR provides the right to be forgotten, which allows individuals to request that their data be deleted. The rights to deletion, privacy, and ownership were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q52",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 52,
+    "question": "Damian has provided a comprehensive risk register to his management, including a risk of employees violating policy by taking pictures of sensitive information displayed on their screens using their cell phones. Damian's recommendation was to ban employees from carrying personal cell phones inside the office, but management has overruled that recommendation and will allow phones. What risk management strategy has his organization's leadership chosen?",
+    "choices": [
+      "Transfer",
+      "Accept",
+      "Avoid",
+      "Mitigate Security Program Management and Oversight 185"
+    ],
+    "answer": 1,
+    "explanation": "Acceptance involves management acknowledging that the risk and its impacts may occur, and that the organization will move forward despite that chance. Risk transfer options move the costs of risks to another organization such as through insurance. Avoidance seeks to prevent the risk from occurring. Mitigation works to limit the impact of a risk, such as by taking action to prevent further malware spread. Security Program Management and Oversight 315",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q53",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 53,
+    "question": "Which of the following is not a typical part of an offboarding process?",
+    "choices": [
+      "Returning company equipment",
+      "Copying files to a USB drive for the departing employee",
+      "Disabling or removing accounts",
+      "Changing passwords on shared accounts"
+    ],
+    "answer": 1,
+    "explanation": "Sending organizational data with a departing employee is not a common practice. In fact, organizations often ask employees to certify that they have returned all organizational devices and data. Returning company equipment, disabling the departing employee's accounts or removing them, and changing any passwords on shared accounts are all common offboarding practices.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q54",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 54,
+    "question": "Daryl wants to ensure that his organization balances risks and its goals. What risk appetite model should he suggest the organization adopts?",
+    "choices": [
+      "Conservative",
+      "Expansionary",
+      "Reactionary",
+      "Neutral"
+    ],
+    "answer": 3,
+    "explanation": "Neutral risk appetites balance organizational goals against risk. Conservative risk appetites seek to reduce risks over addressing other goals, and expansionary risk appetites will accept risk to achieve goals. Reactionary is not a typical description of risk appetite.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q55",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 55,
+    "question": "Charlene is preparing to conduct a penetration test and has been provided with access to all of her organization's information about the systems, services, and configurations involved. What type of penetration test is she conducting?",
+    "choices": [
+      "A partially known environment test",
+      "An unknown environment test",
+      "A known environment test",
+      "A third-party test"
+    ],
+    "answer": 2,
+    "explanation": "Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Partially known environment tests provide some, but not all information about the environment for testers. Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Third-party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q56",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 56,
+    "question": "The company that Omar works for wants to co-develop a mobile application with a thirdparty company. What type of agreement should they both sign as part of this?",
+    "choices": [
+      "An SLA",
+      "An NDA",
+      "An MSA",
+      "A BPA"
+    ],
+    "answer": 3,
+    "explanation": "BPAs, or business partners agreements, are used when two organizations want to do business as a partnership. SLAs, or service level agreements, determine service levels and penalties if they are not met. Nondisclosure agreements, or NDAs, are used to protect sensitive data. Master service agreements, or MSAs, are foundational documents determining how organizations will work together as a foundation for specific work covered in SOWs, or statements of work.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q57",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 57,
+    "question": "Alex wants to hire a penetration tester who will simulate an attacker's potential attacks against his environment. What type of test best fits this model?",
+    "choices": [
+      "A partially known environment test",
+      "An unknown environment test",
+      "A known environment test",
+      "A third-party test"
+    ],
+    "answer": 1,
+    "explanation": "Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Partially known environment tests provide some, but not all information about the environment for testers. Third-party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q58",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 58,
+    "question": "What term describes the possibility of a risk occurring?",
+    "choices": [
+      "Impact",
+      "Likelihood",
+      "Potential",
+      "Rate of occurrence Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Likelihood describes the possibility of a risk occurring. Impact describes what will happen if it does, potential is not a term used in this space, and rate of occurrence is how often a risk occurs on an annual basis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q59",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 59,
+    "question": "Killian's organization wants to perform a penetration test that will provide the maximum amount of information about his organization and that will optimize penetration testers' time. What type of test should he have conducted?",
+    "choices": [
+      "A partially known environment test",
+      "An unknown environment test",
+      "A known environment test",
+      "A third-party test"
+    ],
+    "answer": 2,
+    "explanation": "Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. This means that the testing will be more efficient and will provide more information in most cases. Partially known environment tests provide some, but not all information about the environment for testers. Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Third-party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q60",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 60,
+    "question": "Justin's organization has recently undergone a third-party audit that determined that their data-handling processes don't comply with the GDPR. Changes to become compliant will take almost a year due to existing systems and software. What risk management strategy is Justin's organization choosing if they continue to operate knowing they are noncompliant?",
+    "choices": [
+      "Transfer",
+      "Exception",
+      "Avoidance",
+      "Mitigate"
+    ],
+    "answer": 1,
+    "explanation": "Risk exception recognizes risk areas where an organization may not be in compliance with policies or regulations, and may be acknowledged because they cannot be addressed in a timely manner or are required for the organization to conduct business. Risk transfer options move the costs of risks to another organization such as through insurance. Risk avoidance316 Appendix Answers to Review Questions involves preventing the risk from occurring. Mitigation works to limit the impact of a risk, such as by taking action to prevent further malware spread.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q61",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 61,
+    "question": "Risk assessments required for regulatory compliance are most frequently conducted in which of the following modes?",
+    "choices": [
+      "As ad hoc risk assessments",
+      "As one-time risk assessments",
+      "As recurring risk assessments",
+      "As continuous risk assessments"
+    ],
+    "answer": 2,
+    "explanation": "Regulatory compliance typically requires risk assessment on a regular basis, often once a year. Ad hoc, one-time, and continuous risk assessments are used for other purposes to serve the organization but are not as common for regulatory compliance.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q62",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 62,
+    "question": "Jack's organization has engaged penetration testers for their annual penetration test. As part of the contract, the testers are provided with a list of target systems, operating systems, and software that they will be testing. What type of penetration test is Jack's organization conducting?",
+    "choices": [
+      "A partially known environment test",
+      "An unknown environment test",
+      "A known environment test",
+      "A third-party test"
+    ],
+    "answer": 0,
+    "explanation": "Partially known environment tests provide some, but not all information about the environment for testers. In this case, knowledge of the systems, IPs, and services is an example of partial knowledge. Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves. Third-party tests are conducted by external groups or individuals and may be known, unknown, or partial knowledge tests.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q63",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 63,
+    "question": "The company that Jim works for is willing to accept significant risk in order to expand. How should Jim describe the organization's risk appetite?",
+    "choices": [
+      "Conservative",
+      "Expansionary",
+      "Limited",
+      "Neutral Security Program Management and Oversight 187"
+    ],
+    "answer": 1,
+    "explanation": "An organization willing to accept significant risk has adopted an expansionary risk appetite. Neutral risk appetites balance risk and other factors, conservative appetites seek to limit risk rather than prioritize other goals or objectives, and limited is not a term used on the Security+ exam objectives in this area.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q64",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 64,
+    "question": "As part of the early stages of a penetration test, Hui has researched her target organization's domain names and IP addresses, and has conducted a port scan. What type of activity is Hui engaging in?",
+    "choices": [
+      "Reconnaissance",
+      "An unknown environment test",
+      "A known environment test",
+      "OSINT gathering"
+    ],
+    "answer": 0,
+    "explanation": "Information gathering and scanning together are common elements of reconnaissance. Since this involves both scanning and OSINT gathering, this is reconnaissance instead of passive information gathering via OSINT. Known environment tests provide full information to testers, allowing them to use information about the environment without having to discover it. Unknown environment tests simulate what an attacker would encounter and do not provide information; instead, the testers have to discover it themselves.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q65",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 65,
+    "question": "What role does a person who has exercised the GDPR's right to be forgotten hold?",
+    "choices": [
+      "Data subject",
+      "Data controller",
+      "Data processor",
+      "Data owner"
+    ],
+    "answer": 0,
+    "explanation": "Individuals who use the GDPR's right to be forgotten are data subjects, a person who can be identified by their personally identifiable information. Data controllers determine how data will be used, and processors do the actual data processing. Data owners are responsible for protection, usage, and quality of datasets.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q66",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 66,
+    "question": "How is exposure factor (EF) expressed for risk calculations?",
+    "choices": [
+      "As a calculation of the ALE multiplied by the ARO",
+      "As the likelihood of loss",
+      "As a potential percentage of loss",
+      "As a calculation of the SLE multiplied by the ARO"
+    ],
+    "answer": 2,
+    "explanation": "Exposure factors are the percentage of value of an asset that would be lost due to an incident. ALE is the annual loss expectancy, and the ARO is the annual rate of occurrence. SLE is the single loss expectancy. Calculating these gives the cost of an incident, but EF is the impact of the risk and is not calculated using these, nor does it involve the likelihood of the risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q67",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 67,
+    "question": "As part of his penetration testing process Nick intends to follow an employee of his target company into a secured area. What type of penetration testing is Nick engaged in?",
+    "choices": [
+      "Defensive",
+      "Offensive",
+      "Physical",
+      "Integrated"
+    ],
+    "answer": 2,
+    "explanation": "Physical security testing involves testing an organization's physical security defenses and practices, including guards, locks and doors, and other physical security components. Offensive penetration testing involves acting like attackers, while defensive penetration testing seeks to learn as defenders. Integrated penetration testing combines both.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q68",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 68,
+    "question": "Valerie's organization wants to ensure that their access control vestibule, ID card system, and guards are effective in stopping unwanted entrance. What type of penetration test should she use to validate this?",
+    "choices": [
+      "Physical",
+      "Offensive",
+      "Defensive",
+      "Integrated"
+    ],
+    "answer": 3,
+    "explanation": "Integrated penetration testing combines both offensive and defensive penetration testing, and testing guards as well as attempting to make it through access controls is an example of an integrated test. Physical security testing involves testing an organization's physical security defenses and practices, including guards, locks and doors, and other physical security components like access control vestibules. Offensive penetration testing involves acting like attackers, while defensive penetration testing seeks to learn as defenders. Security Program Management and Oversight 317",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q69",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 69,
+    "question": "Jason's organization has engaged a penetration testing firm that specializes in using techniques commonly employed by nation-state actors, including using social engineering techniques, advanced tools, and methods that will provide significant footholds within his infrastructure. What type of penetration test best describes this?",
+    "choices": [
+      "Physical",
+      "Offensive",
+      "Defensive",
+      "Integrated Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Offensive penetration testing involves acting like attackers, including nation-state actors with advanced capabilities like those described in this question. Physical security testing involves testing an organization's physical security defenses and practices, including guards, locks and doors, and other physical security components like access control vestibules. Defensive penetration testing seeks to learn as defenders. Integrated penetration testing combines both.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q70",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 70,
+    "question": "Joshua's organization is required to comply with the EU's GDPR. As part of their annual assessments, they conduct a GDPR compliance review and receive a report from their auditors. What type of assessment is this?",
+    "choices": [
+      "A penetration test",
+      "A regulatory assessment",
+      "An internal audit",
+      "An attestation-based assessment"
+    ],
+    "answer": 1,
+    "explanation": "The GDPR is a regulation, making this a regulatory assessment or audit. There is no penetration testing mentioned, the auditors are not described as internal or external, and no attestation is mentioned.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q71",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 71,
+    "question": "Alexandria wants to mitigate the risk of ransomware during its initial infection stages. Which of the following strategies should she employ?",
+    "choices": [
+      "Deploy an EDR tool.",
+      "Purchase cybersecurity insurance.",
+      "Use secure, ransomware-resistant backups.",
+      "Continue to operate as usual."
+    ],
+    "answer": 0,
+    "explanation": "Secure, ransomware resistant backups can mitigate the impact of ransomware but cannot stop it from impacting systems like an endpoint detection and response (EDR) tool can. Since Alexandria's focus is on immediate mitigation, her best answer is EDR. Cybersecurity insurance is a means of transferring risk, and simply operating as usual is an acceptance strategy.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q72",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 72,
+    "question": "Shane's organization has determined that they can accept up to $10,000,000 a year in riskrelated loss in support of their strategic plans. What term best describes this?",
+    "choices": [
+      "Risk acceptance",
+      "Risk appetite",
+      "Ad hoc risk",
+      "A conservative risk tolerance"
+    ],
+    "answer": 1,
+    "explanation": "Shane's organization has determined their risk appetite. They are willing to accept some risk, but may also choose to mitigate, transfer, or otherwise deal with their risk to match their appetite. Ad hoc describes risk assessment, not risk appetite or thresholds, and there is no way to determine if this is a conservative, neutral, or expansionary risk appetite.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q73",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 73,
+    "question": "Eric manages his organization's internal security team and wants to leverage a penetration test as part of his team's testing that allows them to respond to simulated attacks. What type of model best describes this?",
+    "choices": [
+      "Physical",
+      "Offensive",
+      "Defensive",
+      "Integrated"
+    ],
+    "answer": 2,
+    "explanation": "Defensive penetration testing seeks to allow the organization to learn as defenders. Offensive penetration testing involves acting like attackers, including nation-state actors with advanced capabilities like those described in this question. Physical security testing involves testing an organization's physical security defenses and practices, including guards, locks and doors, and other physical security components like access control vestibules. Integrated penetration testing combines both.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q74",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 74,
+    "question": "Henry's organization leverages penetration testing as part of its ongoing security practices, using attacker techniques as well as blue teaming to improve security constantly. What type of penetration testing methodology is Henry's organization using?",
+    "choices": [
+      "Physical",
+      "Offensive",
+      "Defensive",
+      "Integrated"
+    ],
+    "answer": 3,
+    "explanation": "Integrated penetration testing combines both offensive and defensive techniques and is often woven into an organization's practices on an ongoing basis. Offensive penetration testing involves acting like attackers, including nation-state actors with advanced capabilities like those described in this question. Defensive penetration testing seeks to allow the organization to learn as defenders. Physical security testing involves testing an organization's physical security defenses and practices, including guards, locks and doors, and other physical security components like access control vestibules.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q75",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 75,
+    "question": "Jackie is an auditor and has completed an SOC 2, Type 2 audit. Her firm then provides a statement about the organization's audit results and posture. What is this process known as?",
+    "choices": [
+      "Penetration testing",
+      "Audit sign-off",
+      "Regulatory defense",
+      "Attestation Security Program Management and Oversight 189"
+    ],
+    "answer": 3,
+    "explanation": "Auditors provide a statement about an organization's posture as part of an attestation process. This provides assurance that the auditors have reviewed the organization's practices and have found them suitable or that deficiencies have been identified. Penetration testing is the process of testing the security of an organization and is not an audit. Audit sign-off occurs when management signs an audit to acknowledge their awareness of its results. Regulatory defense was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q76",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 76,
+    "question": "Joe is an auditor who is on the staff of an organization that employs him to audit their own practices. What type of audit does Joe perform?",
+    "choices": [
+      "Internal",
+      "Regulatory",
+      "External",
+      "Compliance"
+    ],
+    "answer": 0,
+    "explanation": "Without more information about the specific audits that Joe conducts, all we know is that he is an internal auditor. As an employee of the company that he is working for, he is considered an internal auditor. External audits are conducted by third parties. Regulatory audits assess compliance with laws, whereas compliance audits may look at laws or other compliance targets.318 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q77",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 77,
+    "question": "Irene's organization needs to follow PCI DSS standards. If she engages a third party to assess this, what type of audit is she having performed?",
+    "choices": [
+      "An internal regulatory audit",
+      "An external regulatory audit",
+      "An internal compliance audit",
+      "An external compliance audit"
+    ],
+    "answer": 3,
+    "explanation": "The Payment Card Industry Data Security Standard (PCI DSS) is an industry standard, not a law, so this is a compliance audit, not a regulatory audit. Third-party auditors make it an external rather than an internal audit.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q78",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 78,
+    "question": "Anton's organization processes credit cards but is a small organization. As part of their annual requirements related to PCI DSS, Anton fills out a form about their PCI DSS compliance and submits it to their acquiring bank. What type of assessment has his organization conducted?",
+    "choices": [
+      "An internal regulatory audit",
+      "A self-assessment",
+      "An independent, third-party audit",
+      "An external compliance audit"
+    ],
+    "answer": 1,
+    "explanation": "Filling out forms attesting to your own organization's compliance status is an example of a self-assessment. This is not an audit activity, PCI DSS is not a regulation, and no third parties were involved to make it external or independent and third party.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q79",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 79,
+    "question": "What organization typically includes an audit committee for a company?",
+    "choices": [
+      "The security office",
+      "The shareholders",
+      "The board of directors",
+      "The third-party assessors"
+    ],
+    "answer": 2,
+    "explanation": "Audit committees are typically part of the organization's board of directors, and they oversee financial reporting-related activities. Audit committees are required for US-traded companies that are listed on stock exchanges. Shareholders, third-party assessors, and the security office are not typical places to find an audit committee.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q80",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 80,
+    "question": "What type of risk assessment process is most commonly associated with a CI/CD pipeline model?",
+    "choices": [
+      "Ad hoc risk assessments",
+      "One-time risk assessments",
+      "Third-party risk assessments",
+      "Continuous risk assessments"
+    ],
+    "answer": 3,
+    "explanation": "Continuous integration/continuous delivery (CI/CD) pipelines deploy software on an ongoing basis, making them a good fit for continuous risk assessment techniques. Ad hoc, one-time, and third-party assessments are not suited to the ongoing, rapid assessment pace needed for a CI/CD model.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q81",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 81,
+    "question": "Cristobal wants to ensure that a vendor his company is considering hiring has conducted an SOC 2, Type 2 audit that is reliable and that will reveal any critical issues. What should he ensure was done?",
+    "choices": [
+      "An internal audit with attestation by the CEO",
+      "An independent, third-party audit",
+      "A self-assessment",
+      "A third-party penetration test with attestation Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "External audits like a SOC 2, Type 2 audit should be conducted by an independent third party to be considered valid. An internal audit, no matter who signs off on it, is not used for this purpose, nor are self-assessments. Penetration tests do not generate an SOC 2 audit report.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q82",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 82,
+    "question": "Kim's organization has assessed the risk of floods that may impact their datacenter and has determined that the likely rate of occurrence and its cost if it does occur are not acceptable. Given this, the organization has opted to move their datacenter in the next year. What has occurred?",
+    "choices": [
+      "The risk dropped below their risk threshold.",
+      "The risk assessment failed.",
+      "A control failure occurred.",
+      "The risk passed their risk threshold."
+    ],
+    "answer": 3,
+    "explanation": "An organization's risk threshold is the level where they will switch from accepting a risk to seeking to handle the risk. In this case, the risk has surpassed the organization's risk threshold, resulting in a plan to avoid the risk. The risk did not drop below the threshold, the risk assessment was successful in helping the organization identify a concern, and no controls failed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q83",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 83,
+    "question": "Vanessa's organization is a US-based health-care organization that is required to be compliant with HIPAA. What type of external assessment should they conduct?",
+    "choices": [
+      "Regulatory",
+      "Offensive",
+      "Known environment",
+      "Physical"
+    ],
+    "answer": 0,
+    "explanation": "The Health Insurance Portability and Accountability Act (HIPAA) is a regulation, and organizations that must comply with laws need to conduct regulatory assessments. Offensive testing is a penetration testing model that mirrors actual attackers. Known environment testing leverages full knowledge of an organization as part of a penetration test. Physical testing validates physical security controls.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q84",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 84,
+    "question": "Jaime wants to establish her organization's change management policy. What should the policy include?",
+    "choices": [
+      "High-level descriptions of how the organization will review, approve, and implement proposed changes",
+      "A detailed process for review and approval of changes",
+      "Descriptions of how a change request should be created, formatted, reviewed, and approved",
+      "An outline of the regulatory requirements for changes"
+    ],
+    "answer": 0,
+    "explanation": "Policies are high-level descriptions of an organization's intent and understanding of their topic. Procedures will have descriptions of how a change is made in detailed form, while standards will describe how changes are created, made, and approved. Regulatory requirements are most likely to be part of standards or procedures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q85",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 85,
+    "question": "Marek's organization has a system that needs to receive a deviation from a defined security process. What best practice should he follow to ensure that this is done correctly?",
+    "choices": [
+      "He should conduct a risk assessment and document the results.",
+      "He should remove the system from the network segment to protect it.",
+      "He should ensure the deviation is approved through change management processes.",
+      "All of the above."
+    ],
+    "answer": 2,
+    "explanation": "Marek should follow his organization's change management process to document the change required and to ensure that it is regularly reviewed. This may not require a risk assessment since it may be a simple requirement or may have already been assessed. The type of security variance needed is not described, so it is not clear if removing the system from the network is necessary.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q86",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 86,
+    "question": "What is the key difference between a business continuity plan and a business continuity policy?",
+    "choices": [
+      "The plan describes how an organization will respond, whereas the policy outlines the high-level intent of the organization's business continuity efforts.",
+      "The plan includes detailed steps for each part of the response, including how to restore systems and investigate issues, whereas the policy outlines the high-level intent of the organization's business continuity efforts.",
+      "The plan describes the high-level intent of the organization's business continuity efforts, whereas the incident response policy describes how the organization will respond.",
+      "They are the same; the terms are interchangeable. Security Program Management and Oversight 191"
+    ],
+    "answer": 0,
+    "explanation": "Business continuity plans address how the organization will respond, including referencing runbooks that may detail how to handle restoration or other efforts on a step-bystep basis, but doesn't itself include that level of detail. Business continuity policies describe the organization's intent at a high level and are likely to reference the business continuity plan. They are not the same, as the policy is a higher-level document than the plan is. Security Program Management and Oversight 319",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q87",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 87,
+    "question": "Christina has prepared a document that includes high-level statements about how her organization will handle major incidents and what its overall stance on incidents is. What has she created?",
+    "choices": [
+      "An incident response process",
+      "A runbook",
+      "An incident response policy",
+      "An incident response standard"
+    ],
+    "answer": 2,
+    "explanation": "Policies are distinct from procedures and standards because they include high-level statements of intent rather than specific practices. Procedures document the practices an organization will use, whereas standards set expectations or specific configurations or details about how something is done or set up.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q88",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 88,
+    "question": "Terry wants to have all of his account data removed from organizations he has interacted with. What GDPR right can he leverage if he is an EU citizen?",
+    "choices": [
+      "Data stewardship",
+      "Personal data ownership",
+      "The right to be forgotten",
+      "His HIPAA rights"
+    ],
+    "answer": 2,
+    "explanation": "The EU's GDPR provides the right to be forgotten, which allows Terry to request that organizations remove all of his data from their systems. HIPAA is a US regulation; data stewardship is an organizational role, not a right; and personal data ownership is not a right.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q89",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 89,
+    "question": "Probability and impact are used to rate what key security item?",
+    "choices": [
+      "Cost",
+      "Risk",
+      "Vulnerability",
+      "Audit findings"
+    ],
+    "answer": 1,
+    "explanation": "Risk exposure is calculated by multiplying probability and impact. Cost is measured in currency, time, or other cost metrics; vulnerability is often measured using CVSS scores; and audit findings may have criticality ratings.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q90",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 90,
+    "question": "Gary wants to determine the probability of a risk occurring. What should he base his assessment on if he is performing a qualitative risk assessment?",
+    "choices": [
+      "A calculated rate of occurrence using industry statistical data",
+      "A rating from an experienced team of staff",
+      "The number of times it has happened to their competitors in a year",
+      "Actuarial tables provided by his insurance broker"
+    ],
+    "answer": 1,
+    "explanation": "Qualitative risk assessment relies on expertise and staff members who have relevant knowledge to provide a rating based on their experience, skills, and knowledge. A common rating for probability in a qualitative risk assessment might be low, medium, or high, rather than a 0-100 rating based on statistics or large datasets.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q91",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 91,
+    "question": "Which of the following is not a common element for a penetration test's rules of engagement?",
+    "choices": [
+      "Handling of sensitive and pentest-related data",
+      "A list of passwords",
+      "A list of in-scope IPs or domains",
+      "A list of emergency contacts"
+    ],
+    "answer": 1,
+    "explanation": "Rules of engagement determine how a penetration tester will conduct an engagement. Passwords may be part of the information provided before the test for a full knowledge or partial knowledge test but are not part of the rules of engagement.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q92",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 92,
+    "question": "Maeve is preparing to sign a penetration testing contract with a third-party security service provider. The security service provider provides a questionnaire that asks the scope of systems that can and cannot be tested, the schedule and times that penetration testing can and cannot occur, and what to do if a preexisting compromise is discovered. What document is the third-party service provider assembling?",
+    "choices": [
+      "A right-to-audit clause",
+      "A service-level agreement",
+      "A memorandum of understanding",
+      "Rules of engagement Security Program Management and Oversight"
+    ],
+    "answer": 3,
+    "explanation": "Rules of engagement are created for penetration testing efforts that include a wide variety of information, including scope, schedules, what to do if a preexisting compromise is discovered, requirements for how to handle third-party-hosted tools and environments, how sensitive data and data related to the penetration test will be handled, and who to contact in emergencies. A right-to-audit clause is included in contracts, allowing audits to occur as part of the contract. SLAs are used to set service levels and penalties if they are not met, and MOUs document organizations' interest and willingness to work together.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q93",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 93,
+    "question": "Alaina wants to describe the level of impact and probability where her organization will either accept or attempt to mitigate or otherwise handle a risk at. What term describes this?",
+    "choices": [
+      "Risk threshold",
+      "Ad hoc risk level",
+      "Third-party risk level",
+      "Risk appetite"
+    ],
+    "answer": 0,
+    "explanation": "An organization's risk threshold is the level where they will switch from accepting a risk to seeking to handle the risk. Their risk appetite is the amount of risk an organization is willing to accept to achieve its goals. Ad hoc risk level and third-party risk level were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q94",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 94,
+    "question": "Alaina has been asked to create an AUP for her organization. Which of the following should she include?",
+    "choices": [
+      "An access and usage policy that lists times and roles allowed to access specific resources",
+      "A document that describes how the organization intends to approach change and related functions",
+      "An antivirus (AV) update policy that describes when and how AV updates are deployed",
+      "A description of acceptable use by organizational users"
+    ],
+    "answer": 3,
+    "explanation": "AUPs, or acceptable use policies, describe how organizational resources, systems, and services can and should be used.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q95",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 95,
+    "question": "Kyle's organization is a very well-known, multinational organization. A recent data breach has exposed data for millions of customers, including all of their account information. As part of the breach, Kyle's company was discovered to have not followed common security practices, and in fact was operating in intentionally careless ways. Which of the following consequences should he highlight as most critical to the organization's ongoing operations when he considers their customer base?",
+    "choices": [
+      "Fines",
+      "Due diligence",
+      "Reputational damage",
+      "Contractual impacts"
+    ],
+    "answer": 2,
+    "explanation": "Large breaches, particularly when the organization has been negligent, can have large impacts on the organization's reputation, resulting in long-term damage. Fines and contractual impacts may be impactful but are often resolved relatively quickly. Due diligence was not shown but is not an impact-rather, it is part of an organization's responsibilities.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q96",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 96,
+    "question": "What type of agreement do organizations create after signing an MSA that describes the specific tasks or deliverables that will be created or performed?",
+    "choices": [
+      "A MOU",
+      "A SOW",
+      "A punch list",
+      "A BPA"
+    ],
+    "answer": 1,
+    "explanation": "A statement of work (SOW) or work order (WO) is created to list the tasks and deliverables that will be performed under the blanket master services agreement (MSA). An MOU, or memorandum of understanding, declares how two organizations want to work together; a business partners agreement (BPA) establishes a partnership between two organizations; and punch lists are not covered under the Security+ exam outline but are a list of tasks that must be accomplished for a contractor to be paid.320 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q97",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 97,
+    "question": "Jack's organization recently received a shipment of SSDs and has begun to deploy them. What information would best help Jack assess the useful life of the devices?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF Security Program Management and Oversight 193"
+    ],
+    "answer": 3,
+    "explanation": "Jack should use the manufacturer's published mean time between failures (MTBF), which is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures. While organizations typically replace devices well before their MTBF ratings, knowing how long the devices should last on average can be useful in long-lived applications and for budgetary planning. A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. Mean time to repair, or MTTR, is the average time it takes to repair a system or device. A recovery point objective, or RPO, describes how much data can be lost in the event of an outage or issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q98",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 98,
+    "question": "The hard drives that Jason's organization recently purchased have an MTBF of 300,000 hours. When can Jason expect the first drive to fail?",
+    "choices": [
+      "At 150,000 hours",
+      "At 300,000 hours",
+      "At 450,000 hours",
+      "None of the above"
+    ],
+    "answer": 3,
+    "explanation": "Mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures, but it is merely an average. Jason should expect that drives will fail, and that their average service life will be 300,000 hours. That means that half of the drives are likely to fail before 300,000 hours, and half will fail after that number.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q99",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 99,
+    "question": "Melissa's organization wants to establish a metric that defines how much data could be lost if an issue occurs. What should they set?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF"
+    ],
+    "answer": 2,
+    "explanation": "A recovery point objective, or RPO, describes how much data can be lost in the event of an outage or issue. A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. Mean time to repair, or MTTR, is the average time it takes to repair a system or device. The mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q100",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 100,
+    "question": "What common terms are used to categorize anomalous behavior?",
+    "choices": [
+      "Risky, unexpected, and unintentional",
+      "Recurring, occasional, and unique",
+      "Unintentional, insider, and accidental",
+      "Active, passive, and integrated"
+    ],
+    "answer": 0,
+    "explanation": "The Security+ exam objectives list three categorizations you need to be familiar with for anomalous behavior: risky, unexpected, and unintentional. The other terms listed are not ways that the exam categorizes anomalous behavior.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q101",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 101,
+    "question": "Greg is reviewing a server and notices that it is both running outdated software and that the organization heavily relies on the services that it provides. He pulls together a team to determine what the risk of operating the server is and what issues would occur if it were removed from service that day. What type of assessment has he conducted?",
+    "choices": [
+      "An ad hoc risk assessment",
+      "A one-time risk assessment",
+      "A third-party risk assessment",
+      "A continuous risk assessment"
+    ],
+    "answer": 0,
+    "explanation": "Greg has conducted an ad hoc assessment by quickly pulling together a team without a formal process or procedure. Instead, he is seeking to quickly assess risk and take action. A one-time assessment typically follows an established methodology but is only conducted once. Third-party risk assessment uses external teams or staff, and continuous risk assessment is done on an ongoing basis.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q102",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 102,
+    "question": "Olivia's organization operates servers in a datacenter that support customers across the country. As Olivia is determining her service level agreements, what information is most important in determining how quickly a server can be restored to operation if its motherboard fails?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF"
+    ],
+    "answer": 1,
+    "explanation": "Mean time to repair, or MTTR, is the average time it takes to repair a system or device, and Olivia needs to know that to determine what she can promise in her service level agreements that rely on server repair timelines. A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take; it doesn't determine how fast the server can be fixed but sets a goal that needs to take things like repair and recovery time into account as it is determined. A recovery point objective, or RPO, describes how much data can be lost in the event of an outage or issue, and the mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q103",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 103,
+    "question": "Irina's organization wants to work with one of their vendors and wishes to establish an ongoing relationship with them. What type of agreement should they create between the Security Program Management and Oversight organizations so that they can create SOWs as they determine what services they need from their service provider's organization?",
+    "choices": [
+      "An MOU",
+      "An SLA",
+      "An MSA",
+      "A BPA"
+    ],
+    "answer": 2,
+    "explanation": "The underlying agreement between two organizations that determines how the organizations will work together is a master services agreement (MSA). A MOU, or memorandum of understanding, declares how two organizations want to work together; a business partners agreement (BPA) establishes a partnership between two organizations; SLAs (service level agreements) set service level expectations and penalties if they are not met; and a business partners agreement (BPA) establishes two organizations as partners rather than establishing a working relationship for services as set forth in SOWs. Security Program Management and Oversight 321",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q104",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 104,
+    "question": "Dani's organization relies on journaling to help protect transactions that occur through its database. Which of the following does journaling impact the most?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF"
+    ],
+    "answer": 2,
+    "explanation": "A recovery point objective, or RPO, describes how much data can be lost in the event of an outage or issue, and journaling allows recovery of database transactions by replaying them against the database once it is restored. Journaling may slow down recovery time objectives as the actions are replayed. A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. Mean time to repair, or MTTR, is the average time it takes to repair a system or device. The mean time between failures (MTBF) is a measure of the reliability of a system. It is the expected amount of time that will elapse between system failures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q105",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 105,
+    "question": "Henry's organization has set their RTO to 12 hours. What does this mean?",
+    "choices": [
+      "Outages must be less than 6 hours long.",
+      "Recovery from outages should take less than 12 hours.",
+      "Outages longer than 12 hours will require fail over to a warm site.",
+      "SLAs for third-party services should specify a 12 hour MTBF."
+    ],
+    "answer": 1,
+    "explanation": "A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. A 12-hour RTO means that recovery from outages should take less than 12 hours. Failing over to a warm site will typically take a while, meaning that starting to fail over after 12 hours will miss the RTO, and MTBF is the mean time between failures, not a recovery timeframe. Failing every 12 hours on average would be unacceptable for almost any technical service or system!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q106",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 106,
+    "question": "Valerie knows that her organization's datacenter power infrastructure has an MTTR of 24 hours. What should she do if there is a critical component failure in her power infrastructure, and the organization has a warm site with an activation of 12 hours and needs to be back online as soon as possible?",
+    "choices": [
+      "Wait to see if the recovery can be done in less than 24 hours.",
+      "Immediately begin a move to the warm site.",
+      "Wait to see if the recovery can be done in less than12 hours.",
+      "Wait for 12 hours, then begin the move to the warm site."
+    ],
+    "answer": 1,
+    "explanation": "Valerie should immediately begin a move to the warm site. She knows that moving to her warm site takes half the average time to repair for her datacenter's power infrastructure. That means that in most cases, moving will result in at least a 12-hour shorter outage. If the time to repair proves to be shorter than 12 hours, she can simply stop the move. Waiting does not restore her to operation sooner than 24 hours in the average case, and waiting to make the decision reduces the amount of advantage she gets from moving to the warm site.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q107",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 107,
+    "question": "Peter's risk assessment process includes calculations of single loss expectancy, the annualized rate of occurrence of risks, and the annualized loss expectancy. What type of risk assessment is Peter conducting?",
+    "choices": [
+      "Quantitative",
+      "Calculated",
+      "Qualitative",
+      "Registered"
+    ],
+    "answer": 0,
+    "explanation": "Quantitative risk assessments assign numeric values and calculations to determine relative risk. Qualitative risk assessment uses knowledge and expertise to assess risk. Calculated risk is not a term that is commonly used to describe assessment processes like these, and risk registers list risks that an organization has identified but that don't necessarily involve calculations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q108",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 108,
+    "question": "What organizational document is used to enumerate and rate an organization's risks?",
+    "choices": [
+      "A risk appetite plan",
+      "A risk register",
+      "A quantitative register",
+      "A qualitative assessment report Security Program Management and Oversight 195"
+    ],
+    "answer": 1,
+    "explanation": "Risk registers list organizations risks and their ratings, along with additional information that the organization uses to track or describe risks. Risk appetite plans, quantitative registers, and qualitative assessment reports were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q109",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 109,
+    "question": "Amanda's organization wants to conduct a risk assessment and needs to prioritize a timely completion of the process over rigorous detail. What type of assessment should she advise her organization to select?",
+    "choices": [
+      "Internal",
+      "External",
+      "Qualitative",
+      "Quantitative"
+    ],
+    "answer": 2,
+    "explanation": "Qualitative risk assessment uses knowledge and expertise to assess risk and are thus typically faster and more likely to be completed than a quantitative risk assessment. Quantitative risk assessments assign numeric values and calculations to determine relative risk. Choosing internal or external risk assessments is not a primary driver of speed compared to choosing quantitative over qualitative risk assessments.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q110",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 110,
+    "question": "Chuck wants to conduct a quantitative risk assessment. Which of the following will he need to be able to determine the single loss expectancy for a server?",
+    "choices": [
+      "Its purchase date",
+      "Which department manages the server",
+      "The operating system the server uses",
+      "The cost of the server"
+    ],
+    "answer": 3,
+    "explanation": "SLE, or single loss expectancy, uses the asset value (AV) and exposure factor (EF) to determine the SLE. Purchase date, which department manages the server, and its operating system are not part of the calculation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q111",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 111,
+    "question": "Shawna's organization has undertaken reasonable steps to meet their compliance requirements for data handling. What is this process or effort called?",
+    "choices": [
+      "Data stewardship",
+      "Due diligence",
+      "Attestation",
+      "Data sanctioning"
+    ],
+    "answer": 1,
+    "explanation": "Undertaking reasonable steps to meet legal requirements like compliance with regulations is known as due diligence. Data stewardship may be part of those actions, but it focuses on oversight of data and data governance and may not be specifically regulatory focused.322 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q112",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 112,
+    "question": "Jeremy knows that his customer data is worth $500,000, and that the value of the data would be reduced by 25 percent if it was exposed. What is the SLE for this data?",
+    "choices": [
+      "$25,000",
+      "$125,000",
+      "$250,000",
+      "$375,000"
+    ],
+    "answer": 1,
+    "explanation": "Single loss expectancy, or SLE, is calculated by multiplying the asset value (AV) by the exposure factor (EF). In this case, that means that the potential loss during a loss event would be $125,000.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q113",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 113,
+    "question": "Ian wants to calculate the annualized loss expectancy for an asset. What two values does he need to know?",
+    "choices": [
+      "SLE and ARO",
+      "ARO and MTBF",
+      "SLE and RPO",
+      "MTBF and RTO"
+    ],
+    "answer": 0,
+    "explanation": "Annualized loss expectancy (ALE) is calculated by multiplying the annual rate of occurrence (ARO) by the single loss expectancy (SLE). If a single loss expectancy for a $1,000,000 asset is $100,000 and the annual rate of occurrence is .5-in other words, it happens every two years on average-then the ALE is $50,000.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q114",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 114,
+    "question": "Waylon is charged with ensuring that risks related to customer data used as part of his organization's primary application are managed appropriately. What is his role?",
+    "choices": [
+      "Board member",
+      "Data processor",
+      "Auditor",
+      "Risk owner Security Program Management and Oversight"
+    ],
+    "answer": 3,
+    "explanation": "Waylon is a risk owner. He is responsible for ensuring that the risks related to data and the application are managed appropriately. Board members have overall responsibility for an organization. Data processors have a data role, not a risk ownership role, and auditors assess organizations against standards and practices rather than owning risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q115",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 115,
+    "question": "Nathaniel's organization is reviewing potential issues that may result from noncompliance with regulations that apply to his company. Which of the following would create the most significant operational harm?",
+    "choices": [
+      "Reputational damage",
+      "Loss of license",
+      "Fines",
+      "Contractual impacts"
+    ],
+    "answer": 1,
+    "explanation": "Without a license to operate, Nathaniel's organization will be unable to conduct business. Reputational damage, fines, and contractual impacts can all be navigated if the organization can continue to do business.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q116",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 116,
+    "question": "Susan wants to calculate the annualized loss expectancy for an asset that has a value of $50,000, an exposure factor of 50 percent, and an annual rate of occurrence of 2. What is the annualized loss expectancy for the asset?",
+    "choices": [
+      "$5,000",
+      "$25,000",
+      "$50,000",
+      "$100,000"
+    ],
+    "answer": 2,
+    "explanation": "Susan can calculate the single loss expectancy (SLE) by multiplying the asset value (AV) by the exposure factor (EF), resulting in $25,000. If this loss occurs twice a year, then the annualized loss expectancy (ALE) is $50,000.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q117",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 117,
+    "question": "Tim's organization knows that a major breach occurs once every four years, resulting in a loss of $250,000 for his organization. What is the annual rate of occurrence that Tim should use in his risk calculations?",
+    "choices": [
+      ".25",
+      "$75,000",
+      ".75",
+      "$50,000"
+    ],
+    "answer": 0,
+    "explanation": "Annual rate of occurrence is calculated by determining how many times in a year the event happens, on average. If it happens less than once a year, the rate is a fraction based on that rate. Here the event happens once every four years, or .25 of the time during a given year.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q118",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 118,
+    "question": "Charlene wants to calculate the annualized loss expectancy for a risk event. What two factors does she need to know to calculate the ALE for a risk?",
+    "choices": [
+      "ARO and TCO",
+      "SLE and RPO",
+      "TCO and RPO",
+      "ARO and SLE"
+    ],
+    "answer": 3,
+    "explanation": "Annualized loss expectancy is calculated by multiplying the annualized rate of occurrence (ARO) and the single loss expectancy (SLE). Total cost of ownership (TCO) and recovery point objectives (RPO) are not part of this type of risk calculation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q119",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 119,
+    "question": "John is conducting a penetration test of a client's network. He is currently gathering information from sources such as archive.org, netcraft.com, social media, and information websites. What best describes this stage?",
+    "choices": [
+      "Active reconnaissance",
+      "Passive reconnaissance",
+      "Initial exploitation",
+      "Pivot"
+    ],
+    "answer": 1,
+    "explanation": "Passive reconnaissance is any reconnaissance that is done without actually connecting to the target. In this case, John is conducting a form of OSINT, or open source intelligence, by using commonly available third-party information sources to gather information about his target. Active reconnaissance involves communicating with the target network, such as doing a port scan. The initial exploitation is not information gathering; it is actually breaking into the target network. A pivot is when you have breached one system and use that to move to another system.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q120",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 120,
+    "question": "Juan is responsible for incident response at a large financial institution. He discovers that the company Wi-Fi has been breached. The attacker used the same login credentials that ship with the wireless access point (WAP). The attacker was able to use those credentials Security Program Management and Oversight 197 to access the WAP administrative console and make changes. Which of the following best describes the lack of standards or procedures that caused this vulnerability to exist?",
+    "choices": [
+      "Improperly configured accounts",
+      "Untrained users",
+      "Using default settings",
+      "Failure to patch systems"
+    ],
+    "answer": 2,
+    "explanation": "Using default settings is a form of weak configuration and indicates that the organization is not using baselines effectively and may not have appropriate processes and standards in place. Many vulnerability scanners and attack tools have default settings built-in to test with, and default settings are easily obtained for most devices with a quick search of the Internet. Configuring the accounts is not the issue; using default credentials and settings is. Although training users is important, that's not the issue in this scenario. Patching systems is important, but that won't change default settings.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q121",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 121,
+    "question": "What is the primary difference between active and passive reconnaissance?",
+    "choices": [
+      "Active will be done manually, passive with tools.",
+      "Active is done with unknown environment tests and passive with known environment tests.",
+      "Active is usually done by attackers and passive by testers.",
+      "Active will actually connect to the network and could be detected; passive won't."
+    ],
+    "answer": 3,
+    "explanation": "Active reconnaissance connects to the network using techniques such as port scanning. Both active and passive reconnaissance can be done manually or with tools. Unknown and known environment tests refer to the amount of information the tester is given. Attackers and testers use both types of reconnaissance. Security Program Management and Oversight 323",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q122",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 122,
+    "question": "The type and scope of testing, client contact details, how sensitive data will be handled, and the type and frequency of status meetings and reports are all common elements of what artifact of a penetration test?",
+    "choices": [
+      "The unknown environment (black-box) outline",
+      "The rules of engagement",
+      "The known environment (white-box) outline",
+      "The close-out report"
+    ],
+    "answer": 1,
+    "explanation": "The rules of engagement for a penetration test typically include the type and scope of testing, client contact information and requirements for when the team should be notified, sensitive data handling requirements, and details of regular status meetings and reports. The remaining options were made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q123",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 123,
+    "question": "Charlene has been asked to write a business continuity (BC) plan for her organization. Which of the following will a BC plan best handle?",
+    "choices": [
+      "How to respond during a person-made disaster",
+      "How to keep the organization running during a system outage",
+      "How to respond during a natural disaster",
+      "All of the above"
+    ],
+    "answer": 1,
+    "explanation": "Unlike a disaster recovery plan that is written to help an organization recovery from a person-made or natural disaster, a business continuity plan focuses on how to keep the business running when it is disrupted. Thus, Charlene's BC plan would detail how to keep the organization running when a system outage occurs.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q124",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 124,
+    "question": "Alaina's company is considering signing a contract with a cloud service provider and wants to determine how secure their services are. Which of the following is a method she is likely to be able to use to assess it?",
+    "choices": [
+      "Ask for permission to vulnerability scan the vendor's production service.",
+      "Conduct an audit of the organization.",
+      "Review an existing SOC audit.",
+      "Hire a third party to audit the organization."
+    ],
+    "answer": 2,
+    "explanation": "Many cloud service providers do not allow customer-driven audits, either by the customer or a third party. They also commonly prohibit vulnerability scans of their production environment to avoid service outages. Instead, many provide third-party audit results in the form of a service organization controls (SOC) report or similar audit artifact.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q125",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 125,
+    "question": "Gurvinder's corporate datacenter is located in an area that FEMA has identified as being part of a 100-year flood plain. He knows that there is a chance in any given year that his datacenter could be completely flooded and underwater, and he wants to ensure that his organization knows what to do if that happens. What type of plan should he write?",
+    "choices": [
+      "A continuity of operations plan",
+      "A business continuity plan",
+      "A flood insurance plan",
+      "A disaster recovery plan Security Program Management and Oversight"
+    ],
+    "answer": 3,
+    "explanation": "A disaster recovery plan addresses what to do during a person-made or natural disaster. A flood that completely fills a datacenter would require significant efforts to recover from, and Gurvinder will need a solid disaster recovery plan-and perhaps a new datacenter location as soon as possible! A COOP, or continuity of operations plan, is needed for U.S. government agencies but is not required for businesses. A business continuity plan would cover how to keep the business running, but it does not cover all the requirements in a natural disaster of this scale, and a flood insurance plan is not a term used in the Security+ exam objectives.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q126",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 126,
+    "question": "Which of the following environments is least likely to allow a right-to-audit clause in a contract?",
+    "choices": [
+      "A datacenter co-location facility in your state",
+      "A rented facility for a corporate headquarters",
+      "A cloud server provider",
+      "A datacenter co-location facility in the same country but not the same state"
+    ],
+    "answer": 2,
+    "explanation": "Right-to-audit clauses are commonly accepted as part of service and leasing contracts regardless of location for datacenter co-location and facility rental contracts. Cloud service providers, however, are less likely to sign a right-to-audit contract. Instead, they may provide third-party audit data to customers or even to potential customers.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q127",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 127,
+    "question": "Ben writes down the checklist of steps that his organization will perform in the event of a cryptographic malware infection. What type of response document has he created?",
+    "choices": [
+      "A playbook",
+      "A DR plan",
+      "A BC plan",
+      "A runbook"
+    ],
+    "answer": 0,
+    "explanation": "Playbooks list the actions that an organization will take as part of a response process. A runbook lists the steps required to perform an action like notification, removing malware, or similar tasks. Playbooks tend to be used to document processes, whereas runbooks tend to be used for specific actions. A disaster recovery (DR) plan is used to recover from disasters, and a business continuity (BC) plan is used to ensure that the organization continues to function.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q128",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 128,
+    "question": "Caroline has been asked to find an international standard to guide her company's choices in implementing information security management systems. Which of the following would be the best choice for her?",
+    "choices": [
+      "ISO 27002",
+      "ISO 27701",
+      "NIST 800-12",
+      "NIST 800-53"
+    ],
+    "answer": 0,
+    "explanation": "Caroline should select ISO 27002. ISO 27002 is an international standard for implementing and maintaining information security systems. ISO 27701 is an international standard security technique for privacy information management systems; NIST 800-12 is a general security standard and it is a US standard, not an international one; and NIST 800-53 is a collection of security and privacy controls for information systems and organizations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q129",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 129,
+    "question": "Which of the following principles stipulates that multiple changes to a computer system should not be made at the same time?",
+    "choices": [
+      "Due diligence",
+      "Acceptable use",
+      "Change management",
+      "Due care"
+    ],
+    "answer": 2,
+    "explanation": "Change management is the process of documenting all changes made to a company's network and computers. Avoiding making changes at the same time makes tracking any problems that can occur much simpler. Due diligence is the process of investigation and verification of the accuracy of a particular act. Acceptable use policies state what actions and practices are allowed in an organization while using technology. Due care is the effort made by a reasonable party to avoid harm to another. It is the level of judgment, care, determination, and activity a person would reasonably expect to do under certain conditions.324 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q130",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 130,
+    "question": "You are a security engineer and discovered an employee using the company's computer systems to operate their small business. The employee installed their personal software on the company's computer and is using the computer hardware, such as the USB port. What policy would you recommend the company implement to prevent any risk of the company's data and network being compromised?",
+    "choices": [
+      "Acceptable use policy",
+      "Clean desk policy",
+      "Mandatory vacation policy",
+      "Job rotation policy"
+    ],
+    "answer": 0,
+    "explanation": "An acceptable use policy (AUP) is a document stating what a user may or may not have access to on a company's network or the Internet. A clean desk policy ensures that all sensitive/confidential documents are removed from an end-user workstation and locked up when the documents are not in use. Mandatory vacation policy is used by companies to detect fraud by having a second person, familiar with the duties, help discover any illicit activities. Job rotation is a policy that describes the practice of moving employees between different tasks. Job rotation can help detect fraud because employees cannot perform the same actions for long periods of time.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q131",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 131,
+    "question": "What standard is used for credit card security?",
+    "choices": [
+      "GDPR",
+      "COPPA",
+      "PCI DSS",
+      "CIS Security Program Management and Oversight 199"
+    ],
+    "answer": 2,
+    "explanation": "The PCI DSS, or Payment Card Industry Data Security Standard, is a security standard that is mandated by credit card vendors. The Payment Card Industry Security Standards Council is responsible for updates and changes to the standard. GDPR, or the General Data Protection Regulation, is a standard for data privacy and security in the European Union (EU). COPPA is the Children's Online Privacy Protection Act, a U.S. federal law. CIS is the Center for Internet Security and is not a law or a regulation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q132",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 132,
+    "question": "Which of the following techniques attempts to predict the likelihood a threat will occur and assigns monetary values should a loss occur?",
+    "choices": [
+      "Change management",
+      "Vulnerability assessment",
+      "Qualitative risk assessment",
+      "Quantitative risk assessment"
+    ],
+    "answer": 3,
+    "explanation": "Quantitative risk assessment is the process of assigning numerical values to the probability an event will occur and what the impact of the event will have. Change management is the process of managing configuration changes made to a network. Vulnerability assessment attempts to identify, quantify, and rank the weaknesses in a system. Qualitative risk assessment is the process of ranking which risk poses the most danger using ratings like low, medium, and high.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q133",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 133,
+    "question": "Which of the following agreements is less formal than a traditional contract but still has a certain level of importance to all parties involved?",
+    "choices": [
+      "SLA",
+      "BPA",
+      "ISA",
+      "MOU"
+    ],
+    "answer": 3,
+    "explanation": "A memorandum of understanding (MOU) is a type of agreement that is usually not legally binding. This agreement is intended to be mutually beneficial without involving courts or money. An SLA (service level agreement) defines the level of service the customer expects from the service provider. The level of service definitions should be specific and measurable in each area. A BPA (business partner agreement) is a legal agreement between partners. It establishes the terms, conditions, and expectations of the relationship between the partners. An ISA (interconnection security agreement) is an agreement that specifies the technical and security requirements of the interconnection between organizations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q134",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 134,
+    "question": "You have an asset that is valued at $16,000, the exposure factor of a risk affecting that asset is 35 percent, and the annualized rate of occurrence is 75 percent. What is the SLE?",
+    "choices": [
+      "$5,600",
+      "$5,000",
+      "$4,200",
+      "$3,000"
+    ],
+    "answer": 0,
+    "explanation": "The single loss expectancy (SLE) is the product of the asset value ($16,000) and the exposure factor (.35), or $5,600.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q135",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 135,
+    "question": "You are a security administrator for your company and you identify a security risk. You decide to continue with the current security plan. However, you develop a contingency plan in case the security risk occurs. Which of the following type of risk response technique are you demonstrating?",
+    "choices": [
+      "Accept",
+      "Transfer",
+      "Avoid",
+      "Mitigate"
+    ],
+    "answer": 0,
+    "explanation": "Risk acceptance is a strategy of recognizing, identifying, and accepting a risk that is sufficiently unlikely or that has such limited impact that a corrective control is not warranted. Risk transfer is the act of moving the risk to hosted providers who assume the responsibility for recovery and restoration or by acquiring insurance to cover the costs emerging from a risk. Risk avoidance is the removal of the vulnerability that can increase a particular risk so that it is avoided altogether. Risk mitigation is when a company implements controls to reduce vulnerabilities or weaknesses in a system. It can also reduce the impact of a threat.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q136",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 136,
+    "question": "Which of the following is not a common security policy type?",
+    "choices": [
+      "Acceptable use policy",
+      "Business continuity",
+      "Incident response",
+      "Parking policy"
+    ],
+    "answer": 3,
+    "explanation": "A parking policy generally outlines parking provisions for employees and visitors. This includes the criteria and procedures for allocating parking spaces for employees and is not a part of organizational security policy. Instead, it is an operational or business policy. An acceptable use policy (AUP) describes the limits and guidelines for users to make use of an Security Program Management and Oversight 325 organization's physical and intellectual resources. This includes allowing or limiting the use of personal email during work hours. Business continuity policies describe how the organization approaches business continuity efforts, and incident response (IR) policies document the organization's IR intentions and high-level goals.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q137",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 137,
+    "question": "Your security manager wants to decide which risks to mitigate based on cost. What is this an example of?",
+    "choices": [
+      "Quantitative risk assessment",
+      "Qualitative risk assessment",
+      "Business impact analysis",
+      "Threat assessment Security Program Management and Oversight"
+    ],
+    "answer": 0,
+    "explanation": "Quantitative risk assessment is the process of assigning numerical values like cost and frequency of occurrence to the probability an event will occur and what impact the event will have, and thus directly evaluates the cost of a risk occurring. Qualitative risk assessment is the process of ranking which risk poses the most danger such as low, medium, and high. A business impact analysis (BIA) is used to evaluate the possible effect a business can suffer should an interruption to critical system operations occur. This interruption could be as a result of an accident, emergency, or disaster. Threat assessment is the process of identifying and categorizing different threats such as environmental and person-made. It also attempts to identify the potential impact from the threats.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q138",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 138,
+    "question": "Your company has outsourced its proprietary processes to Acme Corporation. Due to technical issues, Acme wants to include a third-party vendor to help resolve the technical issues. Which of the following must Acme consider before sending data to the third party?",
+    "choices": [
+      "This data should be encrypted before it is sent to the third-party vendor.",
+      "This may constitute unauthorized data sharing.",
+      "This may violate the privileged user role-based awareness training.",
+      "This may violate a nondisclosure agreement."
+    ],
+    "answer": 3,
+    "explanation": "A nondisclosure agreement (NDA) protects sensitive and intellectual data from getting into the wrong hands. An NDA is a legal contract between the company and a third-party vendor to not disclose information per the agreement. Encrypted data that is sent can still be decrypted by the third-party vendor if they have the appropriate certificate or the key but does not restrict access to the data. Violating an NDA would constitute unauthorized data sharing, and a violation of privileged user role-based awareness training has nothing to do with sharing proprietary information.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q139",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 139,
+    "question": "Which of the following is typically included in a BPA?",
+    "choices": [
+      "Clear statements detailing the expectation between a customer and a service provider",
+      "The agreement that a specific function or service will be delivered at the agreed-on level of performance",
+      "Sharing of profits and losses and the addition or removal of a partner",
+      "Security requirements associated with interconnecting IT systems"
+    ],
+    "answer": 2,
+    "explanation": "Sharing of profits and losses and the addition or removal of a partner, as well as the responsibilities of each partner, are typically included in a BPA (business partner agreement). Expectations between parties such as a company and an Internet service provider are typically found in a service level agreement (SLA). Expectations include the level of performance given during the contractual service. An SLA will provide a clear means of determining whether a specific function or service has been provided according to the agreed-on level of performance. Security requirements associated with interconnecting IT systems are typically found in an interconnection security agreement, or ISA.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q140",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 140,
+    "question": "A security administrator is reviewing the company's continuity plan, and it specifies an RTO of four hours and an RPO of one day. Which of the following is the plan describing?",
+    "choices": [
+      "Systems should be restored within one day and should remain operational for at least four hours.",
+      "Systems should be restored within four hours and no later than one day after the incident.",
+      "Systems should be restored within one day and lose, at most, four hours' worth of data.",
+      "Systems should be restored within four hours with a loss of one day's worth of data at most."
+    ],
+    "answer": 3,
+    "explanation": "Systems should be restored within four hours with a minimum loss of one day's worth of data. The RTO (recovery time objective) is the amount of time within which a process or service must be restored after a disaster to meet business continuity. It defines how much time it takes to recover after notification of process disruption. The recovery point objective, or RPO, specifies the amount of time that can pass before the amount of data lost may exceed the organization's maximum tolerance for data loss.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q141",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 141,
+    "question": "Which of the following statements is true regarding a data retention policy?",
+    "choices": [
+      "Regulations require financial transactions to be stored for seven years.",
+      "Employees must remove and lock up all sensitive and confidential documents when not in use.",
+      "It describes a formal process of managing configuration changes made to a network.",
+      "It is a legal document that describes a mutual agreement between parties."
+    ],
+    "answer": 0,
+    "explanation": "A data retention policy defines how long an organization will keep data. Removing sensitive documents not in use is a clean desk policy. A formal process for managing configuration changes is change management, and a memorandum of understanding consists of legal documents that describe mutual agreement between two parties.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q142",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 142,
+    "question": "How do you calculate the annual loss expectancy (ALE) that may occur due to a threat?",
+    "choices": [
+      "Exposure factor (EF) / single loss expectancy (SLE)",
+      "Single loss expectancy (SLE) annual rate of occurrence (ARO)",
+      "Asset value (AV) exposure factor (EF)",
+      "Single loss expectancy (SLE) / exposure factor (EF)"
+    ],
+    "answer": 1,
+    "explanation": "ALE (annual loss expectancy) is the product of the ARO (annual rate of occurrence) and the SLE (single loss expectancy) and is mathematically expressed as ALE = ARO SLE. Single loss expectancy is the cost of any single loss, and it is mathematically expressed as SLE = AV (asset value) EF (exposure factor).326 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q143",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 143,
+    "question": "You are a security administrator for your company and you identify a security risk that you do not have in-house skills to address. You decide to acquire contract resources. Security Program Management and Oversight 201 The contractor will be responsible for handling and managing this security risk. Which of the following type of risk response techniques are you demonstrating?",
+    "choices": [
+      "Accept",
+      "Mitigate",
+      "Transfer",
+      "Avoid"
+    ],
+    "answer": 2,
+    "explanation": "Risk transfer is the act of moving the risk to hosted providers who assume the responsibility for recovery and restoration or by acquiring insurance to cover the costs emerging from a risk. Risk acceptance is a strategy of recognizing, identifying, and accepting a risk that is sufficiently unlikely or that has such limited impact that a corrective control is not warranted. Risk mitigation is when a company implements controls to reduce vulnerabilities or weaknesses in a system. It can also reduce the impact of a threat. Risk avoidance is the removal of the vulnerability that can increase a particular risk so that it is avoided altogether.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q144",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 144,
+    "question": "You are a server administrator for your company's private cloud. To provide service to employees, you are instructed to use reliable hard disks in the server to host a virtual environment. Which of the following best describes the reliability of hard drives?",
+    "choices": [
+      "MTTR",
+      "RPO",
+      "MTBF",
+      "ALE"
+    ],
+    "answer": 2,
+    "explanation": "The mean time between failures (MTBF) is a measure of the reliability of a system or component. It is the expected amount of time that will elapse between system or device failures. MTTR (mean time to repair) is the average time it takes for a failed device or component to be repaired or replaced. An RPO (recovery point objective) is the period of time a company can tolerate lost data being unrecoverable between backups. ALE (annual loss expectancy) is the product of the annual rate of occurrence (ARO) and the single loss expectancy (SLE).",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q145",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 145,
+    "question": "Which of the following best describes a key challenge of quantitative risk analysis compared to qualitative risk analysis?",
+    "choices": [
+      "Quantitative risk analysis requires detailed financial data.",
+      "Quantitative risk analysis is sometimes subjective.",
+      "Quantitative risk analysis requires expertise on systems and infrastructure.",
+      "Quantitative risk provides clear answers to risk-based questions."
+    ],
+    "answer": 0,
+    "explanation": "Quantitative risk analysis requires complex calculations and is more time-consuming because it requires detailed financial data and calculations. Quantitative risk assessment is often subjective and requires expertise on systems and infrastructure, and both types of assessment can provide clear answers on risk-based questions.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q146",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 146,
+    "question": "Categorizing residual risk is most important to which of the following risk response techniques?",
+    "choices": [
+      "Risk mitigation",
+      "Risk acceptance",
+      "Risk avoidance",
+      "Risk transfer"
+    ],
+    "answer": 1,
+    "explanation": "Risk acceptance is a strategy of recognizing, identifying, and accepting a risk that is sufficiently unlikely or that has such limited impact that a corrective control is not warranted. Risk mitigation is when a company implements controls to reduce vulnerabilities or weaknesses in a system. It can also reduce the impact of a threat. Risk avoidance is the removal of the vulnerability that can increase a particular risk so that it is avoided altogether. Risk transfer is the act of moving the risk to other organizations like insurance providers or hosting companies who assume the responsibility for recovery and restoration or by acquiring insurance to cover the costs emerging from a risk.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q147",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 147,
+    "question": "You are the IT manager and one of your employees asks who assigns data labels. Which of the following assigns data labels?",
+    "choices": [
+      "Owner",
+      "Custodian",
+      "Privacy officer",
+      "System administrator"
+    ],
+    "answer": 0,
+    "explanation": "Data owners assign labels such as top secret to data. Custodians assign security controls to data. A privacy officer ensures that companies comply with privacy laws and regulations. System administrators are responsible for the overall functioning of IT systems.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q148",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 148,
+    "question": "A security analyst is analyzing the cost the company could incur if the customer database was breached. The database contains 2,500 records with personally identifiable information (PII). Studies show the cost per record would be $300. The likelihood that the database would be breached in the next year is only 5 percent. Which of the following would be the ALE for a security breach?",
+    "choices": [
+      "$15,000",
+      "$37,500",
+      "$150,000",
+      "$750, Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "ALE (annual loss expectancy) = SLE (single loss expectancy) ARO (annualized rate of occurrence). SLE equals $750,000 (2,500 records $300), and ARO equals 5%, so $750,000 times 5% equals $37,500.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q149",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 149,
+    "question": "Which of the following concepts defines a company goal for system restoration and acceptable data loss?",
+    "choices": [
+      "MTBF",
+      "MTTR",
+      "RPO",
+      "ARO"
+    ],
+    "answer": 2,
+    "explanation": "RPO (recovery point objective) specifies the allowable data loss. It is the amount of time that can pass during an interruption before the quantity of data lost during that period surpasses business continuity planning's maximum acceptable threshold. MTBF (mean time between failures) is the rating on a device or component that predicts the expected time between failures. MTTR (mean time to repair) is the average time it takes for a failed device or component to be repaired or replaced. ARO (annual rate of occurrence) is the ratio of an estimated possibility that a threat will take place within a one-year time frame.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q150",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 150,
+    "question": "You are a network administrator and have been given the duty of creating user accounts for new employees the company has hired. These employees are added to the identity and access management (IAM) system and assigned mobile devices. What process are you performing?",
+    "choices": [
+      "Offboarding",
+      "System owner",
+      "Onboarding",
+      "Executive user"
+    ],
+    "answer": 2,
+    "explanation": "Onboarding is the process of adding an employee to a company's identity and access management system. Offboarding is the process of removing an employee from the Security Program Management and Oversight 327 company's identity and access management system. A system owner is an individual who is in charge of managing one or more systems and can include patching and updating operating systems. An executive user was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q151",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 151,
+    "question": "Visa's published documentation for \"What to Do if Compromised\" includes requirements to notify Visa within 3 days of an incident, to provide notice to other relevant parties, and to conduct forensic investigations while preserving evidence. What type of document is this?",
+    "choices": [
+      "A policy",
+      "A playbook",
+      "A checklist",
+      "A procedure"
+    ],
+    "answer": 3,
+    "explanation": "This is a procedure, which documents what you should do in general terms. A policy lays out an organization's intent, and this is more specific than that. A playbook has specific, detailed action, and this procedure does not include that level of detail. Checklists are a step-by-step guide to accomplishing a task, and this document outlines required steps, not step-by-step detail.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q152",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 152,
+    "question": "An organization's information security policy framework typically contains what four types of documents?",
+    "choices": [
+      "A risk register, an audit report, a vulnerability scan, and a pentest report",
+      "Policies, standards, procedures, and guidelines",
+      "Laws, policies, standards, and practices",
+      "Policies, practices, procedures, and playbooks"
+    ],
+    "answer": 1,
+    "explanation": "Organizational policy frameworks typically contain policies, standards and procedures that support and expand on the policy, and guidelines. Risk registers, audit reports, vulnerability scans, and pentest reports are all artifacts organizations generate in support of information security practices. Laws are not part of a policy framework but may influence it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q153",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 153,
+    "question": "Which of the following terms is used to measure how maintainable a system or device is?",
+    "choices": [
+      "MTBF",
+      "MTTF",
+      "MTTR",
+      "MITM"
+    ],
+    "answer": 2,
+    "explanation": "The mean time to repair (MTTR) for a system or devices is the average time that it will take to repair it if it fails. The MTTR is used as part of business continuity planning to determine if a system needs additional redundancy or other options put in place if a failure and repair would exceed the maximum tolerable outage. It is calculated by dividing the total maintenance time by the total number of repairs. MTBF is the mean time between failures, MTTF the mean time to failure, and MITM is an on-path attack.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q154",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 154,
+    "question": "Helen's organization provides telephone support for their entire customer base as a critical business function. She has created a plan that will ensure that her organization's Voice over IP (VoIP) phones will be restored in the event of a tornado. What type of plan has she created?",
+    "choices": [
+      "A disaster recovery plan",
+      "An RPO plan",
+      "An incident response plan",
+      "An MTBF plan Security Program Management and Oversight 203"
+    ],
+    "answer": 0,
+    "explanation": "Helen has created a disaster recovery plan (DRP). RPOs, or recovery point objectives, are set to determine how much data may be lost if an event or incident occurs; incident response plans focus on incidents, not outages or disasters; and MTBF, or mean time between failures, is not a type of plan.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q155",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 155,
+    "question": "Greg has data that is classified as health information that his organization uses as part of their company's HR data. Which of the following statements is true for his company's security policy?",
+    "choices": [
+      "The health information must be encrypted.",
+      "Greg should review relevant law to ensure the health information is handled properly.",
+      "Companies are prohibited from storing health information and must outsource to third parties.",
+      "All of the above."
+    ],
+    "answer": 1,
+    "explanation": "Personal health information (PHI) may be covered by state, local, or federal law, and Greg's organization should ensure that they understand any applicable laws before storing, processing, or handling health information.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q156",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 156,
+    "question": "What type of impact is an individual most likely to experience if a data breach that includes PII occurs?",
+    "choices": [
+      "IP theft",
+      "Reputation damage",
+      "Fines",
+      "Identity theft"
+    ],
+    "answer": 3,
+    "explanation": "An individual is most likely to face identity theft issues if their personally identifiable information (PII) is stolen or breached.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q157",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 157,
+    "question": "Isaac has been asked to write his organization's access control standards. What policy is commonly put in place for service accounts?",
+    "choices": [
+      "They must be issued only to system administrators.",
+      "They must use multifactor authentication.",
+      "They cannot use interactive logins.",
+      "All of the above."
+    ],
+    "answer": 2,
+    "explanation": "It is common practice to prohibit interactive logins to a GUI or shell for service accounts. Use of a service account for interactive logins or attempting to log in as one should be immediately flagged and alerted on as an indicator of compromise (IoC).",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q158",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 158,
+    "question": "Emma is reviewing third-party risks to her organization, and Nate, her organization's procurement officer, notes that purchases of some laptops from the company's hardware vendor have been delayed due to lack of availability of SSDs (solid-state drives) and specific CPUs (central processing units) for specific configurations. What type of risk should Emma describe this as?",
+    "choices": [
+      "Financial risk",
+      "A lack of vendor support",
+      "System integration",
+      "Supply chain"
+    ],
+    "answer": 3,
+    "explanation": "Emma should categorize this as a supply chain risk. When organizations cannot get the systems, equipment, and supplies they need to operate, it can have a significant impact on their ability to conduct business. That could create financial risk, but financial risk is not the direct risk here. There is no indication that the vendor will not support the systems, nor is there any information about whether there is an integration issue in the description.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q159",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 159,
+    "question": "Patching systems immediately after patches are released is an example of what risk management strategy?",
+    "choices": [
+      "Acceptance",
+      "Avoidance",
+      "Mitigation",
+      "Transference Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Patching is a form of avoidance because it works to remove a risk from the environment. Acceptance of flaws that need patching would involve leaving the software unpatched; mitigation strategies might include firewalls, intrusion prevention systems (IPSs), or web application firewall (WAF) devices; and transference options include third-party hosting or services.328 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q160",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 160,
+    "question": "What key element of regulations, like the European Union's GDPR, drive organizations to include them in their overall assessment of risk posture?",
+    "choices": [
+      "Potential fines",
+      "Their annual loss expectancy (ALE)",
+      "Their recovery time objective (RTO)",
+      "The likelihood of occurrence"
+    ],
+    "answer": 0,
+    "explanation": "The fines that can result from violation or infringement of regulations like the General Data Protection Regulation (GDPR) can have a significant impact on an organization, or could even potentially put it out of business. Due to this, organizations will track compliance with regulations as part of their risk posture.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q161",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 161,
+    "question": "What phases of handling a disaster are covered by a disaster recovery plan?",
+    "choices": [
+      "What to do before the disaster",
+      "What to do during the disaster",
+      "What to do after the disaster",
+      "All of the above"
+    ],
+    "answer": 3,
+    "explanation": "Disaster recovery requires forethought and preparation, response to issues to minimize impact during a disaster, and response activities after a disaster. Thus, a complete disaster recovery plan should include actions that may or will occur before, during, and after a disaster, and not just the recovery process after the fact.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q162",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 162,
+    "question": "Naomi's organization has recently experienced a breach of credit card information. After investigation, it is discovered that her organization was inadvertently not fully compliant with PCI DSS and is not currently fully compliant. Which of the following penalties is her organization most likely to incur?",
+    "choices": [
+      "Criminal charges",
+      "Fines",
+      "Termination of the credit card processing agreement",
+      "All of the above"
+    ],
+    "answer": 1,
+    "explanation": "Although data breaches could result in termination of a card processing agreement, the fact that her organization is noncompliant is most likely to result in a fine. PCI DSS, or Payment Card Industry Data Security Standard, is a vendor standard, not a law, and criminal charges would not typically be filed in a situation like this.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q163",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 163,
+    "question": "What law or regulation requires a DPO in organizations?",
+    "choices": [
+      "FISMA",
+      "COPPA",
+      "PCI DSS",
+      "GDPR"
+    ],
+    "answer": 3,
+    "explanation": "The General Data Protection Regulation, or GDPR, requires a data protection officer (DPO). They oversee the organization's data protection strategy and implementation, and make sure that the organization complies with the GDPR.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q164",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 164,
+    "question": "Your company is considering moving its mail server to a hosting company. This will help reduce hardware and server administrator costs at the local site. Which of the following documents would formally state the reliability and recourse if the reliability is not met?",
+    "choices": [
+      "MOU",
+      "SLA",
+      "ISA",
+      "BPA"
+    ],
+    "answer": 1,
+    "explanation": "An SLA (service level agreement) defines the level of service the customer expects from the service provider. The level of service definitions should be specific and measurable in each area. An MOU (memorandum of understanding) is a legal document that describes a mutual agreement between parties. An ISA (interconnection security agreement) is an agreement that specifies the technical and security requirements of the interconnection between organizations. A BPA (business partners agreement) is a legal agreement between partners. It establishes the terms, conditions, and expectations of the relationship between the partners.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q165",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 165,
+    "question": "Risk severity is calculated using the equation shown here. What information should be substituted for X? Risk severity = X * Impact",
+    "choices": [
+      "Inherent risk",
+      "MTTR (mean time to repair)",
+      "Likelihood of occurrence",
+      "RTO (recovery time objective) Security Program Management and Oversight 205"
+    ],
+    "answer": 2,
+    "explanation": "The likelihood of occurrence, or probability, is multiplied by the impact to determine a risk's severity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q166",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 166,
+    "question": "How is asset value determined?",
+    "choices": [
+      "The original cost of the item",
+      "The depreciated cost of the item",
+      "The cost to replace the item",
+      "Any of the above based on organizational preference"
+    ],
+    "answer": 3,
+    "explanation": "Organizations can determine how they want to determine asset value, but consistency is important in many cases. Thus, the original cost, the replacement cost, or a depreciated cost may be used.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q167",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 167,
+    "question": "What process is used to help identify critical systems?",
+    "choices": [
+      "A BIA",
+      "An MTBF",
+      "An RTO",
+      "An ICD"
+    ],
+    "answer": 0,
+    "explanation": "A business impact analysis (BIA) helps to identify critical systems by determining which systems will create the largest impact if they are not available. MTBF is the mean time between failures, an RTO is a recovery time objective, and an ICD was made up for this question.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q168",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 168,
+    "question": "Zarmeena wants to transfer the risk for breaches to another organization. Which of the following options should she use to transfer the risk?",
+    "choices": [
+      "Explain to her management that breaches will occur.",
+      "Blame future breaches on competitors.",
+      "Sell her organization's data to another organization.",
+      "Purchase cybersecurity insurance."
+    ],
+    "answer": 3,
+    "explanation": "The most common means of transferring breach risk is to purchase cybersecurity insurance. Accepting breaches is rarely considered a valid risk process, blaming breaches on competitors does not actually transfer risk, and selling data to another organization is not a risk handling process but may be a business process.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q169",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 169,
+    "question": "The financial cost of a breach is an example of what component of risk calculations?",
+    "choices": [
+      "Probability",
+      "Risk severity",
+      "Impact",
+      "All of the above"
+    ],
+    "answer": 2,
+    "explanation": "The cost of a breach is an example of the impact of a breach. Probability is how likely the risk is to occur, and risk severity is calculated by multiplying probability and impact. Security Program Management and Oversight 329",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q170",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 170,
+    "question": "Joanna's penetration test target is an unknown environment that is isolated from the Internet and requires VPN access. What type of testing will she need to do to gather vulnerability information from systems?",
+    "choices": [
+      "Passive reconnaissance",
+      "OSINT reconnaissance",
+      "Active reconnaissance",
+      "Known environment reconnaissance"
+    ],
+    "answer": 2,
+    "explanation": "Gathering vulnerability information for a system that isn't scannable from the Internet will require active reconnaissance as part of the penetration testing effort. OSINT and passive reconnaissance do not involve active scans, and known environments provide full knowledge of the environment.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q171",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 171,
+    "question": "Olivia's cloud service provider claims to provide zero data loss from storage, and Olivia's company wants to take advantage of that service because loss of data would be extremely costly for the business. What business agreement can Oliva put in place to help ensure that the reliability that the vendor advertises is maintained?",
+    "choices": [
+      "An MOU",
+      "An SLA",
+      "An MSA",
+      "A BPA Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Olivia should establish a service level agreement (SLA) with her provider to ensure that they meet the expected level of service. If they don't, financial or other penalties are typically included. Olivia should ensure that those penalties are meaningful to her vendor to make sure they are motivated to meet the SLA. An MOU is a memorandum of understanding and explains the relationship between two organizations; an MSA is a master services agreement, which establishes a business relationship under which additional work orders or other documentation describe the actual work that is done; and a BPA is a business partners agreement, which is used when companies wish to partner on efforts and may outline division of profits or responsibilities in the partnership.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q172",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 172,
+    "question": "How is SLE calculated?",
+    "choices": [
+      "AV * EF",
+      "RTO * AV",
+      "MTTR * EF",
+      "AV * ARO"
+    ],
+    "answer": 0,
+    "explanation": "The single loss expectancy (SLE) describes what a single risk event is likely to cost. It is calculated using the asset value (AV) times the exposure factor (EF), which is an estimated percentage of the cost that will occur in damage if the loss occurs. MTTR is the mean time to repair, ARO is the annual rate of occurrence, and RTO is the recovery time objective. These are not part of the SLE equation.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q173",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 173,
+    "question": "Wayne has estimated the ARO for a risk in his organization to be 3. How often does Wayne think the event will happen?",
+    "choices": [
+      "Once every 3 months",
+      "Three times a year",
+      "Once every three years",
+      "Once a year for three years"
+    ],
+    "answer": 1,
+    "explanation": "Annual rate of occurrence (ARO) is expressed as the number of times an event will occur in a year. Wayne has estimated that the risk event that is being assessed will happen three times a year.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q174",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 174,
+    "question": "Elle works for a credit card company that handles credit card transactions for businesses around the world. What data privacy role does her company play?",
+    "choices": [
+      "A data controller",
+      "A data steward",
+      "A data custodian",
+      "A data processor"
+    ],
+    "answer": 3,
+    "explanation": "Data processors are service providers that process data for data controllers. A data controller or data owner is the organization or individual who collects and controls data. A data steward carries out the intent of the data controller and is delegated responsibility for the data. Data custodians are those who are entrusted with the data to store, manage, or secure the data.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q175",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 175,
+    "question": "Nicole determines how her organization processes data that it collects about its customers and also decides how and why personal information should be processed. What role does Nicole play in her organization?",
+    "choices": [
+      "Data steward",
+      "Data custodian",
+      "Data controller",
+      "Data consumer"
+    ],
+    "answer": 2,
+    "explanation": "Nicole is a data controller, sometimes called a data owner. She determines the reasons for processing personal information and how it is processed. A data steward carries out the intents of the data controller, data custodians are charged with safeguarding information, and data consumer is not a common data privacy role.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q176",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 176,
+    "question": "Kirk's organization has been experiencing large-scale denial-of-service (DoS) attacks against their primary website. Kirk contracts with his Internet service provider to increase the organization's bandwidth and expands the server pool for the website to handle significantly more traffic than any of the previous DoS attacks. What type of risk management strategy has he employed?",
+    "choices": [
+      "Acceptance",
+      "Avoidance",
+      "Transfer",
+      "Mitigation"
+    ],
+    "answer": 3,
+    "explanation": "Kirk has mitigated the risk to his organization by increasing the resources targeted by the DoS attack in an attempt to ensure that the attack will not be successful. Acceptance would involve simply letting the attacks occur knowing they are likely to stop, avoidance might involve finding a way to ensure the attacks cannot occur, and transfer could leverage a third-party mirror or anti-DoS hosting service.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q177",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 177,
+    "question": "After Angela left her last organization, she discovered that she still had access to her shared drives and could log in to her email account. What critical process was likely forgotten when she left?",
+    "choices": [
+      "An exit interview",
+      "Job rotation",
+      "Offboarding",
+      "Governance Security Program Management and Oversight 207"
+    ],
+    "answer": 2,
+    "explanation": "Offboarding processes are conducted to ensure that accounts and access are removed and that materials, computers, and data are all recovered from the staff member when a member of an organization leaves. Exit interviews are an HR process, job rotation helps to prevent an individual from conducting fraudulent activities over time, and governance helps to manage and maintain data by establishing high-level control over the processes, procedures, and classification of the data an organization uses.330 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q178",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 178,
+    "question": "Kelly's organization has created an incident response policy that outlines the high-level goals of the IR process. Next, she wants to create detailed documents that describe the steps to handle specific incident types like denial-of-service attacks. What document should she create?",
+    "choices": [
+      "Standards",
+      "Playbooks",
+      "Regulations",
+      "Guidelines"
+    ],
+    "answer": 1,
+    "explanation": "Playbooks provide detailed, step-by-step instructions for how to address specific topics like denial-of-service attacks. Standards describe the settings or requirements that the organization wishes to use. Regulations are law and are not set by the organization, and guidelines provide advice to organizations seeking to comply with the policy and standards.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q179",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 179,
+    "question": "Mohammed wants to show his organization's senior leadership the impact of their risk management process over time. What risk reporting method effectively conveys this in an easily digestible visual format for senior leadership?",
+    "choices": [
+      "Ad hoc reports",
+      "Risk registers",
+      "Risk trend analysis",
+      "Risk event reports"
+    ],
+    "answer": 2,
+    "explanation": "Risk trend analysis shows the change in risks over time, allowing senior leadership to quickly and easily understand where risks are being addressed and where they may be increasing or not getting the attention they need. Ad hoc reports are used when risk information is needed in specific areas, typically in response to specific needs. Risk registers list an organization's risks in detail and are not a quick, visual tool. Risk event reports detail specific events related to risks.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q180",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 180,
+    "question": "Presenting certification that a third-party organization has validated a vendor's practices against ISO 27001 is an example of what practice?",
+    "choices": [
+      "Internal audit",
+      "Vendor assessment",
+      "Vulnerability scanning",
+      "Data inventory"
+    ],
+    "answer": 1,
+    "explanation": "Third-party assessments of an organization's efforts to meet ISO standards is an example of vendor assessment. Internal audit would leverage internal staff to perform an audit, vulnerability scans use technical tools to identify vulnerabilities, and data inventories identify data and its locations and uses.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q181",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 181,
+    "question": "What common limitation do IaaS vendors place on penetration testing by their customers?",
+    "choices": [
+      "It can only be done by third parties.",
+      "It must be prescheduled.",
+      "It can only be done by the customers themselves.",
+      "Notification must be sent immediately after it occurs."
+    ],
+    "answer": 1,
+    "explanation": "Vendors often ask that customers work with them to preschedule the testing so that they are aware of it. They typically do not place limitations on whether customers or third parties conduct the testing, and after-the-fact notification instead of prior notification is not a typical requirement.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q182",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 182,
+    "question": "Chandra is providing guidance on recognizing phishing campaigns. Which of these is not a common way to recognize phishing emails?",
+    "choices": [
+      "It creates a false sense of urgency.",
+      "The IP address of the recipient.",
+      "The attachment is encrypted and password protected.",
+      "The email claims that there is a problem with your password."
+    ],
+    "answer": 1,
+    "explanation": "The IP address of the recipient is not a common way of identifying phishing emails. The source system, domain, or IP may indicate a malicious sender, however! Phishing often focuses on creating a false sense of urgency, uses encrypted and password-protected files to bypass filters, and may claim there is a problem with your password.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q183",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 183,
+    "question": "Juan's company trains users to be cautious about revealing information about security controls, practices, configurations, and even the tools and software the company deploys. What is this practice known as?",
+    "choices": [
+      "Awareness training",
+      "Social engineering",
+      "An insider threat",
+      "Operational security Security Program Management and Oversight"
+    ],
+    "answer": 3,
+    "explanation": "Operational security is the practice of educating users on the importance of protecting sensitive information, including security practices, configurations, and other details. Awareness training is a broad term describing all elements of security awareness. Social engineering is used by attackers to leverage human behaviors and practices for their own gain. Insider threats are threats created by those inside the organization.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q184",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 184,
+    "question": "Mark's organization operates in the EU and sells products in multiple countries. It wants to determine its compliance requirements based on regulations that will impact it. Which of the following regions should it focus its review of legal implication on?",
+    "choices": [
+      "Local",
+      "National",
+      "Global",
+      "All of the above"
+    ],
+    "answer": 3,
+    "explanation": "An organization operating in the European Union (EU) and selling in multiple countries means that the company needs to assess legal implications on local, national, and global levels.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q185",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 185,
+    "question": "What occurs when a vendor has a competing interest that could influence their behavior in a way that is not aligned with the best interests of one of their customers?",
+    "choices": [
+      "An insider threat",
+      "A MOU violation",
+      "A conflict of interest",
+      "A SOW violation"
+    ],
+    "answer": 2,
+    "explanation": "Conflicts of interest occur when an organization has a competing interest that could influence their behavior in a way that is not aligned with the best interest of a customer. Insider threats occur because an insider creates a problem or threat, either on purpose or inadvertently. MOU and SOW violations are both contractual violations and could be conflicts of interest but are not limited to that.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q186",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 186,
+    "question": "Selma's organization allows individual business units to manage their cybersecurity needs and practices as they see fit. What type of governance structure have they adopted?",
+    "choices": [
+      "Centralized",
+      "Board-based",
+      "Committee-based",
+      "Decentralized"
+    ],
+    "answer": 3,
+    "explanation": "Decentralized governance allows individual business units to manage themselves rather than central organizations doing so. There is no board or committee described in the question. Security Program Management and Oversight 331",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q187",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 187,
+    "question": "The US Treasury Department regulates banks and their behaviors, including security-related regulations. What term best describes this type of governance structure?",
+    "choices": [
+      "Government entity-based",
+      "Shareholder driven",
+      "Board-based",
+      "Centralized"
+    ],
+    "answer": 0,
+    "explanation": "The Treasury Department is a government entity, making this governance government entity-based. Shareholders and boards may play a role, but not via the Treasury Department. Centralized governance occurs inside the organization, not from an external entity.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q188",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 188,
+    "question": "The company that Sandra wants to work with does not provide third-party audit statements. If Sandra wants to engage with them, what should she request as part of her vendor assessment process prior to signing a contract in order to have the most useful data available?",
+    "choices": [
+      "A right-to-audit clause",
+      "A supply chain analysis",
+      "Evidence of internal audits",
+      "A due diligence statement"
+    ],
+    "answer": 2,
+    "explanation": "Requesting evidence of internal audits and then assessing that evidence is the best option Sandra has. While a right-to-audit clause can be important in contracts, it would only be useful after the contract is signed, not prior to engagement. Supply chain analysis can be useful in specific circumstances, but nothing in the question indicates specific supply chain requirements or concerns. Due diligence is performed, not stated.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q189",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 189,
+    "question": "Leigh wants to provide new users with information about her organization's security goals and high-level practices. What do organizations typically provide to accomplish this?",
+    "choices": [
+      "Audit reports",
+      "Policy handbooks",
+      "Runbooks",
+      "User awareness training Security Program Management and Oversight 209"
+    ],
+    "answer": 1,
+    "explanation": "Policy handbooks are used to provide information about high-level security practices and goals. Audit reports may not be broadly available in an organization, runbooks are detailed how-to guides for processes or tasks, and user awareness training focuses on security awareness rather than high-level goals and policies.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q190",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 190,
+    "question": "Jodi wants to prepare her staff to defend against social engineering. What should she invest in to help her staff address this threat?",
+    "choices": [
+      "EDR tools",
+      "Awareness training",
+      "A NGFW",
+      "Security policies"
+    ],
+    "answer": 1,
+    "explanation": "Awareness training remains the best protection against social engineering aimed at individual staff members. While awareness won't stop all attacks, protecting individuals requires them to be trained on a regular basis. Endpoint detection and response (EDR) and next-generation firewall (NGFW) are both technical tools that cannot stop social engineering directly, and security policies help the organization establish their approach to security but won't stop individual responses to social engineering directly.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q191",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 191,
+    "question": "How do audits and examinations differ?",
+    "choices": [
+      "An examination is simpler and less costly.",
+      "Audits are external and examinations are internal.",
+      "Audits are internal and examinations are external.",
+      "An audit is simpler and less costly."
+    ],
+    "answer": 0,
+    "explanation": "Examinations are simpler, typically smaller in scope, and less costly than an audit. Both help provide assurance, but the standards applied are different.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q192",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 192,
+    "question": "Evangeline wants to develop a security training program. What should she do first?",
+    "choices": [
+      "Determine how the training will be presented.",
+      "Establish a budget.",
+      "Review regulatory requirements for training.",
+      "Assess the threats and risks the organization faces."
+    ],
+    "answer": 3,
+    "explanation": "The first step in developing security training programs is to determine what risks and threats the organization faces. Once those are understood, an appropriate program can be created, including obtaining a budget, determining how training will be presented, and ensuring that regulatory requirements, if any, are met.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q193",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 193,
+    "question": "Angelo is designing his organization's security governance groups and has created a committee. Which of the following is not a typical member of internal security governance committees?",
+    "choices": [
+      "Subject matter experts",
+      "Regulators",
+      "Management",
+      "Internal legal counsel"
+    ],
+    "answer": 1,
+    "explanation": "Internal governance committees do not typically include external entities like regulators. Subject matter experts (SMEs), management, and counsel are all commonly members of security governance committees.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q194",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 194,
+    "question": "Dana wants to assess regulatory impacts on her organization's security policy. Which of the following is not a typical regulatory impact she will need to assess?",
+    "choices": [
+      "Global",
+      "National",
+      "Local",
+      "Corporate"
+    ],
+    "answer": 3,
+    "explanation": "Global, national, and local regulations may impact Dana's security policy, but corporations do not set regulations. Instead, they will influence the policy through contractual obligations.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q195",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 195,
+    "question": "Marty wants to ensure that his security policies are up-to-date and effective. Which of the following data sources is least likely to be useful as he reviews his organization's security policies?",
+    "choices": [
+      "Security system logs and reports",
+      "Staff feedback",
+      "NDAs",
+      "Review of regulations Security Program Management and Oversight"
+    ],
+    "answer": 2,
+    "explanation": "Feedback on policies from staff, integrating new and changed regulations, and validating reports from security tools are all common elements used to update security policies. Nondisclosure agreements (NDAs) seek to keep data secure through contractual obligations and are not a typical element in policy updates.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q196",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 196,
+    "question": "What term describes a formal document that outlines the terms and details of an agreement between two organizations, including the roles and responsibilities each will have?",
+    "choices": [
+      "A statement of work",
+      "A business partners agreement",
+      "A memorandum of agreement",
+      "A service level agreement"
+    ],
+    "answer": 2,
+    "explanation": "A MOA, or memorandum of agreement, is a formal document that outlines the terms and details of an agreement between two organizations, including the roles and responsibilities each will have. A SOW, or statement of work, describes the specific work that will be under a master services agreement for an engagement. Service level agreements (SLAs) are332 Appendix Answers to Review Questions written contracts that specify the conditions of service that will be provided by the vendor and the remedies available to the customer if the vendor fails to meet the SLA. Business partners agreements (BPAs) are used when organizations agree to do business with each other in a partnership.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q197",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 197,
+    "question": "Victoria wants to understand a potential vendor's security practices. Which of the following is the simplest way for her to gather that information from multiple potential vendors?",
+    "choices": [
+      "Third-party audits",
+      "Questionnaires",
+      "Penetration testing",
+      "OSINT"
+    ],
+    "answer": 1,
+    "explanation": "Companies commonly send questionnaires to potential vendors to gather information about security practices prior to acquiring their products or engaging their services. This is a simpler method than requiring audits or penetration tests, and OSINT will not provide organizational answers about practices in most cases.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q198",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 198,
+    "question": "What two things most frequently drive external compliance reporting?",
+    "choices": [
+      "Regulatory bodies and contractual obligations",
+      "Internal and external audit",
+      "Contractual requirements and board reporting",
+      "Regulatory bodies and KPIs"
+    ],
+    "answer": 0,
+    "explanation": "External reporting for compliance is most often driven by the need to meet regulations or contractual obligations. Audit assesses compliance rather than driving reporting, board reporting is considered internal, and KPIs are typically internal measures.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q199",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 199,
+    "question": "Blaine wants to ensure that his organization consistently meets PCI DSS requirements. What should he implement to meet this goal?",
+    "choices": [
+      "Annual PCI DSS internal audits",
+      "Automated compliance monitoring",
+      "Annual PCI DSS external audits",
+      "Compliance KPIs"
+    ],
+    "answer": 1,
+    "explanation": "Automated compliance monitoring is a key tool when organizations want to ensure they are consistently meeting compliance targets. Annual audits do not ensure compliance during the year, whether they are internal or external. Compliance KPIs give organizations compliance targets and measures, but without underlying tools they are simply a way to know the state of compliance when they are checked or updated.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q200",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 200,
+    "question": "Ujama is reviewing logs and notices that one of his users has repeatedly failed their login process. After calling the user, he discovers that the user had mistyped their password multiple times. What type of anomalous behavior should he classify this as?",
+    "choices": [
+      "Insider",
+      "Risky",
+      "Unintentional",
+      "Unexpected"
+    ],
+    "answer": 2,
+    "explanation": "Mistakes like this are classified as unintentional anomalous behavior. Risky and unexpected behaviors are the other two classifications that are part of the Security+ exam outline. Insider attacks or threats are intentional or unintentional malicious activity, which mistyping a password is not an example of.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q201",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 201,
+    "question": "Common password management practices include which of the following?",
+    "choices": [
+      "Disabling MFA",
+      "Reusing passwords across multiple sites",
+      "Enabling password hints",
+      "Changing passwords only when necessary Security Program Management and Oversight 211"
+    ],
+    "answer": 3,
+    "explanation": "NIST no longer recommends requiring password changes on a regular basis, and instead suggests that passwords only be changed when necessary. This helps to prevent password reuse and avoids influencing users to slightly modify passwords. Disabling MFA, reusing passwords, and using passwords hints are all practices that should be avoided.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q202",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 202,
+    "question": "Mark is responsible for the execution of his organization's security awareness program. Why might he deploy multiple training methods like workshops, online training, and simulations as part of the training?",
+    "choices": [
+      "To meet compliance requirements",
+      "To address learning preferences",
+      "To decrease costs for training",
+      "To meet KPIs"
+    ],
+    "answer": 1,
+    "explanation": "Organizations often use multiple formats for awareness training to address learning preferences and styles. Compliance requirements typically do not specify how awareness is accomplished, just that it has occurred and can be validated. Multiple modes of training tend to increase costs rather than decreasing them, and KPIs for security awareness look at impact, not modes.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q203",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 203,
+    "question": "Natasha wants to establish a vendor monitoring practice for her organization. What should she establish to ensure that her vendor is performing as expected?",
+    "choices": [
+      "A MOU",
+      "Ongoing compliance audits",
+      "Regulatory requirements",
+      "KPIs"
+    ],
+    "answer": 3,
+    "explanation": "Organizations typically establish KPIs (key performance indicators), which may be described in MSAs (master service agreements), SLAs (service level agreements), or SOWs (statements of work). These help to measure and monitor the vendor's performance. MOUs are used to document how organizations want to work together, not to establish performance measures. Compliance audits and regulatory requirements are only part of performance management.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q204",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 204,
+    "question": "Mikayla is working remotely in a public space and has been trained to make sure that others cannot see her screen or keyboard. What term is used to describe this?",
+    "choices": [
+      "Insider threats",
+      "Situational awareness",
+      "Social engineering",
+      "Unintentional risky behavior"
+    ],
+    "answer": 1,
+    "explanation": "Staff should be trained to maintain situational awareness by keeping an eye on their environment and the behaviors of individuals around them. Insider threats are internal actors who undertake malicious actions. Social engineering uses human behaviors to conduct malicious activities, and unintentionally risky behavior is typically accidental threats caused by users. Security Program Management and Oversight 333",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q205",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 205,
+    "question": "What data role is typically the most senior in an organization?",
+    "choices": [
+      "Data processor",
+      "Data controller",
+      "Data owner",
+      "Data steward"
+    ],
+    "answer": 2,
+    "explanation": "Data owners are typically the most senior data-related role in an organization and bear broad responsibility for the data, including oversight roles over stewards, controllers, and processors.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q206",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 206,
+    "question": "Which of the following is not a common hybrid work environment security practice?",
+    "choices": [
+      "Use of VPNs",
+      "Use of secure Wi-Fi networks",
+      "Ensuring physical security",
+      "Deploying security cameras"
+    ],
+    "answer": 3,
+    "explanation": "Deploying security cameras is not a common hybrid work environment option. Use of VPNs, secure Wi-Fi, and appropriate physical security are all common options.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q207",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 207,
+    "question": "Which of the following is not a common driver of external compliance reporting?",
+    "choices": [
+      "Contracts",
+      "Regulation",
+      "Reputation",
+      "Licensing Security Program Management and Oversight"
+    ],
+    "answer": 2,
+    "explanation": "Contracts, regulations, and licensing all drive external compliance reporting. Reputations may be damaged if organizations are not compliant, but it does not drive reporting.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q208",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 208,
+    "question": "Justin wants to have work done by a contractor with whom his organization has a master services agreement. What should he prepare to fully document the required work?",
+    "choices": [
+      "A work order",
+      "A service level agreement",
+      "A memorandum of understanding",
+      "A memorandum of agreement"
+    ],
+    "answer": 0,
+    "explanation": "Work orders (WO) and statements of work (SOWs) are used to document the specific tasks and deliverables that are performed under an MSA. SLAs, MOUs, and MOAs are not used for this purpose.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q209",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 209,
+    "question": "What measure is used to describe the average functional lifespan of a device in use?",
+    "choices": [
+      "An RTO",
+      "An MTTR",
+      "An RPO",
+      "An MTBF"
+    ],
+    "answer": 3,
+    "explanation": "MTBF, or mean time between failure, describes the average time before a device will fail, or the average amount of time between failures of a system. A recovery time objective, or RTO, is set by organizations to describe how long restoring systems or services to normal function after a disruption can take. Mean time to repair, or MTTR, is the average time it takes to repair a system or device. A recovery point objective, or RPO, describes how much data can be lost in the event of an outage or issue.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q210",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 210,
+    "question": "Jackie wants to use an ISO standard to help her select and implement information security controls and to develop information security management guidelines. Which ISO standard should she use?",
+    "choices": [
+      "ISO 27001",
+      "ISO 27701",
+      "ISO 27002",
+      "ISO 31000"
+    ],
+    "answer": 2,
+    "explanation": "ISO 27002 describes controls and helps select and implement controls while also providing guidance on developing information security management guidelines. ISO 27001 establishes control objectives for 14 different categories, including things like HR security, asset management, and operations security. ISO 27701 focuses on managing privacy controls, and ISO 31000 provides guidelines for risk management.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q211",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 211,
+    "question": "Establishing requirements like the height of fences is part of what standard for most organizations?",
+    "choices": [
+      "Physical security",
+      "Access control",
+      "Business continuity",
+      "Onboarding"
+    ],
+    "answer": 0,
+    "explanation": "Physical security standards set requirements for physical security controls like fences, locks, doors, and cameras. Access control policies may be logical or physical control-based, but fence height is not an access control. Business continuity and onboarding don't impact fence height, nor do they rely on it.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q212",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 212,
+    "question": "What organization typically elects an organization's board of directors in a public company?",
+    "choices": [
+      "The employees",
+      "The CEO",
+      "Shareholders",
+      "All relevant stakeholders"
+    ],
+    "answer": 2,
+    "explanation": "Boards are typically elected by shareholders. Employees, the CEO, and non-shareholders typically do not have the ability to elect or name members of the board.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q213",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 213,
+    "question": "Greg wants to classify anomalous behavior he has observed. The behavior involves a user's workstation sending large volumes of data to an off-site web server. How should he classify this behavior?",
+    "choices": [
+      "Risky",
+      "Unexpected",
+      "Unintentional",
+      "An insider threat Security Program Management and Oversight 213"
+    ],
+    "answer": 1,
+    "explanation": "Until he knows more details, Greg should classify this behavior as unexpected. Sending large volumes of data may be intentional, could be legitimate and thus not risky, and if it is intentional and part of business needs, would not be an insider threat.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q214",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 214,
+    "question": "Amber is responsible for compliance with PCI DSS in her organization and wants to ensure that she meets ongoing compliance monitoring requirements. Which of the following options will best help her achieve ongoing compliance?",
+    "choices": [
+      "Conduct quarterly audits.",
+      "Use compliance monitoring capabilities in scanning and management tools.",
+      "Conduct regular training on compliance requirements.",
+      "Require an auditor's attestation of compliance."
+    ],
+    "answer": 2,
+    "explanation": "Using existing tools to monitor for changes that would move the organization out of compliance is a common practice to help ensure ongoing compliance. Quarterly audits are point-in-time checks and won't ensure ongoing compliance. Training helps to keep staff aware, but additional actions are required to ensure compliance, and attestation does not provide ongoing compliance, only a statement at a point in time.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q215",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 215,
+    "question": "The third-party auditors that Dion hired for his organization have completed their audit. What action does the audit firm take after management acknowledgment is received from Dion's company?",
+    "choices": [
+      "Compliance reports are sent to third parties.",
+      "Regulatory statements are sent to customers.",
+      "Attestation is provided by the auditor.",
+      "Follow-up vulnerability scans will validate findings."
+    ],
+    "answer": 2,
+    "explanation": "After audits are acknowledged by management, the auditors will attest that the audit is complete and accurate based on their work and knowledge. Compliance and regulatory reporting may or may not happen depending on the reasons for the audit and the organization's needs. Once an audit is complete, further scans and other work may be conducted by the company but are not guaranteed.334 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q216",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 216,
+    "question": "Latisha is conducting a security review and notices that one of her users consistently uses her organization's VPN from Chile while the employee is based in the United States. After reviewing logs, she notes that the user is sometimes logged in from both the US and the remote location in Chile, and believes that the user may be allowing a third party to access their VPN account to perform some or all of their job tasks. What type of threat most accurately describes this?",
+    "choices": [
+      "Anomalous",
+      "Insider",
+      "Social engineering",
+      "Nation-state"
+    ],
+    "answer": 1,
+    "explanation": "The employee at Latisha's company can be considered an insider threat because they have provided access to a third party. Most organizations will terminate employees who do this due to violations of their acceptable use policy (AUP). The behavior is anomalous, but an insider threat is a better description. No social engineering is evident, nor is a nationstate actor described.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q217",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 217,
+    "question": "Marzita wants to respond to a phishing campaign that is sending links to malware to organizations. What effective tactic can she use to react to these campaigns quickly?",
+    "choices": [
+      "Deploy a WAF to block suspicious links.",
+      "Subscribe to a threat feed and automatically block phishing campaign URLs.",
+      "Manually block phishing URLs as they are reported by users.",
+      "Implement user awareness training."
+    ],
+    "answer": 1,
+    "explanation": "Using threat feeds to block phishing campaign URLs as they enter the feed is a proactive way to quickly respond. Web application firewalls (WAFs) are used to protect applications rather than as border devices to block outbound traffic. Manual blocks are commonly used but are slower to implement than threat feed-based responses. Conducting user awareness training is a best practice but doesn't directly respond to campaigns.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q218",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 218,
+    "question": "Amanda discovers that a member of her organization's staff has installed a remote access Trojan on their accounting software server and has been accessing it remotely. What type of threat has she discovered?",
+    "choices": [
+      "Zero-day",
+      "Insider threat",
+      "Misconfiguration",
+      "Weak encryption Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Amanda has discovered an insider threat. Insider threats can be difficult to discover, as a malicious administrator or other privileged user will often have the ability to conceal their actions or may actually be the person tasked with hunting for threats like this! This is not a zero-day-no vulnerability was mentioned, there was no misconfiguration since this was an intentional action, and encryption is not mentioned or discussed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q219",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 219,
+    "question": "Phil recently received an email claiming to be from HR with a link to a list of every employee's compensation attached. Phil clicks on it without checking the URL because he is curious about the pay that others in his department receive. How would this behavior be classified?",
+    "choices": [
+      "Risky",
+      "Irresponsible",
+      "Unexpected",
+      "Unintentional"
+    ],
+    "answer": 0,
+    "explanation": "Behavior like this would be considered risky, as clicking on unknown, unexpected links is a common way to succumb to a phishing attack. Unexpected typically describes behavior that isn't typical for the user, and we do now know if this user typically behaves this way. The Security+ exam outline doesn't use irresponsible as a category, and the click was intentional.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q220",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 220,
+    "question": "What should Ben do if he wants to assess the initial state of his information security awareness?",
+    "choices": [
+      "Implement security awareness based on a standard like ISO 27001.",
+      "Conduct a baseline analysis to determine his starting state.",
+      "Implement security awareness based on NIST standards.",
+      "Conduct a penetration test to determine how staff respond to security issues."
+    ],
+    "answer": 1,
+    "explanation": "Establishing a baseline for security awareness is important so that Ben can determine what, if any, impact a program is having. This will drive KPIs as well as influence which actions and steps are taken to evolve the program. Implementing a security program is recommended by many standards, but they don't determine initial awareness state. Penetration tests can provide information about where issues lie but don't provide a broad baseline assessment either.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q221",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 221,
+    "question": "During an incident investigation, Naomi notices that a second keyboard was plugged into a system in a public area of her company's building. Shortly after that event, the system was infected with malware, resulting in a data breach. What should Naomi look for in her inperson investigation?",
+    "choices": [
+      "A Trojan horse download",
+      "A malicious USB cable or drive",
+      "A worm",
+      "None of the above"
+    ],
+    "answer": 1,
+    "explanation": "Malicious tools like BadUSB can make a USB cable or drive look like a keyboard when they are plugged in. Malicious thumb drives have been used by penetration testers simply by dropping them in a parking lot near their intended target. A Trojan or a worm is a possibility, but the clue involving the keyboard would point to a USB device as the first place Naomi should look.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q222",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 222,
+    "question": "Jill wants to train her users to appropriately respond to suspicious email messages. Which of the following will provide her organization with the most useful input from users?",
+    "choices": [
+      "Ask users to report the email to the email provider using a reporting button.",
+      "Ask users to report the email to an internal security team.",
+      "Ask users to delete the email to avoid further issues.",
+      "Ask users to click on the message and links to explore the potential security issue."
+    ],
+    "answer": 1,
+    "explanation": "A common practice is to report suspicious messages to an internal security team so that they can take action on phishing and other potential security issues. Reporting to third parties will not provide the same visibility, nor will deleting the messages. Asking users to click on messages works against security best practices!",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q223",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 223,
+    "question": "Marcia wants to assess the effectiveness of her security awareness program. What should she do?",
+    "choices": [
+      "Establish and monitor awareness KPIs.",
+      "Require a third-party awareness audit.",
+      "Conduct regular surveys about security awareness.",
+      "Track incident rates versus training participation."
+    ],
+    "answer": 0,
+    "explanation": "Establishing security awareness KPIs, including incident rates, training uptake, responses to security awareness surveys, and other measurable indicators, is both the broadest and most useful option listed. Third-party awareness audits are not a typical method for doing this, and conducting surveys and tracking incident rates are both actions that will be part of common awareness KPIs. Security Program Management and Oversight 335",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q224",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 224,
+    "question": "Myles wants to describe the impact of noncompliance with regulations on his organization's business. If his organization is not compliant, what impact is most likely to occur related to his customers?",
+    "choices": [
+      "Fines",
+      "Contractual impacts",
+      "Loss of license",
+      "Sanctions Security Program Management and Oversight 215"
+    ],
+    "answer": 1,
+    "explanation": "Myles should be concerned about contractual impacts as part of his customer relationships. Noncompliance with regulations is likely to make him unable to fulfill contracts or to be in violation of contractual terms that require his company to be in compliance. Fines, loss of license, and sanctions may also occur, but they are less directly impactful to customers and are not guaranteed.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q225",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 225,
+    "question": "Sabrina wants to train her users on password management best practices. Which of the following options will have the largest impact on her organization's password security?",
+    "choices": [
+      "Implementing biometrics authentication factors",
+      "Conducting annual training on password best practices",
+      "Adopting NIST password length and complexity standards",
+      "Requiring staff to use an enterprise password manager"
+    ],
+    "answer": 3,
+    "explanation": "An enterprise password manager can help to make it easier to use appropriate passwords without requiring users to memorize them. This results in less reuse, stronger passwords, and the ability to manage them, including preventing password reuse. Biometrics, training, and adopting NIST password complexity and length standards will not have the same broad impact.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q226",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 226,
+    "question": "Jill wants to explain her organization's risks to senior management, but she knows that the risk register is lengthy and detailed. What type of document is commonly used to convey the most important high-level information found in a risk register to senior leaders?",
+    "choices": [
+      "A risk matrix",
+      "An SLE report",
+      "An ALE report",
+      "A risk KPI list"
+    ],
+    "answer": 0,
+    "explanation": "Risk matrices are often used to summarize risk registers for senior management. SLE and ALE reports are not common documents, although ALE and SLE reports are commonly used as part of quantitative risk assessment and reporting. Risk KPIs are used to track progress on risk management, not to provide a summary of a risk register.",
+    "source": "David Seidl local import"
+  },
+  {
+    "id": "seidl-d5-0-q227",
+    "domain": "Security Program Management and Oversight",
+    "questionNumber": 227,
+    "question": "Which of the following best describes guidelines?",
+    "choices": [
+      "They outline the principles and rules that guide the execution of security efforts throughout the enterprise.",
+      "They provide advice to organizations seeking to comply with the policies and standards.",
+      "They provide mandatory requirements describing how an organization will carry out its information security policies.",
+      "They are detailed, step-by-step processes that individuals and organizations must follow in specific circumstance External considerations Regulatory Legal Industry Local/regional National Global Monitoring and revision Types of governance structures Boards Committees Government entities Centralized/decentralized Roles and responsibilities for systems and data Owners Controllers Processors Custodians/stewards 5.2 Explain elements of the risk management process Risk identification Risk assessment Ad hoc Recurring One-time Continuous Risk analysis Qualitative Quantitative Single loss expectancy (SLE) Annualized loss expectancy (ALE) Annualized rate of occurrence (ARO) Probability Likelihood Exposure factor Impact Risk register Key risk indicators Risk owners Risk threshold Risk tolerance Risk appetite Expansionary Conservative Neutral Risk management strategies Transfer Accept Exemption Exception Avoid Mitigate Risk reporting Business impact analysis Recovery time objective (RTO) Recovery point objective (RPO) Mean time to repair (MTTR) Mean time between failures (MTBF) 5.3 Explain the processes associated with thirdparty risk assessment and management Vendor assessment Penetration testing Right-to-audit clause Evidence of internal audits Independent assessments Supply chain analysis Vendor selection Due diligence Conflict of interest Agreement types Service-level agreement (SLA) Memorandum of agreement (MOA) Memorandum of understanding (MOU) Master service agreement (MSA) Work order (WO)/statement of work (SOW) Non-disclosure agreement (NDA) Business partners agreement (BPA) Vendor monitoring Questionnaires Rules of engagement 5.4 Summarize elements of effective security compliance Compliance reporting Internal External Consequences of non-compliance Fines Sanctions Reputational damage Loss of license Contractual impacts Compliance monitoring Due diligence/care Attestation and acknowledgement Internal and external Automation Privacy Legal implications Local/regional National Global Data subject Controller vs. processor Ownership Data inventory and retention Right to be forgotten 5.5 Explain types and purposes of audits and assessments Attestation Internal Compliance Audit committee Self-assessments External Regulatory Examinations Assessment Independent third-party audit Penetration testing Physical Offensive Defensive Integrated Known environment Partially known environment Unknown environment Reconnaissance Passive Active 5.6 Given a scenario, implement security awareness practices Phishing Campaigns Recognizing a phishing attempt Responding to reported suspicious messages Anomalous behavior recognition Risky Unexpected Unintentional User guidance training Policy/handbooks Situational awareness Insider threat Password management Removable media and cables Social engineering Operational security Hybrid/remote work environments Reporting and monitoring Initial Recuring Development Education Security Program Management and Oversight"
+    ],
+    "answer": 1,
+    "explanation": "Guidelines provide advice to organizations seeking to comply with policies and standards. Policies outline the principles and rules that guide the execution of security efforts throughout the enterprise. Standards provide mandatory requirements describing how an organization will carry out its information security policies218 Appendix Answers to Review Questions",
+    "source": "David Seidl local import"
+  }
+] satisfies QuizQuestion[];
