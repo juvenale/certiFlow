@@ -10,7 +10,7 @@ import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
 import { QuizView } from "./quiz-view";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BookOpen,
   Menu,
@@ -34,7 +34,6 @@ import {
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
-import { getDailyTasks, incrementDailyTask } from "@/lib/daily-tasks";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -46,10 +45,6 @@ import { portFlashcards } from "@/data/port-flashcards";
 import { confusionItems, confusionSections } from "@/data/confusions";
 import { commandToolConfusions, commandToolScenarios, commandTools } from "@/data/command-tools";
 import type { User } from "@supabase/supabase-js";
-import { ErrorBoundary } from "./error-boundary";
-import { PageSkeleton } from "./loading-skeleton";
-import { ViewMiniDashboard } from "./view-header";
-import { SettingsView } from "./settings-view";
 
 type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
@@ -224,7 +219,6 @@ export function HomeClient() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appTheme, setAppTheme] = useState<AppTheme>(readThemeStorage);
   const [answered, setAnswered] = useState(() => readNumberStorage("certiflow-answered"));
-  const [cloudAutoCount, setCloudAutoCount] = useState(0);
   const [correct, setCorrect] = useState(() => readNumberStorage("certiflow-correct"));
   const [errors, setErrors] = useState<ErrorEntry[]>(readErrorsStorage);
   const [daysLeft] = useState(calculateDaysLeft);
@@ -256,11 +250,8 @@ export function HomeClient() {
   const [authBusy, setAuthBusy] = useState(false);
   const [cloudBusy, setCloudBusy] = useState(false);
   const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
+  const [adaptiveHint, setAdaptiveHint] = useState("Mode adaptatif prêt.");
   const supabase = useMemo(() => getSupabaseClient(), []);
-
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [view]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = appTheme;
@@ -328,22 +319,7 @@ export function HomeClient() {
     }
   }, [activeExam, examIndex, examAnswers, examFinished, examElapsedSeconds, examFlags, examConfidence]);
 
-  
-  // Auto-sync to Supabase every ~10 quiz answers (if logged in)
-  useEffect(() => {
-    if (!authUser || !supabase || cloudAutoCount < 10) return;
-    setCloudAutoCount(0);
-    const storage = collectCertiflowStorage();
-    const now = new Date().toISOString();
-    (supabase as any).from("user_data").upsert({
-      user_id: (authUser as any).id,
-      storage: storage,
-      updated_at: now,
-    }, { onConflict: "user_id" }).then(() => {
-      setCloudStatus("Sauvegarde automatique reussie");
-    }).catch(() => {});
-  }, [cloudAutoCount, authUser, supabase]);
-const score = answered ? Math.round((correct / answered) * 100) : 0;
+  const score = answered ? Math.round((correct / answered) * 100) : 0;
   const avgProgress = Math.round(domains.reduce((sum, domain) => sum + domain.progress, 0) / domains.length);
   const weakest = [...domains].sort((a, b) => a.progress - b.progress)[0];
   const selectedThemeData = studyThemes.find((theme) => theme.id === selectedTheme);
@@ -511,8 +487,6 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
     const isCorrect = index === currentQuestionAnswer;
     setSelectedAnswer(index);
     setAnswered((value) => value + 1);
-    setCloudAutoCount((v) => v + 1);
-    incrementDailyTask("qcm");
 
     // Per-domain stat tracking (used by dashboard auto-update)
     try {
@@ -587,61 +561,58 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
     setView("quiz");
   }
 
-  function handlePbqComplete() {
-    incrementDailyTask("pbq");
-    setCloudAutoCount((v) => v + 1);
-    // Track PBQ completion in global stats
-    setAnswered((v) => v + 1);
-    try {
-      const dsKey = "certiflow-domain-stats";
-      const ds: Record<string, { answered: number; correct: number }> = JSON.parse(localStorage.getItem(dsKey) || "{}");
-      const dom = "Security Operations";
-      ds[dom] = { answered: (ds[dom]?.answered ?? 0) + 1, correct: (ds[dom]?.correct ?? 0) + 1 };
-      localStorage.setItem(dsKey, JSON.stringify(ds));
-    } catch {}
+  function startAdaptiveReview() {
+    setSelectedAnswer(null);
+    setFlashBack(false);
+
+    const activeErrors = errors
+      .filter((error) => error.status !== "maîtrisé")
+      .sort((a, b) => b.count - a.count);
+
+    if (activeErrors.length) {
+      const target = activeErrors[0];
+      const found = questions.findIndex((question) => question.id === target.questionId);
+      setSelectedDomain("all");
+      setSelectedTheme("all");
+      setGlobalSearch("");
+      setQuestionIndex(found >= 0 ? found : 0);
+      setAdaptiveHint(`Priorité: reprendre une erreur (${target.concept || target.domain}).`);
+      setView("quiz");
+      return;
+    }
+
+    let domainStats: Record<string, { answered: number; correct: number }> = {};
+    try { domainStats = JSON.parse(localStorage.getItem("certiflow-domain-stats") || "{}"); } catch {}
+    const weakDomain = domains
+      .map((domain) => {
+        const stat = domainStats[domain.name] ?? { answered: 0, correct: 0 };
+        const accuracy = stat.answered ? stat.correct / stat.answered : 0;
+        const coverage = Math.min(1, stat.answered / 25);
+        return { name: domain.name, score: accuracy * 0.7 + coverage * 0.3 };
+      })
+      .sort((a, b) => a.score - b.score)[0];
+
+    if (weakDomain) {
+      const domainQuestions = questions.filter((question) => question.domain === weakDomain.name);
+      setSelectedDomain(weakDomain.name);
+      setSelectedTheme("all");
+      setGlobalSearch("");
+      setQuestionIndex(domainQuestions.length ? Math.floor(Math.random() * domainQuestions.length) : 0);
+      setAdaptiveHint(`Priorité: domaine faible ${weakDomain.name}.`);
+      setView("quiz");
+      return;
+    }
+
+    setSelectedDomain("all");
+    setSelectedTheme("all");
+    setGlobalSearch("");
+    setQuestionIndex(Math.floor(Math.random() * questions.length));
+    setAdaptiveHint("Quiz rapide choisi: pas encore assez de données faibles.");
+    setView("quiz");
   }
 
-    function gradePbq() {
-    const total = pbqItems.length;
-    const score = pbqItems.reduce((sum, item, index) => sum + (pbqAnswers[index] === item.answer ? 1 : 0), 0);
-    setPbqScore(score);
-
-    // Track PBQ results in global stats
-    setAnswered((v) => v + total);
-    setCorrect((v) => v + score);
-
-    // Per-domain stats and error tracking for each PBQ item
-    try {
-      const dsKey = "certiflow-domain-stats";
-      const ds: Record<string, { answered: number; correct: number }> = JSON.parse(localStorage.getItem(dsKey) || "{}");
-      const dom = "General Security Concepts";
-      pbqItems.forEach((item, index) => {
-        const isCorrect = pbqAnswers[index] === item.answer;
-        ds[dom] = { answered: (ds[dom]?.answered ?? 0) + 1, correct: (ds[dom]?.correct ?? 0) + (isCorrect ? 1 : 0) };
-
-        if (!isCorrect) {
-          const itemId = `pbq-${index}`;
-          setErrors((prev) => {
-            const found = prev.find((e) => e.questionId === itemId);
-            if (found) {
-              return prev.map((e) => e.questionId === itemId ? { ...e, count: e.count + 1, status: "à revoir", last: new Date().toLocaleDateString("fr-FR") } : e);
-            }
-            return [...prev, {
-              questionId: itemId,
-              question: item.risk,
-              chosen: String(pbqAnswers[index] ?? "pas de reponse"),
-              answer: item.answer,
-              domain: dom,
-              concept: item.risk,
-              count: 1,
-              status: "à revoir",
-              last: new Date().toLocaleDateString("fr-FR")
-            }];
-          });
-        }
-      });
-      localStorage.setItem(dsKey, JSON.stringify(ds));
-    } catch {}
+  function gradePbq() {
+    setPbqScore(pbqItems.reduce((sum, item, index) => sum + (pbqAnswers[index] === item.answer ? 1 : 0), 0));
   }
 
   function updateErrorStatus(questionId: string, status: ErrorEntry["status"]) {
@@ -721,59 +692,6 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
     }
     setExamStartedAt(null);
     setExamFinished(true);
-    incrementDailyTask("exam");
-    setCloudAutoCount((v) => v + 10);
-
-    // Track exam results in global stats
-    if (activeExam) {
-      const total = activeExam.questions.length;
-      let correctCount = 0;
-
-      activeExam.questions.forEach((q) => {
-        const selected = examAnswers[q.id];
-        const correctAnswers = q.answers?.length ? q.answers : [q.answer];
-        const isCorrect = selected?.length && selected.length === correctAnswers.length && selected.every((a, i) => a === correctAnswers[i]);
-
-        if (isCorrect) correctCount++;
-
-        if (!isCorrect && selected?.length) {
-          setErrors((prev) => {
-            const found = prev.find((e) => e.questionId === q.id);
-            if (found) {
-              return prev.map((e) => e.questionId === q.id ? { ...e, count: e.count + 1, status: "à revoir", last: new Date().toLocaleDateString("fr-FR") } : e);
-            }
-            return [...prev, {
-              questionId: q.id,
-              question: q.question,
-              chosen: selected.map((i) => q.choices[i]).join(" | "),
-              answer: correctAnswers.map((i) => q.choices[i]).join(" | "),
-              domain: q.examTitle ?? "General Security Concepts",
-              concept: `Question ${q.questionNumber}`,
-              count: 1,
-              status: "à revoir",
-              last: new Date().toLocaleDateString("fr-FR")
-            }];
-          });
-        }
-      });
-
-      setAnswered((v) => v + total);
-      setCorrect((v) => v + correctCount);
-
-      // Per-domain stats
-      try {
-        const dsKey = "certiflow-domain-stats";
-        const ds: Record<string, { answered: number; correct: number }> = JSON.parse(localStorage.getItem(dsKey) || "{}");
-        activeExam.questions.forEach((q) => {
-          const dom = q.examTitle ?? "General Security Concepts";
-          const selected = examAnswers[q.id];
-          const correctAnswers = q.answers?.length ? q.answers : [q.answer];
-          const isCorrect = selected?.length && selected.length === correctAnswers.length && selected.every((a, i) => a === correctAnswers[i]);
-          ds[dom] = { answered: (ds[dom]?.answered ?? 0) + 1, correct: (ds[dom]?.correct ?? 0) + (isCorrect ? 1 : 0) };
-        });
-        localStorage.setItem(dsKey, JSON.stringify(ds));
-      } catch {}
-    }
   }
 
   function returnToExamList() {
@@ -929,25 +847,9 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
     window.location.reload();
   }
 
-  
-  // ─── Keyboard shortcuts ────────────────────────────────────────────
-  const [showShortcuts, setShowShortcuts] = useState(false);
-
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      const target = e.target as HTMLElement;
-      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable) return;
-      if (e.key === "?") { e.preventDefault(); setShowShortcuts((v) => !v); return; }
-      if (e.key === "Escape") { e.preventDefault(); setView("dashboard"); return; }
-      if (e.key === "/") { e.preventDefault(); setView("search"); return; }
-      const shortcuts: Record<string, ViewId> = { "1": "dashboard", "2": "courses", "3": "confusions", "4": "quiz", "5": "pbq", "6": "flashcards", "7": "ports", "8": "exam", "9": "errors", "0": "settings" };
-      if (shortcuts[e.key]) { e.preventDefault(); setView(shortcuts[e.key]); return; }
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-return (
+  return (
     <main className="app-shell min-h-screen text-foreground">
+
       {/* Mobile top bar */}
       <div className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-card/95 backdrop-blur px-4 py-2 lg:hidden">
         <button type="button" onClick={() => setMobileMenuOpen((v) => !v)} className="flex h-10 w-10 items-center justify-center rounded-btn border border-border bg-muted" aria-label="Menu">
@@ -956,15 +858,33 @@ return (
         <span className="text-sm font-black text-primary">CertiFlow</span>
         <span className="text-xs font-bold text-muted-foreground">{activeView.label}</span>
       </div>
-<div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
-        <aside className={cn(
-        "glass-panel border-b border-border p-4 z-30",
-        // Mobile: fixed overlay when open, hidden when closed
-        "fixed inset-y-0 left-0 w-72 overflow-y-auto shadow-2xl transition-transform duration-300 lg:hidden",
-        mobileMenuOpen ? "translate-x-0" : "-translate-x-full",
-        // Desktop: sticky sidebar
-        "lg:static lg:z-auto lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:overflow-y-auto lg:border-b-0 lg:border-r lg:translate-x-0 lg:shadow-none lg:transition-none"
-      )}>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-30 lg:hidden">
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+          <nav className="absolute left-0 top-0 bottom-0 w-72 overflow-y-auto border-r border-border bg-card p-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="mb-6">
+              <img src="/certiflow-logo.png" alt="CertiFlow" className="h-12 w-full rounded-card object-contain" />
+              <p className="mt-2 text-sm font-black">Security+ SY0-701</p>
+            </div>
+            <div className="grid gap-1">
+              {views.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button key={item.id} type="button" onClick={() => { setView(item.id); setMobileMenuOpen(false); }}
+                    className={cn("flex min-h-11 items-center gap-3 rounded-card px-3 text-left text-sm font-semibold text-muted-foreground transition", view === item.id ? "bg-primary/10 text-primary font-bold" : "hover:bg-muted hover:text-foreground")}>
+                    <Icon className="h-4 w-4 shrink-0" />{item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
+        </div>
+      )}
+
+      <div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
+        <aside className="glass-panel hidden border-b border-border p-4 lg:block lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
               <img
@@ -992,7 +912,7 @@ return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => { setView(item.id); if (item.id === "ports") incrementDailyTask("ports"); }}
+                  onClick={() => setView(item.id)}
                   className={cn(
                     "group flex min-h-11 items-center gap-3 rounded-card px-3 text-left text-sm font-semibold text-muted-foreground transition-all duration-200 relative overflow-hidden",
                     view === item.id ? "bg-primary/10 text-primary font-bold shadow-sm" : "hover:bg-muted hover:text-foreground hover:translate-x-0.5"
@@ -1025,14 +945,7 @@ return (
           </div>
         </aside>
 
-              {/* Mobile menu backdrop */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-20 bg-background/60 backdrop-blur-sm lg:hidden" onClick={() => setMobileMenuOpen(false)} />
-      )}
-
         <section className="mx-auto w-full max-w-7xl p-4 lg:p-8">
-            <Suspense fallback={<PageSkeleton />}>
-              <ErrorBoundary>
           <header className="hero-panel mb-6 rounded-card border border-border p-5 shadow-sm sm:p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
@@ -1046,6 +959,19 @@ return (
               <strong className="block text-3xl text-primary">{daysLeft}</strong>
               <span className="text-sm text-muted-foreground">jours restants</span>
             </div>
+            </div>
+            <div className="mt-4 flex flex-col gap-3 rounded-card border border-border bg-card/80 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-sm font-black">Révision adaptative</p>
+                <p className="mt-1 text-sm text-muted-foreground">{adaptiveHint}</p>
+              </div>
+              <button
+                type="button"
+                onClick={startAdaptiveReview}
+                className="inline-flex min-h-11 items-center justify-center rounded-card bg-primary px-5 font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95"
+              >
+                Réviser maintenant
+              </button>
             </div>
           </header>
 
@@ -1092,6 +1018,7 @@ return (
               avgProgress={avgProgress}
               weakest={weakest}
               onNavigate={(v: string) => setView(v as ViewId)}
+              onSmartReview={startAdaptiveReview}
             />
           )}
 
@@ -1133,7 +1060,7 @@ return (
             />
           )}
 
-          {view === "pbq" && <PBQBrowser onComplete={handlePbqComplete} />}
+          {view === "pbq" && <PBQBrowser />}
 
           {view === "flashcards" && (
             <Panel title="Flashcards bilingues">
@@ -1196,7 +1123,7 @@ return (
               </button>
               <div className="mt-4 flex gap-2">
                 <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
-                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); incrementDailyTask("flashcards"); }}>Suivante</ActionButton>
+                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
               </div>
                 </>
               ) : (
@@ -1379,88 +1306,133 @@ return (
           )}
 
           {view === "settings" && (
-            <SettingsView
-              authUser={authUser}
-              authEmail={authEmail}
-              authPassword={authPassword}
-              authBusy={authBusy}
-              cloudBusy={cloudBusy}
-              cloudStatus={cloudStatus}
-              supabaseReady={!!supabase}
-              onAuthEmailChange={setAuthEmail}
-              onAuthPasswordChange={setAuthPassword}
-              onSignIn={() => handleAuth("signin")}
-              onSignUp={() => handleAuth("signup")}
-              onSignOut={signOut}
-              onCloudSave={saveCloudProgress}
-              onCloudRestore={restoreCloudProgress}
-              answered={answered}
-              correct={correct}
-              errorsCount={errors.length}
-              hasActiveExam={!!activeExam}
-              examFinished={examFinished}
-              dailyTasks={getDailyTasks()}
-              appTheme={appTheme}
-              onThemeChange={setAppTheme}
-              onExport={exportData}
-              onImport={importData}
-              onReset={resetAllData}
-            />
+            <div className="grid gap-4">
+              <Panel title="Compte & synchronisation">
+                <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    <p className="text-sm font-bold text-muted-foreground">État Supabase</p>
+                    <p className="mt-2 font-semibold">{cloudStatus}</p>
+                    {authUser && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Compte actif: <strong>{authUser.email}</strong>
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    {!authUser ? (
+                      <div className="grid gap-3">
+                        <input
+                          type="email"
+                          value={authEmail}
+                          onChange={(event) => setAuthEmail(event.target.value)}
+                          placeholder="Email"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <input
+                          type="password"
+                          value={authPassword}
+                          onChange={(event) => setAuthPassword(event.target.value)}
+                          placeholder="Mot de passe"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signin")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Se connecter
+                          </button>
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signup")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Créer un compte
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid gap-3">
+                        <p className="text-sm text-muted-foreground">
+                          Sauvegarde ta progression en ligne, puis restaure-la sur ton téléphone ou ton PC avec le même compte.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={saveCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Sauvegarder en ligne
+                          </button>
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={restoreCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Restaurer sur cet appareil
+                          </button>
+                          <button
+                            type="button"
+                            onClick={signOut}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold"
+                          >
+                            Déconnexion
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Panel>
+
+              <Panel title="Données actuelles">
+                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    { label: "Questions répondues", value: answered },
+                    { label: "Réponses correctes", value: correct },
+                    { label: "Erreurs enregistrées", value: errors.length },
+                    { label: "Session examen", value: activeExam ? (examFinished ? "Terminée" : "En cours") : "Aucune" },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="rounded-card border border-border bg-muted p-4">
+                      <strong className="block text-2xl font-black tabular-nums text-primary">{value}</strong>
+                      <span className="text-sm text-muted-foreground">{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+
+              <Panel title="Sauvegarde et restauration">
+                <p className="mb-4 text-muted-foreground text-sm">Exporte ta progression complète (quiz, erreurs, examen, filtres) dans un fichier JSON. Importe-le sur un autre appareil ou après un nettoyage du navigateur.</p>
+                <div className="flex flex-wrap gap-3">
+                  <button type="button" onClick={exportData}
+                    className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
+                    Exporter (JSON)
+                  </button>
+                  <label className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-card border border-border bg-muted px-5 font-bold transition hover:border-primary hover:text-primary">
+                    Importer (JSON)
+                    <input type="file" accept=".json" className="sr-only" onChange={importData} />
+                  </label>
+                </div>
+              </Panel>
+
+              <Panel title="Réinitialisation">
+                <p className="mb-4 text-muted-foreground text-sm">Efface toutes les données CertiFlow enregistrées dans ce navigateur. Ta progression, tes erreurs et ta session d&apos;examen seront supprimées.</p>
+                <button type="button"
+                  onClick={() => { if (window.confirm("Effacer toutes tes données CertiFlow ? Cette action est irréversible.")) resetAllData(); }}
+                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-red-600 px-5 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:opacity-90">
+                  Réinitialiser toutes les données
+                </button>
+              </Panel>
+            </div>
           )}
 
           {view === "assistant" && <AssistantView />}
-
-          {/* Keyboard shortcuts help */}
-          {showShortcuts && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm" onClick={() => setShowShortcuts(false)}>
-              <div className="rounded-card border border-border bg-card p-6 shadow-2xl max-w-sm w-full mx-4" onClick={(e) => e.stopPropagation()}>
-                <h2 className="text-lg font-black mb-4">Raccourcis clavier</h2>
-                <div className="grid gap-2 text-sm">
-                  {[
-                    ["1-9", "Vues 1 a 9"], ["0", "Parametres"],
-                    ["Echap", "Tableau de bord"], ["?", "Cette aide"],
-                    ["/", "Recherche"],
-                  ].map(([key, desc]) => (
-                    <div key={key} className="flex items-center gap-3">
-                      <kbd className="flex h-7 min-w-7 items-center justify-center rounded-btn border border-border bg-muted px-2 text-xs font-bold text-primary">{key}</kbd>
-                      <span className="text-muted-foreground">{desc}</span>
-                    </div>
-                  ))}
-                </div>
-                <button type="button" onClick={() => setShowShortcuts(false)}
-                  className="mt-5 w-full rounded-btn bg-primary py-2 text-sm font-bold text-primary-foreground transition hover:opacity-90">
-                  Fermer
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Keyboard shortcuts help */}
-          {showShortcuts && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm" onClick={() => setShowShortcuts(false)}>
-              <div className="rounded-card border border-border bg-card p-6 shadow-2xl max-w-sm w-full mx-4" onClick={(e: { stopPropagation: () => void }) => e.stopPropagation()}>
-                <h2 className="text-lg font-black mb-4">Raccourcis clavier</h2>
-                <div className="grid gap-2 text-sm">
-                  {[
-                    ["1-9", "Vues 1 a 9"], ["0", "Parametres"],
-                    ["Echap", "Tableau de bord"], ["?", "Cette aide"],
-                    ["/", "Recherche"],
-                  ].map(([key, desc]) => (
-                    <div key={key} className="flex items-center gap-3">
-                      <kbd className="flex h-7 min-w-7 items-center justify-center rounded-btn border border-border bg-muted px-2 text-xs font-bold text-primary">{key}</kbd>
-                      <span className="text-muted-foreground">{desc}</span>
-                    </div>
-                  ))}
-                </div>
-                <button type="button" onClick={() => setShowShortcuts(false)}
-                  className="mt-5 w-full rounded-btn bg-primary py-2 text-sm font-bold text-primary-foreground transition hover:opacity-90">
-                  Fermer
-                </button>
-              </div>
-            </div>
-          )}
-              </ErrorBoundary>
-            </Suspense>
         </section>
       </div>
     </main>
@@ -1514,8 +1486,6 @@ function GhostButton({ children, onClick }: { children: React.ReactNode; onClick
 }
 
 function Info({ label, text }: { label: string; text: string }) {
-
-
   return (
     <p className="mt-3 text-sm leading-6">
       <strong>{label}: </strong>

@@ -212,7 +212,7 @@ const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: n
   );
 });
 export function Dashboard({
-  daysLeft, domains, score, answered, correct, avgProgress, weakest, onNavigate
+  daysLeft, domains, score, answered, correct, avgProgress, weakest, onNavigate, onSmartReview
 }: {
   daysLeft: number;
   domains: { id: string; name: string; weight: number; progress: number }[];
@@ -222,6 +222,7 @@ export function Dashboard({
   avgProgress: number;
   weakest: { name: string; progress: number };
   onNavigate: (view: string) => void;
+  onSmartReview?: () => void;
 }) {
   const [now, setNow] = useState(Date.now());
   const examTime = new Date("2026-05-25T09:00:00").getTime();
@@ -371,6 +372,12 @@ export function Dashboard({
             className="mt-4 flex items-center justify-center gap-2 rounded-btn bg-foreground px-4 py-2 text-sm font-bold text-background transition hover:opacity-90">
             {rec.cta} <ArrowRight className="h-4 w-4" />
           </button>
+          {onSmartReview && (
+            <button type="button" onClick={onSmartReview}
+              className="mt-2 flex items-center justify-center gap-2 rounded-btn border border-border bg-card px-4 py-2 text-sm font-black transition hover:border-primary hover:text-primary">
+              Réviser maintenant <Zap className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </div>
 
