@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
+import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -41,6 +42,7 @@ import { acronymFlashcards } from "@/data/acronym-flashcards";
 import { portFlashcards } from "@/data/port-flashcards";
 import { confusionItems, confusionSections } from "@/data/confusions";
 import { commandToolConfusions, commandToolScenarios, commandTools } from "@/data/command-tools";
+import type { User } from "@supabase/supabase-js";
 
 type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
@@ -239,11 +241,37 @@ export default function Home() {
   const [selectedTheme, setSelectedTheme] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all"));
   const [globalSearch, setGlobalSearch] = useState("");
   const [flashcardDeck, setFlashcardDeck] = useState<FlashcardDeckType | null>(() => (typeof window !== "undefined" ? (localStorage.getItem("certiflow-flashcard-deck") as FlashcardDeckType | null) : null));
+  const [authUser, setAuthUser] = useState<User | null>(null);
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authBusy, setAuthBusy] = useState(false);
+  const [cloudBusy, setCloudBusy] = useState(false);
+  const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
+  const supabase = useMemo(() => getSupabaseClient(), []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = appTheme;
     localStorage.setItem("certiflow-theme", appTheme);
   }, [appTheme]);
+
+  useEffect(() => {
+    if (!supabase) {
+      setCloudStatus("Supabase n'est pas encore configuré sur ce déploiement.");
+      return;
+    }
+
+    supabase.auth.getUser().then(({ data }) => {
+      setAuthUser(data.user ?? null);
+      if (data.user) setCloudStatus(`Connecté: ${data.user.email ?? "compte Supabase"}`);
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthUser(session?.user ?? null);
+      setCloudStatus(session?.user ? `Connecté: ${session.user.email ?? "compte Supabase"}` : "Déconnecté.");
+    });
+
+    return () => listener.subscription.unsubscribe();
+  }, [supabase]);
 
   useEffect(() => {
     localStorage.setItem("certiflow-answered", String(answered));
@@ -618,12 +646,106 @@ export default function Home() {
     setFlashBack(false);
   }
 
-  function exportData() {
-    const data: Record<string, string> = {};
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith("certiflow-")) data[key] = localStorage.getItem(key) ?? "";
+  async function handleAuth(mode: "signin" | "signup") {
+    if (!supabase) {
+      setCloudStatus("Supabase n'est pas configuré. Vérifie les variables Netlify.");
+      return;
     }
+    if (!authEmail || authPassword.length < 6) {
+      setCloudStatus("Entre un email et un mot de passe d'au moins 6 caractères.");
+      return;
+    }
+
+    setAuthBusy(true);
+    setCloudStatus(mode === "signin" ? "Connexion en cours..." : "Création du compte...");
+    const result = mode === "signin"
+      ? await supabase.auth.signInWithPassword({ email: authEmail, password: authPassword })
+      : await supabase.auth.signUp({ email: authEmail, password: authPassword });
+    setAuthBusy(false);
+
+    if (result.error) {
+      setCloudStatus(result.error.message);
+      return;
+    }
+
+    setAuthUser(result.data.user ?? null);
+    setCloudStatus(mode === "signin" ? "Connecté. Tu peux sauvegarder ou restaurer ta progression." : "Compte créé. Vérifie ton email si Supabase demande une confirmation.");
+  }
+
+  async function signOut() {
+    if (!supabase) return;
+    await supabase.auth.signOut();
+    setAuthUser(null);
+    setCloudStatus("Déconnecté.");
+  }
+
+  async function saveCloudProgress() {
+    if (!supabase || !authUser) {
+      setCloudStatus("Connecte-toi avant de sauvegarder en ligne.");
+      return;
+    }
+
+    setCloudBusy(true);
+    setCloudStatus("Sauvegarde en ligne...");
+    const storage = collectCertiflowStorage();
+    const now = new Date().toISOString();
+
+    await (supabase as any).from("profiles").upsert({
+      id: authUser.id,
+      email: authUser.email,
+      display_name: authUser.email?.split("@")[0] ?? "CertiFlow user",
+      updated_at: now,
+    });
+
+    const { error } = await (supabase as any).from("user_settings").upsert({
+      user_id: authUser.id,
+      theme: appTheme,
+      exam_date: examDate,
+      settings: {
+        version: 1,
+        savedAt: now,
+        storage,
+      },
+      updated_at: now,
+    });
+
+    setCloudBusy(false);
+    setCloudStatus(error ? error.message : `Progression sauvegardée en ligne à ${new Date().toLocaleTimeString("fr-FR")}.`);
+  }
+
+  async function restoreCloudProgress() {
+    if (!supabase || !authUser) {
+      setCloudStatus("Connecte-toi avant de restaurer une progression.");
+      return;
+    }
+
+    setCloudBusy(true);
+    setCloudStatus("Restauration depuis Supabase...");
+    const { data, error } = await (supabase as any)
+      .from("user_settings")
+      .select("settings")
+      .eq("user_id", authUser.id)
+      .maybeSingle();
+    setCloudBusy(false);
+
+    if (error) {
+      setCloudStatus(error.message);
+      return;
+    }
+
+    const storage = (data?.settings as { storage?: Record<string, string> } | null)?.storage;
+    if (!storage) {
+      setCloudStatus("Aucune sauvegarde en ligne trouvée pour ce compte.");
+      return;
+    }
+
+    restoreCertiflowStorage(storage);
+    setCloudStatus("Progression restaurée. Rechargement...");
+    window.location.reload();
+  }
+
+  function exportData() {
+    const data = collectCertiflowStorage();
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1071,6 +1193,90 @@ export default function Home() {
 
           {view === "settings" && (
             <div className="grid gap-4">
+              <Panel title="Compte & synchronisation">
+                <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    <p className="text-sm font-bold text-muted-foreground">État Supabase</p>
+                    <p className="mt-2 font-semibold">{cloudStatus}</p>
+                    {authUser && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Compte actif: <strong>{authUser.email}</strong>
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    {!authUser ? (
+                      <div className="grid gap-3">
+                        <input
+                          type="email"
+                          value={authEmail}
+                          onChange={(event) => setAuthEmail(event.target.value)}
+                          placeholder="Email"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <input
+                          type="password"
+                          value={authPassword}
+                          onChange={(event) => setAuthPassword(event.target.value)}
+                          placeholder="Mot de passe"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signin")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Se connecter
+                          </button>
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signup")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Créer un compte
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid gap-3">
+                        <p className="text-sm text-muted-foreground">
+                          Sauvegarde ta progression en ligne, puis restaure-la sur ton téléphone ou ton PC avec le même compte.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={saveCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Sauvegarder en ligne
+                          </button>
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={restoreCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Restaurer sur cet appareil
+                          </button>
+                          <button
+                            type="button"
+                            onClick={signOut}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold"
+                          >
+                            Déconnexion
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Panel>
+
               <Panel title="Données actuelles">
                 <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
                   {[
