@@ -79,35 +79,50 @@ function ThemeSection({ theme, expanded, onToggle, onFlashcard, onPractice }: {
   const colors = dc(theme.domain);
   return (
     <section className={cn("rounded-card border overflow-hidden", colors.border)}>
-      <button type="button" onClick={onToggle}
+      <div
         className={cn(
           "flex w-full items-center gap-3 p-4 text-left transition-colors",
           expanded ? colors.bg : "bg-card hover:bg-muted/50"
-        )}>
-        <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot)} />
-        <div className="flex-1 min-w-0">
+        )}
+      >
+        <button
+          type="button"
+          onClick={onToggle}
+          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+          aria-expanded={expanded}
+        >
+          <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot)} />
+          <div className="min-w-0 flex-1">
           <p className="font-black leading-snug">{theme.title}</p>
           <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold", colors.tag)}>
             {theme.domain}
           </span>
-        </div>
+          </div>
+        </button>
         <div className="flex shrink-0 items-center gap-2">
           <span className="hidden text-sm font-bold text-muted-foreground tabular-nums sm:block">
             {theme.items.length} concepts
           </span>
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); onFlashcard(theme.id); }}
+            onClick={() => onFlashcard(theme.id)}
             className="hidden items-center gap-1 rounded-btn border border-border bg-card px-2.5 py-1 text-xs font-bold transition hover:border-primary hover:text-primary sm:inline-flex"
           >
             <RotateCcw className="h-3 w-3" /> Flashcards
           </button>
-          <ChevronDown className={cn(
+          <button
+            type="button"
+            onClick={onToggle}
+            className="flex h-8 w-8 items-center justify-center rounded-btn transition hover:bg-card"
+            aria-label={expanded ? "Réduire le thème" : "Développer le thème"}
+          >
+            <ChevronDown className={cn(
             "h-4 w-4 text-muted-foreground transition-transform duration-200",
             expanded && "rotate-180"
-          )} />
+            )} />
+          </button>
         </div>
-      </button>
+      </div>
 
       {expanded && (
         <div className="border-t border-border bg-card p-4">
