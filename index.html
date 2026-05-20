@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CertiFlow - Security+ SY0-701</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">CF</div>
+          <div>
+            <strong>CertiFlow</strong>
+            <span>Security+ SY0-701</span>
+          </div>
+        </div>
+        <nav class="nav" aria-label="Navigation principale">
+          <button class="nav-item active" data-view="dashboard">Tableau de bord</button>
+          <button class="nav-item" data-view="courses">Cours</button>
+          <button class="nav-item" data-view="quiz">Quiz</button>
+          <button class="nav-item" data-view="pbq">PBQ</button>
+          <button class="nav-item" data-view="flashcards">Flashcards</button>
+          <button class="nav-item" data-view="ports">Ports & commandes</button>
+          <button class="nav-item" data-view="exam">Examens blancs</button>
+          <button class="nav-item" data-view="errors">Journal d'erreurs</button>
+          <button class="nav-item" data-view="plan">Plan de révision</button>
+          <button class="nav-item" data-view="assistant">Assistant IA</button>
+        </nav>
+        <button class="theme-toggle" id="themeToggle" type="button">Mode sombre</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Préparation intensive</p>
+            <h1 id="pageTitle">Tableau de bord</h1>
+          </div>
+          <div class="exam-pill">
+            <span id="daysLeft">0</span>
+            <small>jours restants</small>
+          </div>
+        </header>
+
+        <section id="dashboard" class="view active"></section>
+        <section id="courses" class="view"></section>
+        <section id="quiz" class="view"></section>
+        <section id="pbq" class="view"></section>
+        <section id="flashcards" class="view"></section>
+        <section id="ports" class="view"></section>
+        <section id="exam" class="view"></section>
+        <section id="errors" class="view"></section>
+        <section id="plan" class="view"></section>
+        <section id="assistant" class="view"></section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
