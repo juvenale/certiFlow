@@ -569,7 +569,20 @@ export function HomeClient() {
     setView("quiz");
   }
 
-  function gradePbq() {
+  function handlePbqComplete() {
+    incrementDailyTask("pbq");
+    // Track PBQ completion in global stats
+    setAnswered((v) => v + 1);
+    try {
+      const dsKey = "certiflow-domain-stats";
+      const ds: Record<string, { answered: number; correct: number }> = JSON.parse(localStorage.getItem(dsKey) || "{}");
+      const dom = "Security Operations";
+      ds[dom] = { answered: (ds[dom]?.answered ?? 0) + 1, correct: (ds[dom]?.correct ?? 0) + 1 };
+      localStorage.setItem(dsKey, JSON.stringify(ds));
+    } catch {}
+  }
+
+    function gradePbq() {
     const total = pbqItems.length;
     const score = pbqItems.reduce((sum, item, index) => sum + (pbqAnswers[index] === item.answer ? 1 : 0), 0);
     setPbqScore(score);
@@ -577,7 +590,6 @@ export function HomeClient() {
     // Track PBQ results in global stats
     setAnswered((v) => v + total);
     setCorrect((v) => v + score);
-    incrementDailyTask("pbq");
 
     // Per-domain stats and error tracking for each PBQ item
     try {
@@ -959,7 +971,7 @@ return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setView(item.id)}
+                  onClick={() => { setView(item.id); if (item.id === "ports") incrementDailyTask("ports"); }}
                   className={cn(
                     "group flex min-h-11 items-center gap-3 rounded-card px-3 text-left text-sm font-semibold text-muted-foreground transition-all duration-200 relative overflow-hidden",
                     view === item.id ? "bg-primary/10 text-primary font-bold shadow-sm" : "hover:bg-muted hover:text-foreground hover:translate-x-0.5"
@@ -1095,7 +1107,7 @@ return (
             />
           )}
 
-          {view === "pbq" && <PBQBrowser />}
+          {view === "pbq" && <PBQBrowser onComplete={handlePbqComplete} />}
 
           {view === "flashcards" && (
             <Panel title="Flashcards bilingues">
@@ -1158,7 +1170,7 @@ return (
               </button>
               <div className="mt-4 flex gap-2">
                 <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
-                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
+                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); incrementDailyTask("flashcards"); }}>Suivante</ActionButton>
               </div>
                 </>
               ) : (

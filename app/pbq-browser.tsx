@@ -27,18 +27,18 @@ function Badge({ children }: { children: React.ReactNode }) {
   return <span className="inline-flex min-h-8 items-center rounded-card bg-muted px-3 text-sm font-bold text-muted-foreground">{children}</span>;
 }
 
-export default function PBQBrowser() {
+export default function PBQBrowser({ onComplete }: { onComplete?: () => void }) {
   const [selected, setSelected] = useState<PBQExercise | null>(null);
 
   if (selected) {
     switch (selected.type) {
-      case "firewall_rules": return <FirewallRulesPBQ exercise={selected} onReset={() => setSelected(null)} />;
-      case "topology": return <TopologyDragDropPBQ exercise={selected} onReset={() => setSelected(null)} />;
-      case "rack_vlan": return <RackVLANPBQView exercise={selected} onReset={() => setSelected(null)} />;
-      case "siem": return <SIEMInteractive exercise={selected} onReset={() => setSelected(null)} />;
-      case "investigation": return <InvestigationInteractive exercise={selected} onReset={() => setSelected(null)} />;
-      case "timed_config": return <TimedConfigPBQView exercise={selected} onReset={() => setSelected(null)} />;
-      case "scenario_tasks": return <ScenarioTasksPBQView exercise={selected} onReset={() => setSelected(null)} />;
+      case "firewall_rules": return <FirewallRulesPBQ exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "topology": return <TopologyDragDropPBQ exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "rack_vlan": return <RackVLANPBQView exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "siem": return <SIEMInteractive exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "investigation": return <InvestigationInteractive exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "timed_config": return <TimedConfigPBQView exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
+      case "scenario_tasks": return <ScenarioTasksPBQView exercise={selected} onReset={() => { onComplete?.(); setSelected(null); }} />;
       default: return <p className="p-4">Type non supporté.</p>;
     }
   }
