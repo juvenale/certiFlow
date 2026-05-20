@@ -9,6 +9,7 @@ import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
 import { QuizView } from "./quiz-view";
+import { SettingsView } from "./settings-view";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -34,6 +35,7 @@ import {
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
+import { getDailyTasks } from "@/lib/daily-tasks";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -1306,130 +1308,35 @@ export function HomeClient() {
           )}
 
           {view === "settings" && (
-            <div className="grid gap-4">
-              <Panel title="Compte & synchronisation">
-                <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
-                  <div className="rounded-card border border-border bg-muted p-4">
-                    <p className="text-sm font-bold text-muted-foreground">État Supabase</p>
-                    <p className="mt-2 font-semibold">{cloudStatus}</p>
-                    {authUser && (
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        Compte actif: <strong>{authUser.email}</strong>
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="rounded-card border border-border bg-muted p-4">
-                    {!authUser ? (
-                      <div className="grid gap-3">
-                        <input
-                          type="email"
-                          value={authEmail}
-                          onChange={(event) => setAuthEmail(event.target.value)}
-                          placeholder="Email"
-                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
-                        />
-                        <input
-                          type="password"
-                          value={authPassword}
-                          onChange={(event) => setAuthPassword(event.target.value)}
-                          placeholder="Mot de passe"
-                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            disabled={authBusy || !supabase}
-                            onClick={() => handleAuth("signin")}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
-                          >
-                            Se connecter
-                          </button>
-                          <button
-                            type="button"
-                            disabled={authBusy || !supabase}
-                            onClick={() => handleAuth("signup")}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
-                          >
-                            Créer un compte
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid gap-3">
-                        <p className="text-sm text-muted-foreground">
-                          Sauvegarde ta progression en ligne, puis restaure-la sur ton téléphone ou ton PC avec le même compte.
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            disabled={cloudBusy}
-                            onClick={saveCloudProgress}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
-                          >
-                            Sauvegarder en ligne
-                          </button>
-                          <button
-                            type="button"
-                            disabled={cloudBusy}
-                            onClick={restoreCloudProgress}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
-                          >
-                            Restaurer sur cet appareil
-                          </button>
-                          <button
-                            type="button"
-                            onClick={signOut}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold"
-                          >
-                            Déconnexion
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Panel>
-
-              <Panel title="Données actuelles">
-                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                  {[
-                    { label: "Questions répondues", value: answered },
-                    { label: "Réponses correctes", value: correct },
-                    { label: "Erreurs enregistrées", value: errors.length },
-                    { label: "Session examen", value: activeExam ? (examFinished ? "Terminée" : "En cours") : "Aucune" },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="rounded-card border border-border bg-muted p-4">
-                      <strong className="block text-2xl font-black tabular-nums text-primary">{value}</strong>
-                      <span className="text-sm text-muted-foreground">{label}</span>
-                    </div>
-                  ))}
-                </div>
-              </Panel>
-
-              <Panel title="Sauvegarde et restauration">
-                <p className="mb-4 text-muted-foreground text-sm">Exporte ta progression complète (quiz, erreurs, examen, filtres) dans un fichier JSON. Importe-le sur un autre appareil ou après un nettoyage du navigateur.</p>
-                <div className="flex flex-wrap gap-3">
-                  <button type="button" onClick={exportData}
-                    className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
-                    Exporter (JSON)
-                  </button>
-                  <label className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-card border border-border bg-muted px-5 font-bold transition hover:border-primary hover:text-primary">
-                    Importer (JSON)
-                    <input type="file" accept=".json" className="sr-only" onChange={importData} />
-                  </label>
-                </div>
-              </Panel>
-
-              <Panel title="Réinitialisation">
-                <p className="mb-4 text-muted-foreground text-sm">Efface toutes les données CertiFlow enregistrées dans ce navigateur. Ta progression, tes erreurs et ta session d&apos;examen seront supprimées.</p>
-                <button type="button"
-                  onClick={() => { if (window.confirm("Effacer toutes tes données CertiFlow ? Cette action est irréversible.")) resetAllData(); }}
-                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-red-600 px-5 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:opacity-90">
-                  Réinitialiser toutes les données
-                </button>
-              </Panel>
-            </div>
+            <SettingsView
+              authUser={authUser}
+              authEmail={authEmail}
+              authPassword={authPassword}
+              authBusy={authBusy}
+              cloudBusy={cloudBusy}
+              cloudStatus={cloudStatus}
+              supabaseReady={!!supabase}
+              onAuthEmailChange={setAuthEmail}
+              onAuthPasswordChange={setAuthPassword}
+              onSignIn={() => handleAuth("signin")}
+              onSignUp={() => handleAuth("signup")}
+              onSignOut={signOut}
+              onCloudSave={saveCloudProgress}
+              onCloudRestore={restoreCloudProgress}
+              answered={answered}
+              correct={correct}
+              errorsCount={errors.length}
+              hasActiveExam={!!activeExam}
+              examFinished={examFinished}
+              dailyTasks={getDailyTasks()}
+              appTheme={appTheme}
+              onThemeChange={setAppTheme}
+              onExport={exportData}
+              onImport={importData}
+              onReset={() => {
+                if (window.confirm("Effacer toutes tes donnees CertiFlow de ce navigateur ?")) resetAllData();
+              }}
+            />
           )}
 
           {view === "assistant" && <AssistantView />}
