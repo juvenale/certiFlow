@@ -278,14 +278,26 @@ export function Dashboard({
     ? { text: `Priorite: ${weakestDomain.name} (${weakestDomain.progress}% — le plus faible)`, cta: "Ouvrir le quiz", nav: "quiz", color: "border-warning-muted bg-warning-muted" }
     : { text: "Pratiquez des PBQ pour consolider la pratique clinique", cta: "Ouvrir PBQ", nav: "pbq", color: "border-primary/20 bg-primary/5" };
 
-  const [dailyTasks, setDailyTasks] = useState(getDailyTasks);
+  // Derive daily tasks directly — getDailyTasks() is a fast localStorage read
+  // Force re-read by tying to a state counter incremented on visibility change
+  const [tasksVersion, setTasksVersion] = useState(0);
+  const dailyTasks = getDailyTasks();
 
+  // Re-read on mount and when the tab becomes visible (user may have completed tasks)
   useEffect(() => {
-    // Re-read daily tasks when the component mounts or when answered/correct change
-    setDailyTasks(getDailyTasks());
-    // Also sync QCM count to localStorage for cross-session consistency
     setDailyTaskCount("qcm", todayAnswered);
   }, [todayAnswered]);
+
+  useEffect(() => {
+    function onVisible() {
+      if (document.visibilityState === "visible") setTasksVersion((v) => v + 1);
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, []);
+
+  // Dummy usage of tasksVersion to force re-render when visibility changes
+  void tasksVersion;
   const tasks = [
     { icon: FileQuestion, label: "QCM aujourd'hui",   target: 40, done: Math.min(40, todayAnswered), color: "bg-violet-500", nav: "quiz" },
     { icon: Brain,        label: "PBQ",                target: 3,  done: Math.min(3, dailyTasks.pbq),  color: "bg-cyan-500",   nav: "pbq" },
