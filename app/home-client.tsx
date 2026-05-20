@@ -34,7 +34,7 @@ import {
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
-import { incrementDailyTask } from "@/lib/daily-tasks";
+import { getDailyTasks, incrementDailyTask } from "@/lib/daily-tasks";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -49,6 +49,7 @@ import type { User } from "@supabase/supabase-js";
 import { ErrorBoundary } from "./error-boundary";
 import { PageSkeleton } from "./loading-skeleton";
 import { ViewMiniDashboard } from "./view-header";
+import { SettingsView } from "./settings-view";
 
 type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
@@ -223,6 +224,7 @@ export function HomeClient() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appTheme, setAppTheme] = useState<AppTheme>(readThemeStorage);
   const [answered, setAnswered] = useState(() => readNumberStorage("certiflow-answered"));
+  const [cloudAutoCount, setCloudAutoCount] = useState(0);
   const [correct, setCorrect] = useState(() => readNumberStorage("certiflow-correct"));
   const [errors, setErrors] = useState<ErrorEntry[]>(readErrorsStorage);
   const [daysLeft] = useState(calculateDaysLeft);
@@ -326,7 +328,22 @@ export function HomeClient() {
     }
   }, [activeExam, examIndex, examAnswers, examFinished, examElapsedSeconds, examFlags, examConfidence]);
 
-  const score = answered ? Math.round((correct / answered) * 100) : 0;
+  
+  // Auto-sync to Supabase every ~10 quiz answers (if logged in)
+  useEffect(() => {
+    if (!authUser || !supabase || cloudAutoCount < 10) return;
+    setCloudAutoCount(0);
+    const storage = collectCertiflowStorage();
+    const now = new Date().toISOString();
+    (supabase as any).from("user_data").upsert({
+      user_id: (authUser as any).id,
+      storage: storage,
+      updated_at: now,
+    }, { onConflict: "user_id" }).then(() => {
+      setCloudStatus("Sauvegarde automatique reussie");
+    }).catch(() => {});
+  }, [cloudAutoCount, authUser, supabase]);
+const score = answered ? Math.round((correct / answered) * 100) : 0;
   const avgProgress = Math.round(domains.reduce((sum, domain) => sum + domain.progress, 0) / domains.length);
   const weakest = [...domains].sort((a, b) => a.progress - b.progress)[0];
   const selectedThemeData = studyThemes.find((theme) => theme.id === selectedTheme);
@@ -494,6 +511,7 @@ export function HomeClient() {
     const isCorrect = index === currentQuestionAnswer;
     setSelectedAnswer(index);
     setAnswered((value) => value + 1);
+    setCloudAutoCount((v) => v + 1);
     incrementDailyTask("qcm");
 
     // Per-domain stat tracking (used by dashboard auto-update)
@@ -571,6 +589,7 @@ export function HomeClient() {
 
   function handlePbqComplete() {
     incrementDailyTask("pbq");
+    setCloudAutoCount((v) => v + 1);
     // Track PBQ completion in global stats
     setAnswered((v) => v + 1);
     try {
@@ -703,6 +722,7 @@ export function HomeClient() {
     setExamStartedAt(null);
     setExamFinished(true);
     incrementDailyTask("exam");
+    setCloudAutoCount((v) => v + 10);
 
     // Track exam results in global stats
     if (activeExam) {
@@ -936,14 +956,15 @@ return (
         <span className="text-sm font-black text-primary">CertiFlow</span>
         <span className="text-xs font-bold text-muted-foreground">{activeView.label}</span>
       </div>
-      {/* Mobile sidebar overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 lg:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
-        </div>
-      )}
-      <div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
-        <aside className="glass-panel hidden border-b border-border p-4 lg:block lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
+<div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
+        <aside className={cn(
+        "glass-panel border-b border-border p-4 z-30",
+        // Mobile: fixed overlay when open, hidden when closed
+        "fixed inset-y-0 left-0 w-72 overflow-y-auto shadow-2xl transition-transform duration-300 lg:hidden",
+        mobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+        // Desktop: sticky sidebar
+        "lg:static lg:z-auto lg:sticky lg:top-0 lg:h-screen lg:w-auto lg:overflow-y-auto lg:border-b-0 lg:border-r lg:translate-x-0 lg:shadow-none lg:transition-none"
+      )}>
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
               <img
@@ -1003,6 +1024,11 @@ return (
             </div>
           </div>
         </aside>
+
+              {/* Mobile menu backdrop */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-20 bg-background/60 backdrop-blur-sm lg:hidden" onClick={() => setMobileMenuOpen(false)} />
+      )}
 
         <section className="mx-auto w-full max-w-7xl p-4 lg:p-8">
             <Suspense fallback={<PageSkeleton />}>
@@ -1353,130 +1379,33 @@ return (
           )}
 
           {view === "settings" && (
-            <div className="grid gap-4">
-              <Panel title="Compte & synchronisation">
-                <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
-                  <div className="rounded-card border border-border bg-muted p-4">
-                    <p className="text-sm font-bold text-muted-foreground">État Supabase</p>
-                    <p className="mt-2 font-semibold">{cloudStatus}</p>
-                    {authUser && (
-                      <p className="mt-2 text-sm text-muted-foreground">
-                        Compte actif: <strong>{authUser.email}</strong>
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="rounded-card border border-border bg-muted p-4">
-                    {!authUser ? (
-                      <div className="grid gap-3">
-                        <input
-                          type="email"
-                          value={authEmail}
-                          onChange={(event) => setAuthEmail(event.target.value)}
-                          placeholder="Email"
-                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
-                        />
-                        <input
-                          type="password"
-                          value={authPassword}
-                          onChange={(event) => setAuthPassword(event.target.value)}
-                          placeholder="Mot de passe"
-                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            disabled={authBusy || !supabase}
-                            onClick={() => handleAuth("signin")}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
-                          >
-                            Se connecter
-                          </button>
-                          <button
-                            type="button"
-                            disabled={authBusy || !supabase}
-                            onClick={() => handleAuth("signup")}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
-                          >
-                            Créer un compte
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid gap-3">
-                        <p className="text-sm text-muted-foreground">
-                          Sauvegarde ta progression en ligne, puis restaure-la sur ton téléphone ou ton PC avec le même compte.
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            type="button"
-                            disabled={cloudBusy}
-                            onClick={saveCloudProgress}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
-                          >
-                            Sauvegarder en ligne
-                          </button>
-                          <button
-                            type="button"
-                            disabled={cloudBusy}
-                            onClick={restoreCloudProgress}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
-                          >
-                            Restaurer sur cet appareil
-                          </button>
-                          <button
-                            type="button"
-                            onClick={signOut}
-                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold"
-                          >
-                            Déconnexion
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </Panel>
-
-              <Panel title="Données actuelles">
-                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                  {[
-                    { label: "Questions répondues", value: answered },
-                    { label: "Réponses correctes", value: correct },
-                    { label: "Erreurs enregistrées", value: errors.length },
-                    { label: "Session examen", value: activeExam ? (examFinished ? "Terminée" : "En cours") : "Aucune" },
-                  ].map(({ label, value }) => (
-                    <div key={label} className="rounded-card border border-border bg-muted p-4">
-                      <strong className="block text-2xl font-black tabular-nums text-primary">{value}</strong>
-                      <span className="text-sm text-muted-foreground">{label}</span>
-                    </div>
-                  ))}
-                </div>
-              </Panel>
-
-              <Panel title="Sauvegarde et restauration">
-                <p className="mb-4 text-muted-foreground text-sm">Exporte ta progression complète (quiz, erreurs, examen, filtres) dans un fichier JSON. Importe-le sur un autre appareil ou après un nettoyage du navigateur.</p>
-                <div className="flex flex-wrap gap-3">
-                  <button type="button" onClick={exportData}
-                    className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
-                    Exporter (JSON)
-                  </button>
-                  <label className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-card border border-border bg-muted px-5 font-bold transition hover:border-primary hover:text-primary">
-                    Importer (JSON)
-                    <input type="file" accept=".json" className="sr-only" onChange={importData} />
-                  </label>
-                </div>
-              </Panel>
-
-              <Panel title="Réinitialisation">
-                <p className="mb-4 text-muted-foreground text-sm">Efface toutes les données CertiFlow enregistrées dans ce navigateur. Ta progression, tes erreurs et ta session d&apos;examen seront supprimées.</p>
-                <button type="button"
-                  onClick={() => { if (window.confirm("Effacer toutes tes données CertiFlow ? Cette action est irréversible.")) resetAllData(); }}
-                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-red-600 px-5 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:opacity-90">
-                  Réinitialiser toutes les données
-                </button>
-              </Panel>
-            </div>
+            <SettingsView
+              authUser={authUser}
+              authEmail={authEmail}
+              authPassword={authPassword}
+              authBusy={authBusy}
+              cloudBusy={cloudBusy}
+              cloudStatus={cloudStatus}
+              supabaseReady={!!supabase}
+              onAuthEmailChange={setAuthEmail}
+              onAuthPasswordChange={setAuthPassword}
+              onSignIn={() => handleAuth("signin")}
+              onSignUp={() => handleAuth("signup")}
+              onSignOut={signOut}
+              onCloudSave={saveCloudProgress}
+              onCloudRestore={restoreCloudProgress}
+              answered={answered}
+              correct={correct}
+              errorsCount={errors.length}
+              hasActiveExam={!!activeExam}
+              examFinished={examFinished}
+              dailyTasks={getDailyTasks()}
+              appTheme={appTheme}
+              onThemeChange={setAppTheme}
+              onExport={exportData}
+              onImport={importData}
+              onReset={resetAllData}
+            />
           )}
 
           {view === "assistant" && <AssistantView />}

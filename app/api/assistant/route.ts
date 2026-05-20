@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     }
 
     const mode = body.mode ?? "general";
-    const model = process.env.DEEPSEEK_MODEL || "deepseek-v4-pro";
+    const model = process.env.DEEPSEEK_MODEL || "deepseek-chat";
     const history = (body.history ?? []).slice(-6);
 
     const response = await fetch("https://api.deepseek.com/chat/completions", {
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
           })),
           { role: "user", content: prompt },
         ],
-        thinking: { type: "disabled" },
+        ...(model === "deepseek-v4-pro" ? { thinking: { type: "disabled" } } : {}),
         temperature: mode === "mini_quiz" ? 0.7 : 0.3,
         max_tokens: mode === "mini_quiz" || mode === "daily_plan" ? 1200 : 800,
         stream: false,
