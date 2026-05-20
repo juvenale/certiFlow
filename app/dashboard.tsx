@@ -4,14 +4,16 @@ import { useEffect, useState, useMemo } from "react";
 import {
   AlarmClock, ArrowRight, BookOpen, Brain, CheckCircle2, Clock,
   FileQuestion, Flame, LayoutDashboard, Lightbulb, RotateCcw,
-  Shield, Target, Timer, TrendingUp, Zap
+  Shield, Target, Timer, TrendingUp, Zap, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { domainStats as allDomainStats } from "@/data/domain-stats";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type DomainStat = { id: string; name: string; weight: number; totalQuestions: number; attempted: number; correct: number; progress: number };
 
-interface ErrorEntry { domain: string; questionId: string; status: string; count: number }
+interface ErrorEntry { domain: string; questionId: string; question?: string; concept?: string; status: string; count: number }
+interface QuizHistoryEntry { id: string; date: string; domain: string; correct: boolean; concept: string }
 
 function useDomainProgress(answered: number, correct: number) {
   return useMemo(() => {
@@ -38,6 +40,64 @@ function useDomainProgress(answered: number, correct: number) {
       const progress = Math.min(100, Math.round(coverage * 0.5 + accuracy * 0.5));
       return { id: d.id, name: d.name, weight: d.weight, totalQuestions: d.totalQuestions, attempted: stat.answered, correct: stat.correct, progress };
     });
+  }, [answered, correct]);
+}
+
+function readQuizHistory() {
+  try { return JSON.parse(localStorage.getItem("certiflow-quiz-history") || "[]") as QuizHistoryEntry[]; }
+  catch { return []; }
+}
+
+function useSmartAnalytics(answered: number, correct: number) {
+  return useMemo(() => {
+    let errors: ErrorEntry[] = [];
+    try { errors = JSON.parse(localStorage.getItem("certiflow-errors") || "[]"); } catch {}
+    const history = readQuizHistory();
+
+    const weekLabels = Array.from({ length: 7 }, (_, index) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (6 - index));
+      return date.toISOString().slice(0, 10);
+    });
+
+    const weeklyProgress = weekLabels.map((iso) => {
+      const items = history.filter((item) => item.date.slice(0, 10) === iso);
+      const good = items.filter((item) => item.correct).length;
+      const score = items.length ? Math.round((good / items.length) * 100) : null;
+      return {
+        date: new Date(`${iso}T00:00:00`).toLocaleDateString("fr-FR", { weekday: "short" }),
+        questions: items.length,
+        score: score ?? 0,
+      };
+    });
+
+    const domainAccuracy = allDomainStats.map((domain) => {
+      const items = history.filter((item) => item.domain === domain.name);
+      const correctItems = items.filter((item) => item.correct).length;
+      return {
+        domain: domain.name.replace("Threats, Vulnerabilities, and Mitigations", "Threats & Vulns").replace("Security Program Management and Oversight", "Program Mgmt"),
+        weight: domain.weight,
+        questions: items.length,
+        accuracy: items.length ? Math.round((correctItems / items.length) * 100) : 0,
+      };
+    });
+
+    const weakConcepts = [...errors]
+      .filter((item) => item.status !== "maîtrisé")
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5)
+      .map((item) => ({
+        concept: item.concept || item.question?.slice(0, 60) || item.questionId,
+        domain: item.domain,
+        count: item.count,
+      }));
+
+    const weeklyQuestions = weeklyProgress.reduce((sum, item) => sum + item.questions, 0);
+    const recentScores = weeklyProgress.filter((item) => item.questions > 0).map((item) => item.score);
+    const trend = recentScores.length >= 2 ? recentScores[recentScores.length - 1] - recentScores[0] : 0;
+    const globalAccuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+
+    return { weeklyProgress, domainAccuracy, weakConcepts, weeklyQuestions, trend, globalAccuracy };
   }, [answered, correct]);
 }
 
@@ -90,6 +150,7 @@ export function Dashboard({
   const examStart = new Date("2026-04-01").getTime();
   const domainProgress = useDomainProgress(answered, correct);
   const { todayAnswered, todayCorrect } = useDailyCheckpoint(answered, correct);
+  const analytics = useSmartAnalytics(answered, correct);
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
@@ -108,15 +169,21 @@ export function Dashboard({
   const timelineProgress = Math.min(100, Math.round((elapsed / totalSpan) * 100));
 
   const realAvg = domainProgress.length > 0
-    ? Math.round(domainProgress.reduce((sum, dp) => sum + dp.progress, 0) / domainProgress.length)
+    ? Math.round(domainProgress.reduce((sum, dp) => sum + dp.progress * dp.weight, 0) / 100)
     : avgProgress;
 
   const globalAccuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+  const readinessScore = Math.round(
+    realAvg * 0.5 +
+    Math.min(100, globalAccuracy) * 0.3 +
+    Math.min(100, analytics.weeklyQuestions * 2) * 0.1 +
+    Math.max(0, Math.min(100, 70 + analytics.trend)) * 0.1
+  );
   const todayAccuracy = todayAnswered > 0 ? Math.round((todayCorrect / todayAnswered) * 100) : null;
   const weakDomains = [...domainProgress].sort((a, b) => a.progress - b.progress);
   const weakestDomain = weakDomains[0];
 
-  const readiness = realAvg >= 75 ? "ready" : realAvg >= 55 ? "almost" : "not-ready";
+  const readiness = readinessScore >= 75 ? "ready" : readinessScore >= 55 ? "almost" : "not-ready";
   const readinessConfig = {
     ready:      { color: "bg-success", bg: "bg-success-muted border-success-muted", text: "Pret pour l'examen",  icon: CheckCircle2, desc: "Continue les revisions legeres" },
     almost:     { color: "bg-warning", bg: "bg-warning-muted border-warning-muted", text: "Presque pret",        icon: TrendingUp,   desc: "Renforce les domaines faibles" },
@@ -159,9 +226,9 @@ export function Dashboard({
         <StatCard label="Score global" value={`${globalAccuracy}%`}
           sub={`${correct}/${answered} questions`}
           color={globalAccuracy >= 75 ? "text-success-fg" : globalAccuracy >= 55 ? "text-warning-fg" : "text-danger-fg"} />
-        <StatCard label="Progression" value={`${realAvg}%`}
+        <StatCard label="Readiness" value={`${readinessScore}%`}
           sub={`${weakDomains.filter(d => d.progress < 50).length} domaine(s) critique(s)`}
-          color={realAvg >= 75 ? "text-success-fg" : realAvg >= 55 ? "text-warning-fg" : "text-danger-fg"} />
+          color={readinessScore >= 75 ? "text-success-fg" : readinessScore >= 55 ? "text-warning-fg" : "text-danger-fg"} />
         <StatCard label="Aujourd'hui" value={todayAnswered}
           sub={todayAccuracy !== null ? `${todayAccuracy}% precision` : "Aucune question encore"}
           color="text-primary" />
@@ -204,12 +271,12 @@ export function Dashboard({
             </div>
             <div>
               <p className="text-lg font-black">{readinessConfig.text}</p>
-              <p className="text-sm text-muted-foreground">{readinessConfig.desc} — {realAvg}%</p>
+              <p className="text-sm text-muted-foreground">{readinessConfig.desc} — readiness {readinessScore}%</p>
             </div>
           </div>
           <div className="mt-4 h-2 rounded-full bg-white/60 overflow-hidden">
             <div className={cn("h-full rounded-full transition-all duration-700", readinessConfig.color)}
-              style={{ width: `${realAvg}%` }} />
+              style={{ width: `${readinessScore}%` }} />
           </div>
           <div className="mt-2 flex justify-between text-xs text-muted-foreground">
             <span>0%</span><span className="font-bold">Seuil: 75%</span><span>100%</span>
@@ -251,6 +318,104 @@ export function Dashboard({
               <span className="text-xs font-semibold">{item.label}</span>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Smart Analytics */}
+      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              <TrendingUp className="h-4 w-4" /> Courbe d'evolution
+            </h2>
+            <span className={cn("rounded-full px-2 py-1 text-xs font-bold",
+              analytics.trend >= 0 ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg")}>
+              {analytics.trend >= 0 ? "+" : ""}{analytics.trend} pts cette semaine
+            </span>
+          </div>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={analytics.weeklyProgress} margin={{ top: 10, right: 8, bottom: 0, left: -24 }}>
+                <defs>
+                  <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.35}/>
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                <XAxis dataKey="date" tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", background: "var(--card)", color: "var(--foreground)" }}
+                  formatter={(value, name) => [name === "score" ? `${value}%` : value, name === "score" ? "Score" : "Questions"]}
+                />
+                <Area type="monotone" dataKey="score" stroke="var(--primary)" strokeWidth={3} fill="url(#scoreGradient)" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="rounded-card bg-muted p-3">
+              <p className="text-xs font-bold uppercase text-muted-foreground">Questions semaine</p>
+              <p className="text-xl font-black tabular-nums">{analytics.weeklyQuestions}</p>
+            </div>
+            <div className="rounded-card bg-muted p-3">
+              <p className="text-xs font-bold uppercase text-muted-foreground">Moyenne domaines</p>
+              <p className="text-xl font-black tabular-nums">{realAvg}%</p>
+            </div>
+            <div className="rounded-card bg-muted p-3">
+              <p className="text-xs font-bold uppercase text-muted-foreground">Precision globale</p>
+              <p className="text-xl font-black tabular-nums">{globalAccuracy}%</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <h2 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            <Target className="h-4 w-4" /> Concepts faibles
+          </h2>
+          {analytics.weakConcepts.length ? (
+            <div className="space-y-3">
+              {analytics.weakConcepts.map((item) => (
+                <button
+                  key={`${item.domain}-${item.concept}`}
+                  type="button"
+                  onClick={() => onNavigate("errors")}
+                  className="w-full rounded-card border border-border bg-muted p-3 text-left transition hover:border-primary"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-bold leading-snug">{item.concept}</p>
+                    <span className="shrink-0 rounded-full bg-danger px-2 py-0.5 text-xs font-black text-white">{item.count}x</span>
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">{item.domain}</p>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-card bg-success-muted p-4">
+              <p className="font-bold text-success-fg">Aucun concept faible majeur pour l'instant.</p>
+              <p className="mt-1 text-sm text-muted-foreground">Continue les quiz pour alimenter les statistiques.</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <h2 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+          <BarChart3 className="h-4 w-4" /> Scores par domaine
+        </h2>
+        <div className="h-72">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={analytics.domainAccuracy} margin={{ top: 10, right: 8, bottom: 24, left: -24 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+              <XAxis dataKey="domain" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} interval={0} angle={-12} textAnchor="end" height={52} />
+              <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+              <Tooltip
+                contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", background: "var(--card)", color: "var(--foreground)" }}
+                formatter={(value, name) => [`${value}${name === "accuracy" ? "%" : ""}`, name === "accuracy" ? "Score" : "Questions"]}
+              />
+              <Bar dataKey="accuracy" radius={[6, 6, 0, 0]} fill="var(--primary)" />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 

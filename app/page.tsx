@@ -492,6 +492,18 @@ export default function Home() {
       const dom = currentQuestion.domain;
       ds[dom] = { answered: (ds[dom]?.answered ?? 0) + 1, correct: (ds[dom]?.correct ?? 0) + (isCorrect ? 1 : 0) };
       localStorage.setItem(key, JSON.stringify(ds));
+
+      const historyKey = "certiflow-quiz-history";
+      const history: Array<{ id: string; date: string; domain: string; correct: boolean; concept: string }> =
+        JSON.parse(localStorage.getItem(historyKey) || "[]");
+      history.push({
+        id: currentQuestion.id,
+        date: new Date().toISOString(),
+        domain: currentQuestion.domain,
+        correct: isCorrect,
+        concept: `Question ${currentQuestion.questionNumber}`,
+      });
+      localStorage.setItem(historyKey, JSON.stringify(history.slice(-1000)));
     } catch {}
 
     if (isCorrect) {
