@@ -10,6 +10,7 @@ import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
 import { QuizView } from "./quiz-view";
 import { SettingsView } from "./settings-view";
+import { ViewMiniDashboard } from "./view-header";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -214,6 +215,13 @@ function formatExamAnswers(question: ExamQuestion, indexes: number[] | undefined
     .sort((a, b) => a - b)
     .map((index) => `${String.fromCharCode(65 + index)}. ${question.choices[index] ?? ""}`)
     .join(" | ");
+}
+
+function formatTimer(seconds: number) {
+  const safe = Math.max(0, Math.floor(seconds));
+  const minutes = Math.floor(safe / 60);
+  const remaining = safe % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
 }
 
 export function HomeClient() {
@@ -487,6 +495,53 @@ export function HomeClient() {
   const quickCommandResults = normalizedSearch ? commandTools.filter((item) => [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickQuizResults = normalizedSearch ? questions.filter((question) => [question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickExamResults = normalizedSearch ? allExamQuestions.filter((question) => [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
+  const sectionContext: Record<ViewId, { eyebrow: string; title: string; subtitle: string; cta?: string; action?: () => void }> = {
+    dashboard: { eyebrow: "Préparation intensive", title: "Tableau de bord", subtitle: "Cockpit Security+ avec readiness, rythme quotidien, domaines faibles et prochaine action." },
+    courses: { eyebrow: "Bibliothèque d'étude", title: "Cours", subtitle: "Concepts clés par domaine et thème, avec termes anglais visibles et pratique directe.", cta: "Flashcards", action: () => setView("flashcards") },
+    confusions: { eyebrow: "Anti-pièges", title: "Confusions", subtitle: "Comparaisons fréquentes à l'examen pour éviter les erreurs de vocabulaire et de logique." },
+    quiz: { eyebrow: "Practice center", title: "Quiz", subtitle: "Questions originales en anglais, filtrées par domaine, thème, recherche ou erreurs.", cta: "Mode erreurs", action: () => startQuiz("errors") },
+    pbq: { eyebrow: "Lab interactif", title: "PBQ", subtitle: "Scénarios pratiques, matching, configuration, investigation et scoring partiel." },
+    flashcards: { eyebrow: "Mémoire active", title: "Flashcards", subtitle: "Acronymes, ports, commandes et termes techniques en révision rapide.", cta: "Changer de paquet", action: () => { setFlashcardDeck(null); setFlashBack(false); } },
+    ports: { eyebrow: "Référence opérationnelle", title: "Ports & commandes", subtitle: "Ports, protocoles, commandes, outils et scénarios typiques Security+." },
+    exam: { eyebrow: "Test center", title: "Examens blancs", subtitle: "Examens fixes ou aléatoires avec timer, confiance, flags et review post-examen." },
+    errors: { eyebrow: "Remédiation", title: "Journal d'erreurs", subtitle: "Les questions ratées deviennent une liste de révision priorisée.", cta: "Quiz erreurs", action: () => startQuiz("errors") },
+    plan: { eyebrow: "Roadmap", title: "Plan de révision", subtitle: "Routine jusqu'au 25 mai 2026, ajustée selon les priorités et le temps restant." },
+    assistant: { eyebrow: "Coach IA", title: "Assistant IA", subtitle: "DeepSeek explique, reformule, crée des mini-quiz et prépare ton plan du jour." },
+    search: { eyebrow: "Recherche globale", title: "Recherche", subtitle: "Retrouve rapidement cours, flashcards, confusions, quiz, examens et commandes." },
+    settings: { eyebrow: "Configuration", title: "Paramètres", subtitle: "Compte, synchronisation, thèmes, sauvegardes et données locales." },
+  };
+  const currentSection = sectionContext[view];
+  const ActiveViewIcon = activeView.icon;
+  const viewStats = {
+    view,
+    quizScore: score,
+    quizAnswered: answered,
+    quizCorrect: correct,
+    quizPosition: effectiveQuizQuestions.length ? (questionIndex % effectiveQuizQuestions.length) + 1 : 0,
+    quizTotal: effectiveQuizQuestions.length,
+    quizDomain: selectedDomain,
+    flashcardDeck: flashcardDeck === "acronyms" ? "Acronymes" : flashcardDeck === "ports" ? "Ports" : flashcardDeck === "commands" ? "Commandes" : flashcardDeck === "technical" ? "Termes" : "Choix du paquet",
+    flashcardCount: effectiveFlashcards.length,
+    pbqType: "Catalogue PBQ",
+    pbqScore,
+    examTime: formatTimer(examElapsedSeconds),
+    examQuestionCount: activeExam?.questions.length ?? allExamQuestions.length,
+    examFlagged: examFlaggedCount,
+    examConfidence: examConfidenceSummary,
+    courseTheme: selectedThemeData?.title ?? "Tous les thèmes",
+    courseItemCount: filteredStudyItems.length,
+    courseDomain: selectedDomain,
+    confusionSectionCount: filteredConfusionSections.length,
+    confusionItemCount: filteredConfusionItems.length,
+    portCount: portFlashcards.length,
+    commandCount: commandTools.length,
+    scenarioCount: commandToolScenarios.length,
+    errorTotal: errors.length,
+    errorResolved: errors.filter((item) => item.status === "maîtrisé").length,
+    planDaysLeft: daysLeft,
+    searchTerm: globalSearch,
+    searchResults: filteredStudyItems.length + filteredConfusionItems.length + filteredCommandTools.length + filteredQuizQuestions.length + filteredExamQuestions.length,
+  };
 
   useEffect(() => {
     setFlashIndex(0);
@@ -972,32 +1027,52 @@ export function HomeClient() {
         </aside>
 
         <section className="mx-auto w-full max-w-7xl p-4 lg:p-8">
-          <header className="hero-panel mb-6 rounded-card border border-border p-5 shadow-sm sm:p-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="mb-1 text-xs font-black uppercase text-muted-foreground">Préparation intensive</p>
-              <h1 className="text-3xl font-black tracking-normal sm:text-4xl">{activeView.label}</h1>
-              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-                Espace de révision Security+ avec cours, labs PBQ, examens blancs et rappels anti-pièges.
-              </p>
+          <header className="hero-panel mb-6 overflow-hidden rounded-card border border-border p-5 shadow-sm sm:p-6">
+            <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
+              <div className="flex min-w-0 gap-4">
+                <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-btn bg-primary text-primary-foreground shadow-sm sm:flex">
+                  <ActiveViewIcon className="h-6 w-6" />
+                </div>
+                <div className="min-w-0">
+                  <p className="mb-1 text-xs font-black uppercase tracking-wider text-muted-foreground">{currentSection.eyebrow}</p>
+                  <h1 className="text-3xl font-black tracking-normal sm:text-4xl">{currentSection.title}</h1>
+                  <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">{currentSection.subtitle}</p>
+                </div>
+              </div>
+              <div className="grid w-full grid-cols-2 gap-3 sm:w-auto sm:grid-cols-[150px_150px]">
+                <div className="rounded-card border border-border bg-card/80 p-4 text-center shadow-sm">
+                  <strong className="block text-3xl text-primary">{daysLeft}</strong>
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">jours</span>
+                </div>
+                <div className="rounded-card border border-border bg-card/80 p-4 text-center shadow-sm">
+                  <strong className="block text-3xl text-primary">{score}%</strong>
+                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">score</span>
+                </div>
+              </div>
             </div>
-            <div className="w-full rounded-card border border-border bg-card/80 p-4 text-center shadow-sm sm:w-40">
-              <strong className="block text-3xl text-primary">{daysLeft}</strong>
-              <span className="text-sm text-muted-foreground">jours restants</span>
-            </div>
-            </div>
-            <div className="mt-4 flex flex-col gap-3 rounded-card border border-border bg-card/80 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-4 grid gap-3 rounded-card border border-border bg-card/80 p-4 shadow-sm lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
                 <p className="text-sm font-black">Révision adaptative</p>
                 <p className="mt-1 text-sm text-muted-foreground">{adaptiveHint}</p>
               </div>
-              <button
-                type="button"
-                onClick={startAdaptiveReview}
-                className="inline-flex min-h-11 items-center justify-center rounded-card bg-primary px-5 font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95"
-              >
-                Réviser maintenant
-              </button>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={startAdaptiveReview}
+                  className="inline-flex min-h-11 items-center justify-center rounded-card bg-primary px-5 font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95"
+                >
+                  Réviser maintenant
+                </button>
+                {currentSection.cta && currentSection.action && (
+                  <button
+                    type="button"
+                    onClick={currentSection.action}
+                    className="inline-flex min-h-11 items-center justify-center rounded-card border border-border bg-muted px-5 font-black transition hover:border-primary hover:text-primary"
+                  >
+                    {currentSection.cta}
+                  </button>
+                )}
+              </div>
             </div>
           </header>
 
@@ -1033,6 +1108,8 @@ export function HomeClient() {
               </div>
             )}
           </div>
+
+          <ViewMiniDashboard stats={viewStats} />
 
           {view === "dashboard" && (
             <Dashboard
@@ -1092,29 +1169,41 @@ export function HomeClient() {
             <Panel title="Flashcards bilingues">
               {!flashcardDeck ? (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                  <article className="rounded-card border border-border bg-muted p-5">
+                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><Brain className="h-5 w-5" /></div>
                     <h2 className="text-xl font-black">Acronymes</h2>
-                    <p className="mt-2 text-muted-foreground">Sigles Security+ avec signification anglaise, explication française et pièges d'examen.</p>
-                    <Badge>{acronymDeck.length} cartes</Badge>
-                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("acronyms")}>Lancer</ActionButton>
+                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Sigles Security+ avec signification anglaise, explication française et pièges d'examen.</p>
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <Badge>{acronymDeck.length} cartes</Badge>
+                      <ActionButton onClick={() => startFlashcardDeck("acronyms")}>Lancer</ActionButton>
+                    </div>
                   </article>
-                  <article className="rounded-card border border-border bg-muted p-5">
+                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><Command className="h-5 w-5" /></div>
                     <h2 className="text-xl font-black">Ports / protocoles</h2>
-                    <p className="mt-2 text-muted-foreground">Ports, protocoles, rôle et risques à mémoriser pour l'examen.</p>
-                    <Badge>{portDeck.length} cartes</Badge>
-                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("ports")}>Lancer</ActionButton>
+                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Ports, protocoles, rôle et risques à mémoriser pour l'examen.</p>
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <Badge>{portDeck.length} cartes</Badge>
+                      <ActionButton onClick={() => startFlashcardDeck("ports")}>Lancer</ActionButton>
+                    </div>
                   </article>
-                  <article className="rounded-card border border-border bg-muted p-5">
+                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><ClipboardList className="h-5 w-5" /></div>
                     <h2 className="text-xl font-black">Commandes / outils</h2>
-                    <p className="mt-2 text-muted-foreground">Commandes, outils, usage pratique et points à reconnaître à l'examen.</p>
-                    <Badge>{commandDeck.length} cartes</Badge>
-                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("commands")}>Lancer</ActionButton>
+                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Commandes, outils, usage pratique et points à reconnaître à l'examen.</p>
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <Badge>{commandDeck.length} cartes</Badge>
+                      <ActionButton onClick={() => startFlashcardDeck("commands")}>Lancer</ActionButton>
+                    </div>
                   </article>
-                  <article className="rounded-card border border-border bg-muted p-5">
+                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
+                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><BookOpen className="h-5 w-5" /></div>
                     <h2 className="text-xl font-black">Termes techniques</h2>
-                    <p className="mt-2 text-muted-foreground">Concepts importants issus des cours, filtrables par domaine, thème et recherche.</p>
-                    <Badge>{technicalFlashcards.length} cartes</Badge>
-                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("technical")}>Lancer</ActionButton>
+                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Concepts importants issus des cours, filtrables par domaine, thème et recherche.</p>
+                    <div className="mt-4 flex items-center justify-between gap-3">
+                      <Badge>{technicalFlashcards.length} cartes</Badge>
+                      <ActionButton onClick={() => startFlashcardDeck("technical")}>Lancer</ActionButton>
+                    </div>
                   </article>
                 </div>
               ) : (
@@ -1131,23 +1220,23 @@ export function HomeClient() {
               <button
                 type="button"
                 onClick={() => setFlashBack((value) => !value)}
-                className="grid min-h-72 w-full place-items-center rounded-card bg-muted p-6 text-center"
+                className="grid min-h-80 w-full place-items-center rounded-card border border-border bg-gradient-to-br from-card to-muted p-6 text-center shadow-sm transition hover:border-primary"
               >
                 {flashBack ? (
-                  <div>
+                  <div className="max-w-3xl">
                     <h2 className="text-3xl font-black text-primary">{currentFlashcard.term}</h2>
                     <p className="mt-3 text-xl font-bold">{currentFlashcard.definition}</p>
-                    <p className="mt-3">{currentFlashcard.details}</p>
+                    <p className="mt-3 leading-7 text-muted-foreground">{currentFlashcard.details}</p>
                     <p className="mt-3 text-sm text-muted-foreground">{currentFlashcard.domain} | {currentFlashcard.themeTitle}</p>
                   </div>
                 ) : (
-                  <div>
-                    <p className="text-6xl font-black text-primary">{currentFlashcard.term}</p>
+                  <div className="max-w-3xl">
+                    <p className="text-5xl font-black text-primary sm:text-6xl">{currentFlashcard.term}</p>
                     <p className="mt-4 text-muted-foreground">Clique pour retourner la carte</p>
                   </div>
                 )}
               </button>
-              <div className="mt-4 flex gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
                 <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
               </div>
@@ -1213,12 +1302,18 @@ export function HomeClient() {
 
           {view === "plan" && (
             <Panel title="Plan jusqu'au 25 mai 2026">
-              <p className="mb-4 text-muted-foreground">Priorité actuelle selon tes scores: {weakest.name}. Le plan s&apos;intensifie à mesure que la date approche.</p>
-              <div className="grid gap-3">
-                {plan.map(([day, task]) => (
-                  <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
-                    <strong>{day}</strong>
-                    <span>{task}</span>
+              <div className="mb-5 rounded-card border border-warning-muted bg-warning-muted p-4">
+                <p className="font-black text-warning-fg">Priorité actuelle: {weakest.name}</p>
+                <p className="mt-1 text-sm text-muted-foreground">Le plan s&apos;intensifie automatiquement à mesure que la date approche.</p>
+              </div>
+              <div className="relative grid gap-3">
+                {plan.map(([day, task], index) => (
+                  <div key={day} className="grid gap-3 rounded-card border border-border bg-muted p-4 transition hover:border-primary hover:bg-card md:grid-cols-[120px_1fr]">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">{index + 1}</span>
+                      <strong>{day}</strong>
+                    </div>
+                    <span className="leading-6 text-muted-foreground">{task}</span>
                   </div>
                 ))}
               </div>
@@ -1384,11 +1479,12 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   return (
     <section className="rounded-card border border-border bg-card p-5 shadow-sm">
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-8 w-8 items-center justify-center rounded-btn bg-primary/10 shadow-sm">
-          <GraduationCap className="h-4 w-4 text-primary" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-btn bg-primary/10 shadow-sm">
+          <GraduationCap className="h-5 w-5 text-primary" />
         </div>
         <div>
-          <h2 className="text-lg font-black leading-tight">{title}</h2>
+          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">CertiFlow workspace</p>
+          <h2 className="text-xl font-black leading-tight">{title}</h2>
         </div>
       </div>
       {children}
@@ -1397,12 +1493,12 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
 }
 
 function Badge({ children }: { children: React.ReactNode }) {
-  return <span className="inline-flex min-h-8 items-center rounded-card border border-border bg-muted px-3 text-sm font-bold text-muted-foreground">{children}</span>;
+  return <span className="inline-flex min-h-8 items-center rounded-full border border-border bg-muted px-3 text-xs font-black uppercase tracking-wide text-muted-foreground">{children}</span>;
 }
 
 function ActionButton({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className={cn("inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-4 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95", className)}>
+    <button type="button" onClick={onClick} className={cn("inline-flex min-h-10 items-center justify-center rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95", className)}>
       {children}
     </button>
   );
@@ -1410,7 +1506,7 @@ function ActionButton({ children, className, onClick }: { children: React.ReactN
 
 function GhostButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-muted px-4 font-bold transition hover:border-primary hover:text-primary">
+    <button type="button" onClick={onClick} className="inline-flex min-h-10 items-center justify-center rounded-btn border border-border bg-muted px-4 text-sm font-black transition hover:border-primary hover:text-primary">
       {children}
     </button>
   );
