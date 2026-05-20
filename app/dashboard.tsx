@@ -162,6 +162,52 @@ function StatCard({ label, value, sub, color }: { label: string; value: string |
   );
 }
 
+function MetricPill({ label, value, tone = "default" }: { label: string; value: string | number; tone?: "default" | "success" | "warning" | "danger" | "primary" }) {
+  const tones = {
+    default: "border-border bg-muted text-foreground",
+    success: "border-success-muted bg-success-muted text-success-fg",
+    warning: "border-warning-muted bg-warning-muted text-warning-fg",
+    danger: "border-danger-muted bg-danger-muted text-danger-fg",
+    primary: "border-primary/20 bg-primary/10 text-primary",
+  };
+
+  return (
+    <div className={cn("rounded-card border px-4 py-3", tones[tone])}>
+      <p className="text-xs font-black uppercase tracking-wider opacity-80">{label}</p>
+      <p className="mt-1 text-2xl font-black tabular-nums">{value}</p>
+    </div>
+  );
+}
+
+function ActionTile({
+  icon: Icon,
+  label,
+  sub,
+  onClick,
+  tone,
+}: {
+  icon: React.ElementType;
+  label: string;
+  sub: string;
+  onClick: () => void;
+  tone: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group rounded-card border border-border bg-muted p-3 text-left transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md"
+    >
+      <div className={cn("mb-3 flex h-10 w-10 items-center justify-center rounded-btn", tone)}>
+        <Icon className="h-5 w-5 text-white" />
+      </div>
+      <p className="font-black">{label}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
+      <ArrowRight className="mt-3 h-4 w-4 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
+    </button>
+  );
+}
+
 
 // ─── Countdown (isolated to avoid 1s re-renders of entire Dashboard) ─────────
 
@@ -320,8 +366,140 @@ export function Dashboard({
 
   return (
     <div className="animate-fade-in space-y-5">
+      <div className="grid gap-4 xl:grid-cols-[1.35fr_0.65fr]">
+        <div className="relative overflow-hidden rounded-card border border-border bg-card p-5 shadow-sm">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-success" />
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Cockpit d'examen</p>
+              <h2 className="mt-1 text-2xl font-black sm:text-3xl">Security+ SY0-701</h2>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                Ton tableau de bord priorise ce qui fait monter le score: precision, domaines faibles, rythme hebdomadaire et revision active.
+              </p>
+            </div>
+            <div className={cn("inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-black", readinessConfig.bg)}>
+              <readinessConfig.icon className="h-4 w-4" />
+              {readinessConfig.text}
+            </div>
+          </div>
 
-      {/* Stats summary */}
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <MetricPill label="Readiness score" value={`${readinessScore}%`} tone={readinessScore >= 75 ? "success" : readinessScore >= 55 ? "warning" : "danger"} />
+            <MetricPill label="Precision globale" value={`${globalAccuracy}%`} tone={globalAccuracy >= 75 ? "success" : globalAccuracy >= 55 ? "warning" : "danger"} />
+            <MetricPill label="Aujourd'hui" value={todayAnswered} tone="primary" />
+            <MetricPill label="Jours restants" value={daysRemaining} tone={daysRemaining <= 3 ? "danger" : daysRemaining <= 7 ? "warning" : "default"} />
+          </div>
+
+          <div className="mt-5 rounded-card border border-border bg-muted p-4">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-black">Objectif de preparation</p>
+                <p className="text-xs text-muted-foreground">{correct}/{answered} bonnes reponses · {weakDomains.filter(d => d.progress < 50).length} domaine(s) critique(s)</p>
+              </div>
+              <span className="text-sm font-black tabular-nums">{readinessScore}%</span>
+            </div>
+            <div className="h-3 overflow-hidden rounded-full bg-background">
+              <div className={cn("h-full rounded-full transition-all duration-700", readinessConfig.color)}
+                style={{ width: `${readinessScore}%` }} />
+            </div>
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+              <span>Diagnostic</span><span>Seuil vise: 75%</span><span>Pret</span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <button type="button" onClick={() => onNavigate("quiz")}
+              className="rounded-btn bg-primary px-4 py-3 text-sm font-black text-primary-foreground transition hover:opacity-90">
+              Quiz cible
+            </button>
+            <button type="button" onClick={() => onNavigate("exam")}
+              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
+              Examen blanc
+            </button>
+            <button type="button" onClick={() => onNavigate("errors")}
+              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
+              Journal erreurs
+            </button>
+            {onSmartReview && (
+              <button type="button" onClick={onSmartReview}
+                className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
+                Revision active
+              </button>
+            )}
+          </div>
+        </div>
+
+        <Countdown examTime={examTime} examStart={examStart} />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className={cn("rounded-card border p-5 shadow-sm", rec.color)}>
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-btn bg-card">
+              <Lightbulb className="h-5 w-5 text-warning-fg" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Prochaine meilleure action</p>
+              <p className="mt-1 font-black leading-snug">{rec.text}</p>
+              <p className="mt-1 text-sm text-muted-foreground">{readinessConfig.desc}.</p>
+            </div>
+          </div>
+          <button type="button" onClick={() => onNavigate(rec.nav)}
+            className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-btn bg-foreground px-4 text-sm font-black text-background transition hover:opacity-90">
+            {rec.cta} <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Mission du jour</p>
+              <h2 className="mt-1 text-lg font-black">Plan 90 min</h2>
+            </div>
+            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-black text-muted-foreground">
+              {tasks.filter((task) => task.done >= task.target).length}/{tasks.length} terminees
+            </span>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+            {tasks.map((task) => {
+              const pct = Math.min(100, (task.done / task.target) * 100);
+              const done = pct >= 100;
+              return (
+                <button type="button" key={task.label} onClick={() => onNavigate(task.nav)}
+                  className="rounded-card border border-border bg-muted p-3 text-left transition hover:-translate-y-0.5 hover:border-primary">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <div className={cn("flex h-9 w-9 items-center justify-center rounded-btn", done ? "bg-success" : task.color)}>
+                      {done ? <CheckCircle2 className="h-4 w-4 text-white" /> : <task.icon className="h-4 w-4 text-white" />}
+                    </div>
+                    <span className="text-xs font-black tabular-nums text-muted-foreground">{task.done}/{task.target}</span>
+                  </div>
+                  <p className="min-h-10 text-sm font-black leading-tight">{task.label}</p>
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-background">
+                    <div className={cn("h-full rounded-full", done ? "bg-success" : task.color)} style={{ width: `${pct}%` }} />
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Access */}
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="text-sm font-black uppercase tracking-wider text-muted-foreground">Raccourcis de revision</h2>
+          <span className="text-xs text-muted-foreground">Choisis ton mode selon ton energie</span>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
+          <ActionTile icon={FileQuestion} label="Quiz" sub="QCM cible" tone="bg-violet-500" onClick={() => onNavigate("quiz")} />
+          <ActionTile icon={Brain} label="PBQ" sub="Labs pratiques" tone="bg-cyan-500" onClick={() => onNavigate("pbq")} />
+          <ActionTile icon={RotateCcw} label="Flashcards" sub="Memo active" tone="bg-emerald-500" onClick={() => onNavigate("flashcards")} />
+          <ActionTile icon={Timer} label="Examens" sub="Mode test" tone="bg-rose-500" onClick={() => onNavigate("exam")} />
+          <ActionTile icon={BookOpen} label="Cours" sub="Domaines SY0-701" tone="bg-amber-500" onClick={() => onNavigate("courses")} />
+          <ActionTile icon={Target} label="Erreurs" sub="Pieges a corriger" tone="bg-red-500" onClick={() => onNavigate("errors")} />
+        </div>
+      </div>
+
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard label="Score global" value={`${globalAccuracy}%`}
           sub={`${correct}/${answered} questions`}
@@ -332,76 +510,9 @@ export function Dashboard({
         <StatCard label="Aujourd'hui" value={todayAnswered}
           sub={todayAccuracy !== null ? `${todayAccuracy}% precision` : "Aucune question encore"}
           color="text-primary" />
-        <StatCard label="Jours restants" value={daysRemaining}
-          sub={`${daysRemaining} jours restants`}
-          color={daysRemaining <= 3 ? "text-danger-fg" : daysRemaining <= 7 ? "text-warning-fg" : "text-foreground"} />
-      </div>
-
-      <Countdown examTime={examTime} examStart={examStart} />
-
-      {/* Readiness + Recommendation */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className={cn("rounded-card border p-5 shadow-sm", readinessConfig.bg)}>
-          <div className="flex items-center gap-3">
-            <div className={cn("flex h-12 w-12 shrink-0 items-center justify-center rounded-full", readinessConfig.color)}>
-              <readinessConfig.icon className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <p className="text-lg font-black">{readinessConfig.text}</p>
-              <p className="text-sm text-muted-foreground">{readinessConfig.desc} — readiness {readinessScore}%</p>
-            </div>
-          </div>
-          <div className="mt-4 h-2 rounded-full bg-white/60 overflow-hidden">
-            <div className={cn("h-full rounded-full transition-all duration-700", readinessConfig.color)}
-              style={{ width: `${readinessScore}%` }} />
-          </div>
-          <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-            <span>0%</span><span className="font-bold">Seuil: 75%</span><span>100%</span>
-          </div>
-        </div>
-
-        <div className={cn("rounded-card border p-5 shadow-sm flex flex-col justify-between", rec.color)}>
-          <div className="flex items-start gap-3">
-            <Lightbulb className="mt-0.5 h-5 w-5 shrink-0 text-amber-500" />
-            <div>
-              <p className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1">Recommandation</p>
-              <p className="font-semibold">{rec.text}</p>
-            </div>
-          </div>
-          <button type="button" onClick={() => onNavigate(rec.nav)}
-            className="mt-4 flex items-center justify-center gap-2 rounded-btn bg-foreground px-4 py-2 text-sm font-bold text-background transition hover:opacity-90">
-            {rec.cta} <ArrowRight className="h-4 w-4" />
-          </button>
-          {onSmartReview && (
-            <button type="button" onClick={onSmartReview}
-              className="mt-2 flex items-center justify-center gap-2 rounded-btn border border-border bg-card px-4 py-2 text-sm font-black transition hover:border-primary hover:text-primary">
-              Réviser maintenant <Zap className="h-4 w-4" />
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Quick Access */}
-      <div className="rounded-card border border-border bg-card p-4 shadow-sm">
-        <h2 className="mb-3 text-sm font-bold text-muted-foreground uppercase tracking-wider">Acces rapide</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
-          {[
-            { id: "quiz",       icon: FileQuestion, label: "Quiz",       color: "bg-violet-500" },
-            { id: "pbq",        icon: Brain,        label: "PBQ",        color: "bg-cyan-500" },
-            { id: "flashcards", icon: RotateCcw,    label: "Flashcards", color: "bg-emerald-500" },
-            { id: "exam",       icon: Timer,        label: "Examens",    color: "bg-rose-500" },
-            { id: "courses",    icon: BookOpen,     label: "Cours",      color: "bg-amber-500" },
-            { id: "errors",     icon: Target,       label: "Erreurs",    color: "bg-red-500" },
-          ].map((item) => (
-            <button type="button" key={item.id} onClick={() => onNavigate(item.id)}
-              className="flex flex-col items-center gap-1.5 rounded-card border border-border bg-muted p-3 transition-all duration-200 hover:border-primary hover:shadow-md hover:-translate-y-0.5 active:scale-95">
-              <div className={cn("flex h-9 w-9 items-center justify-center rounded-btn", item.color)}>
-                <item.icon className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-xs font-semibold">{item.label}</span>
-            </button>
-          ))}
-        </div>
+        <StatCard label="Semaine" value={analytics.weeklyQuestions}
+          sub={`${analytics.trend >= 0 ? "+" : ""}${analytics.trend} pts de tendance`}
+          color={analytics.trend >= 0 ? "text-success-fg" : "text-danger-fg"} />
       </div>
 
       {/* Smart Analytics */}

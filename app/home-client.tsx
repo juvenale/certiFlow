@@ -219,7 +219,8 @@ function formatExamAnswers(question: ExamQuestion, indexes: number[] | undefined
 export function HomeClient() {
   const [view, setView] = useState<ViewId>("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [appTheme, setAppTheme] = useState<AppTheme>(readThemeStorage);
+  const [appTheme, setAppTheme] = useState<AppTheme>("certiflow-classic");
+  const [themeReady, setThemeReady] = useState(false);
   const [answered, setAnswered] = useState(() => readNumberStorage("certiflow-answered"));
   const [correct, setCorrect] = useState(() => readNumberStorage("certiflow-correct"));
   const [errors, setErrors] = useState<ErrorEntry[]>(readErrorsStorage);
@@ -253,12 +254,20 @@ export function HomeClient() {
   const [cloudBusy, setCloudBusy] = useState(false);
   const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
   const [adaptiveHint, setAdaptiveHint] = useState("Mode adaptatif prêt.");
+  const [clientReady, setClientReady] = useState(false);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
   useEffect(() => {
+    setAppTheme(readThemeStorage());
+    setThemeReady(true);
+    setClientReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeReady) return;
     document.documentElement.dataset.theme = appTheme;
     localStorage.setItem("certiflow-theme", appTheme);
-  }, [appTheme]);
+  }, [appTheme, themeReady]);
 
   useEffect(() => {
     if (!supabase) {
@@ -847,6 +856,21 @@ export function HomeClient() {
     }
     keys.forEach((key) => localStorage.removeItem(key));
     window.location.reload();
+  }
+
+  if (!clientReady) {
+    return (
+      <main className="app-shell min-h-screen text-foreground">
+        <div className="mx-auto grid min-h-screen max-w-[1600px] place-items-center px-4">
+          <div className="w-full max-w-md rounded-card border border-border bg-card p-6 text-center shadow-sm">
+            <div className="mx-auto mb-4 h-12 w-12 animate-pulse rounded-btn bg-primary/20" />
+            <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">CertiFlow</p>
+            <h1 className="mt-2 text-2xl font-black">Chargement de ta progression</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Synchronisation locale du tableau de bord...</p>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
