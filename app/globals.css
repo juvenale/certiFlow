@@ -26,6 +26,22 @@
   --sidebar: #ffffff;
   --ring-soft: rgba(23, 107, 135, .16);
   --hero: linear-gradient(135deg, rgba(23,107,135,.12), rgba(6,182,212,.08));
+  /* Domain colors */
+  --domain-violet:        #8b5cf6;
+  --domain-violet-muted:  rgba(139, 92, 246, .12);
+  --domain-violet-border: rgba(139, 92, 246, .28);
+  --domain-red:           #ef4444;
+  --domain-red-muted:     rgba(239, 68, 68, .12);
+  --domain-red-border:    rgba(239, 68, 68, .28);
+  --domain-blue:          #3b82f6;
+  --domain-blue-muted:    rgba(59, 130, 246, .12);
+  --domain-blue-border:   rgba(59, 130, 246, .28);
+  --domain-emerald:       #10b981;
+  --domain-emerald-muted: rgba(16, 185, 129, .12);
+  --domain-emerald-border:rgba(16, 185, 129, .28);
+  --domain-amber:         #f59e0b;
+  --domain-amber-muted:   rgba(245, 158, 11, .12);
+  --domain-amber-border:  rgba(245, 158, 11, .28);
 }
 
 html[data-theme="certiflow-classic"] {
@@ -50,7 +66,23 @@ html[data-theme="certiflow-classic"] {
   --sidebar: #ffffff;
   --ring-soft: rgba(23, 107, 135, .16);
   --hero: linear-gradient(135deg, rgba(23,107,135,.12), rgba(6,182,212,.08));
-}
+  /* Domain colors */
+  --domain-violet:        #8b5cf6;
+  --domain-violet-muted:  rgba(139, 92, 246, .12);
+  --domain-violet-border: rgba(139, 92, 246, .28);
+  --domain-red:           #ef4444;
+  --domain-red-muted:     rgba(239, 68, 68, .12);
+  --domain-red-border:    rgba(239, 68, 68, .28);
+  --domain-blue:          #3b82f6;
+  --domain-blue-muted:    rgba(59, 130, 246, .12);
+  --domain-blue-border:   rgba(59, 130, 246, .28);
+  --domain-emerald:       #10b981;
+  --domain-emerald-muted: rgba(16, 185, 129, .12);
+  --domain-emerald-border:rgba(16, 185, 129, .28);
+  --domain-amber:         #f59e0b;
+  --domain-amber-muted:   rgba(245, 158, 11, .12);
+  --domain-amber-border:  rgba(245, 158, 11, .28);
+  }
 
 html[data-theme="soc-night"] {
   --background: #08111f;
@@ -74,6 +106,22 @@ html[data-theme="soc-night"] {
   --sidebar: #0a1424;
   --ring-soft: rgba(56, 189, 248, .18);
   --hero: linear-gradient(135deg, rgba(56,189,248,.16), rgba(34,197,94,.08));
+  /* Domain colors (brightened for dark backgrounds) */
+  --domain-violet:        #a78bfa;
+  --domain-violet-muted:  rgba(167, 139, 250, .16);
+  --domain-violet-border: rgba(167, 139, 250, .32);
+  --domain-red:           #f87171;
+  --domain-red-muted:     rgba(248, 113, 113, .16);
+  --domain-red-border:    rgba(248, 113, 113, .32);
+  --domain-blue:          #60a5fa;
+  --domain-blue-muted:    rgba(96, 165, 250, .16);
+  --domain-blue-border:   rgba(96, 165, 250, .32);
+  --domain-emerald:       #34d399;
+  --domain-emerald-muted: rgba(52, 211, 153, .16);
+  --domain-emerald-border:rgba(52, 211, 153, .32);
+  --domain-amber:         #fbbf24;
+  --domain-amber-muted:   rgba(251, 191, 36, .16);
+  --domain-amber-border:  rgba(251, 191, 36, .32);
 }
 
 html[data-theme="exam-focus"] {
@@ -98,6 +146,22 @@ html[data-theme="exam-focus"] {
   --sidebar: #ffffff;
   --ring-soft: rgba(37, 99, 235, .14);
   --hero: linear-gradient(135deg, rgba(37,99,235,.1), rgba(124,58,237,.07));
+  /* Domain colors */
+  --domain-violet:        #8b5cf6;
+  --domain-violet-muted:  rgba(139, 92, 246, .12);
+  --domain-violet-border: rgba(139, 92, 246, .28);
+  --domain-red:           #ef4444;
+  --domain-red-muted:     rgba(239, 68, 68, .12);
+  --domain-red-border:    rgba(239, 68, 68, .28);
+  --domain-blue:          #3b82f6;
+  --domain-blue-muted:    rgba(59, 130, 246, .12);
+  --domain-blue-border:   rgba(59, 130, 246, .28);
+  --domain-emerald:       #10b981;
+  --domain-emerald-muted: rgba(16, 185, 129, .12);
+  --domain-emerald-border:rgba(16, 185, 129, .28);
+  --domain-amber:         #f59e0b;
+  --domain-amber-muted:   rgba(245, 158, 11, .12);
+  --domain-amber-border:  rgba(245, 158, 11, .28);
 }
 
 html[data-theme="threat-lab"] {
@@ -122,6 +186,22 @@ html[data-theme="threat-lab"] {
   --sidebar: #121719;
   --ring-soft: rgba(225, 29, 72, .16);
   --hero: linear-gradient(135deg, rgba(15,118,110,.18), rgba(225,29,72,.08));
+  /* Domain colors (brightened for dark backgrounds) */
+  --domain-violet:        #a78bfa;
+  --domain-violet-muted:  rgba(167, 139, 250, .16);
+  --domain-violet-border: rgba(167, 139, 250, .32);
+  --domain-red:           #f87171;
+  --domain-red-muted:     rgba(248, 113, 113, .16);
+  --domain-red-border:    rgba(248, 113, 113, .32);
+  --domain-blue:          #60a5fa;
+  --domain-blue-muted:    rgba(96, 165, 250, .16);
+  --domain-blue-border:   rgba(96, 165, 250, .32);
+  --domain-emerald:       #34d399;
+  --domain-emerald-muted: rgba(52, 211, 153, .16);
+  --domain-emerald-border:rgba(52, 211, 153, .32);
+  --domain-amber:         #fbbf24;
+  --domain-amber-muted:   rgba(251, 191, 36, .16);
+  --domain-amber-border:  rgba(251, 191, 36, .32);
 }
 
 html[data-theme="midnight"] {
@@ -146,6 +226,22 @@ html[data-theme="midnight"] {
   --sidebar: #0f1122;
   --ring-soft: rgba(129,140,248,.20);
   --hero: linear-gradient(135deg, rgba(129,140,248,.16), rgba(192,132,252,.08));
+  /* Domain colors (brightened for dark backgrounds) */
+  --domain-violet:        #a78bfa;
+  --domain-violet-muted:  rgba(167, 139, 250, .16);
+  --domain-violet-border: rgba(167, 139, 250, .32);
+  --domain-red:           #f87171;
+  --domain-red-muted:     rgba(248, 113, 113, .16);
+  --domain-red-border:    rgba(248, 113, 113, .32);
+  --domain-blue:          #60a5fa;
+  --domain-blue-muted:    rgba(96, 165, 250, .16);
+  --domain-blue-border:   rgba(96, 165, 250, .32);
+  --domain-emerald:       #34d399;
+  --domain-emerald-muted: rgba(52, 211, 153, .16);
+  --domain-emerald-border:rgba(52, 211, 153, .32);
+  --domain-amber:         #fbbf24;
+  --domain-amber-muted:   rgba(251, 191, 36, .16);
+  --domain-amber-border:  rgba(251, 191, 36, .32);
 }
 
 html[data-theme="warm-focus"] {
@@ -170,6 +266,22 @@ html[data-theme="warm-focus"] {
   --sidebar: #fffcf8;
   --ring-soft: rgba(194,65,12,.14);
   --hero: linear-gradient(135deg, rgba(194,65,12,.10), rgba(217,119,6,.06));
+  /* Domain colors (warm palette) */
+  --domain-violet:        #7c3aed;
+  --domain-violet-muted:  rgba(124, 58, 237, .12);
+  --domain-violet-border: rgba(124, 58, 237, .28);
+  --domain-red:           #dc2626;
+  --domain-red-muted:     rgba(220, 38, 38, .12);
+  --domain-red-border:    rgba(220, 38, 38, .28);
+  --domain-blue:          #2563eb;
+  --domain-blue-muted:    rgba(37, 99, 235, .12);
+  --domain-blue-border:   rgba(37, 99, 235, .28);
+  --domain-emerald:       #059669;
+  --domain-emerald-muted: rgba(5, 150, 105, .12);
+  --domain-emerald-border:rgba(5, 150, 105, .28);
+  --domain-amber:         #d97706;
+  --domain-amber-muted:   rgba(217, 119, 6, .12);
+  --domain-amber-border:  rgba(217, 119, 6, .28);
 }
 
 html[data-theme="forest-ops"] {
@@ -194,6 +306,22 @@ html[data-theme="forest-ops"] {
   --sidebar: #0a1810;
   --ring-soft: rgba(52,211,153,.18);
   --hero: linear-gradient(135deg, rgba(52,211,153,.16), rgba(96,165,250,.08));
+  /* Domain colors (brightened for dark backgrounds) */
+  --domain-violet:        #a78bfa;
+  --domain-violet-muted:  rgba(167, 139, 250, .16);
+  --domain-violet-border: rgba(167, 139, 250, .32);
+  --domain-red:           #f87171;
+  --domain-red-muted:     rgba(248, 113, 113, .16);
+  --domain-red-border:    rgba(248, 113, 113, .32);
+  --domain-blue:          #60a5fa;
+  --domain-blue-muted:    rgba(96, 165, 250, .16);
+  --domain-blue-border:   rgba(96, 165, 250, .32);
+  --domain-emerald:       #34d399;
+  --domain-emerald-muted: rgba(52, 211, 153, .16);
+  --domain-emerald-border:rgba(52, 211, 153, .32);
+  --domain-amber:         #fbbf24;
+  --domain-amber-muted:   rgba(251, 191, 36, .16);
+  --domain-amber-border:  rgba(251, 191, 36, .32);
 }
 
 html[data-theme="arctic"] {
@@ -218,6 +346,22 @@ html[data-theme="arctic"] {
   --sidebar: #f8fbff;
   --ring-soft: rgba(3,105,161,.14);
   --hero: linear-gradient(135deg, rgba(3,105,161,.10), rgba(8,145,178,.06));
+  /* Domain colors */
+  --domain-violet:        #8b5cf6;
+  --domain-violet-muted:  rgba(139, 92, 246, .12);
+  --domain-violet-border: rgba(139, 92, 246, .28);
+  --domain-red:           #ef4444;
+  --domain-red-muted:     rgba(239, 68, 68, .12);
+  --domain-red-border:    rgba(239, 68, 68, .28);
+  --domain-blue:          #3b82f6;
+  --domain-blue-muted:    rgba(59, 130, 246, .12);
+  --domain-blue-border:   rgba(59, 130, 246, .28);
+  --domain-emerald:       #10b981;
+  --domain-emerald-muted: rgba(16, 185, 129, .12);
+  --domain-emerald-border:rgba(16, 185, 129, .28);
+  --domain-amber:         #f59e0b;
+  --domain-amber-muted:   rgba(245, 158, 11, .12);
+  --domain-amber-border:  rgba(245, 158, 11, .28);
 }
 
 body {
@@ -225,6 +369,21 @@ body {
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply smooth theme transitions to interactive surfaces */
+.app-shell,
+aside,
+button,
+a,
+input,
+select,
+textarea,
+.rounded-card,
+.rounded-btn {
+  transition-property: background-color,border-color,color,fill,stroke,box-shadow,transform;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: 150ms;
 }
 
 .app-shell {
@@ -288,7 +447,24 @@ body {
 
 /* ── Transition utilities ───────────────────────────────────────────── */
 
-*,*::before,*::after { transition-property: background-color,border-color,color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms; }
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition-property: background-color,border-color,color,fill,stroke;
+  transition-timing-function: cubic-bezier(.4,0,.2,1);
+  transition-duration: 150ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* ── Gradient text ──────────────────────────────────────────────────── */
 
@@ -311,24 +487,24 @@ body {
 .text-danger-fg       { color: var(--danger);  }
 .text-warning-fg      { color: var(--warning); }
 
-/* ── Domain color utilities (fixed hues, rgba — work on any background) ─────── */
+/* ── Domain color utilities (driven by per-theme CSS vars) ──────────────────── */
 
-.dom-bg-violet   { background-color: rgba(139,  92, 246, .12); }
-.dom-bd-violet   { border-color:     rgba(139,  92, 246, .28); }
-.dom-tag-violet  { background-color: rgba(139,  92, 246, .15); color: #8b5cf6; }
+.dom-bg-violet   { background-color: var(--domain-violet-muted); }
+.dom-bd-violet   { border-color:     var(--domain-violet-border); }
+.dom-tag-violet  { background-color: var(--domain-violet-muted); color: var(--domain-violet); }
 
-.dom-bg-red      { background-color: rgba(239,  68,  68, .12); }
-.dom-bd-red      { border-color:     rgba(239,  68,  68, .28); }
-.dom-tag-red     { background-color: rgba(239,  68,  68, .15); color: #ef4444; }
+.dom-bg-red      { background-color: var(--domain-red-muted); }
+.dom-bd-red      { border-color:     var(--domain-red-border); }
+.dom-tag-red     { background-color: var(--domain-red-muted); color: var(--domain-red); }
 
-.dom-bg-blue     { background-color: rgba( 59, 130, 246, .12); }
-.dom-bd-blue     { border-color:     rgba( 59, 130, 246, .28); }
-.dom-tag-blue    { background-color: rgba( 59, 130, 246, .15); color: #3b82f6; }
+.dom-bg-blue     { background-color: var(--domain-blue-muted); }
+.dom-bd-blue     { border-color:     var(--domain-blue-border); }
+.dom-tag-blue    { background-color: var(--domain-blue-muted); color: var(--domain-blue); }
 
-.dom-bg-emerald  { background-color: rgba( 16, 185, 129, .12); }
-.dom-bd-emerald  { border-color:     rgba( 16, 185, 129, .28); }
-.dom-tag-emerald { background-color: rgba( 16, 185, 129, .15); color: #10b981; }
+.dom-bg-emerald  { background-color: var(--domain-emerald-muted); }
+.dom-bd-emerald  { border-color:     var(--domain-emerald-border); }
+.dom-tag-emerald { background-color: var(--domain-emerald-muted); color: var(--domain-emerald); }
 
-.dom-bg-amber    { background-color: rgba(245, 158,  11, .12); }
-.dom-bd-amber    { border-color:     rgba(245, 158,  11, .28); }
-.dom-tag-amber   { background-color: rgba(245, 158,  11, .15); color: #f59e0b; }
+.dom-bg-amber    { background-color: var(--domain-amber-muted); }
+.dom-bd-amber    { border-color:     var(--domain-amber-border); }
+.dom-tag-amber   { background-color: var(--domain-amber-muted); color: var(--domain-amber); }

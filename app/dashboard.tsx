@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { memo, useEffect, useState } from "react";
 import {
   AlarmClock, ArrowRight, BookOpen, Brain, CheckCircle2, Clock,
   FileQuestion, Flame, LayoutDashboard, Lightbulb, RotateCcw,
   Shield, Target, Timer, TrendingUp, Zap, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getDailyTasks, setDailyTaskCount } from "@/lib/daily-tasks";
 import { domainStats as allDomainStats } from "@/data/domain-stats";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
@@ -16,7 +17,11 @@ interface ErrorEntry { domain: string; questionId: string; question?: string; co
 interface QuizHistoryEntry { id: string; date: string; domain: string; correct: boolean; concept: string }
 
 function useDomainProgress(answered: number, correct: number) {
-  return useMemo(() => {
+  const [domainProgress, setDomainProgress] = useState<DomainStat[]>(() =>
+    allDomainStats.map((d) => ({ id: d.id, name: d.name, weight: d.weight, totalQuestions: d.totalQuestions, attempted: 0, correct: 0, progress: 0 }))
+  );
+
+  useEffect(() => {
     let ds: Record<string, { answered: number; correct: number }> = {};
     try { ds = JSON.parse(localStorage.getItem("certiflow-domain-stats") || "{}"); } catch {}
 
@@ -33,14 +38,17 @@ function useDomainProgress(answered: number, correct: number) {
       }
     }
 
-    return allDomainStats.map((d) => {
+    const result = allDomainStats.map((d) => {
       const stat = ds[d.name] ?? { answered: 0, correct: 0 };
       const coverage = d.totalQuestions > 0 ? (stat.answered / d.totalQuestions) * 100 : 0;
       const accuracy = stat.answered > 0 ? (stat.correct / stat.answered) * 100 : 0;
       const progress = Math.min(100, Math.round(coverage * 0.5 + accuracy * 0.5));
       return { id: d.id, name: d.name, weight: d.weight, totalQuestions: d.totalQuestions, attempted: stat.answered, correct: stat.correct, progress };
     });
+    setDomainProgress(result);
   }, [answered, correct]);
+
+  return domainProgress;
 }
 
 function readQuizHistory() {
@@ -48,8 +56,21 @@ function readQuizHistory() {
   catch { return []; }
 }
 
+function emptyAnalytics() {
+  return {
+    weeklyProgress: [] as Array<{ date: string; questions: number; score: number }>,
+    domainAccuracy: [] as Array<{ domain: string; weight: number; questions: number; accuracy: number }>,
+    weakConcepts: [] as Array<{ concept: string; domain: string; count: number }>,
+    weeklyQuestions: 0,
+    trend: 0,
+    globalAccuracy: 0,
+  };
+}
+
 function useSmartAnalytics(answered: number, correct: number) {
-  return useMemo(() => {
+  const [analytics, setAnalytics] = useState(emptyAnalytics);
+
+  useEffect(() => {
     let errors: ErrorEntry[] = [];
     try { errors = JSON.parse(localStorage.getItem("certiflow-errors") || "[]"); } catch {}
     const history = readQuizHistory();
@@ -97,30 +118,38 @@ function useSmartAnalytics(answered: number, correct: number) {
     const trend = recentScores.length >= 2 ? recentScores[recentScores.length - 1] - recentScores[0] : 0;
     const globalAccuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
 
-    return { weeklyProgress, domainAccuracy, weakConcepts, weeklyQuestions, trend, globalAccuracy };
+    setAnalytics({ weeklyProgress, domainAccuracy, weakConcepts, weeklyQuestions, trend, globalAccuracy });
   }, [answered, correct]);
+
+  return analytics;
 }
 
 function useDailyCheckpoint(answered: number, correct: number) {
-  const today = new Date().toISOString().split("T")[0];
-  const key = `certiflow-daily-${today}`;
+  const [todayAnswered, setTodayAnswered] = useState(0);
+  const [todayCorrect, setTodayCorrect] = useState(0);
 
-  const [checkpoint] = useState(() => {
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const key = `certiflow-daily-${today}`;
+    let cp: { startAnswered: number; startCorrect: number };
+
     try {
       const stored = JSON.parse(localStorage.getItem(key) || "null");
-      if (stored) return stored as { startAnswered: number; startCorrect: number };
-      const cp = { startAnswered: answered, startCorrect: correct };
-      localStorage.setItem(key, JSON.stringify(cp));
-      return cp;
+      if (stored) {
+        cp = stored;
+      } else {
+        cp = { startAnswered: answered, startCorrect: correct };
+        localStorage.setItem(key, JSON.stringify(cp));
+      }
     } catch {
-      return { startAnswered: answered, startCorrect: correct };
+      cp = { startAnswered: answered, startCorrect: correct };
     }
-  });
 
-  return {
-    todayAnswered: Math.max(0, answered - checkpoint.startAnswered),
-    todayCorrect: Math.max(0, correct - checkpoint.startCorrect),
-  };
+    setTodayAnswered(Math.max(0, answered - cp.startAnswered));
+    setTodayCorrect(Math.max(0, correct - cp.startCorrect));
+  }, [answered, correct]);
+
+  return { todayAnswered, todayCorrect };
 }
 
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
@@ -133,6 +162,55 @@ function StatCard({ label, value, sub, color }: { label: string; value: string |
   );
 }
 
+
+// ─── Countdown (isolated to avoid 1s re-renders of entire Dashboard) ─────────
+
+const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: number; examStart: number }) {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const remaining = Math.max(0, examTime - now);
+  const d = Math.floor(remaining / 86400000);
+  const h = Math.floor((remaining % 86400000) / 3600000);
+  const m = Math.floor((remaining % 3600000) / 60000);
+  const s = Math.floor((remaining % 60000) / 1000);
+
+  const totalSpan = Math.max(1, examTime - examStart);
+  const elapsed = Math.max(0, now - examStart);
+  const timelineProgress = Math.min(100, Math.round((elapsed / totalSpan) * 100));
+
+  function pad(n: number) { return String(n).padStart(2, "0"); }
+
+  return (
+    <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Clock className="h-4 w-4 text-primary" />
+          <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Compte a rebours — 25 mai 2026</span>
+        </div>
+        <span className="text-xs text-muted-foreground">{timelineProgress}% du temps ecoule</span>
+      </div>
+      <div className="mb-3 h-2 rounded-full bg-muted overflow-hidden">
+        <div className={cn("h-full rounded-full transition-all duration-1000",
+            timelineProgress > 90 ? "bg-danger" : timelineProgress > 75 ? "bg-warning" : "bg-primary")}
+          style={{ width: `${timelineProgress}%` }} />
+      </div>
+      <div className="flex items-baseline gap-1.5 flex-wrap">
+        <span className="text-4xl font-black tabular-nums text-gradient">{d}</span>
+        <span className="text-lg font-semibold text-muted-foreground">jours</span>
+        <span className="text-2xl font-black tabular-nums ml-3">{pad(h)}</span>
+        <span className="text-muted-foreground font-bold">:</span>
+        <span className="text-2xl font-black tabular-nums">{pad(m)}</span>
+        <span className="text-muted-foreground font-bold">:</span>
+        <span className="text-2xl font-black tabular-nums">{pad(s)}</span>
+      </div>
+    </div>
+  );
+});
 export function Dashboard({
   daysLeft, domains, score, answered, correct, avgProgress, weakest, onNavigate
 }: {
@@ -190,7 +268,8 @@ export function Dashboard({
     "not-ready":{ color: "bg-danger",  bg: "bg-danger-muted border-danger-muted",   text: "Pas encore pret",     icon: AlarmClock,   desc: "Intensifie les revisions" },
   }[readiness];
 
-  // Smart recommendation
+  // Smart recommendation (48h check based on days remaining)
+  const daysRemaining = Math.max(0, Math.floor((examTime - Date.now()) / 86400000));
   const rec = isLast48h
     ? { text: "Mode cram actif — suivez le plan ci-dessous", cta: "Voir le plan", nav: "dashboard", color: "border-danger-muted bg-danger-muted" }
     : readiness === "ready"
@@ -199,12 +278,20 @@ export function Dashboard({
     ? { text: `Priorite: ${weakestDomain.name} (${weakestDomain.progress}% — le plus faible)`, cta: "Ouvrir le quiz", nav: "quiz", color: "border-warning-muted bg-warning-muted" }
     : { text: "Pratiquez des PBQ pour consolider la pratique clinique", cta: "Ouvrir PBQ", nav: "pbq", color: "border-primary/20 bg-primary/5" };
 
+  const [dailyTasks, setDailyTasks] = useState(getDailyTasks);
+
+  useEffect(() => {
+    // Re-read daily tasks when the component mounts or when answered/correct change
+    setDailyTasks(getDailyTasks());
+    // Also sync QCM count to localStorage for cross-session consistency
+    setDailyTaskCount("qcm", todayAnswered);
+  }, [todayAnswered]);
   const tasks = [
     { icon: FileQuestion, label: "QCM aujourd'hui",   target: 40, done: Math.min(40, todayAnswered), color: "bg-violet-500", nav: "quiz" },
-    { icon: Brain,        label: "PBQ",                target: 3,  done: 0,                          color: "bg-cyan-500",   nav: "pbq" },
-    { icon: RotateCcw,    label: "Flashcards",         target: 20, done: 0,                          color: "bg-emerald-500",nav: "flashcards" },
-    { icon: Zap,          label: "Ports & commandes",  target: 10, done: 0,                          color: "bg-amber-500",  nav: "ports" },
-    { icon: Timer,        label: "Examen blanc",        target: 1,  done: 0,                          color: "bg-rose-500",   nav: "exam" },
+    { icon: Brain,        label: "PBQ",                target: 3,  done: Math.min(3, dailyTasks.pbq),  color: "bg-cyan-500",   nav: "pbq" },
+    { icon: RotateCcw,    label: "Flashcards",         target: 20, done: Math.min(20, dailyTasks.flashcards), color: "bg-emerald-500",nav: "flashcards" },
+    { icon: Zap,          label: "Ports & commandes",  target: 10, done: Math.min(10, dailyTasks.ports), color: "bg-amber-500",  nav: "ports" },
+    { icon: Timer,        label: "Examen blanc",        target: 1,  done: Math.min(1, dailyTasks.exam),  color: "bg-rose-500",   nav: "exam" },
   ];
 
   const cramPlan = [
@@ -232,35 +319,12 @@ export function Dashboard({
         <StatCard label="Aujourd'hui" value={todayAnswered}
           sub={todayAccuracy !== null ? `${todayAccuracy}% precision` : "Aucune question encore"}
           color="text-primary" />
-        <StatCard label="Jours restants" value={d}
-          sub={`${h}h ${pad(m)}m ${pad(s)}s`}
-          color={d <= 3 ? "text-danger-fg" : d <= 7 ? "text-warning-fg" : "text-foreground"} />
+        <StatCard label="Jours restants" value={daysRemaining}
+          sub={`${daysRemaining} jours restants`}
+          color={daysRemaining <= 3 ? "text-danger-fg" : daysRemaining <= 7 ? "text-warning-fg" : "text-foreground"} />
       </div>
 
-      {/* Countdown + timeline */}
-      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Clock className="h-4 w-4 text-primary" />
-            <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Compte a rebours — 25 mai 2026</span>
-          </div>
-          <span className="text-xs text-muted-foreground">{timelineProgress}% du temps ecoule</span>
-        </div>
-        <div className="mb-3 h-2 rounded-full bg-muted overflow-hidden">
-          <div className={cn("h-full rounded-full transition-all duration-1000",
-              timelineProgress > 90 ? "bg-danger" : timelineProgress > 75 ? "bg-warning" : "bg-primary")}
-            style={{ width: `${timelineProgress}%` }} />
-        </div>
-        <div className="flex items-baseline gap-1.5 flex-wrap">
-          <span className="text-4xl font-black tabular-nums text-gradient">{d}</span>
-          <span className="text-lg font-semibold text-muted-foreground">jours</span>
-          <span className="text-2xl font-black tabular-nums ml-3">{pad(h)}</span>
-          <span className="text-muted-foreground font-bold">:</span>
-          <span className="text-2xl font-black tabular-nums">{pad(m)}</span>
-          <span className="text-muted-foreground font-bold">:</span>
-          <span className="text-2xl font-black tabular-nums">{pad(s)}</span>
-        </div>
-      </div>
+      <Countdown examTime={examTime} examStart={examStart} />
 
       {/* Readiness + Recommendation */}
       <div className="grid gap-4 md:grid-cols-2">
