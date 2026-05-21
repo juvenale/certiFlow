@@ -99,8 +99,8 @@ function ConfusionCard({ item }: { item: ConfusionItem }) {
           )}
 
           <div className="rounded-card border border-amber-200 bg-amber-50 p-3">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-amber-700">Différence clé</p>
-            <p className="text-sm text-amber-900 leading-relaxed">{item.difference}</p>
+            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-warning-fg">Différence clé</p>
+            <p className="text-sm text-warning-fg leading-relaxed">{item.difference}</p>
           </div>
         </div>
       )}

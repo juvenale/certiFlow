@@ -116,8 +116,18 @@ export function PortsCommandsView({ onStartPortFlashcards, onPracticeAnswered }:
   );
 }
 
+function shuffleArray<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function uniqueOptions(values: string[], answer: string) {
-  return Array.from(new Set([answer, ...values.filter(Boolean).filter((item) => item !== answer)])).slice(0, 4);
+  const unique = Array.from(new Set([answer, ...values.filter(Boolean).filter((item) => item !== answer)])).slice(0, 4);
+  return shuffleArray(unique);
 }
 
 function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlashcards; isSecure: (p: string) => boolean; onAnswered?: () => void }) {
@@ -127,7 +137,8 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
   const [score, setScore] = useState({ correct: 0, answered: 0 });
 
   const pool = items.length ? items : portFlashcards;
-  const current = pool[index % pool.length];
+  const shuffledPool = useMemo(() => shuffleArray([...pool]), [items, pool.length]);
+  const current = shuffledPool[index % shuffledPool.length];
   const question = mode === "protocol-to-port"
     ? `Quel port est associé à ${current.protocol} (${current.english}) ?`
     : mode === "port-to-protocol"

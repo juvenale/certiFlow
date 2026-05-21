@@ -53,9 +53,9 @@ function LetterBadge({ letter, state }: {
       "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black transition-colors",
       state === "default"            && "bg-muted text-muted-foreground",
       state === "selected"           && "bg-primary text-primary-foreground",
-      state === "correct"            && "bg-emerald-500 text-white",
-      state === "wrong"              && "bg-red-500 text-white",
-      state === "correct-unselected" && "border-2 border-emerald-500 bg-transparent text-emerald-600",
+      state === "correct"            && "bg-success text-white",
+      state === "wrong"              && "bg-danger text-white",
+      state === "correct-unselected" && "border-2 border-success-muted bg-transparent text-success-fg",
     )}>
       {letter}
     </span>
@@ -65,9 +65,9 @@ function LetterBadge({ letter, state }: {
 // ─── ConfidenceSelector ───────────────────────────────────────────────────────
 function ConfidenceSelector({ value, onChange }: { value?: ExamConfidence; onChange: (v: ExamConfidence) => void }) {
   const opts: { id: ExamConfidence; label: string; active: string }[] = [
-    { id: "low",    label: "Faible",  active: "border-red-400 bg-red-100 text-red-700" },
-    { id: "medium", label: "Moyen",   active: "border-amber-400 bg-amber-100 text-amber-700" },
-    { id: "high",   label: "Élevé",   active: "border-emerald-400 bg-emerald-100 text-emerald-700" },
+    { id: "low",    label: "Faible",  active: "border-danger-muted bg-danger-muted text-danger-fg" },
+    { id: "medium", label: "Moyen",   active: "border-warning-muted bg-warning-muted text-warning-fg" },
+    { id: "high",   label: "Élevé",   active: "border-success-muted bg-success-muted text-success-fg" },
   ];
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -98,13 +98,13 @@ function ExamProgressGrid({ questions, currentIndex, answers, flags, onSelect, s
     <div className="rounded-card border border-border bg-card p-3">
       <div className="mb-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-muted-foreground">
         <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full border-2 border-primary" /> Active</span>
-        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-emerald-200" /> Répondue</span>
+        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-success/20" /> Répondue</span>
         <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-cyan-400" /> PBQ</span>
         <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-amber-400" /> Flagged</span>
         {showCorrection && (
           <>
-            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-emerald-500" /> Correct</span>
-            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-red-500" /> Incorrect</span>
+            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-success" /> Correct</span>
+            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-danger" /> Incorrect</span>
           </>
         )}
       </div>
@@ -123,10 +123,10 @@ function ExamProgressGrid({ questions, currentIndex, answers, flags, onSelect, s
                 "relative grid h-8 min-w-8 place-items-center rounded-full border text-[10px] font-black transition",
                 current  && "border-primary bg-primary text-primary-foreground ring-4 ring-primary/20",
                 !current && !answered && "border-border bg-muted text-muted-foreground hover:border-primary",
-                !current && answered && !correct && !wrong && "border-emerald-300 bg-emerald-100 text-emerald-800",
-                !current && flagged  && "border-amber-400 bg-amber-100 text-amber-800",
-                !current && correct  && "border-emerald-500 bg-emerald-500 text-white",
-                !current && wrong    && "border-red-400 bg-red-500 text-white",
+                !current && answered && !correct && !wrong && "border-success-muted bg-success-muted text-success-fg",
+                !current && flagged  && "border-warning-muted bg-warning-muted text-warning-fg",
+                !current && correct  && "bg-success text-white",
+                !current && wrong    && "bg-danger text-white",
               )}>
               {i + 1}
               {pbq && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border border-card bg-cyan-400" />}
@@ -151,7 +151,7 @@ function ExamLaunchCard({ title, count, note, onPrepare }: {
         <div className="mb-3 flex items-start justify-between gap-3">
           <span className={cn(
             "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider",
-            isMesser ? "bg-violet-100 text-violet-700" : "bg-blue-100 text-blue-700"
+            isMesser ? "bg-muted text-muted-foreground" : "bg-muted text-primary"
           )}>
             {isMesser ? "Professor Messer" : "Auto-généré"}
           </span>
@@ -188,24 +188,24 @@ function SelectedExamReviewCard({ question, index, selected, flagged, confidence
   return (
     <article className={cn(
       "mt-4 rounded-card border p-5 shadow-sm",
-      correct ? "border-emerald-200 bg-emerald-50" : priority ? "border-red-200 bg-red-50" : "border-border bg-card"
+      correct ? "border-success-muted bg-success-muted" : priority ? "border-danger-muted bg-danger-muted" : "border-border bg-card"
     )}>
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <span className={cn(
           "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-black",
           unanswered ? "bg-muted text-muted-foreground"
-          : correct ? "bg-emerald-500 text-white"
-          : "bg-red-500 text-white"
+          : correct ? "bg-success text-white"
+          : "bg-danger text-white"
         )}>
           {unanswered ? "Non répondu" : correct
             ? <><CheckCircle2 className="h-3.5 w-3.5" /> Correct</>
             : <><XCircle className="h-3.5 w-3.5" /> Incorrect</>}
         </span>
-        {flagged && <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700"><Flag className="h-3 w-3" /> Flagged</span>}
+        {flagged && <span className="inline-flex items-center gap-1 rounded-full bg-warning-muted px-2 py-0.5 text-xs font-bold text-warning-fg"><Flag className="h-3 w-3" /> Flagged</span>}
         {isPBQ(question) && <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-xs font-bold text-cyan-700">PBQ</span>}
-        {isMulti(question) && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs font-bold text-violet-700">{getCorrectAnswers(question).length} bonnes réponses</span>}
+        {isMulti(question) && <span className="rounded-full bg-muted px-2 py-0.5 text-xs font-bold text-primary">{getCorrectAnswers(question).length} bonnes réponses</span>}
         {confidence && <span className={cn("rounded-full px-2 py-0.5 text-xs font-bold",
-          confidence === "low" ? "bg-red-100 text-red-600" : confidence === "medium" ? "bg-amber-100 text-amber-600" : "bg-emerald-100 text-emerald-600"
+          confidence === "low" ? "bg-danger-muted text-danger-fg" : confidence === "medium" ? "bg-warning-muted text-warning-fg" : "bg-success-muted text-success-fg"
         )}>Confiance: {confidence}</span>}
         <span className="ml-auto text-xs text-muted-foreground">Q{index + 1}</span>
       </div>
@@ -214,12 +214,12 @@ function SelectedExamReviewCard({ question, index, selected, flagged, confidence
 
       <div className="mt-4 grid gap-3 lg:grid-cols-2">
         <div className={cn("rounded-card border p-3",
-          unanswered ? "border-muted bg-muted/50" : correct ? "border-emerald-200 bg-emerald-50" : "border-red-200 bg-red-50"
+          unanswered ? "border-muted bg-muted/50" : correct ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
         )}>
           <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Votre réponse</p>
           <p className="text-sm font-semibold">{formatAnswers(question, selected)}</p>
         </div>
-        <div className="rounded-card border border-emerald-200 bg-emerald-50 p-3">
+        <div className="rounded-card border border-success-muted bg-success-muted p-3">
           <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
             {isMulti(question) ? "Bonnes réponses" : "Bonne réponse"}
           </p>
@@ -443,13 +443,13 @@ function ExamSessionView({
               <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">Test center</span>
               <span className={cn(
                 "rounded-full px-2.5 py-0.5 text-xs font-bold",
-                activeExam.correctionMode === "instant" ? "bg-amber-100 text-amber-700" : "bg-muted text-muted-foreground"
+                activeExam.correctionMode === "instant" ? "bg-warning-muted text-warning-fg" : "bg-muted text-muted-foreground"
               )}>
                 {activeExam.correctionMode === "instant" ? "Correction immédiate" : "Correction à la fin"}
               </span>
               {examFinished && (
                 <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-bold",
-                  passed ? "bg-emerald-100 text-emerald-700" : "bg-red-100 text-red-700"
+                  passed ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg"
                 )}>
                   {passed ? "Réussi" : "À reprendre"}
                 </span>
@@ -479,7 +479,7 @@ function ExamSessionView({
             <span>Répondues: {answeredPct}%</span>
           </div>
           <div className="relative h-2 overflow-hidden rounded-full bg-muted">
-            <div className="absolute inset-y-0 left-0 rounded-full bg-emerald-400/60 transition-all duration-300" style={{ width: `${answeredPct}%` }} />
+            <div className="absolute inset-y-0 left-0 rounded-full bg-success/60 transition-all duration-300" style={{ width: `${answeredPct}%` }} />
             <div className="absolute top-0 h-full w-0.5 rounded-full bg-primary transition-all duration-300" style={{ left: `${progressPct}%` }} />
           </div>
         </div>
@@ -507,7 +507,7 @@ function ExamSessionView({
               <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">Q{examIndex + 1}</span>
               <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">{q.examTitle}</span>
               {isPBQ(q) && <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-bold text-cyan-700">PBQ</span>}
-              {isMulti(q) && <span className="rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-bold text-violet-700">{correctAnswers.length} réponses</span>}
+              {isMulti(q) && <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-primary">{correctAnswers.length} réponses</span>}
               {q.choices.length > 4 && <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">{q.choices.length} choix</span>}
             </div>
 
@@ -521,7 +521,7 @@ function ExamSessionView({
                 onClick={() => setExamFlags((items) => ({ ...items, [q.id]: !items[q.id] }))}
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-btn border px-3 py-1.5 text-xs font-bold transition",
-                  flagged ? "border-amber-400 bg-amber-100 text-amber-700" : "border-border bg-card text-muted-foreground hover:border-amber-400"
+                  flagged ? "border-warning-muted bg-warning-muted text-warning-fg" : "border-border bg-card text-muted-foreground hover:border-amber-400"
                 )}>
                 <Flag className="h-3.5 w-3.5" />
                 {flagged ? "Flagged" : "Marquer"}
@@ -551,9 +551,9 @@ function ExamSessionView({
                       "flex w-full items-center gap-3 rounded-card border px-4 py-3 text-left text-sm transition",
                       !showResult && !selected && "border-border bg-muted hover:border-primary/50 hover:bg-card",
                       !showResult && selected  && "border-primary bg-primary/10",
-                      showResult && selected && correct  && "border-emerald-400 bg-emerald-50",
-                      showResult && selected && !correct && "border-red-400 bg-red-50",
-                      showResult && !selected && correct && "border-emerald-300 bg-emerald-50/50",
+                      showResult && selected && correct  && "border-success-muted bg-success-muted",
+                      showResult && selected && !correct && "border-danger-muted bg-danger-muted",
+                      showResult && !selected && correct && "border-success-muted bg-success-muted/50",
                       showResult && !selected && !correct && "border-border bg-muted opacity-60",
                     )}>
                     <LetterBadge letter={String.fromCharCode(65 + i)} state={letterState} />
@@ -570,10 +570,10 @@ function ExamSessionView({
             {canShowExamCorrection && examAnswers[q.id] !== undefined && (
               <div className={cn(
                 "mt-4 rounded-card border p-4",
-                isCorrectAnswer ? "border-emerald-200 bg-emerald-50" : "border-red-200 bg-red-50"
+                isCorrectAnswer ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
               )}>
                 <p className={cn("flex items-center gap-2 font-black",
-                  isCorrectAnswer ? "text-emerald-700" : "text-red-700"
+                  isCorrectAnswer ? "text-success-fg" : "text-danger-fg"
                 )}>
                   {isCorrectAnswer
                     ? <><CheckCircle2 className="h-4 w-4" /> Correct !</>
@@ -610,8 +610,8 @@ function ExamSessionView({
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-btn px-4 py-2 text-sm font-bold transition",
                 examAnsweredCount === total
-                  ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                  : "bg-red-500 text-white hover:bg-red-600"
+                  ? "bg-success text-white hover:opacity-90"
+                  : "bg-danger text-white hover:opacity-90"
               )}>
               {examAnsweredCount === total ? <><CheckCircle2 className="h-4 w-4" /> Terminer</> : <><AlertCircle className="h-4 w-4" /> Terminer ({total - examAnsweredCount} non répondues)</>}
             </button>
@@ -625,17 +625,17 @@ function ExamSessionView({
           {/* Score card */}
           <div className={cn(
             "rounded-card border-2 p-6 shadow-sm",
-            passed ? "border-emerald-300 bg-emerald-50" : "border-red-300 bg-red-50"
+            passed ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
           )}>
             <div className="flex flex-col items-center gap-4 sm:flex-row">
               <div className={cn(
                 "flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-4 text-3xl font-black",
-                passed ? "border-emerald-400 bg-white text-emerald-700" : "border-red-400 bg-white text-red-700"
+                passed ? "border-success-muted bg-card text-success-fg" : "border-danger-muted bg-card text-danger-fg"
               )}>
                 {finalScore}%
               </div>
               <div>
-                <p className={cn("text-2xl font-black", passed ? "text-emerald-800" : "text-red-800")}>
+                <p className={cn("text-2xl font-black", passed ? "text-success-fg" : "text-danger-fg")}>
                   {passed ? "Félicitations — Objectif atteint !" : "À reprendre — Seuil non atteint"}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
@@ -665,9 +665,9 @@ function ExamSessionView({
           {(examConfidenceSummary.low + examConfidenceSummary.medium + examConfidenceSummary.high) > 0 && (
             <div className="grid grid-cols-3 gap-3">
               {[
-                { label: "Faible confiance", value: examConfidenceSummary.low,    color: "border-red-200 bg-red-50 text-red-700" },
-                { label: "Confiance moyenne", value: examConfidenceSummary.medium, color: "border-amber-200 bg-amber-50 text-amber-700" },
-                { label: "Haute confiance",  value: examConfidenceSummary.high,   color: "border-emerald-200 bg-emerald-50 text-emerald-700" },
+                { label: "Faible confiance", value: examConfidenceSummary.low,    color: "border-danger-muted bg-danger-muted text-danger-fg" },
+                { label: "Confiance moyenne", value: examConfidenceSummary.medium, color: "border-warning-muted bg-warning-muted text-warning-fg" },
+                { label: "Haute confiance",  value: examConfidenceSummary.high,   color: "border-success-muted bg-success-muted text-success-fg" },
               ].map(({ label, value, color }) => (
                 <div key={label} className={cn("rounded-card border p-3 text-center", color)}>
                   <p className="text-2xl font-black tabular-nums">{value}</p>

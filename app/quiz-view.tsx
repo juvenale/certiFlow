@@ -38,9 +38,9 @@ function LetterBadge({ letter, state }: {
       "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black transition-colors",
       state === "default"            && "bg-muted text-muted-foreground",
       state === "selected"           && "bg-primary text-primary-foreground",
-      state === "correct"            && "bg-emerald-500 text-white",
-      state === "wrong"              && "bg-red-500 text-white",
-      state === "correct-unselected" && "border-2 border-emerald-500 bg-transparent text-emerald-600",
+      state === "correct"            && "bg-success text-white",
+      state === "wrong"              && "bg-danger text-white",
+      state === "correct-unselected" && "border-2 border-success-muted bg-transparent text-success-fg",
     )}>
       {letter}
     </span>
