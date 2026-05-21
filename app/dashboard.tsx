@@ -1,10 +1,10 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import {
   AlarmClock, ArrowRight, BookOpen, Brain, CheckCircle2, Clock,
   FileQuestion, Flame, LayoutDashboard, Lightbulb, RotateCcw,
-  Shield, Target, Timer, TrendingUp, Zap, BarChart3
+  Shield, Target, Timer, TrendingUp, Zap, BarChart3, CalendarDays
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDailyTasks, setDailyTaskCount } from "@/lib/daily-tasks";
@@ -329,6 +329,28 @@ export function Dashboard({
   // Force re-read by tying to a state counter incremented on visibility change
   const [tasksVersion, setTasksVersion] = useState(0);
   const dailyTasks = getDailyTasks();
+
+  const studyStreak = useMemo(() => {
+    let streak = 0;
+    const today = new Date().toISOString().split("T")[0];
+    let history: Array<{ date: string }> = [];
+    try { history = JSON.parse(localStorage.getItem("certiflow-quiz-history") || "[]"); } catch {}
+    const dates = new Set(history.map((h) => h.date?.slice(0, 10)));
+    if (dates.has(today)) streak++;
+    for (let i = 1; i <= 365; i++) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      if (dates.has(d.toISOString().split("T")[0])) streak++;
+      else break;
+    }
+    return streak;
+  }, [answered]);
+
+  const examMini = useMemo(() => {
+    let exams: Array<{ score: number }> = [];
+    try { exams = JSON.parse(localStorage.getItem("certiflow-exam-history") || "[]"); } catch {}
+    if (!exams.length) return null;
+    return { lastScore: exams[0].score, totalExams: exams.length, avgScore: Math.round(exams.reduce((s, e) => s + e.score, 0) / exams.length) };
+  }, [answered]);
 
   // Re-read on mount and when the tab becomes visible (user may have completed tasks)
   useEffect(() => {

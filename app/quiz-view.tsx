@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Target, XCircle, Zap } from "lucide-react";
+import { AlertCircle, CheckCircle2, Settings2, Target, XCircle, Zap } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 type QuizQuestion = {
@@ -38,9 +39,9 @@ function LetterBadge({ letter, state }: {
       "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black transition-colors",
       state === "default"            && "bg-muted text-muted-foreground",
       state === "selected"           && "bg-primary text-primary-foreground",
-      state === "correct"            && "bg-success text-white",
-      state === "wrong"              && "bg-danger text-white",
-      state === "correct-unselected" && "border-2 border-success-muted bg-transparent text-success-fg",
+      state === "correct"            && "bg-emerald-500 text-white",
+      state === "wrong"              && "bg-red-500 text-white",
+      state === "correct-unselected" && "border-2 border-emerald-500 bg-transparent text-emerald-600",
     )}>
       {letter}
     </span>
@@ -84,6 +85,67 @@ function ModeCard({ icon: Icon, label, desc, onClick, disabled }: {
 }
 
 // ─── QuizView ─────────────────────────────────────────────────────────────────
+
+// ─── ConfigPanel ───────────────────────────────────────────────────────────
+
+function ConfigPanel() {
+  const [open, setOpen] = useState(false);
+  const [config, setConfig] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("certiflow-quiz-config") || "null");
+      return saved || { poolSize: 0, randomOrder: true, correction: "instant" };
+    } catch { return { poolSize: 0, randomOrder: true, correction: "instant" }; }
+  });
+
+  function update(partial: Partial<typeof config>) {
+    const next = { ...config, ...partial };
+    setConfig(next);
+    localStorage.setItem("certiflow-quiz-config", JSON.stringify(next));
+  }
+
+  return (
+    <div className="rounded-card border border-border bg-card p-4 shadow-sm">
+      <button type="button" onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Settings2 className="h-4 w-4 text-muted-foreground" />
+          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Session</span>
+        </div>
+        <span className="text-xs text-muted-foreground">{open ? "Masquer" : "Configurer"}</span>
+      </button>
+      {open && (
+        <div className="mt-4 space-y-4 border-t border-border pt-4">
+          <div>
+            <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Taille du pool</p>
+            <div className="flex flex-wrap gap-1.5">
+              {[{ v: 0, l: "Toutes" }, { v: 10, l: "10" }, { v: 20, l: "20" }, { v: 30, l: "30" }, { v: 50, l: "50" }].map(({ v, l }) => (
+                <button key={v} type="button" onClick={() => update({ poolSize: v })}
+                  className="rounded-btn border px-3 py-1.5 text-xs font-bold transition hover:border-primary"
+                  style={{
+                    borderColor: config.poolSize === v ? "var(--primary)" : "var(--border)",
+                    background: config.poolSize === v ? "var(--primary)" : "var(--muted)",
+                    color: config.poolSize === v ? "var(--primary-foreground)" : "var(--muted-foreground)",
+                  }}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Ordre aleatoire</p>
+              <p className="text-[10px] text-muted-foreground">Melange a chaque session</p>
+            </div>
+            <button type="button" onClick={() => update({ randomOrder: !config.randomOrder })}
+              className="relative h-6 w-11 rounded-full transition-colors"
+              style={{ background: config.randomOrder ? "var(--success)" : "var(--border)" }}>
+              <span className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"
+                style={{ transform: config.randomOrder ? "translateX(20px)" : "translateX(4px)" }} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 export function QuizView({
   score, answered, correct,
   effectiveQuizQuestions, totalQuestions,
@@ -128,6 +190,8 @@ export function QuizView({
         <StatChip label="Questions actives" value={effectiveQuizQuestions.length} sub={`sur ${totalQuestions} au total`} />
         <StatChip label="Position" value={`${pos + 1} / ${effectiveQuizQuestions.length}`} sub={`${progressPct}% parcouru`} />
       </div>
+
+            <ConfigPanel />
 
       {/* Mode selector */}
       <div className="rounded-card border border-border bg-card p-4 shadow-sm">

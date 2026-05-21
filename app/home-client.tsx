@@ -7,17 +7,13 @@ import { CoursesView } from "./courses-view";
 import { ConfusionsView } from "./confusions-view";
 import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
-import { ExamSection } from "./exam-section";
+import { ExamView } from "./exam-view";
 import { QuizView } from "./quiz-view";
-import { SettingsView } from "./settings-view";
-import { ViewMiniDashboard } from "./view-header";
 
 import { useEffect, useMemo, useState } from "react";
 import {
   BookOpen,
-  Menu,
   Moon,
-  X,
   Bot,
   Brain,
   CalendarDays,
@@ -36,7 +32,6 @@ import {
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
-import { getDailyTasks, incrementDailyTask, type DailyTaskType } from "@/lib/daily-tasks";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -48,7 +43,6 @@ import { portFlashcards } from "@/data/port-flashcards";
 import { confusionItems, confusionSections } from "@/data/confusions";
 import { commandToolConfusions, commandToolScenarios, commandTools } from "@/data/command-tools";
 import type { User } from "@supabase/supabase-js";
-import { saveExamResult } from "@/lib/exam-history";
 
 type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
@@ -218,18 +212,9 @@ function formatExamAnswers(question: ExamQuestion, indexes: number[] | undefined
     .join(" | ");
 }
 
-function formatTimer(seconds: number) {
-  const safe = Math.max(0, Math.floor(seconds));
-  const minutes = Math.floor(safe / 60);
-  const remaining = safe % 60;
-  return `${String(minutes).padStart(2, "0")}:${String(remaining).padStart(2, "0")}`;
-}
-
 export function HomeClient() {
   const [view, setView] = useState<ViewId>("dashboard");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [appTheme, setAppTheme] = useState<AppTheme>("certiflow-classic");
-  const [themeReady, setThemeReady] = useState(false);
+  const [appTheme, setAppTheme] = useState<AppTheme>(readThemeStorage);
   const [answered, setAnswered] = useState(() => readNumberStorage("certiflow-answered"));
   const [correct, setCorrect] = useState(() => readNumberStorage("certiflow-correct"));
   const [errors, setErrors] = useState<ErrorEntry[]>(readErrorsStorage);
@@ -262,22 +247,12 @@ export function HomeClient() {
   const [authBusy, setAuthBusy] = useState(false);
   const [cloudBusy, setCloudBusy] = useState(false);
   const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
-  const [adaptiveHint, setAdaptiveHint] = useState("Mode adaptatif prêt.");
-  const [clientReady, setClientReady] = useState(false);
-  const [dailyTaskVersion, setDailyTaskVersion] = useState(0);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
   useEffect(() => {
-    setAppTheme(readThemeStorage());
-    setThemeReady(true);
-    setClientReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!themeReady) return;
     document.documentElement.dataset.theme = appTheme;
     localStorage.setItem("certiflow-theme", appTheme);
-  }, [appTheme, themeReady]);
+  }, [appTheme]);
 
   useEffect(() => {
     if (!supabase) {
@@ -395,8 +370,6 @@ export function HomeClient() {
   const currentQuestion = effectiveQuizQuestions[questionIndex % effectiveQuizQuestions.length];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
-  const dailyTasks = getDailyTasks();
-  void dailyTaskVersion;
   const fallbackFlashcards: UnifiedFlashcard[] = flashcards.map((card) => ({
     id: `fallback-${card.term}`,
     themeId: "mvp",
@@ -494,84 +467,22 @@ export function HomeClient() {
     const haystack = [item.scenario, item.likelyTool].join(" ").toLowerCase();
     return !normalizedSearch || haystack.includes(normalizedSearch);
   });
-  const filteredPortResults = portFlashcards.filter((item) => {
-    const haystack = [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase();
-    return !normalizedSearch || haystack.includes(normalizedSearch);
-  });
   const quickCourseResults = normalizedSearch ? studyItems.filter((item) => [item.term, item.definition, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickConfusionResults = normalizedSearch ? allConfusionItems.filter((item) => [item.comparison, item.english, item.difference, item.sectionTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickCommandResults = normalizedSearch ? commandTools.filter((item) => [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
-  const quickPortResults = normalizedSearch ? portFlashcards.filter((item) => [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickQuizResults = normalizedSearch ? questions.filter((question) => [question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickExamResults = normalizedSearch ? allExamQuestions.filter((question) => [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
-  const sectionContext: Record<ViewId, { eyebrow: string; title: string; subtitle: string; cta?: string; action?: () => void }> = {
-    dashboard: { eyebrow: "Préparation intensive", title: "Tableau de bord", subtitle: "Cockpit Security+ avec readiness, rythme quotidien, domaines faibles et prochaine action." },
-    courses: { eyebrow: "Bibliothèque d'étude", title: "Cours", subtitle: "Concepts clés par domaine et thème, avec termes anglais visibles et pratique directe.", cta: "Flashcards", action: () => setView("flashcards") },
-    confusions: { eyebrow: "Anti-pièges", title: "Confusions", subtitle: "Comparaisons fréquentes à l'examen pour éviter les erreurs de vocabulaire et de logique." },
-    quiz: { eyebrow: "Practice center", title: "Quiz", subtitle: "Questions originales en anglais, filtrées par domaine, thème, recherche ou erreurs.", cta: "Mode erreurs", action: () => startQuiz("errors") },
-    pbq: { eyebrow: "Lab interactif", title: "PBQ", subtitle: "Scénarios pratiques, matching, configuration, investigation et scoring partiel." },
-    flashcards: { eyebrow: "Mémoire active", title: "Flashcards", subtitle: "Acronymes, ports, commandes et termes techniques en révision rapide.", cta: "Changer de paquet", action: () => { setFlashcardDeck(null); setFlashBack(false); } },
-    ports: { eyebrow: "Référence opérationnelle", title: "Ports & commandes", subtitle: "Ports, protocoles, commandes, outils et scénarios typiques Security+.", cta: "Flashcards ports", action: () => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); } },
-    exam: { eyebrow: "Test center", title: "Examens blancs", subtitle: "Examens fixes ou aléatoires avec timer, confiance, flags et review post-examen." },
-    errors: { eyebrow: "Remédiation", title: "Journal d'erreurs", subtitle: "Les questions ratées deviennent une liste de révision priorisée.", cta: "Quiz erreurs", action: () => startQuiz("errors") },
-    plan: { eyebrow: "Roadmap", title: "Plan de révision", subtitle: "Routine jusqu'au 25 mai 2026, ajustée selon les priorités et le temps restant." },
-    assistant: { eyebrow: "Coach IA", title: "Assistant IA", subtitle: "DeepSeek explique, reformule, crée des mini-quiz et prépare ton plan du jour." },
-    search: { eyebrow: "Recherche globale", title: "Recherche", subtitle: "Retrouve rapidement cours, flashcards, confusions, quiz, examens et commandes." },
-    settings: { eyebrow: "Configuration", title: "Paramètres", subtitle: "Compte, synchronisation, thèmes, sauvegardes et données locales." },
-  };
-  const currentSection = sectionContext[view];
-  const ActiveViewIcon = activeView.icon;
-  const viewStats = {
-    view,
-    globalAnswered: answered,
-    globalCorrect: correct,
-    globalScore: score,
-    dailyTasks,
-    quizScore: score,
-    quizAnswered: answered,
-    quizCorrect: correct,
-    quizPosition: effectiveQuizQuestions.length ? (questionIndex % effectiveQuizQuestions.length) + 1 : 0,
-    quizTotal: effectiveQuizQuestions.length,
-    quizDomain: selectedDomain,
-    flashcardDeck: flashcardDeck === "acronyms" ? "Acronymes" : flashcardDeck === "ports" ? "Ports" : flashcardDeck === "commands" ? "Commandes" : flashcardDeck === "technical" ? "Termes" : "Choix du paquet",
-    flashcardCount: effectiveFlashcards.length,
-    pbqType: "Catalogue PBQ",
-    pbqScore,
-    examTime: formatTimer(examElapsedSeconds),
-    examQuestionCount: activeExam?.questions.length ?? allExamQuestions.length,
-    examFlagged: examFlaggedCount,
-    examConfidence: examConfidenceSummary,
-    courseTheme: selectedThemeData?.title ?? "Tous les thèmes",
-    courseItemCount: filteredStudyItems.length,
-    courseDomain: selectedDomain,
-    confusionSectionCount: filteredConfusionSections.length,
-    confusionItemCount: filteredConfusionItems.length,
-    portCount: portFlashcards.length,
-    commandCount: commandTools.length,
-    scenarioCount: commandToolScenarios.length,
-    errorTotal: errors.length,
-    errorResolved: errors.filter((item) => item.status === "maîtrisé").length,
-    planDaysLeft: daysLeft,
-    searchTerm: globalSearch,
-    searchResults: filteredStudyItems.length + filteredConfusionItems.length + filteredCommandTools.length + filteredPortResults.length + filteredQuizQuestions.length + filteredExamQuestions.length,
-  };
 
   useEffect(() => {
     setFlashIndex(0);
     setQuestionIndex(0);
   }, [selectedDomain, selectedTheme, globalSearch]);
 
-  function markDailyTask(type: DailyTaskType) {
-    incrementDailyTask(type);
-    setDailyTaskVersion((value) => value + 1);
-  }
-
   function chooseAnswer(index: number) {
     if (selectedAnswer !== null) return;
     const isCorrect = index === currentQuestionAnswer;
     setSelectedAnswer(index);
     setAnswered((value) => value + 1);
-    markDailyTask("qcm");
 
     // Per-domain stat tracking (used by dashboard auto-update)
     try {
@@ -643,56 +554,6 @@ export function HomeClient() {
     } else {
       setQuestionIndex(Math.floor(Math.random() * effectiveQuizQuestions.length));
     }
-    setView("quiz");
-  }
-
-  function startAdaptiveReview() {
-    setSelectedAnswer(null);
-    setFlashBack(false);
-
-    const activeErrors = errors
-      .filter((error) => error.status !== "maîtrisé")
-      .sort((a, b) => b.count - a.count);
-
-    if (activeErrors.length) {
-      const target = activeErrors[0];
-      const found = questions.findIndex((question) => question.id === target.questionId);
-      setSelectedDomain("all");
-      setSelectedTheme("all");
-      setGlobalSearch("");
-      setQuestionIndex(found >= 0 ? found : 0);
-      setAdaptiveHint(`Priorité: reprendre une erreur (${target.concept || target.domain}).`);
-      setView("quiz");
-      return;
-    }
-
-    let domainStats: Record<string, { answered: number; correct: number }> = {};
-    try { domainStats = JSON.parse(localStorage.getItem("certiflow-domain-stats") || "{}"); } catch {}
-    const weakDomain = domains
-      .map((domain) => {
-        const stat = domainStats[domain.name] ?? { answered: 0, correct: 0 };
-        const accuracy = stat.answered ? stat.correct / stat.answered : 0;
-        const coverage = Math.min(1, stat.answered / 25);
-        return { name: domain.name, score: accuracy * 0.7 + coverage * 0.3 };
-      })
-      .sort((a, b) => a.score - b.score)[0];
-
-    if (weakDomain) {
-      const domainQuestions = questions.filter((question) => question.domain === weakDomain.name);
-      setSelectedDomain(weakDomain.name);
-      setSelectedTheme("all");
-      setGlobalSearch("");
-      setQuestionIndex(domainQuestions.length ? Math.floor(Math.random() * domainQuestions.length) : 0);
-      setAdaptiveHint(`Priorité: domaine faible ${weakDomain.name}.`);
-      setView("quiz");
-      return;
-    }
-
-    setSelectedDomain("all");
-    setSelectedTheme("all");
-    setGlobalSearch("");
-    setQuestionIndex(Math.floor(Math.random() * questions.length));
-    setAdaptiveHint("Quiz rapide choisi: pas encore assez de données faibles.");
     setView("quiz");
   }
 
@@ -772,42 +633,11 @@ export function HomeClient() {
   }
 
   function finishExam() {
-    const elapsed = examStartedAt ? Math.floor((Date.now() - examStartedAt) / 1000) : examElapsedSeconds;
-    if (examStartedAt) setExamElapsedSeconds(elapsed);
-    setExamStartedAt(null);
-    if (!examFinished) markDailyTask("exam");
-    setExamFinished(true);
-
-    // Save exam result to history
-    if (activeExam && !examFinished) {
-      const title = activeExam.title;
-      const total = activeExam.questions.length;
-      let correct = 0;
-      let unanswered = 0;
-      activeExam.questions.forEach((q) => {
-        const selected = examAnswers[q.id];
-        if (!selected || selected.length === 0) { unanswered++; return; }
-        const correctAns = q.answers?.length ? q.answers : [q.answer];
-        if (selected.length === correctAns.length && selected.every((a, i) => a === correctAns[i])) correct++;
-      });
-      const confidenceCounts = { low: 0, medium: 0, high: 0 };
-      Object.values(examConfidence).forEach((v) => { if (v === "low") confidenceCounts.low++; else if (v === "medium") confidenceCounts.medium++; else confidenceCounts.high++; });
-      saveExamResult({
-        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-        examTitle: title,
-        date: new Date().toISOString(),
-        totalQuestions: total,
-        correct,
-        incorrect: total - correct - unanswered,
-        unanswered,
-        score: total > 0 ? Math.round((correct / total) * 100) : 0,
-        timeSeconds: elapsed,
-        flagged: Object.values(examFlags).filter(Boolean).length,
-        confidenceLow: confidenceCounts.low,
-        confidenceMedium: confidenceCounts.medium,
-        confidenceHigh: confidenceCounts.high,
-      });
+    if (examStartedAt) {
+      setExamElapsedSeconds(Math.floor((Date.now() - examStartedAt) / 1000));
     }
+    setExamStartedAt(null);
+    setExamFinished(true);
   }
 
   function returnToExamList() {
@@ -963,59 +793,10 @@ export function HomeClient() {
     window.location.reload();
   }
 
-  if (!clientReady) {
-    return (
-      <main className="app-shell min-h-screen text-foreground">
-        <div className="mx-auto grid min-h-screen max-w-[1600px] place-items-center px-4">
-          <div className="w-full max-w-md rounded-card border border-border bg-card p-6 text-center shadow-sm">
-            <div className="mx-auto mb-4 h-12 w-12 animate-pulse rounded-btn bg-primary/20" />
-            <p className="text-sm font-black uppercase tracking-wider text-muted-foreground">CertiFlow</p>
-            <h1 className="mt-2 text-2xl font-black">Chargement de ta progression</h1>
-            <p className="mt-2 text-sm text-muted-foreground">Synchronisation locale du tableau de bord...</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="app-shell min-h-screen text-foreground">
-
-      {/* Mobile top bar */}
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-border bg-card/95 backdrop-blur px-4 py-2 lg:hidden">
-        <button type="button" onClick={() => setMobileMenuOpen((v) => !v)} className="flex h-10 w-10 items-center justify-center rounded-btn border border-border bg-muted" aria-label="Menu">
-          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-        <span className="text-sm font-black text-primary">CertiFlow</span>
-        <span className="text-xs font-bold text-muted-foreground">{activeView.label}</span>
-      </div>
-
-      {/* Mobile menu overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 lg:hidden">
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
-          <nav className="absolute left-0 top-0 bottom-0 w-72 overflow-y-auto border-r border-border bg-card p-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <div className="mb-6">
-              <img src="/certiflow-logo.png" alt="CertiFlow" className="h-12 w-full rounded-card object-contain" />
-              <p className="mt-2 text-sm font-black">Security+ SY0-701</p>
-            </div>
-            <div className="grid gap-1">
-              {views.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <button key={item.id} type="button" onClick={() => { setView(item.id); setMobileMenuOpen(false); }}
-                    className={cn("flex min-h-11 items-center gap-3 rounded-card px-3 text-left text-sm font-semibold text-muted-foreground transition", view === item.id ? "bg-primary/10 text-primary font-bold" : "hover:bg-muted hover:text-foreground")}>
-                    <Icon className="h-4 w-4 shrink-0" />{item.label}
-                  </button>
-                );
-              })}
-            </div>
-          </nav>
-        </div>
-      )}
-
       <div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
-        <aside className="glass-panel hidden border-b border-border p-4 lg:block lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
+        <aside className="glass-panel border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
               <img
@@ -1077,56 +858,23 @@ export function HomeClient() {
         </aside>
 
         <section className="mx-auto w-full max-w-7xl p-4 lg:p-8">
-          <header className="hero-panel mb-6 overflow-hidden rounded-card border border-border p-5 shadow-sm sm:p-6">
-            <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
-              <div className="flex min-w-0 gap-4">
-                <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-btn bg-primary text-primary-foreground shadow-sm sm:flex">
-                  <ActiveViewIcon className="h-6 w-6" />
-                </div>
-                <div className="min-w-0">
-                  <p className="mb-1 text-xs font-black uppercase tracking-wider text-muted-foreground">{currentSection.eyebrow}</p>
-                  <h1 className="text-3xl font-black tracking-normal sm:text-4xl">{currentSection.title}</h1>
-                  <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">{currentSection.subtitle}</p>
-                </div>
-              </div>
-              <div className="grid w-full grid-cols-2 gap-3 sm:w-auto sm:grid-cols-[150px_150px]">
-                <div className="rounded-card border border-border bg-card/80 p-4 text-center shadow-sm">
-                  <strong className="block text-3xl text-primary">{daysLeft}</strong>
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">jours</span>
-                </div>
-                <div className="rounded-card border border-border bg-card/80 p-4 text-center shadow-sm">
-                  <strong className="block text-3xl text-primary">{score}%</strong>
-                  <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">score</span>
-                </div>
-              </div>
+          <header className="hero-panel mb-6 rounded-card border border-border p-5 shadow-sm sm:p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="mb-1 text-xs font-black uppercase text-muted-foreground">Préparation intensive</p>
+              <h1 className="text-3xl font-black tracking-normal sm:text-4xl">{activeView.label}</h1>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                Espace de révision Security+ avec cours, labs PBQ, examens blancs et rappels anti-pièges.
+              </p>
             </div>
-            <div className="mt-4 grid gap-3 rounded-card border border-border bg-card/80 p-4 shadow-sm lg:grid-cols-[1fr_auto] lg:items-center">
-              <div>
-                <p className="text-sm font-black">Révision adaptative</p>
-                <p className="mt-1 text-sm text-muted-foreground">{adaptiveHint}</p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={startAdaptiveReview}
-                  className="inline-flex min-h-11 items-center justify-center rounded-card bg-primary px-5 font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95"
-                >
-                  Réviser maintenant
-                </button>
-                {currentSection.cta && currentSection.action && (
-                  <button
-                    type="button"
-                    onClick={currentSection.action}
-                    className="inline-flex min-h-11 items-center justify-center rounded-card border border-border bg-muted px-5 font-black transition hover:border-primary hover:text-primary"
-                  >
-                    {currentSection.cta}
-                  </button>
-                )}
-              </div>
+            <div className="w-full rounded-card border border-border bg-card/80 p-4 text-center shadow-sm sm:w-40">
+              <strong className="block text-3xl text-primary">{daysLeft}</strong>
+              <span className="text-sm text-muted-foreground">jours restants</span>
+            </div>
             </div>
           </header>
 
-          <div className="glass-panel mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
+          <div className="glass-panel sticky top-0 z-20 mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
             <label className="text-sm font-bold" htmlFor="global-search">Rechercher un terme, concept, question...</label>
             <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto]">
               <input
@@ -1152,14 +900,12 @@ export function HomeClient() {
               <div className="grid gap-2 text-sm md:grid-cols-5">
                 <button type="button" onClick={() => setView("courses")} className="rounded-card bg-muted p-3 text-left font-semibold">Cours: {quickCourseResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("confusions")} className="rounded-card bg-muted p-3 text-left font-semibold">Confusions: {quickConfusionResults.length} résultats rapides</button>
-                <button type="button" onClick={() => setView("ports")} className="rounded-card bg-muted p-3 text-left font-semibold">Ports: {quickPortResults.length} résultats rapides</button>
+                <button type="button" onClick={() => setView("ports")} className="rounded-card bg-muted p-3 text-left font-semibold">Commandes: {quickCommandResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("quiz")} className="rounded-card bg-muted p-3 text-left font-semibold">Quiz: {quickQuizResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("exam")} className="rounded-card bg-muted p-3 text-left font-semibold">Examens: {quickExamResults.length} résultats rapides</button>
               </div>
             )}
           </div>
-
-          <ViewMiniDashboard stats={viewStats} />
 
           {view === "dashboard" && (
             <Dashboard
@@ -1171,7 +917,6 @@ export function HomeClient() {
               avgProgress={avgProgress}
               weakest={weakest}
               onNavigate={(v: string) => setView(v as ViewId)}
-              onSmartReview={startAdaptiveReview}
             />
           )}
 
@@ -1213,47 +958,35 @@ export function HomeClient() {
             />
           )}
 
-          {view === "pbq" && <PBQBrowser onComplete={() => markDailyTask("pbq")} />}
+          {view === "pbq" && <PBQBrowser />}
 
           {view === "flashcards" && (
             <Panel title="Flashcards bilingues">
               {!flashcardDeck ? (
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><Brain className="h-5 w-5" /></div>
+                  <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Acronymes</h2>
-                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Sigles Security+ avec signification anglaise, explication française et pièges d'examen.</p>
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <Badge>{acronymDeck.length} cartes</Badge>
-                      <ActionButton onClick={() => startFlashcardDeck("acronyms")}>Lancer</ActionButton>
-                    </div>
+                    <p className="mt-2 text-muted-foreground">Sigles Security+ avec signification anglaise, explication française et pièges d'examen.</p>
+                    <Badge>{acronymDeck.length} cartes</Badge>
+                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("acronyms")}>Lancer</ActionButton>
                   </article>
-                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><Command className="h-5 w-5" /></div>
+                  <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Ports / protocoles</h2>
-                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Ports, protocoles, rôle et risques à mémoriser pour l'examen.</p>
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <Badge>{portDeck.length} cartes</Badge>
-                      <ActionButton onClick={() => startFlashcardDeck("ports")}>Lancer</ActionButton>
-                    </div>
+                    <p className="mt-2 text-muted-foreground">Ports, protocoles, rôle et risques à mémoriser pour l'examen.</p>
+                    <Badge>{portDeck.length} cartes</Badge>
+                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("ports")}>Lancer</ActionButton>
                   </article>
-                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><ClipboardList className="h-5 w-5" /></div>
+                  <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Commandes / outils</h2>
-                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Commandes, outils, usage pratique et points à reconnaître à l'examen.</p>
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <Badge>{commandDeck.length} cartes</Badge>
-                      <ActionButton onClick={() => startFlashcardDeck("commands")}>Lancer</ActionButton>
-                    </div>
+                    <p className="mt-2 text-muted-foreground">Commandes, outils, usage pratique et points à reconnaître à l'examen.</p>
+                    <Badge>{commandDeck.length} cartes</Badge>
+                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("commands")}>Lancer</ActionButton>
                   </article>
-                  <article className="group rounded-card border border-border bg-muted p-5 transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-btn bg-primary/10 text-primary"><BookOpen className="h-5 w-5" /></div>
+                  <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Termes techniques</h2>
-                    <p className="mt-2 min-h-20 text-sm leading-6 text-muted-foreground">Concepts importants issus des cours, filtrables par domaine, thème et recherche.</p>
-                    <div className="mt-4 flex items-center justify-between gap-3">
-                      <Badge>{technicalFlashcards.length} cartes</Badge>
-                      <ActionButton onClick={() => startFlashcardDeck("technical")}>Lancer</ActionButton>
-                    </div>
+                    <p className="mt-2 text-muted-foreground">Concepts importants issus des cours, filtrables par domaine, thème et recherche.</p>
+                    <Badge>{technicalFlashcards.length} cartes</Badge>
+                    <ActionButton className="mt-4" onClick={() => startFlashcardDeck("technical")}>Lancer</ActionButton>
                   </article>
                 </div>
               ) : (
@@ -1270,25 +1003,25 @@ export function HomeClient() {
               <button
                 type="button"
                 onClick={() => setFlashBack((value) => !value)}
-                className="grid min-h-80 w-full place-items-center rounded-card border border-border bg-gradient-to-br from-card to-muted p-6 text-center shadow-sm transition hover:border-primary"
+                className="grid min-h-72 w-full place-items-center rounded-card bg-muted p-6 text-center"
               >
                 {flashBack ? (
-                  <div className="max-w-3xl">
+                  <div>
                     <h2 className="text-3xl font-black text-primary">{currentFlashcard.term}</h2>
                     <p className="mt-3 text-xl font-bold">{currentFlashcard.definition}</p>
-                    <p className="mt-3 leading-7 text-muted-foreground">{currentFlashcard.details}</p>
+                    <p className="mt-3">{currentFlashcard.details}</p>
                     <p className="mt-3 text-sm text-muted-foreground">{currentFlashcard.domain} | {currentFlashcard.themeTitle}</p>
                   </div>
                 ) : (
-                  <div className="max-w-3xl">
-                    <p className="text-5xl font-black text-primary sm:text-6xl">{currentFlashcard.term}</p>
+                  <div>
+                    <p className="text-6xl font-black text-primary">{currentFlashcard.term}</p>
                     <p className="mt-4 text-muted-foreground">Clique pour retourner la carte</p>
                   </div>
                 )}
               </button>
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex gap-2">
                 <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
-                <ActionButton onClick={() => { markDailyTask(flashcardDeck === "ports" ? "ports" : "flashcards"); setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
+                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
               </div>
                 </>
               ) : (
@@ -1303,14 +1036,11 @@ export function HomeClient() {
           )}
 
           {view === "ports" && (
-            <PortsCommandsView
-              onPracticeAnswered={() => markDailyTask("ports")}
-              onStartPortFlashcards={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }}
-            />
+            <PortsCommandsView />
           )}
 
           {view === "exam" && (
-            <ExamSection
+            <ExamView
               examSetup={examSetup}
               examCorrectionMode={examCorrectionMode}
               setExamCorrectionMode={setExamCorrectionMode}
@@ -1355,18 +1085,12 @@ export function HomeClient() {
 
           {view === "plan" && (
             <Panel title="Plan jusqu'au 25 mai 2026">
-              <div className="mb-5 rounded-card border border-warning-muted bg-warning-muted p-4">
-                <p className="font-black text-warning-fg">Priorité actuelle: {weakest.name}</p>
-                <p className="mt-1 text-sm text-muted-foreground">Le plan s&apos;intensifie automatiquement à mesure que la date approche.</p>
-              </div>
-              <div className="relative grid gap-3">
-                {plan.map(([day, task], index) => (
-                  <div key={day} className="grid gap-3 rounded-card border border-border bg-muted p-4 transition hover:border-primary hover:bg-card md:grid-cols-[120px_1fr]">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-black text-primary-foreground">{index + 1}</span>
-                      <strong>{day}</strong>
-                    </div>
-                    <span className="leading-6 text-muted-foreground">{task}</span>
+              <p className="mb-4 text-muted-foreground">Priorité actuelle selon tes scores: {weakest.name}. Le plan s&apos;intensifie à mesure que la date approche.</p>
+              <div className="grid gap-3">
+                {plan.map(([day, task]) => (
+                  <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
+                    <strong>{day}</strong>
+                    <span>{task}</span>
                   </div>
                 ))}
               </div>
@@ -1434,27 +1158,6 @@ export function HomeClient() {
                 </div>
               </Panel>
 
-              <Panel title={`Ports et protocoles (${filteredPortResults.length})`}>
-                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                  {filteredPortResults.slice(0, 18).map((item) => (
-                    <article key={item.id} className="rounded-card border border-border bg-muted p-4">
-                      <div className="mb-2 flex flex-wrap gap-2">
-                        <Badge>{item.port}</Badge>
-                        <Badge>{item.protocol}</Badge>
-                      </div>
-                      <h3 className="text-lg font-black text-primary">{item.protocol}</h3>
-                      <p className="mt-2"><strong>English: </strong>{item.english}</p>
-                      <p className="mt-2 text-sm text-muted-foreground">{item.details}</p>
-                      {item.secureAlternative && <p className="mt-2 text-sm"><strong>Alternative: </strong>{item.secureAlternative}</p>}
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        <GhostButton onClick={() => setView("ports")}>Réviser</GhostButton>
-                        <GhostButton onClick={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }}>Flashcards</GhostButton>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </Panel>
-
               <Panel title={`Scénarios commandes (${filteredCommandScenarios.length})`}>
                 <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                   {filteredCommandScenarios.slice(0, 18).map((item) => (
@@ -1501,35 +1204,130 @@ export function HomeClient() {
           )}
 
           {view === "settings" && (
-            <SettingsView
-              authUser={authUser}
-              authEmail={authEmail}
-              authPassword={authPassword}
-              authBusy={authBusy}
-              cloudBusy={cloudBusy}
-              cloudStatus={cloudStatus}
-              supabaseReady={!!supabase}
-              onAuthEmailChange={setAuthEmail}
-              onAuthPasswordChange={setAuthPassword}
-              onSignIn={() => handleAuth("signin")}
-              onSignUp={() => handleAuth("signup")}
-              onSignOut={signOut}
-              onCloudSave={saveCloudProgress}
-              onCloudRestore={restoreCloudProgress}
-              answered={answered}
-              correct={correct}
-              errorsCount={errors.length}
-              hasActiveExam={!!activeExam}
-              examFinished={examFinished}
-              dailyTasks={dailyTasks}
-              appTheme={appTheme}
-              onThemeChange={setAppTheme}
-              onExport={exportData}
-              onImport={importData}
-              onReset={() => {
-                if (window.confirm("Effacer toutes tes donnees CertiFlow de ce navigateur ?")) resetAllData();
-              }}
-            />
+            <div className="grid gap-4">
+              <Panel title="Compte & synchronisation">
+                <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    <p className="text-sm font-bold text-muted-foreground">État Supabase</p>
+                    <p className="mt-2 font-semibold">{cloudStatus}</p>
+                    {authUser && (
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Compte actif: <strong>{authUser.email}</strong>
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-card border border-border bg-muted p-4">
+                    {!authUser ? (
+                      <div className="grid gap-3">
+                        <input
+                          type="email"
+                          value={authEmail}
+                          onChange={(event) => setAuthEmail(event.target.value)}
+                          placeholder="Email"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <input
+                          type="password"
+                          value={authPassword}
+                          onChange={(event) => setAuthPassword(event.target.value)}
+                          placeholder="Mot de passe"
+                          className="min-h-11 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signin")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Se connecter
+                          </button>
+                          <button
+                            type="button"
+                            disabled={authBusy || !supabase}
+                            onClick={() => handleAuth("signup")}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Créer un compte
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid gap-3">
+                        <p className="text-sm text-muted-foreground">
+                          Sauvegarde ta progression en ligne, puis restaure-la sur ton téléphone ou ton PC avec le même compte.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={saveCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground disabled:opacity-50"
+                          >
+                            Sauvegarder en ligne
+                          </button>
+                          <button
+                            type="button"
+                            disabled={cloudBusy}
+                            onClick={restoreCloudProgress}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold disabled:opacity-50"
+                          >
+                            Restaurer sur cet appareil
+                          </button>
+                          <button
+                            type="button"
+                            onClick={signOut}
+                            className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-card px-5 font-bold"
+                          >
+                            Déconnexion
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Panel>
+
+              <Panel title="Données actuelles">
+                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+                  {[
+                    { label: "Questions répondues", value: answered },
+                    { label: "Réponses correctes", value: correct },
+                    { label: "Erreurs enregistrées", value: errors.length },
+                    { label: "Session examen", value: activeExam ? (examFinished ? "Terminée" : "En cours") : "Aucune" },
+                  ].map(({ label, value }) => (
+                    <div key={label} className="rounded-card border border-border bg-muted p-4">
+                      <strong className="block text-2xl font-black tabular-nums text-primary">{value}</strong>
+                      <span className="text-sm text-muted-foreground">{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+
+              <Panel title="Sauvegarde et restauration">
+                <p className="mb-4 text-muted-foreground text-sm">Exporte ta progression complète (quiz, erreurs, examen, filtres) dans un fichier JSON. Importe-le sur un autre appareil ou après un nettoyage du navigateur.</p>
+                <div className="flex flex-wrap gap-3">
+                  <button type="button" onClick={exportData}
+                    className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
+                    Exporter (JSON)
+                  </button>
+                  <label className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-card border border-border bg-muted px-5 font-bold transition hover:border-primary hover:text-primary">
+                    Importer (JSON)
+                    <input type="file" accept=".json" className="sr-only" onChange={importData} />
+                  </label>
+                </div>
+              </Panel>
+
+              <Panel title="Réinitialisation">
+                <p className="mb-4 text-muted-foreground text-sm">Efface toutes les données CertiFlow enregistrées dans ce navigateur. Ta progression, tes erreurs et ta session d&apos;examen seront supprimées.</p>
+                <button type="button"
+                  onClick={() => { if (window.confirm("Effacer toutes tes données CertiFlow ? Cette action est irréversible.")) resetAllData(); }}
+                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-red-600 px-5 font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:opacity-90">
+                  Réinitialiser toutes les données
+                </button>
+              </Panel>
+            </div>
           )}
 
           {view === "assistant" && <AssistantView />}
@@ -1553,12 +1351,11 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   return (
     <section className="rounded-card border border-border bg-card p-5 shadow-sm">
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-btn bg-primary/10 shadow-sm">
-          <GraduationCap className="h-5 w-5 text-primary" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-btn bg-primary/10 shadow-sm">
+          <GraduationCap className="h-4 w-4 text-primary" />
         </div>
         <div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">CertiFlow workspace</p>
-          <h2 className="text-xl font-black leading-tight">{title}</h2>
+          <h2 className="text-lg font-black leading-tight">{title}</h2>
         </div>
       </div>
       {children}
@@ -1567,12 +1364,12 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
 }
 
 function Badge({ children }: { children: React.ReactNode }) {
-  return <span className="inline-flex min-h-8 items-center rounded-full border border-border bg-muted px-3 text-xs font-black uppercase tracking-wide text-muted-foreground">{children}</span>;
+  return <span className="inline-flex min-h-8 items-center rounded-card border border-border bg-muted px-3 text-sm font-bold text-muted-foreground">{children}</span>;
 }
 
 function ActionButton({ children, className, onClick }: { children: React.ReactNode; className?: string; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className={cn("inline-flex min-h-10 items-center justify-center rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95", className)}>
+    <button type="button" onClick={onClick} className={cn("inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-4 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95", className)}>
       {children}
     </button>
   );
@@ -1580,7 +1377,7 @@ function ActionButton({ children, className, onClick }: { children: React.ReactN
 
 function GhostButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className="inline-flex min-h-10 items-center justify-center rounded-btn border border-border bg-muted px-4 text-sm font-black transition hover:border-primary hover:text-primary">
+    <button type="button" onClick={onClick} className="inline-flex min-h-10 items-center justify-center rounded-card border border-border bg-muted px-4 font-bold transition hover:border-primary hover:text-primary">
       {children}
     </button>
   );

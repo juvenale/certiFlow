@@ -104,7 +104,7 @@ export function FlashcardsViewWrapper(props: FlashcardsViewWrapperProps) {
           <button
             type="button"
             onClick={() => setFlashBack((value) => !value)}
-            className="grid min-h-72 w-full place-items-center rounded-card bg-muted p-6 text-center"
+            className="grid min-h-32 w-full place-items-center rounded-card bg-muted p-6 text-center"
           >
             {flashBack ? (
               <div>

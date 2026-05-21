@@ -17,7 +17,7 @@ export function ExamHistory() {
 
   if (!history.length) {
     return (
-      <div className="rounded-card border border-border bg-muted p-8 text-center">
+      <div className="rounded-card border border-border bg-muted p-4 text-center">
         <BarChart3 className="mx-auto h-8 w-8 text-muted-foreground" />
         <p className="mt-3 font-bold">Aucun examen termine</p>
         <p className="mt-1 text-sm text-muted-foreground">
