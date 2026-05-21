@@ -7,7 +7,7 @@ import { CoursesView } from "./courses-view";
 import { ConfusionsView } from "./confusions-view";
 import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
-import { ExamView } from "./exam-view";
+import { ExamSection } from "./exam-section";
 import { QuizView } from "./quiz-view";
 import { SettingsView } from "./settings-view";
 import { ViewMiniDashboard } from "./view-header";
@@ -48,6 +48,7 @@ import { portFlashcards } from "@/data/port-flashcards";
 import { confusionItems, confusionSections } from "@/data/confusions";
 import { commandToolConfusions, commandToolScenarios, commandTools } from "@/data/command-tools";
 import type { User } from "@supabase/supabase-js";
+import { saveExamResult } from "@/lib/exam-history";
 
 type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
@@ -771,12 +772,42 @@ export function HomeClient() {
   }
 
   function finishExam() {
-    if (examStartedAt) {
-      setExamElapsedSeconds(Math.floor((Date.now() - examStartedAt) / 1000));
-    }
+    const elapsed = examStartedAt ? Math.floor((Date.now() - examStartedAt) / 1000) : examElapsedSeconds;
+    if (examStartedAt) setExamElapsedSeconds(elapsed);
     setExamStartedAt(null);
     if (!examFinished) markDailyTask("exam");
     setExamFinished(true);
+
+    // Save exam result to history
+    if (activeExam && !examFinished) {
+      const title = activeExam.title;
+      const total = activeExam.questions.length;
+      let correct = 0;
+      let unanswered = 0;
+      activeExam.questions.forEach((q) => {
+        const selected = examAnswers[q.id];
+        if (!selected || selected.length === 0) { unanswered++; return; }
+        const correctAns = q.answers?.length ? q.answers : [q.answer];
+        if (selected.length === correctAns.length && selected.every((a, i) => a === correctAns[i])) correct++;
+      });
+      const confidenceCounts = { low: 0, medium: 0, high: 0 };
+      Object.values(examConfidence).forEach((v) => { if (v === "low") confidenceCounts.low++; else if (v === "medium") confidenceCounts.medium++; else confidenceCounts.high++; });
+      saveExamResult({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        examTitle: title,
+        date: new Date().toISOString(),
+        totalQuestions: total,
+        correct,
+        incorrect: total - correct - unanswered,
+        unanswered,
+        score: total > 0 ? Math.round((correct / total) * 100) : 0,
+        timeSeconds: elapsed,
+        flagged: Object.values(examFlags).filter(Boolean).length,
+        confidenceLow: confidenceCounts.low,
+        confidenceMedium: confidenceCounts.medium,
+        confidenceHigh: confidenceCounts.high,
+      });
+    }
   }
 
   function returnToExamList() {
@@ -1279,7 +1310,7 @@ export function HomeClient() {
           )}
 
           {view === "exam" && (
-            <ExamView
+            <ExamSection
               examSetup={examSetup}
               examCorrectionMode={examCorrectionMode}
               setExamCorrectionMode={setExamCorrectionMode}
