@@ -8,10 +8,12 @@ import { ConfusionsView } from "./confusions-view";
 import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
+import { ExamHistory } from "./exam-history-view";
 import { QuizView } from "./quiz-view";
 
 import { useEffect, useMemo, useState } from "react";
 import {
+  BarChart3,
   BookOpen,
   Moon,
   Bot,
@@ -237,6 +239,7 @@ export function HomeClient() {
   const [examElapsedSeconds, setExamElapsedSeconds] = useState(() => readExamSession()?.examElapsedSeconds ?? 0);
   const [examFlags, setExamFlags] = useState<Record<string, boolean>>(() => readExamSession()?.examFlags ?? {});
   const [examConfidence, setExamConfidence] = useState<Record<string, ExamConfidence>>(() => readExamSession()?.examConfidence ?? {});
+  const [examHistoryOpen, setExamHistoryOpen] = useState(false);
   const [selectedDomain, setSelectedDomain] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-domain") || "all" : "all"));
   const [selectedTheme, setSelectedTheme] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all"));
   const [globalSearch, setGlobalSearch] = useState("");
@@ -1040,6 +1043,17 @@ export function HomeClient() {
           )}
 
           {view === "exam" && (
+            <>
+              {!activeExam && (
+                <div className="mb-3 flex justify-end">
+                  <button type="button" onClick={() => setExamHistoryOpen((v) => !v)}
+                    className="inline-flex items-center gap-1.5 rounded-btn border border-border bg-card px-4 py-2 text-sm font-bold transition hover:border-primary hover:text-primary">
+                    <BarChart3 className="h-4 w-4" />
+                    {examHistoryOpen ? "Examens disponibles" : "Historique"}
+                  </button>
+                </div>
+              )}
+              {examHistoryOpen && !activeExam ? <ExamHistory /> : (
             <ExamView
               examSetup={examSetup}
               examCorrectionMode={examCorrectionMode}
@@ -1072,6 +1086,8 @@ export function HomeClient() {
               finishExam={finishExam}
               returnToExamList={returnToExamList}
             />
+              )}
+            </>
           )}
 
           {view === "errors" && (
