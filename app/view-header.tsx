@@ -8,9 +8,14 @@ import {
   Search, Timer, Zap, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { DailyTasks } from "@/lib/daily-tasks";
 
 export interface ViewHeaderStats {
   view: ViewId;
+  globalAnswered?: number;
+  globalCorrect?: number;
+  globalScore?: number;
+  dailyTasks?: DailyTasks;
   // Quiz
   quizScore?: number;
   quizAnswered?: number;
@@ -63,11 +68,24 @@ function MiniStat({ label, value, icon: Icon, accent }: { label: string; value: 
 export const ViewMiniDashboard = memo(function ViewMiniDashboard({ stats }: { stats: ViewHeaderStats }) {
   const { view } = stats;
 
-  if (view === "dashboard") return null; // Dashboard has its own header
-
   return (
     <div className="mb-4">
       <div className="flex flex-wrap items-center gap-2">
+        <MiniStat label="Score global" value={`${stats.globalScore ?? 0}%`} icon={BarChart3}
+          accent={stats.globalScore != null && stats.globalScore >= 75 ? "border-success-muted bg-success-muted" : stats.globalScore != null && stats.globalScore >= 50 ? "border-warning-muted bg-warning-muted" : "border-danger-muted bg-danger-muted"} />
+        <MiniStat label="Questions faites" value={stats.globalAnswered ?? 0} icon={FileQuestion} />
+        <MiniStat label="QCM aujourd'hui" value={stats.dailyTasks?.qcm ?? 0} icon={CheckCircle2} />
+        <MiniStat label="Cartes aujourd'hui" value={stats.dailyTasks?.flashcards ?? 0} icon={RotateCcw} />
+        <MiniStat label="Ports aujourd'hui" value={stats.dailyTasks?.ports ?? 0} icon={Command} />
+        <MiniStat label="Examens faits" value={stats.dailyTasks?.exam ?? 0} icon={Timer} />
+
+        {view === "dashboard" && (
+          <>
+            <MiniStat label="Correctes" value={stats.globalCorrect ?? 0} icon={CheckCircle2} />
+            <MiniStat label="PBQ aujourd'hui" value={stats.dailyTasks?.pbq ?? 0} icon={Brain} />
+          </>
+        )}
+
         {view === "quiz" && (
           <>
             <MiniStat label="Score" value={`${stats.quizScore ?? 0}%`} icon={BarChart3}

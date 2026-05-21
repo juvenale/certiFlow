@@ -36,7 +36,7 @@ import {
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
 import { collectCertiflowStorage, getSupabaseClient, restoreCertiflowStorage } from "@/lib/supabase";
-import { getDailyTasks } from "@/lib/daily-tasks";
+import { getDailyTasks, incrementDailyTask, type DailyTaskType } from "@/lib/daily-tasks";
 import { domains, examDate, flashcards, lessons, pbqItems, questions } from "@/data/certiflow";
 import { messerExams, messerQuestions } from "@/data/messer-exams";
 import { jajaQuestions, jajaExam } from "@/data/jaja-exam";
@@ -263,6 +263,7 @@ export function HomeClient() {
   const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
   const [adaptiveHint, setAdaptiveHint] = useState("Mode adaptatif prêt.");
   const [clientReady, setClientReady] = useState(false);
+  const [dailyTaskVersion, setDailyTaskVersion] = useState(0);
   const supabase = useMemo(() => getSupabaseClient(), []);
 
   useEffect(() => {
@@ -393,6 +394,8 @@ export function HomeClient() {
   const currentQuestion = effectiveQuizQuestions[questionIndex % effectiveQuizQuestions.length];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
+  const dailyTasks = getDailyTasks();
+  void dailyTaskVersion;
   const fallbackFlashcards: UnifiedFlashcard[] = flashcards.map((card) => ({
     id: `fallback-${card.term}`,
     themeId: "mvp",
@@ -519,6 +522,10 @@ export function HomeClient() {
   const ActiveViewIcon = activeView.icon;
   const viewStats = {
     view,
+    globalAnswered: answered,
+    globalCorrect: correct,
+    globalScore: score,
+    dailyTasks,
     quizScore: score,
     quizAnswered: answered,
     quizCorrect: correct,
@@ -553,11 +560,17 @@ export function HomeClient() {
     setQuestionIndex(0);
   }, [selectedDomain, selectedTheme, globalSearch]);
 
+  function markDailyTask(type: DailyTaskType) {
+    incrementDailyTask(type);
+    setDailyTaskVersion((value) => value + 1);
+  }
+
   function chooseAnswer(index: number) {
     if (selectedAnswer !== null) return;
     const isCorrect = index === currentQuestionAnswer;
     setSelectedAnswer(index);
     setAnswered((value) => value + 1);
+    markDailyTask("qcm");
 
     // Per-domain stat tracking (used by dashboard auto-update)
     try {
@@ -762,6 +775,7 @@ export function HomeClient() {
       setExamElapsedSeconds(Math.floor((Date.now() - examStartedAt) / 1000));
     }
     setExamStartedAt(null);
+    if (!examFinished) markDailyTask("exam");
     setExamFinished(true);
   }
 
@@ -1168,7 +1182,7 @@ export function HomeClient() {
             />
           )}
 
-          {view === "pbq" && <PBQBrowser />}
+          {view === "pbq" && <PBQBrowser onComplete={() => markDailyTask("pbq")} />}
 
           {view === "flashcards" && (
             <Panel title="Flashcards bilingues">
@@ -1243,7 +1257,7 @@ export function HomeClient() {
               </button>
               <div className="mt-4 flex flex-wrap gap-2">
                 <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
-                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
+                <ActionButton onClick={() => { markDailyTask(flashcardDeck === "ports" ? "ports" : "flashcards"); setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
               </div>
                 </>
               ) : (
@@ -1258,7 +1272,10 @@ export function HomeClient() {
           )}
 
           {view === "ports" && (
-            <PortsCommandsView onStartPortFlashcards={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }} />
+            <PortsCommandsView
+              onPracticeAnswered={() => markDailyTask("ports")}
+              onStartPortFlashcards={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }}
+            />
           )}
 
           {view === "exam" && (
@@ -1473,7 +1490,7 @@ export function HomeClient() {
               errorsCount={errors.length}
               hasActiveExam={!!activeExam}
               examFinished={examFinished}
-              dailyTasks={getDailyTasks()}
+              dailyTasks={dailyTasks}
               appTheme={appTheme}
               onThemeChange={setAppTheme}
               onExport={exportData}

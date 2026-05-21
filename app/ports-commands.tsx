@@ -13,7 +13,7 @@ function Badge({ children, className }: { children: React.ReactNode; className?:
   return <span className={cn("inline-flex min-h-7 items-center rounded-full px-2.5 text-xs font-semibold tracking-wide", className)}>{children}</span>;
 }
 
-export function PortsCommandsView({ onStartPortFlashcards }: { onStartPortFlashcards?: () => void }) {
+export function PortsCommandsView({ onStartPortFlashcards, onPracticeAnswered }: { onStartPortFlashcards?: () => void; onPracticeAnswered?: () => void }) {
   const [tab, setTab] = useState<Tab>("practice");
   const [search, setSearch] = useState("");
   const [selectedDomain, setSelectedDomain] = useState("all");
@@ -106,7 +106,7 @@ export function PortsCommandsView({ onStartPortFlashcards }: { onStartPortFlashc
           )}
         </div>
 
-        {tab === "practice" && <PortPractice items={filteredPorts} isSecure={isSecure} />}
+        {tab === "practice" && <PortPractice items={filteredPorts} isSecure={isSecure} onAnswered={onPracticeAnswered} />}
         {tab === "commands" && <CommandsGrid items={filteredCommands} />}
         {tab === "scenarios" && <ScenariosGrid items={filteredScenarios} />}
         {tab === "confusions" && <ConfusionsGrid items={filteredConfusions} />}
@@ -120,7 +120,7 @@ function uniqueOptions(values: string[], answer: string) {
   return Array.from(new Set([answer, ...values.filter(Boolean).filter((item) => item !== answer)])).slice(0, 4);
 }
 
-function PortPractice({ items, isSecure }: { items: typeof portFlashcards; isSecure: (p: string) => boolean }) {
+function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlashcards; isSecure: (p: string) => boolean; onAnswered?: () => void }) {
   const [mode, setMode] = useState<PracticeMode>("protocol-to-port");
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -145,6 +145,7 @@ function PortPractice({ items, isSecure }: { items: typeof portFlashcards; isSec
   function choose(option: string) {
     if (revealed) return;
     setSelected(option);
+    onAnswered?.();
     setScore((prev) => ({ answered: prev.answered + 1, correct: prev.correct + (option === answer ? 1 : 0) }));
   }
 
