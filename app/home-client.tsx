@@ -1081,7 +1081,7 @@ export function HomeClient() {
             </div>
           </header>
 
-          <div className="glass-panel sticky top-0 z-20 mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
+          <div className="glass-panel mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
             <label className="text-sm font-bold" htmlFor="global-search">Rechercher un terme, concept, question...</label>
             <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto]">
               <input
