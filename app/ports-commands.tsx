@@ -1,19 +1,20 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { AlertTriangle, Brain, Command, Globe, Network, Search, Shield } from "lucide-react";
+import { AlertTriangle, ArrowRight, Brain, CheckCircle2, Command, Globe, Network, RotateCcw, Search, Shield, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { commandTools, commandToolScenarios, commandToolConfusions } from "@/data/command-tools";
 import { portFlashcards } from "@/data/port-flashcards";
 
-type Tab = "commands" | "scenarios" | "ports" | "confusions";
+type Tab = "practice" | "ports" | "commands" | "scenarios" | "confusions";
+type PracticeMode = "protocol-to-port" | "port-to-protocol" | "security";
 
 function Badge({ children, className }: { children: React.ReactNode; className?: string }) {
   return <span className={cn("inline-flex min-h-7 items-center rounded-full px-2.5 text-xs font-semibold tracking-wide", className)}>{children}</span>;
 }
 
-export function PortsCommandsView() {
-  const [tab, setTab] = useState<Tab>("commands");
+export function PortsCommandsView({ onStartPortFlashcards }: { onStartPortFlashcards?: () => void }) {
+  const [tab, setTab] = useState<Tab>("practice");
   const [search, setSearch] = useState("");
   const [selectedDomain, setSelectedDomain] = useState("all");
   const norm = search.toLowerCase().trim();
@@ -47,17 +48,38 @@ export function PortsCommandsView() {
   const isSecure = (protocol: string) => ["HTTPS", "SSH", "SFTP", "FTPS", "TLS", "SSL", "IPSec", "DNSSEC"].some(s => protocol.toUpperCase().includes(s));
 
   const tabs = [
+    { id: "practice" as Tab, label: "Réviser", icon: RotateCcw, count: portFlashcards.length },
+    { id: "ports" as Tab, label: "Ports", icon: Network, count: portFlashcards.length },
     { id: "commands" as Tab, label: "Commandes", icon: Command, count: commandTools.length },
     { id: "scenarios" as Tab, label: "Scenarios", icon: Globe, count: commandToolScenarios.length },
     { id: "confusions" as Tab, label: "Confusions", icon: Brain, count: commandToolConfusions.length },
-    { id: "ports" as Tab, label: "Ports", icon: Network, count: portFlashcards.length },
   ];
 
-  const counts = { commands: filteredCommands.length, scenarios: filteredScenarios.length, confusions: filteredConfusions.length, ports: filteredPorts.length };
+  const counts = { practice: filteredPorts.length, commands: filteredCommands.length, scenarios: filteredScenarios.length, confusions: filteredConfusions.length, ports: filteredPorts.length };
 
   return (
     <div className="animate-fade-in space-y-4">
       <div className="rounded-card border border-border bg-card p-4 shadow-sm">
+        <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Ports & protocoles</p>
+            <h2 className="mt-1 text-2xl font-black">Révision opérationnelle</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Mémorise port, protocole, risque, alternative sécurisée et contexte d'examen.</p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" onClick={() => setTab("practice")}
+              className="inline-flex min-h-10 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
+              <RotateCcw className="h-4 w-4" /> Réviser maintenant
+            </button>
+            {onStartPortFlashcards && (
+              <button type="button" onClick={onStartPortFlashcards}
+                className="inline-flex min-h-10 items-center gap-2 rounded-btn border border-border bg-muted px-4 text-sm font-black transition hover:border-primary hover:text-primary">
+                Flashcards ports <ArrowRight className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <div className="flex rounded-btn bg-muted p-0.5">
             {tabs.map(t => (
@@ -84,10 +106,125 @@ export function PortsCommandsView() {
           )}
         </div>
 
+        {tab === "practice" && <PortPractice items={filteredPorts} isSecure={isSecure} />}
         {tab === "commands" && <CommandsGrid items={filteredCommands} />}
         {tab === "scenarios" && <ScenariosGrid items={filteredScenarios} />}
         {tab === "confusions" && <ConfusionsGrid items={filteredConfusions} />}
         {tab === "ports" && <PortsGrid items={filteredPorts} isSecure={isSecure} />}
+      </div>
+    </div>
+  );
+}
+
+function uniqueOptions(values: string[], answer: string) {
+  return Array.from(new Set([answer, ...values.filter(Boolean).filter((item) => item !== answer)])).slice(0, 4);
+}
+
+function PortPractice({ items, isSecure }: { items: typeof portFlashcards; isSecure: (p: string) => boolean }) {
+  const [mode, setMode] = useState<PracticeMode>("protocol-to-port");
+  const [index, setIndex] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [score, setScore] = useState({ correct: 0, answered: 0 });
+
+  const pool = items.length ? items : portFlashcards;
+  const current = pool[index % pool.length];
+  const question = mode === "protocol-to-port"
+    ? `Quel port est associé à ${current.protocol} (${current.english}) ?`
+    : mode === "port-to-protocol"
+    ? `Quel protocole utilise généralement ${current.port} ?`
+    : `${current.protocol} est-il considéré comme sûr pour l'examen ?`;
+  const answer = mode === "protocol-to-port" ? current.port : mode === "port-to-protocol" ? current.protocol : (isSecure(current.protocol) ? "Secure / encrypted" : "Insecure / cleartext or risky");
+  const options = mode === "protocol-to-port"
+    ? uniqueOptions(pool.map((item) => item.port), answer)
+    : mode === "port-to-protocol"
+    ? uniqueOptions(pool.map((item) => item.protocol), answer)
+    : ["Secure / encrypted", "Insecure / cleartext or risky", "Only used for email", "Only used for routing"];
+  const revealed = selected !== null;
+  const correct = selected === answer;
+
+  function choose(option: string) {
+    if (revealed) return;
+    setSelected(option);
+    setScore((prev) => ({ answered: prev.answered + 1, correct: prev.correct + (option === answer ? 1 : 0) }));
+  }
+
+  function next() {
+    setSelected(null);
+    setIndex((value) => (value + 1) % pool.length);
+  }
+
+  return (
+    <div className="grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
+      <div className="rounded-card border border-border bg-muted p-4">
+        <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Mode de révision</p>
+        <div className="mt-3 grid gap-2">
+          {([
+            ["protocol-to-port", "Protocole → port", "Associer un service à son port."],
+            ["port-to-protocol", "Port → protocole", "Reconnaître le service depuis le port."],
+            ["security", "Risque & sécurité", "Identifier clair/chiffré et alternatives."],
+          ] as Array<[PracticeMode, string, string]>).map(([id, label, desc]) => (
+            <button key={id} type="button" onClick={() => { setMode(id); setSelected(null); }}
+              className={cn("rounded-card border p-3 text-left transition hover:border-primary", mode === id ? "border-primary bg-primary/10" : "border-border bg-card")}>
+              <p className="font-black">{label}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
+            </button>
+          ))}
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="rounded-card border border-border bg-card p-3">
+            <p className="text-xs font-bold uppercase text-muted-foreground">Score</p>
+            <p className="mt-1 text-2xl font-black tabular-nums">{score.answered ? Math.round((score.correct / score.answered) * 100) : 0}%</p>
+          </div>
+          <div className="rounded-card border border-border bg-card p-3">
+            <p className="text-xs font-bold uppercase text-muted-foreground">Réponses</p>
+            <p className="mt-1 text-2xl font-black tabular-nums">{score.correct}/{score.answered}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <Badge className={isSecure(current.protocol) ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg"}>
+              {isSecure(current.protocol) ? "Secure" : "À risque"}
+            </Badge>
+            <p className="mt-3 text-xl font-black leading-snug">{question}</p>
+          </div>
+          <span className="text-sm font-black tabular-nums text-muted-foreground">{(index % pool.length) + 1}/{pool.length}</span>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-2">
+          {options.map((option) => {
+            const isAnswer = option === answer;
+            const isSelected = option === selected;
+            return (
+              <button key={option} type="button" onClick={() => choose(option)}
+                className={cn(
+                  "flex min-h-12 items-center gap-3 rounded-card border px-4 py-3 text-left text-sm font-black transition",
+                  !revealed && "border-border bg-muted hover:border-primary",
+                  revealed && isAnswer && "border-success-muted bg-success-muted text-success-fg",
+                  revealed && isSelected && !isAnswer && "border-danger-muted bg-danger-muted text-danger-fg",
+                  revealed && !isSelected && !isAnswer && "border-border bg-muted opacity-55",
+                )}>
+                {revealed && isAnswer ? <CheckCircle2 className="h-4 w-4" /> : revealed && isSelected ? <XCircle className="h-4 w-4" /> : <span className="h-4 w-4 rounded-full border border-current" />}
+                {option}
+              </button>
+            );
+          })}
+        </div>
+
+        {revealed && (
+          <div className="mt-4 rounded-card border border-border bg-muted p-4">
+            <p className={cn("font-black", correct ? "text-success-fg" : "text-danger-fg")}>{correct ? "Correct" : "À revoir"}</p>
+            <p className="mt-2 text-sm leading-6"><strong>{current.protocol}</strong> · {current.port} · {current.english}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{current.details}</p>
+            {current.secureAlternative && <p className="mt-1 text-sm"><strong>Alternative sécurisée: </strong>{current.secureAlternative}</p>}
+            <button type="button" onClick={next}
+              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
+              Suivant <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

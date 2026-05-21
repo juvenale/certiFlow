@@ -490,9 +490,14 @@ export function HomeClient() {
     const haystack = [item.scenario, item.likelyTool].join(" ").toLowerCase();
     return !normalizedSearch || haystack.includes(normalizedSearch);
   });
+  const filteredPortResults = portFlashcards.filter((item) => {
+    const haystack = [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase();
+    return !normalizedSearch || haystack.includes(normalizedSearch);
+  });
   const quickCourseResults = normalizedSearch ? studyItems.filter((item) => [item.term, item.definition, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickConfusionResults = normalizedSearch ? allConfusionItems.filter((item) => [item.comparison, item.english, item.difference, item.sectionTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickCommandResults = normalizedSearch ? commandTools.filter((item) => [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
+  const quickPortResults = normalizedSearch ? portFlashcards.filter((item) => [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickQuizResults = normalizedSearch ? questions.filter((question) => [question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickExamResults = normalizedSearch ? allExamQuestions.filter((question) => [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const sectionContext: Record<ViewId, { eyebrow: string; title: string; subtitle: string; cta?: string; action?: () => void }> = {
@@ -502,7 +507,7 @@ export function HomeClient() {
     quiz: { eyebrow: "Practice center", title: "Quiz", subtitle: "Questions originales en anglais, filtrées par domaine, thème, recherche ou erreurs.", cta: "Mode erreurs", action: () => startQuiz("errors") },
     pbq: { eyebrow: "Lab interactif", title: "PBQ", subtitle: "Scénarios pratiques, matching, configuration, investigation et scoring partiel." },
     flashcards: { eyebrow: "Mémoire active", title: "Flashcards", subtitle: "Acronymes, ports, commandes et termes techniques en révision rapide.", cta: "Changer de paquet", action: () => { setFlashcardDeck(null); setFlashBack(false); } },
-    ports: { eyebrow: "Référence opérationnelle", title: "Ports & commandes", subtitle: "Ports, protocoles, commandes, outils et scénarios typiques Security+." },
+    ports: { eyebrow: "Référence opérationnelle", title: "Ports & commandes", subtitle: "Ports, protocoles, commandes, outils et scénarios typiques Security+.", cta: "Flashcards ports", action: () => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); } },
     exam: { eyebrow: "Test center", title: "Examens blancs", subtitle: "Examens fixes ou aléatoires avec timer, confiance, flags et review post-examen." },
     errors: { eyebrow: "Remédiation", title: "Journal d'erreurs", subtitle: "Les questions ratées deviennent une liste de révision priorisée.", cta: "Quiz erreurs", action: () => startQuiz("errors") },
     plan: { eyebrow: "Roadmap", title: "Plan de révision", subtitle: "Routine jusqu'au 25 mai 2026, ajustée selon les priorités et le temps restant." },
@@ -540,7 +545,7 @@ export function HomeClient() {
     errorResolved: errors.filter((item) => item.status === "maîtrisé").length,
     planDaysLeft: daysLeft,
     searchTerm: globalSearch,
-    searchResults: filteredStudyItems.length + filteredConfusionItems.length + filteredCommandTools.length + filteredQuizQuestions.length + filteredExamQuestions.length,
+    searchResults: filteredStudyItems.length + filteredConfusionItems.length + filteredCommandTools.length + filteredPortResults.length + filteredQuizQuestions.length + filteredExamQuestions.length,
   };
 
   useEffect(() => {
@@ -1102,7 +1107,7 @@ export function HomeClient() {
               <div className="grid gap-2 text-sm md:grid-cols-5">
                 <button type="button" onClick={() => setView("courses")} className="rounded-card bg-muted p-3 text-left font-semibold">Cours: {quickCourseResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("confusions")} className="rounded-card bg-muted p-3 text-left font-semibold">Confusions: {quickConfusionResults.length} résultats rapides</button>
-                <button type="button" onClick={() => setView("ports")} className="rounded-card bg-muted p-3 text-left font-semibold">Commandes: {quickCommandResults.length} résultats rapides</button>
+                <button type="button" onClick={() => setView("ports")} className="rounded-card bg-muted p-3 text-left font-semibold">Ports: {quickPortResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("quiz")} className="rounded-card bg-muted p-3 text-left font-semibold">Quiz: {quickQuizResults.length} résultats rapides</button>
                 <button type="button" onClick={() => setView("exam")} className="rounded-card bg-muted p-3 text-left font-semibold">Examens: {quickExamResults.length} résultats rapides</button>
               </div>
@@ -1253,7 +1258,7 @@ export function HomeClient() {
           )}
 
           {view === "ports" && (
-            <PortsCommandsView />
+            <PortsCommandsView onStartPortFlashcards={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }} />
           )}
 
           {view === "exam" && (
@@ -1376,6 +1381,27 @@ export function HomeClient() {
                       <p className="mt-2 text-sm text-muted-foreground">{item.purpose}</p>
                       <p className="mt-2 text-sm"><strong>Examen: </strong>{item.examTip}</p>
                       <GhostButton onClick={() => setView("ports")}>Étudier</GhostButton>
+                    </article>
+                  ))}
+                </div>
+              </Panel>
+
+              <Panel title={`Ports et protocoles (${filteredPortResults.length})`}>
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  {filteredPortResults.slice(0, 18).map((item) => (
+                    <article key={item.id} className="rounded-card border border-border bg-muted p-4">
+                      <div className="mb-2 flex flex-wrap gap-2">
+                        <Badge>{item.port}</Badge>
+                        <Badge>{item.protocol}</Badge>
+                      </div>
+                      <h3 className="text-lg font-black text-primary">{item.protocol}</h3>
+                      <p className="mt-2"><strong>English: </strong>{item.english}</p>
+                      <p className="mt-2 text-sm text-muted-foreground">{item.details}</p>
+                      {item.secureAlternative && <p className="mt-2 text-sm"><strong>Alternative: </strong>{item.secureAlternative}</p>}
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        <GhostButton onClick={() => setView("ports")}>Réviser</GhostButton>
+                        <GhostButton onClick={() => { setFlashcardDeck("ports"); setFlashBack(false); setView("flashcards"); }}>Flashcards</GhostButton>
+                      </div>
                     </article>
                   ))}
                 </div>
