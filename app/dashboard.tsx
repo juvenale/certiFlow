@@ -236,7 +236,7 @@ const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: n
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="h-4 w-4 text-primary" />
-          <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Compte a rebours — 25 mai 2026</span>
+          <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Compte a rebours — 28 mai 2026</span>
         </div>
         <span className="text-xs text-muted-foreground">{timelineProgress}% du temps ecoule</span>
       </div>
@@ -271,8 +271,8 @@ export function Dashboard({
   onSmartReview?: () => void;
 }) {
   const [now, setNow] = useState(Date.now());
-  const examTime = new Date("2026-05-25T09:00:00").getTime();
-  const examStart = new Date("2026-04-01").getTime();
+  const examTime = new Date("2026-05-28T09:00:00").getTime();
+  const examStart = new Date("2026-05-01").getTime();
   const domainProgress = useDomainProgress(answered, correct);
   const { todayAnswered, todayCorrect } = useDailyCheckpoint(answered, correct);
   const analytics = useSmartAnalytics(answered, correct);

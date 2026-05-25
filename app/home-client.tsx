@@ -240,6 +240,7 @@ export function HomeClient() {
   const [examFlags, setExamFlags] = useState<Record<string, boolean>>(() => readExamSession()?.examFlags ?? {});
   const [examConfidence, setExamConfidence] = useState<Record<string, ExamConfidence>>(() => readExamSession()?.examConfidence ?? {});
   const [examHistoryOpen, setExamHistoryOpen] = useState(false);
+  const [shuffledErrorPool, setShuffledErrorPool] = useState<typeof questions>([]);
   const [selectedDomain, setSelectedDomain] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-domain") || "all" : "all"));
   const [selectedTheme, setSelectedTheme] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all"));
   const [globalSearch, setGlobalSearch] = useState("");
@@ -318,7 +319,27 @@ export function HomeClient() {
     }
   }, [activeExam, examIndex, examAnswers, examFinished, examElapsedSeconds, examFlags, examConfidence]);
 
-  const score = answered ? Math.round((correct / answered) * 100) : 0;
+  
+  // Study streak
+  const studyStreak = (() => {
+    let streak = 0;
+    const today = new Date().toISOString().split("T")[0];
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem("certiflow-quiz-history") || "[]"); } catch {}
+    const dates = new Set(history.map((h: { date?: string }) => h.date?.slice(0, 10)));
+    if (dates.has(today)) streak++;
+    for (let i = 1; i <= 365; i++) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      if (dates.has(d.toISOString().split("T")[0])) streak++;
+      else break;
+    }
+    if (streak === 0) {
+      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+      if (dates.has(yesterday.toISOString().split("T")[0])) streak = -1;
+    }
+    return streak;
+  })();
+const score = answered ? Math.round((correct / answered) * 100) : 0;
   const avgProgress = Math.round(domains.reduce((sum, domain) => sum + domain.progress, 0) / domains.length);
   const weakest = [...domains].sort((a, b) => a.progress - b.progress)[0];
   const selectedThemeData = studyThemes.find((theme) => theme.id === selectedTheme);
@@ -370,6 +391,7 @@ export function HomeClient() {
     return domainMatch && themeMatch && searchMatch;
   });
   const effectiveQuizQuestions = filteredQuizQuestions.length ? filteredQuizQuestions : questions;
+  const quizQuestions = shuffledErrorPool.length ? shuffledErrorPool : effectiveQuizQuestions;
   const currentQuestion = effectiveQuizQuestions[questionIndex % effectiveQuizQuestions.length];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
@@ -946,7 +968,7 @@ export function HomeClient() {
               score={score}
               answered={answered}
               correct={correct}
-              effectiveQuizQuestions={effectiveQuizQuestions}
+              effectiveQuizQuestions={quizQuestions}
               totalQuestions={questions.length}
               questionIndex={questionIndex}
               currentQuestion={currentQuestion}
@@ -1100,19 +1122,53 @@ export function HomeClient() {
           )}
 
           {view === "plan" && (
-            <Panel title="Plan jusqu'au 25 mai 2026">
-              <p className="mb-4 text-muted-foreground">Priorité actuelle selon tes scores: {weakest.name}. Le plan s&apos;intensifie à mesure que la date approche.</p>
-              <div className="grid gap-3">
-                {plan.map(([day, task]) => (
-                  <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
-                    <strong>{day}</strong>
-                    <span>{task}</span>
-                  </div>
-                ))}
-              </div>
-            </Panel>
-          )}
+            <div className="grid gap-4">
+              <Panel title="Plan jusqu'au 28 mai 2026">
+                <p className="mb-4 text-sm text-muted-foreground">Priorite actuelle selon tes scores: <strong className="text-danger-fg">{weakest.name} ({weakest.progress}%)</strong>. Le plan s'intensifie a mesure que la date approche.</p>
+                <div className="grid gap-3">
+                  {plan.map(([day, task]) => (
+                    <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
+                      <strong>{day}</strong>
+                      <span>{task}</span>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
 
+              <Panel title="Fiche revision express">
+                <p className="mb-4 text-sm text-muted-foreground">Synthese de tes points faibles a reviser en priorite. Exporte cette fiche pour la relire hors connexion.</p>
+                <button type="button" onClick={() => {
+                  const lines = [];
+                  lines.push("=== FICHE REVISION CERTIFLOW — " + new Date().toLocaleDateString("fr-FR") + " ===");
+                  lines.push("");
+                  lines.push("Score global: " + (answered > 0 ? Math.round((correct / answered) * 100) : 0) + "% (" + correct + "/" + answered + ")");
+                  lines.push("Streak: " + studyStreak + " jours");
+                  lines.push("");
+                  lines.push("--- DOMAINES FAIBLES ---");
+                  domains.filter(d => d.progress < 60).forEach(d => lines.push("  " + d.name + ": " + d.progress + "%"));
+                  lines.push("");
+                  lines.push("--- TOP ERREURS ---");
+                  errors.filter(e => e.status !== "maîtrisé").sort((a, b) => b.count - a.count).slice(0, 10).forEach((e, i) => lines.push("  " + (i+1) + ". [" + e.domain + "] " + (e.concept || e.question).slice(0, 80) + " (" + e.count + "x)"));
+                  lines.push("");
+                  lines.push("--- CONFUSIONS A REVISER ---");
+                  const haystack = errors.map(e => (e.concept || e.question).toLowerCase()).join(" ");
+                  confusionItems.filter(c => haystack.includes(c.comparison.toLowerCase())).slice(0, 5).forEach(c => lines.push("  " + c.comparison + " vs " + c.english + ": " + c.difference.slice(0, 100)));
+                  lines.push("");
+                  lines.push("--- PORTS A MEMORISER ---");
+                  portFlashcards.filter(p => ["HTTPS", "SSH", "DNS", "DHCP", "FTP", "SMTP", "RDP", "LDAP"].some(s => p.protocol.toUpperCase().includes(s))).forEach(p => lines.push("  " + p.protocol + " → " + p.port + " | " + p.english));
+                  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = url; a.download = "certiflow-fiche-revision-" + new Date().toISOString().slice(0, 10) + ".txt";
+                  a.click();
+                  URL.revokeObjectURL(url);
+                }}
+                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
+                  Exporter fiche revision (TXT)
+                </button>
+              </Panel>
+            </div>
+          )}
           {view === "search" && (
             <div className="grid gap-4">
               <Panel title="Recherche globale">

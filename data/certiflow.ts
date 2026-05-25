@@ -1,4 +1,4 @@
-export const examDate = "2026-05-25T09:00:00";
+export const examDate = "2026-05-28T09:00:00";
 
 export const domains = [
   { id: "d1", name: "General Security Concepts", weight: 12, progress: 72 },
