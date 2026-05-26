@@ -1,6 +1,8 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Target, XCircle, Zap } from "lucide-react";
+import { AlertCircle, CheckCircle2, Flag, Loader2, Sparkles, Target, XCircle, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useTimeTracker } from "./hooks/useTimeTracker";
 import { cn } from "@/lib/utils";
 import { QuizConfig } from "./quiz-config";
 
@@ -115,6 +117,48 @@ export function QuizView({
   const isCorrect = selectedAnswer === currentQuestionAnswer;
   const colors = dc(currentQuestion.domain);
   const revealed = selectedAnswer !== null;
+  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState<boolean>(false);
+  const [isFlagged, setIsFlagged] = useState(false);
+  const timer = useTimeTracker(currentQuestion.id, "QCM");
+
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (["a","b","c","d"].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+        const idx = e.key.toLowerCase().charCodeAt(0) - 97;
+        if (idx < currentQuestionChoices.length && !revealed) chooseAnswer(idx);
+      }
+      if (e.key === "Enter" && revealed) {
+        e.preventDefault();
+        timer.saveAndProgress();
+        setAiExplanation(null);
+        setIsFlagged(false);
+        nextQuestion();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [revealed, currentQuestionChoices, chooseAnswer, nextQuestion]);
+
+  const handleAskAI = async () => {
+    setIsAiLoading(true); setAiExplanation(null);
+    try {
+      const res = await fetch("/api/assistant", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "expliquer", context: { type: "QCM", statement: currentQuestion.question,
+          userAnswer: selectedAnswer !== null ? currentQuestionChoices[selectedAnswer] : "",
+          correctAnswer: currentQuestionChoices[currentQuestionAnswer],
+          explanationStatique: currentQuestion.explanation } }) });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error);
+      setAiExplanation(data.answer);
+    } catch { setAiExplanation("IA indisponible."); }
+    finally { setIsAiLoading(false); }
+  };
 
   // Check if this question was previously failed
   const previousErrorCount = (() => {
@@ -243,7 +287,7 @@ export function QuizView({
           {/* Skip button */}
           {!revealed && (
             <div className="mt-4 flex justify-end">
-              <button type="button" onClick={nextQuestion}
+              <button type="button" onClick={() => { timer.saveAndProgress(); nextQuestion(); }}
                 className="text-xs font-bold text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
                 Passer cette question →
               </button>
@@ -296,10 +340,29 @@ export function QuizView({
               <p className="text-sm leading-relaxed">{currentQuestion.explanation}</p>
             </div>
 
-            <button type="button" onClick={nextQuestion}
-              className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
+            {aiExplanation && (
+              <div className="rounded-card border-l-2 border-primary bg-muted p-2.5 text-xs leading-relaxed">
+                <p className="mb-1 font-bold text-primary">Analyse de l'IA :</p>
+                <div className="whitespace-pre-line">{aiExplanation}</div>
+              </div>
+            )}
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-1.5">
+                <button type="button" onClick={() => setIsFlagged((v: boolean) => !v)}
+                  className="inline-flex items-center gap-1 rounded-btn border px-2 py-1 text-[10px] font-bold transition hover:border-warning hover:text-warning-fg"
+                  style={{ borderColor: isFlagged ? "var(--warning)" : "var(--border)", color: isFlagged ? "var(--warning)" : "var(--muted-foreground)" }}>
+                  <Flag className="h-3 w-3" /> {isFlagged ? "Flagged" : "Flag"}
+                </button>
+                <button type="button" onClick={handleAskAI} disabled={isAiLoading}
+                  className="inline-flex items-center gap-1 rounded-btn border border-primary/30 bg-primary/10 px-2.5 py-1.5 text-[10px] font-bold text-primary transition hover:bg-primary/20 disabled:opacity-50">
+                  {isAiLoading ? <><Loader2 className="h-3 w-3 animate-spin" /> Analyse...</> : <><Sparkles className="h-3 w-3" /> IA</>}
+                </button>
+              </div>
+              <button type="button" onClick={() => { timer.saveAndProgress(); setAiExplanation(null); setIsFlagged(false); nextQuestion(); }}
+                className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
               Question suivante →
             </button>
+            </div>
           </div>
         </div>
       )}
