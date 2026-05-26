@@ -1,9 +1,8 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Clock, Loader2, Sparkles, Target, XCircle, Zap } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useTimeTracker } from "./hooks/useTimeTracker";
+import { AlertCircle, CheckCircle2, Target, XCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { QuizConfig } from "./quiz-config";
 
 type QuizQuestion = {
   id: string;
@@ -17,7 +16,7 @@ type QuizQuestion = {
   scenario?: string;
 };
 
-type QuizMode = "quick" | "weak" | "errors";
+type QuizMode = "quick" | "weak" | "errors" | "custom";
 
 const domainColors: Record<string, { bg: string; border: string; dot: string }> = {
   "General Security Concepts":                 { bg: "dom-bg-violet",  border: "dom-bd-violet",  dot: "bg-violet-500"  },
@@ -105,7 +104,7 @@ export function QuizView({
   selectedAnswer: number | null;
   weakestDomain: string;
   errorsCount: number;
-  startQuiz: (mode: QuizMode) => void;
+  startQuiz: (mode: QuizMode, filters?: any) => void;
   chooseAnswer: (index: number) => void;
   nextQuestion: () => void;
 }) {
@@ -116,58 +115,15 @@ export function QuizView({
   const isCorrect = selectedAnswer === currentQuestionAnswer;
   const colors = dc(currentQuestion.domain);
   const revealed = selectedAnswer !== null;
-  const [quizStarted, setQuizStarted] = useState(false);
 
-  // Mark quiz as started on first answer
-  useEffect(() => { if (revealed && !quizStarted) setQuizStarted(true); }, [revealed]);
-  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
-  const [isAiLoading, setIsAiLoading] = useState<boolean>(false);
-  const [isFlagged, setIsFlagged] = useState(false);
-  const timer = useTimeTracker(currentQuestion.id, "QCM");
-
-  // Keyboard: A-D to answer, Enter to advance
-  useEffect(() => {
-    const tips = [
-      "Port 22 = SSH (chiffre). Port 23 = Telnet (clair).",
-      "CIA = Confidentialite, Integrite, Disponibilite.",
-      "Faux positif = alerte legitime. Faux negatif = menace ignoree.",
-      "IDS detecte. IPS bloque. Firewall filtre.",
-      "TLS 1.3 est la norme examen. SSL est obsolete.",
-      "Hashing = integrite. Chiffrement = confidentialite.",
-    ];
-    function onKey(e: KeyboardEvent) {
-      const tag = document.activeElement?.tagName;
-      if (tag === "INPUT" || tag === "TEXTAREA") return;
-      if (["a","b","c","d"].includes(e.key.toLowerCase())) {
-        e.preventDefault();
-        const idx = e.key.toLowerCase().charCodeAt(0) - 97;
-        if (idx < currentQuestionChoices.length && !revealed) chooseAnswer(idx);
-      }
-      if (e.key === "Enter" && revealed) {
-        e.preventDefault();
-        timer.saveAndProgress();
-        setAiExplanation(null);
-        nextQuestion();
-      }
-    }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [revealed, currentQuestionChoices, chooseAnswer, nextQuestion]);
-
-  const handleAskAI = async () => {
-    setIsAiLoading(true);
-    setAiExplanation(null);
-    try {
-      const res = await fetch("/api/assistant", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "expliquer", context: { type: "QCM", statement: currentQuestion.question, userAnswer: selectedAnswer !== null ? currentQuestionChoices[selectedAnswer] : "", correctAnswer: currentQuestionChoices[currentQuestionAnswer], explanationStatique: currentQuestion.explanation } }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.error);
-      setAiExplanation(data.answer);
-    } catch { setAiExplanation("IA indisponible."); }
-    finally { setIsAiLoading(false); }
-  };
+  // Check if this question was previously failed
+  const previousErrorCount = (() => {
+    try { if (typeof window === "undefined") return 0;
+      const errors = JSON.parse(localStorage.getItem("certiflow-errors") || "[]");
+      const found = errors.find((e: any) => e.questionId === currentQuestion.id);
+      return found ? found.count : 0;
+    } catch { return 0; }
+  })();
 
   return (
     <div className="space-y-4">
@@ -180,10 +136,21 @@ export function QuizView({
           accent={score >= 75 ? "border-success-muted bg-success-muted" : score >= 50 ? "border-warning-muted bg-warning-muted" : undefined}
         />
         <StatChip label="Questions actives" value={effectiveQuizQuestions.length} sub={`sur ${totalQuestions} au total`} />
-        <StatChip label="Chrono" value={timer.formattedTime} />
         <StatChip label="Position" value={`${pos + 1} / ${effectiveQuizQuestions.length}`} sub={`${progressPct}% parcouru`} />
       </div>
 
+
+      {/* Quiz sur mesure */}
+      <details className="group rounded-card border border-border bg-card p-4 shadow-sm mb-3">
+        <summary className="cursor-pointer text-xs font-bold uppercase tracking-wider text-muted-foreground list-none flex items-center justify-between">
+          <span>Quiz sur mesure (domaines, sous-domaines, themes)</span>
+          <span className="text-xs group-open:hidden">Deplier</span>
+          <span className="text-xs hidden group-open:inline">Replier</span>
+        </summary>
+        <div className="mt-3 border-t border-border pt-3">
+          <QuizConfig onStartQuiz={(filters) => { startQuiz("custom", filters); }} />
+        </div>
+      </details>
       {/* Mode selector */}
       <div className="rounded-card border border-border bg-card p-4 shadow-sm">
         <p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Changer de mode</p>
@@ -254,7 +221,7 @@ export function QuizView({
                   disabled={revealed}
                   className={cn(
                     "flex items-center gap-3 rounded-card border px-4 py-3 text-left transition-colors",
-                    !revealed && "border-border hover:border-primary hover:bg-muted/50 hover:scale-[1.01] active:scale-[0.99]",
+                    !revealed && "border-border hover:border-primary hover:bg-muted/50",
                     revealed && isAnswer && "border-success-muted bg-success-muted",
                     revealed && isSelected && !isAnswer && "border-danger-muted bg-danger-muted",
                     revealed && !isSelected && !isAnswer && "border-border opacity-40",
@@ -276,7 +243,7 @@ export function QuizView({
           {/* Skip button */}
           {!revealed && (
             <div className="mt-4 flex justify-end">
-              <button type="button" onClick={() => { timer.saveAndProgress(); nextQuestion(); }}
+              <button type="button" onClick={nextQuestion}
                 className="text-xs font-bold text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
                 Passer cette question →
               </button>
@@ -329,27 +296,10 @@ export function QuizView({
               <p className="text-sm leading-relaxed">{currentQuestion.explanation}</p>
             </div>
 
-            {aiExplanation && (
-              <div className="rounded-card border-l-2 border-indigo-500 bg-muted p-3 text-xs leading-relaxed">
-                <p className="mb-1 font-bold text-indigo-600">Analyse de l'IA :</p>
-                <div className="whitespace-pre-line">{aiExplanation}</div>
-              </div>
-            )}
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-              <button type="button" onClick={() => setIsFlagged((v) => !v)}
-                className="inline-flex items-center gap-1 rounded-btn border px-2.5 py-1.5 text-[10px] font-bold transition hover:border-warning hover:text-warning-fg"
-                style={{ borderColor: isFlagged ? "var(--warning)" : "var(--border)", color: isFlagged ? "var(--warning)" : "var(--muted-foreground)" }}>
-                Flag {isFlagged ? "✓" : ""}
-              </button>
-              <button type="button" onClick={handleAskAI} disabled={isAiLoading}
-                className="inline-flex items-center gap-1.5 rounded-btn border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-xs font-bold text-indigo-600 transition hover:bg-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
-                {isAiLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analyse...</> : <><Sparkles className="h-3.5 w-3.5" /> Expliquer avec l'IA</>}
-              </button>
-              <button type="button" onClick={() => { timer.saveAndProgress(); setAiExplanation(null); nextQuestion(); }}
-                className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:scale-[1.02] active:scale-[0.98] hover:opacity-90">
+            <button type="button" onClick={nextQuestion}
+              className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
               Question suivante →
             </button>
-            </div>
           </div>
         </div>
       )}

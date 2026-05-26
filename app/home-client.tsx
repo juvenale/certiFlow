@@ -220,6 +220,7 @@ export function HomeClient() {
   const [errors, setErrors] = useState<ErrorEntry[]>(readErrorsStorage);
   const [daysLeft] = useState(calculateDaysLeft);
   const [questionIndex, setQuestionIndex] = useState(() => readQuizIndex());
+  const [shuffledErrorPool, setShuffledErrorPool] = useState<typeof questions>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [flashIndex, setFlashIndex] = useState(0);
   const [flashBack, setFlashBack] = useState(false);
@@ -366,8 +367,8 @@ export function HomeClient() {
     const searchMatch = !normalizedSearch || haystack.includes(normalizedSearch);
     return domainMatch && themeMatch && searchMatch;
   });
-  const effectiveQuizQuestions = filteredQuizQuestions.length ? filteredQuizQuestions : questions;
-  const currentQuestion = effectiveQuizQuestions[questionIndex % effectiveQuizQuestions.length];
+  const effectiveQuizQuestions = shuffledErrorPool.length ? shuffledErrorPool : (filteredQuizQuestions.length ? filteredQuizQuestions : questions);
+  const currentQuestion = (effectiveQuizQuestions.length ? effectiveQuizQuestions : questions)[questionIndex % (effectiveQuizQuestions.length || questions.length)];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
   const fallbackFlashcards: UnifiedFlashcard[] = flashcards.map((card) => ({
@@ -543,7 +544,48 @@ export function HomeClient() {
     setQuestionIndex((value) => (value + 1) % effectiveQuizQuestions.length);
   }
 
-  function startQuiz(mode: "quick" | "weak" | "errors") {
+  function startQuiz(mode: "quick" | "weak" | "errors" | "custom", filters?: any) {
+    if (mode === "custom" && filters) {
+      // Build domain filter map
+      const domainMap: Record<string, string> = {
+        D1: "General Security Concepts",
+        D2: "Threats, Vulnerabilities, and Mitigations",
+        D3: "Security Architecture",
+        D4: "Security Operations",
+        D5: "Security Program Management and Oversight",
+      };
+      let pool = [...questions];
+      if (filters.domainId !== "all") {
+        const target = domainMap[filters.domainId];
+        if (target) pool = pool.filter((q) => q.domain === target);
+      }
+      if (filters.theme !== "all") {
+        const term = filters.theme.toLowerCase();
+        pool = pool.filter((q) => (q.question + " " + (q.explanation || "")).toLowerCase().includes(term));
+      }
+      // Shuffle
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      
+      // Skip previously correct answers if requested
+      if (filters.skipCorrect) {
+        try {
+          const history: Array<{ id: string; correct: boolean }> = JSON.parse(localStorage.getItem("certiflow-quiz-history") || "[]");
+          const correctIds = new Set(history.filter((e) => e.correct).map((e) => e.id));
+          pool = pool.filter((q) => !correctIds.has(q.id));
+        } catch {}
+      }
+if (filters.count > 0 && filters.count < pool.length) {
+        pool = pool.slice(0, filters.count);
+      }
+      setShuffledErrorPool(pool);
+      setQuestionIndex(0);
+      setSelectedAnswer(null);
+      setView("quiz");
+      return;
+    }
     setSelectedAnswer(null);
     if (mode === "weak") {
       const found = effectiveQuizQuestions.findIndex((question) => question.domain === weakest.name);
@@ -796,7 +838,7 @@ export function HomeClient() {
   return (
     <main className="app-shell min-h-screen text-foreground">
       <div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
-        <aside className="border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r bg-card/80 backdrop-blur-xl">
+        <aside className="glass-panel border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
               <img
@@ -876,7 +918,7 @@ export function HomeClient() {
 
           <div className="glass-panel sticky top-0 z-20 mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
             <label className="text-sm font-bold" htmlFor="global-search">Rechercher un terme, concept, question...</label>
-            <div className="grid gap-3 lg:grid-cols-[220px_220px_auto]">
+            <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto]">
               <input
                 id="global-search"
                 value={globalSearch}
@@ -1007,14 +1049,14 @@ export function HomeClient() {
               >
                 {flashBack ? (
                   <div>
-                    <h2 className="text-2xl font-semibold text-primary">{currentFlashcard.term}</h2>
+                    <h2 className="text-3xl font-black text-primary">{currentFlashcard.term}</h2>
                     <p className="mt-3 text-xl font-bold">{currentFlashcard.definition}</p>
                     <p className="mt-3">{currentFlashcard.details}</p>
                     <p className="mt-3 text-sm text-muted-foreground">{currentFlashcard.domain} | {currentFlashcard.themeTitle}</p>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-4xl font-bold text-primary tracking-tight">{currentFlashcard.term}</p>
+                    <p className="text-6xl font-black text-primary">{currentFlashcard.term}</p>
                     <p className="mt-4 text-muted-foreground">Clique pour retourner la carte</p>
                   </div>
                 )}

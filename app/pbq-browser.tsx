@@ -21,8 +21,8 @@ const typeLabels: Record<string, string> = {
   scenario_tasks: "Matching / Classif.",
 };
 const difficultyColors: Record<string, string> = {
-  foundation: "bg-green-100 text-green-700", intermediate: "bg-yellow-100 text-yellow-700",
-  advanced: "bg-orange-100 text-orange-700", simulation: "bg-red-100 text-red-700",
+  foundation: "bg-success-muted text-success-fg", intermediate: "bg-warning-muted text-warning-fg",
+  advanced: "bg-warning-muted text-warning-fg", simulation: "bg-danger-muted text-danger-fg",
 };
 
 function Badge({ children }: { children: React.ReactNode }) {

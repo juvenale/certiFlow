@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   AlertCircle, ArrowLeft, CheckCircle2, ChevronLeft, ChevronRight,
@@ -95,20 +97,20 @@ function ExamProgressGrid({ questions, currentIndex, answers, flags, onSelect, s
   showCorrection?: boolean;
 }) {
   return (
-    <div className="rounded-card border border-border bg-card p-3">
-      <div className="mb-2 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-muted-foreground">
-        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full border-2 border-primary" /> Active</span>
-        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-success/20" /> Répondue</span>
-        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-cyan-400" /> PBQ</span>
-        <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-amber-400" /> Flagged</span>
+    <div className="rounded-card border border-border bg-card p-1 shadow-sm">
+      <div className="mb-1.5 flex flex-wrap gap-x-2 gap-y-0 text-[8px] font-bold text-muted-foreground">
+        <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full border-2 border-primary" /> Active</span>
+        <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-success/20" /> Répondue</span>
+        <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan-400" /> PBQ</span>
+        <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-amber-400" /> Flagged</span>
         {showCorrection && (
           <>
-            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-success" /> Correct</span>
-            <span className="flex items-center gap-1"><span className="h-3 w-3 rounded-full bg-danger" /> Incorrect</span>
+            <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-success" /> Correct</span>
+            <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-danger" /> Incorrect</span>
           </>
         )}
       </div>
-      <div className="grid max-h-72 grid-cols-[repeat(auto-fill,minmax(30px,1fr))] gap-1.5 overflow-y-auto pr-1">
+      <div className="grid grid-cols-10 gap-1.5 w-full max-w-lg mx-auto overflow-y-auto p-1 max-h-40">
         {questions.map((q, i) => {
           const current   = i === currentIndex;
           const answered  = (answers[q.id]?.length ?? 0) > 0;
@@ -120,8 +122,8 @@ function ExamProgressGrid({ questions, currentIndex, answers, flags, onSelect, s
             <button key={q.id} type="button" onClick={() => onSelect(i)}
               title={`Q${i + 1}${flagged ? " · flagged" : ""}${pbq ? " · PBQ" : ""}`}
               className={cn(
-                "relative grid h-8 min-w-8 place-items-center rounded-full border text-[10px] font-black transition",
-                current  && "border-primary bg-primary text-primary-foreground ring-4 ring-primary/20",
+                "aspect-square w-full max-w-[36px] h-auto flex items-center justify-center rounded border text-[9px] font-mono font-bold transition",
+                current  && "border-primary bg-primary text-primary-foreground ring-2 ring-primary/20 z-10",
                 !current && !answered && "border-border bg-muted text-muted-foreground hover:border-primary",
                 !current && answered && !correct && !wrong && "border-success-muted bg-success-muted text-success-fg",
                 !current && flagged  && "border-warning-muted bg-warning-muted text-warning-fg",
@@ -129,8 +131,8 @@ function ExamProgressGrid({ questions, currentIndex, answers, flags, onSelect, s
                 !current && wrong    && "bg-danger text-white",
               )}>
               {i + 1}
-              {pbq && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border border-card bg-cyan-400" />}
-              {flagged && !current && <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border border-card bg-amber-400" />}
+              {pbq && <span className="absolute -top-0.5 -right-0.5 h-1 w-1 rounded-full border border-card bg-cyan-400" />}
+              {flagged && !current && <span className="absolute -bottom-0.5 -right-0.5 h-1 w-1 rounded-full border border-card bg-warning" />}
             </button>
           );
         })}
@@ -255,9 +257,9 @@ function ExamLauncherView({
   beginExam: () => void;
 }) {
   const modes = [
-    { name: "Sprint",   count: 30, note: "Révision rapide ciblée",  duration: "~30 min", icon: Zap,    color: "text-amber-500" },
-    { name: "Standard", count: 60, note: "Bon compromis pratique",   duration: "~60 min", icon: Target, color: "text-blue-500" },
-    { name: "Complet",  count: 90, note: "Simulation finale réelle", duration: "~90 min", icon: Trophy, color: "text-violet-500" },
+    { name: "Sprint",   count: 30, note: "Révision rapide ciblée",  duration: "~30 min", icon: Zap,    color: "text-warning" },
+    { name: "Standard", count: 60, note: "Bon compromis pratique",   duration: "~60 min", icon: Target, color: "text-primary" },
+    { name: "Complet",  count: 90, note: "Simulation finale réelle", duration: "~90 min", icon: Trophy, color: "text-primary" },
   ] as const;
 
   return (
@@ -395,315 +397,175 @@ function ExamLauncherView({
 // ─── ExamSessionView ──────────────────────────────────────────────────────────
 function ExamSessionView({
   activeExam, activeExamQuestion, examIndex, setExamIndex,
-  examAnswers, examFlags, setExamFlags, examConfidence, setExamConfidence,
-  examFinished, examElapsedSeconds, examCorrectCount, examAnsweredCount,
-  examFlaggedCount, examConfidenceSummary, canShowExamCorrection,
+  examAnswers, examFlags, setExamFlags,
+  examConfidence, setExamConfidence,
+  examFinished, examElapsedSeconds,
+  examCorrectCount, examAnsweredCount, examFlaggedCount,
+  examConfidenceSummary, canShowExamCorrection,
   chooseExamAnswer, finishExam, returnToExamList,
-}: {
-  activeExam: ActiveExam;
-  activeExamQuestion: ExamQuestion;
-  examIndex: number;
-  setExamIndex: (i: number | ((p: number) => number)) => void;
-  examAnswers: Record<string, number[]>;
-  examFlags: Record<string, boolean>;
-  setExamFlags: (fn: (p: Record<string, boolean>) => Record<string, boolean>) => void;
-  examConfidence: Record<string, ExamConfidence>;
-  setExamConfidence: (fn: (p: Record<string, ExamConfidence>) => Record<string, ExamConfidence>) => void;
-  examFinished: boolean;
-  examElapsedSeconds: number;
-  examCorrectCount: number;
-  examAnsweredCount: number;
-  examFlaggedCount: number;
-  examConfidenceSummary: { low: number; medium: number; high: number };
-  canShowExamCorrection: boolean;
-  chooseExamAnswer: (i: number) => void;
-  finishExam: () => void;
-  returnToExamList: () => void;
-}) {
+}: any) {
+  const [filter, setFilter] = useState("all");
+  const [navOpen, setNavOpen] = useState(true);
+  if (!activeExamQuestion) return <p className="p-4">Aucune question.</p>;
+  
   const q = activeExamQuestion;
   const total = activeExam.questions.length;
-  const progressPct = Math.round(((examIndex + 1) / total) * 100);
-  const answeredPct = Math.round((examAnsweredCount / total) * 100);
+  const selected = examAnswers[q.id] || [];
+  const correctAnswers = q.answers?.length ? q.answers : [q.answer];
+  const answered = selected.length > 0;
   const flagged = examFlags[q.id];
-  const selectedChoices = examAnswers[q.id] ?? [];
-  const correctAnswers = getCorrectAnswers(q);
-  const isAnswered = selectedChoices.length > 0;
-  const isCorrectAnswer = sameSet(selectedChoices, correctAnswers);
-
   const finalScore = examFinished ? Math.round((examCorrectCount / total) * 100) : 0;
   const passed = finalScore >= 75;
 
+  const allQ = activeExam.questions;
+  const filteredQ = allQ.filter((eq: any, i: number) => {
+    if (filter === "all") return true;
+    const s = examAnswers[eq.id] || [];
+    const ca = eq.answers?.length ? eq.answers : [eq.answer];
+    if (s.length === 0) return filter === "unanswered";
+    const ok = s.length === ca.length && s.every((a: number, j: number) => a === ca[j]);
+    if (filter === "errors") return !ok;
+    if (filter === "correct") return ok;
+    if (filter === "flagged") return examFlags[eq.id];
+    return true;
+  });
+
   return (
-    <div className="space-y-2">
-      {/* Session header */}
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-1.5">
-          <div>
-            <div className="mb-1 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">Test center</span>
-              <span className={cn(
-                "rounded-full px-2.5 py-0.5 text-xs font-bold",
-                activeExam.correctionMode === "instant" ? "bg-warning-muted text-warning-fg" : "bg-muted text-muted-foreground"
-              )}>
-                {activeExam.correctionMode === "instant" ? "Correction immédiate" : "Correction à la fin"}
-              </span>
-              {examFinished && (
-                <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-bold",
-                  passed ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg"
-                )}>
-                  {passed ? "Réussi" : "À reprendre"}
-                </span>
-              )}
-            </div>
-            <h2 className="text-lg font-black">{activeExam.title}</h2>
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { icon: Target, label: `${examIndex + 1}/${total}`, note: "Position" },
-              { icon: CheckCircle2, label: examAnsweredCount, note: `${total - examAnsweredCount} restantes` },
-              { icon: Clock, label: formatTime(examElapsedSeconds), note: "Temps" },
-              { icon: Flag, label: examFlaggedCount, note: "Flagged" },
-            ].map(({ icon: Icon, label, note }) => (
-              <div key={note} className="rounded-card border border-border bg-muted px-3 py-2 text-center">
-                <Icon className="mx-auto mb-0.5 h-3.5 w-3.5 text-muted-foreground" />
-                <p className="text-sm font-black tabular-nums">{label}</p>
-                <p className="text-[10px] text-muted-foreground">{note}</p>
-              </div>
-            ))}
-          </div>
+    <div className="h-[calc(100vh-4rem)] flex flex-col">
+      {/* TOP BAR */}
+      <div className={cn("shrink-0 flex items-center justify-between px-4 py-2 border-b text-xs font-bold",
+        examFinished ? (passed ? "bg-success-muted border-success-muted" : "bg-danger-muted border-danger-muted") : "bg-muted border-border")}>
+        <div className="flex items-center gap-3">
+          {examFinished ? <>{passed ? "Objectif atteint" : "A reprendre"} · {finalScore}% ({examCorrectCount}/{total})</> : activeExam.title}
+          <span className="text-muted-foreground">|</span>
+          <span>{String(Math.floor(examElapsedSeconds/3600)).padStart(2,"0")}:{String(Math.floor((examElapsedSeconds%3600)/60)).padStart(2,"0")}:{String(examElapsedSeconds%60).padStart(2,"0")}</span>
         </div>
-        {/* Dual progress bar */}
-        <div className="mt-2 space-y-1.5">
-          <div className="flex justify-between text-[10px] font-bold text-muted-foreground">
-            <span>Navigation: Q{examIndex + 1}</span>
-            <span>Répondues: {answeredPct}%</span>
-          </div>
-          <div className="relative h-2 overflow-hidden rounded-full bg-muted">
-            <div className="absolute inset-y-0 left-0 rounded-full bg-success/60 transition-all duration-300" style={{ width: `${answeredPct}%` }} />
-            <div className="absolute top-0 h-full w-0.5 rounded-full bg-primary transition-all duration-300" style={{ left: `${progressPct}%` }} />
-          </div>
+        <div className="flex items-center gap-2">
+          {examFinished ? <>
+            <span>{total>0?Math.round(examElapsedSeconds/total):0}s/q</span>
+            <span className="text-muted-foreground">|</span>
+            <span>{total-examCorrectCount} fautes</span>
+          </> : <span>Q{examIndex+1}/{total}</span>}
+          <button onClick={() => setNavOpen((v: boolean) => !v)} title={navOpen ? "Masquer la grille" : "Afficher la grille"}
+            className="rounded-btn border px-2 py-0.5 text-xs font-bold hover:border-primary">
+            {navOpen ? "◧" : "▦"}
+          </button>
+          <button onClick={examFinished ? returnToExamList : finishExam} className="rounded-btn border px-2.5 py-1 text-xs font-bold hover:border-primary">
+            {examFinished ? "Retour" : "Terminer"}
+          </button>
         </div>
       </div>
 
-      {/* Main 2-col layout */}
-      <div className="grid gap-1.5 lg:grid-cols-[260px_1fr]">
-        {/* Progress grid (sticky on XL) */}
-        <div className="xl:sticky xl:top-28 xl:self-start space-y-3">
-          <ExamProgressGrid
-            questions={activeExam.questions}
-            currentIndex={examIndex}
-            answers={examAnswers}
-            flags={examFlags}
-            onSelect={setExamIndex}
-            showCorrection={canShowExamCorrection}
-          />
-        </div>
-
-        {/* Question panel */}
-        <div className="space-y-2">
-          <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-            {/* Question meta */}
-            <div className="mb-2 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">Q{examIndex + 1}</span>
-              <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">{q.examTitle}</span>
-              {isPBQ(q) && <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-bold text-cyan-700">PBQ</span>}
-              {isMulti(q) && <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold text-primary">{correctAnswers.length} réponses</span>}
-              {q.choices.length > 4 && <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">{q.choices.length} choix</span>}
-            </div>
-
-            {/* Confidence + flag row */}
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-card border border-border bg-muted p-3">
-              <ConfidenceSelector
-                value={examConfidence[q.id]}
-                onChange={(v) => setExamConfidence((items) => ({ ...items, [q.id]: v }))}
-              />
-              <button type="button"
-                onClick={() => setExamFlags((items) => ({ ...items, [q.id]: !items[q.id] }))}
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-btn border px-3 py-1.5 text-xs font-bold transition",
-                  flagged ? "border-warning-muted bg-warning-muted text-warning-fg" : "border-border bg-card text-muted-foreground hover:border-amber-400"
-                )}>
-                <Flag className="h-3.5 w-3.5" />
-                {flagged ? "Flagged" : "Marquer"}
-              </button>
-            </div>
-
-            {/* Question text */}
-            <h2 className="mb-2 text-xl font-black leading-snug">{q.question}</h2>
-
-            {/* Choices */}
-            <div className="space-y-2">
-              {q.choices.map((choice, i) => {
-                const selected   = selectedChoices.includes(i);
-                const correct    = correctAnswers.includes(i);
-                const showResult = canShowExamCorrection && isAnswered;
-
-                let letterState: "default" | "selected" | "correct" | "wrong" | "correct-unselected" = "default";
-                if (showResult) {
-                  if (selected && correct)  letterState = "correct";
-                  else if (selected)        letterState = "wrong";
-                  else if (correct)         letterState = "correct-unselected";
-                } else if (selected)        letterState = "selected";
-
-                return (
-                  <button key={`${q.id}-${i}`} type="button" onClick={() => chooseExamAnswer(i)}
-                    className={cn(
-                      "flex w-full items-center gap-1.5 rounded-card border px-4 py-3 text-left text-sm transition",
-                      !showResult && !selected && "border-border bg-muted hover:border-primary/50 hover:bg-card",
-                      !showResult && selected  && "border-primary bg-primary/10",
-                      showResult && selected && correct  && "border-success-muted bg-success-muted",
-                      showResult && selected && !correct && "border-danger-muted bg-danger-muted",
-                      showResult && !selected && correct && "border-success-muted bg-success-muted/50",
-                      showResult && !selected && !correct && "border-border bg-muted opacity-60",
-                    )}>
-                    <LetterBadge letter={String.fromCharCode(65 + i)} state={letterState} />
-                    <span className="leading-snug">{choice}</span>
-                    {showResult && selected && correct  && <CheckCircle2 className="ml-auto h-4 w-4 shrink-0 text-emerald-500" />}
-                    {showResult && selected && !correct && <XCircle className="ml-auto h-4 w-4 shrink-0 text-red-500" />}
-                    {showResult && !selected && correct && <CheckCircle2 className="ml-auto h-4 w-4 shrink-0 text-emerald-400 opacity-70" />}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Instant correction panel */}
-            {canShowExamCorrection && examAnswers[q.id] !== undefined && (
-              <div className={cn(
-                "mt-2 rounded-card border p-2.5",
-                isCorrectAnswer ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
-              )}>
-                <p className={cn("flex items-center gap-2 font-black",
-                  isCorrectAnswer ? "text-success-fg" : "text-danger-fg"
-                )}>
-                  {isCorrectAnswer
-                    ? <><CheckCircle2 className="h-4 w-4" /> Correct !</>
-                    : <><XCircle className="h-4 w-4" /> Incorrect</>}
-                </p>
-                {!isCorrectAnswer && (
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {isMulti(q) ? "Bonnes réponses" : "Bonne réponse"}: {formatAnswers(q, correctAnswers)}
-                  </p>
-                )}
-                <p className="mt-2 text-sm leading-relaxed">{q.explanation}</p>
-              </div>
-            )}
-          </div>
-
-          {/* Navigation */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button type="button" disabled={examIndex === 0}
-              onClick={() => setExamIndex((v) => Math.max(0, v - 1))}
-              className="inline-flex items-center gap-1 rounded-btn border border-border bg-muted px-3 py-2 text-sm font-bold transition hover:border-primary disabled:cursor-not-allowed disabled:opacity-40">
-              <ChevronLeft className="h-4 w-4" /> Précédente
-            </button>
-            <button type="button" disabled={examIndex === total - 1}
-              onClick={() => setExamIndex((v) => Math.min(total - 1, v + 1))}
-              className="inline-flex items-center gap-1 rounded-btn border border-border bg-muted px-3 py-2 text-sm font-bold transition hover:border-primary disabled:cursor-not-allowed disabled:opacity-40">
-              Suivante <ChevronRight className="h-4 w-4" />
-            </button>
-            <div className="flex-1" />
-            <button type="button" onClick={returnToExamList}
-              className="inline-flex items-center gap-1 rounded-btn border border-border bg-muted px-3 py-2 text-sm font-bold text-muted-foreground transition hover:border-primary">
-              <ArrowLeft className="h-4 w-4" /> Retour
-            </button>
-            <button type="button" onClick={finishExam}
-              className={cn(
-                "inline-flex items-center gap-1.5 rounded-btn px-4 py-2 text-sm font-bold transition",
-                examAnsweredCount === total
-                  ? "bg-success text-white hover:opacity-90"
-                  : "bg-danger text-white hover:opacity-90"
-              )}>
-              {examAnsweredCount === total ? <><CheckCircle2 className="h-4 w-4" /> Terminer</> : <><AlertCircle className="h-4 w-4" /> Terminer ({total - examAnsweredCount} non répondues)</>}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Finished — results */}
-      {examFinished && (
-        <div className="space-y-2">
-          {/* Score card */}
-          <div className={cn(
-            "rounded-xl border-2 p-2.5 shadow-sm",
-            passed ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
-          )}>
-            <div className="flex flex-col items-center gap-1.5 sm:flex-row">
-              <div className={cn(
-                "flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-4 text-3xl font-black",
-                passed ? "border-success-muted bg-card text-success-fg" : "border-danger-muted bg-card text-danger-fg"
-              )}>
-                {finalScore}%
-              </div>
-              <div>
-                <p className={cn("text-2xl font-black", passed ? "text-success-fg" : "text-danger-fg")}>
-                  {passed ? "Félicitations — Objectif atteint !" : "À reprendre — Seuil non atteint"}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {examCorrectCount} correctes sur {total} · Seuil Security+: 75%
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Breakdown metrics */}
-          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
-            {[
-              { label: "Score", value: `${finalScore}%`, sub: `${examCorrectCount}/${total}` },
-              { label: "Temps", value: formatTime(examElapsedSeconds), sub: "durée totale" },
-              { label: "Flags",        value: examFlaggedCount, sub: "à revoir" },
-              { label: "Non répondues", value: total - examAnsweredCount, sub: "sans réponse" },
-            ].map(({ label, value, sub }) => (
-              <div key={label} className="rounded-card border border-border bg-card p-2.5 text-center shadow-sm">
-                <p className="text-2xl font-black tabular-nums text-primary">{value}</p>
-                <p className="text-xs font-bold">{label}</p>
-                <p className="text-[10px] text-muted-foreground">{sub}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Confidence summary */}
-          {(examConfidenceSummary.low + examConfidenceSummary.medium + examConfidenceSummary.high) > 0 && (
-            <div className="grid grid-cols-3 gap-1.5">
-              {[
-                { label: "Faible confiance", value: examConfidenceSummary.low,    color: "border-danger-muted bg-danger-muted text-danger-fg" },
-                { label: "Confiance moyenne", value: examConfidenceSummary.medium, color: "border-warning-muted bg-warning-muted text-warning-fg" },
-                { label: "Haute confiance",  value: examConfidenceSummary.high,   color: "border-success-muted bg-success-muted text-success-fg" },
-              ].map(({ label, value, color }) => (
-                <div key={label} className={cn("rounded-card border p-3 text-center", color)}>
-                  <p className="text-2xl font-black tabular-nums">{value}</p>
-                  <p className="text-xs font-bold">{label}</p>
-                </div>
+      {/* SPLIT */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* LEFT: Nav */}
+        {navOpen && (
+        <div className="border-r border-border bg-muted/30 overflow-y-auto p-2 space-y-1.5 shrink-0 w-[180px] lg:w-[200px]">
+          {examFinished && (
+            <div className="flex flex-wrap gap-0.5">
+              {[{k:"all",l:"Tout"},{k:"errors",l:"Erreurs"},{k:"correct",l:"Justes"},{k:"flagged",l:"Flags"}].map(({k,l}:any) => (
+                <button key={k} onClick={() => setFilter(k)} className={cn("rounded px-1.5 py-0.5 text-[9px] font-bold",
+                  filter===k?"bg-primary text-primary-foreground":"bg-card text-muted-foreground border border-border")}>{l}</button>
               ))}
             </div>
           )}
-
-          {/* Review grid + card */}
-          <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-            <h3 className="mb-1 font-black">Révision question par question</h3>
-            <p className="mb-2 text-sm text-muted-foreground">Cliquez sur une pastille pour revoir une question.</p>
-            <ExamProgressGrid
-              questions={activeExam.questions}
-              currentIndex={examIndex}
-              answers={examAnswers}
-              flags={examFlags}
-              onSelect={setExamIndex}
-              showCorrection
-            />
-            <SelectedExamReviewCard
-              question={activeExamQuestion}
-              index={examIndex}
-              selected={examAnswers[activeExamQuestion.id]}
-              flagged={Boolean(examFlags[activeExamQuestion.id])}
-              confidence={examConfidence[activeExamQuestion.id]}
-            />
+          <div className="grid grid-cols-5 gap-1 w-full max-w-[210px] mx-auto">
+            {filteredQ.map((eq: any, idx: number) => {
+              const ri = allQ.indexOf(eq);
+              const s = examAnswers[eq.id] || [];
+              const ca = eq.answers?.length ? eq.answers : [eq.answer];
+              const a = s.length > 0;
+              const ok = a && s.length === ca.length && s.every((x: number, j: number) => x === ca[j]);
+              const fg = examFlags[eq.id];
+              const cur = ri === examIndex;
+              return (
+                <button key={eq.id} onClick={() => setExamIndex(ri)}
+                  className={cn("h-7 w-7 rounded-md text-[10px] font-mono font-bold flex items-center justify-center border shrink-0 relative",
+                    cur && "ring-2 ring-foreground ring-offset-1 scale-105 z-10",
+                    !examFinished && a && "bg-primary text-white border-primary",
+                    !examFinished && !a && "bg-card text-muted-foreground border-border hover:scale-105",
+                    examFinished && ok && "bg-success text-white border-success",
+                    examFinished && a && !ok && "bg-danger text-white border-danger",
+                    examFinished && !a && "bg-card text-muted-foreground border-border",
+                  )}>{ri+1}{fg && <span className="absolute top-0 right-0 h-1.5 w-1.5 rounded-full bg-warning"/>}</button>
+              );
+            })}
+          </div>
+          <div className="pt-1.5 border-t border-border flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] text-muted-foreground">
+            {examFinished ? <>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded bg-success"/>Juste</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded bg-danger"/>Erreur</span>
+            </> : <>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded bg-primary"/>Repondu</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded bg-warning"/>Flag</span>
+            </>}
           </div>
         </div>
-      )}
+        )}
+
+        {/* RIGHT: Content */}
+        <div className="flex-1 overflow-y-auto p-3 space-y-3">
+          {examFinished ? <>
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                {(() => { try { if (typeof window === "undefined") return null; const errors = JSON.parse(localStorage.getItem("certiflow-errors") || "[]"); const found = errors.find((e: any) => e.questionId === q.id); if (found) return <span className="rounded-full bg-danger-muted px-2 py-0.5 text-[10px] font-bold text-danger-fg">Ratee {found.count}x</span>; } catch {} return null; })()}
+                <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold">Q{examIndex+1}</span>
+                {flagged && <span className="rounded-full bg-warning-muted px-2 py-0.5 text-[10px] font-bold text-warning-fg">Flagged</span>}
+              </div>
+              <p className="text-sm font-semibold leading-relaxed">{q.question}</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="rounded-lg border border-danger-muted bg-danger-muted/50 p-3">
+                <p className="mb-1 text-[10px] font-bold uppercase text-danger-fg">Votre choix</p>
+                <p className="text-xs">{selected.length ? selected.map((i: number) => q.choices[i]).join(" | ") : "Aucune reponse"}</p>
+              </div>
+              <div className="rounded-lg border border-success-muted bg-success-muted/50 p-3">
+                <p className="mb-1 text-[10px] font-bold uppercase text-success-fg">Bonne reponse</p>
+                <p className="text-xs">{correctAnswers.map((i: number) => q.choices[i]).join(" | ")}</p>
+              </div>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <p className="mb-1 text-[10px] font-bold uppercase text-muted-foreground">Explication</p>
+              <p className="text-xs leading-relaxed">{q.explanation}</p>
+            </div>
+          </> : <>
+            <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                {(() => { try { if (typeof window === "undefined") return null; const errors = JSON.parse(localStorage.getItem("certiflow-errors") || "[]"); const found = errors.find((e: any) => e.questionId === q.id); if (found) return <span className="rounded-full bg-danger-muted px-2 py-0.5 text-[10px] font-bold text-danger-fg">Ratee {found.count}x</span>; } catch {} return null; })()}
+                <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold">Q{examIndex+1}/{total}</span>
+                {flagged && <span className="rounded-full bg-warning-muted px-2 py-0.5 text-[10px] font-bold text-warning-fg">Flagged</span>}
+                <button onClick={() => setExamFlags((items: any) => ({...items, [q.id]: !items[q.id]}))}
+                  className="ml-auto rounded-btn border px-2 py-0.5 text-[10px] font-bold hover:border-warning">{flagged?"Deflaguer":"Flag"}</button>
+              </div>
+              <p className="text-sm font-semibold leading-relaxed mb-4">{q.question}</p>
+              <div className="grid gap-1.5">
+                {q.choices.slice(0,6).map((choice: string, i: number) => {
+                  const sel = selected.includes(i);
+                  return (
+                    <button key={i} onClick={() => chooseExamAnswer(i)}
+                      className={cn("flex items-center gap-2 rounded-lg border px-3 py-2.5 text-left text-xs transition hover:border-primary",
+                        sel ? "border-primary bg-primary/10 font-bold" : "border-border bg-card")}>
+                      <span className={cn("flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold",
+                        sel ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground")}>{String.fromCharCode(65+i)}</span>
+                      {choice}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </>}
+          <div className="flex items-center justify-between pt-1">
+            <button onClick={() => setExamIndex((i: number) => Math.max(0, i-1))} disabled={examIndex===0}
+              className="rounded-btn border px-3 py-1.5 text-xs font-bold hover:border-primary disabled:opacity-30">← Precedent</button>
+            <button onClick={() => setExamIndex((i: number) => Math.min(total-1, i+1))} disabled={examIndex>=total-1}
+              className="rounded-btn border px-3 py-1.5 text-xs font-bold hover:border-primary disabled:opacity-30">Suivant →</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-// ─── ExamView (public export) ─────────────────────────────────────────────────
 export function ExamView(props: {
   // launcher
   examSetup: { title: string; questions: ExamQuestion[] } | null;

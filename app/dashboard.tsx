@@ -2,12 +2,11 @@
 
 import { memo, useEffect, useMemo, useState } from "react";
 import {
-  AlarmClock, ArrowRight, BookOpen, Brain, CheckCircle2,
+  AlarmClock, ArrowRight, BookOpen, Brain, CheckCircle2, Clock,
   FileQuestion, Flame, LayoutDashboard, Lightbulb, RotateCcw,
-  Shield, Target, Terminal, Timer, TrendingUp, Zap, BarChart3, CalendarDays, Activity, Clock, AlertTriangle
+  Shield, Target, Timer, TrendingUp, Zap, BarChart3, CalendarDays
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { PBQStats } from "@/lib/pbq-scores";
 import { getDailyTasks, setDailyTaskCount } from "@/lib/daily-tasks";
 import { domainStats as allDomainStats } from "@/data/domain-stats";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -155,9 +154,9 @@ function useDailyCheckpoint(answered: number, correct: number) {
 
 function StatCard({ label, value, sub, color }: { label: string; value: string | number; sub?: string; color: string }) {
   return (
-    <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+    <div className="rounded-card border border-border bg-card p-4 shadow-sm">
       <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className={cn("mt-1 text-base font-bold tabular-nums", color)}>{value}</p>
+      <p className={cn("mt-1 text-2xl font-black tabular-nums", color)} suppressHydrationWarning>{value}</p>
       {sub && <p className="mt-0.5 text-xs text-muted-foreground">{sub}</p>}
     </div>
   );
@@ -174,8 +173,8 @@ function MetricPill({ label, value, tone = "default" }: { label: string; value: 
 
   return (
     <div className={cn("rounded-card border px-4 py-3", tones[tone])}>
-      <p className="text-xs font-semibold uppercase tracking-wider opacity-80">{label}</p>
-      <p className="mt-1 text-xl font-bold tabular-nums">{value}</p>
+      <p className="text-xs font-black uppercase tracking-wider opacity-80">{label}</p>
+      <p className="mt-1 text-2xl font-black tabular-nums" suppressHydrationWarning>{value}</p>
     </div>
   );
 }
@@ -197,14 +196,14 @@ function ActionTile({
     <button
       type="button"
       onClick={onClick}
-      className="group rounded-card border border-border bg-muted p-2.5 text-left transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md"
+      className="group rounded-card border border-border bg-muted p-3 text-left transition hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md"
     >
-      <div className={cn("mb-1.5 flex h-8 w-8 items-center justify-center rounded-btn", tone)}>
+      <div className={cn("mb-3 flex h-10 w-10 items-center justify-center rounded-btn", tone)}>
         <Icon className="h-5 w-5 text-white" />
       </div>
-      <p className="font-semibold">{label}</p>
+      <p className="font-black">{label}</p>
       <p className="mt-1 text-xs text-muted-foreground">{sub}</p>
-      <ArrowRight className="mt-2 h-4 w-4 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
+      <ArrowRight className="mt-3 h-4 w-4 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
     </button>
   );
 }
@@ -233,85 +232,33 @@ const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: n
   function pad(n: number) { return String(n).padStart(2, "0"); }
 
   return (
-    <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-      <div className="mb-1.5 flex items-center justify-between">
+    <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Clock className="h-4 w-4 text-primary" />
-          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Compte a rebours — 28 mai 2026</span>
+          <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Compte a rebours — 28 mai 2026</span>
         </div>
         <span className="text-xs text-muted-foreground">{timelineProgress}% du temps ecoule</span>
       </div>
-      <div className="mb-1.5 h-1.5 rounded-full bg-muted overflow-hidden">
+      <div className="mb-3 h-2 rounded-full bg-muted overflow-hidden">
         <div className={cn("h-full rounded-full transition-all duration-1000",
             timelineProgress > 90 ? "bg-danger" : timelineProgress > 75 ? "bg-warning" : "bg-primary")}
           style={{ width: `${timelineProgress}%` }} />
       </div>
       <div className="flex items-baseline gap-1.5 flex-wrap">
-        <span className="text-2xl font-bold tabular-nums text-gradient">{d}</span>
+        <span className="text-4xl font-black tabular-nums text-gradient" suppressHydrationWarning>{d}</span>
         <span className="text-lg font-semibold text-muted-foreground">jours</span>
-        <span className="text-2xl font-bold tabular-nums ml-3">{pad(h)}</span>
+        <span className="text-2xl font-black tabular-nums ml-3" suppressHydrationWarning>{pad(h)}</span>
         <span className="text-muted-foreground font-bold">:</span>
-        <span className="text-2xl font-bold tabular-nums">{pad(m)}</span>
+        <span className="text-2xl font-black tabular-nums" suppressHydrationWarning>{pad(m)}</span>
         <span className="text-muted-foreground font-bold">:</span>
-        <span className="text-2xl font-bold tabular-nums">{pad(s)}</span>
+        <span className="text-2xl font-black tabular-nums" suppressHydrationWarning>{pad(s)}</span>
       </div>
     </div>
   );
 });
-
-// ─── TimeAnalytics ────────────────────────────────────────────────────────
-
-function TimeAnalytics() {
-  const [metrics, setMetrics] = useState<Array<{ type: string; avgSeconds: number; limitSeconds: number; count: number }>>([]);
-
-  useEffect(() => {
-    try {
-      const logs: Array<{ type: string; secondsSpent: number }> = JSON.parse(localStorage.getItem("certiflow-time-logs") || "[]");
-      const targets: Record<string, number> = { QCM: 60, PBQ: 300, Examen: 5400 };
-      const labels: Record<string, string> = { QCM: "QCM (cible 60s)", PBQ: "PBQ / Labs (cible 5min)", Examen: "Examen (cible 90min)" };
-      const grouped: Record<string, { total: number; count: number }> = {};
-      logs.forEach((l) => { if (!grouped[l.type]) grouped[l.type] = { total: 0, count: 0 }; grouped[l.type].total += l.secondsSpent; grouped[l.type].count++; });
-      const m = Object.keys(targets).map((t) => ({
-        type: labels[t] || t,
-        avgSeconds: grouped[t] ? Math.round(grouped[t].total / grouped[t].count) : 0,
-        limitSeconds: targets[t],
-        count: grouped[t]?.count || 0,
-      }));
-      setMetrics(m);
-    } catch {}
-  }, []);
-
-  return (
-    <div className="space-y-3">
-      {metrics.map((m, i) => {
-        const over = m.avgSeconds > m.limitSeconds;
-        const pct = m.avgSeconds > 0 ? Math.min(100, (m.avgSeconds / m.limitSeconds) * 100) : 0;
-        return (
-          <div key={i}>
-            <div className="mb-1 flex justify-between text-xs">
-              <span className="text-muted-foreground">{m.type}</span>
-              <span className="flex items-center gap-1 font-bold tabular-nums"
-                style={{ color: m.avgSeconds === 0 ? "var(--muted-foreground)" : over ? "var(--danger)" : "var(--success)" }}>
-                {m.avgSeconds === 0 ? "Aucune donnee" : <>{Math.floor(m.avgSeconds / 60)}m{m.avgSeconds % 60}s</>}
-                {m.avgSeconds > 0 && (over ? <AlertTriangle className="h-2.5 w-3.5" /> : <CheckCircle2 className="h-2.5 w-3.5" />)}
-              </span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full transition-all duration-500"
-                style={{ width: pct + "%", background: over ? "var(--danger)" : "var(--success)" }} />
-            </div>
-          </div>
-        );
-      })}
-      <p className="text-[11px] text-muted-foreground leading-relaxed">
-        Reste sous la barre verte pour finir l examen dans les temps (90 min, 90 questions).
-      </p>
-    </div>
-  );
-}
-
 export function Dashboard({
-  daysLeft, domains, score, answered, correct, avgProgress, weakest, onNavigate, onSmartReview, pbqStats
+  daysLeft, domains, score, answered, correct, avgProgress, weakest, onNavigate, onSmartReview
 }: {
   daysLeft: number;
   domains: { id: string; name: string; weight: number; progress: number }[];
@@ -322,7 +269,6 @@ export function Dashboard({
   weakest: { name: string; progress: number };
   onNavigate: (view: string) => void;
   onSmartReview?: () => void;
-  pbqStats?: PBQStats;
 }) {
   const [now, setNow] = useState(Date.now());
   const examTime = new Date("2026-05-28T09:00:00").getTime();
@@ -353,10 +299,10 @@ export function Dashboard({
 
   const globalAccuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
   const readinessScore = Math.round(
-    // Readiness: QCM 40%, Domaines 25%, PBQ 15%, Volume 10%, Tendance 10%
-    (pbqStats?.globalScore ?? 0) > 0
-    ? Math.round(Math.min(100, globalAccuracy) * 0.40 + realAvg * 0.25 + Math.min(100, pbqStats?.globalScore ?? 0) * 0.15 + Math.min(100, analytics.weeklyQuestions * 2) * 0.10 + Math.max(0, Math.min(100, 70 + analytics.trend)) * 0.10)
-    : Math.round(Math.min(100, globalAccuracy) * 0.45 + realAvg * 0.30 + Math.min(100, analytics.weeklyQuestions * 2) * 0.15 + Math.max(0, Math.min(100, 70 + analytics.trend)) * 0.10)
+    realAvg * 0.5 +
+    Math.min(100, globalAccuracy) * 0.3 +
+    Math.min(100, analytics.weeklyQuestions * 2) * 0.1 +
+    Math.max(0, Math.min(100, 70 + analytics.trend)) * 0.1
   );
   const todayAccuracy = todayAnswered > 0 ? Math.round((todayCorrect / todayAnswered) * 100) : null;
   const weakDomains = [...domainProgress].sort((a, b) => a.progress - b.progress);
@@ -364,9 +310,9 @@ export function Dashboard({
 
   const readiness = readinessScore >= 75 ? "ready" : readinessScore >= 55 ? "almost" : "not-ready";
   const readinessConfig = {
-    ready:      { color: "bg-success", bg: "border-success-muted/50", text: "Pret pour l'examen",  icon: CheckCircle2, desc: "Continue les revisions legeres" },
-    almost:     { color: "bg-warning", bg: "border-warning-muted/50", text: "Presque pret",        icon: TrendingUp,   desc: "Renforce les domaines faibles" },
-    "not-ready":{ color: "bg-danger",  bg: "border-danger-muted/50",   text: "Pas encore pret",     icon: AlarmClock,   desc: "Intensifie les revisions" },
+    ready:      { color: "bg-success", bg: "bg-success-muted border-success-muted", text: "Pret pour l'examen",  icon: CheckCircle2, desc: "Continue les revisions legeres" },
+    almost:     { color: "bg-warning", bg: "bg-warning-muted border-warning-muted", text: "Presque pret",        icon: TrendingUp,   desc: "Renforce les domaines faibles" },
+    "not-ready":{ color: "bg-danger",  bg: "bg-danger-muted border-danger-muted",   text: "Pas encore pret",     icon: AlarmClock,   desc: "Intensifie les revisions" },
   }[readiness];
 
   // Smart recommendation (48h check based on days remaining)
@@ -441,40 +387,40 @@ export function Dashboard({
   function pad(n: number) { return String(n).padStart(2, "0"); }
 
   return (
-    <div className="animate-fade-in space-y-2.5">
-      <div className="grid gap-2.5 xl:grid-cols-[1.35fr_0.65fr]">
-        <div className="relative overflow-hidden rounded-card border border-border bg-card p-2.5 shadow-sm">
+    <div className="animate-fade-in space-y-5">
+      <div className="grid gap-4 xl:grid-cols-[1.35fr_0.65fr]">
+        <div className="relative overflow-hidden rounded-card border border-border bg-card p-5 shadow-sm">
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-success" />
-          <div className="flex flex-col gap-2.5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Cockpit d'examen</p>
-              <h2 className="mt-1 text-lg font-semibold sm:text-2xl">Security+ SY0-701</h2>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Cockpit d'examen</p>
+              <h2 className="mt-1 text-2xl font-black sm:text-3xl">Security+ SY0-701</h2>
               <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
                 Ton tableau de bord priorise ce qui fait monter le score: precision, domaines faibles, rythme hebdomadaire et revision active.
               </p>
             </div>
-            <div className={cn("inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-tight", readinessConfig.bg)}>
+            <div className={cn("inline-flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-black", readinessConfig.bg)}>
               <readinessConfig.icon className="h-4 w-4" />
               {readinessConfig.text}
             </div>
           </div>
 
-          <div className="mt-2 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <MetricPill label="Readiness score" value={`${readinessScore}%`} tone={readinessScore >= 75 ? "success" : readinessScore >= 55 ? "warning" : "danger"} />
             <MetricPill label="Precision globale" value={`${globalAccuracy}%`} tone={globalAccuracy >= 75 ? "success" : globalAccuracy >= 55 ? "warning" : "danger"} />
             <MetricPill label="Aujourd'hui" value={todayAnswered} tone="primary" />
             <MetricPill label="Jours restants" value={daysRemaining} tone={daysRemaining <= 3 ? "danger" : daysRemaining <= 7 ? "warning" : "default"} />
           </div>
 
-          <div className="mt-2 rounded-card border border-border bg-muted p-2.5">
-            <div className="mb-1.5 flex items-center justify-between gap-2.5">
+          <div className="mt-5 rounded-card border border-border bg-muted p-4">
+            <div className="mb-2 flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold">Objectif de preparation</p>
+                <p className="text-sm font-black">Objectif de preparation</p>
                 <p className="text-xs text-muted-foreground">{correct}/{answered} bonnes reponses · {weakDomains.filter(d => d.progress < 50).length} domaine(s) critique(s)</p>
               </div>
-              <span className="text-sm font-bold tabular-nums">{readinessScore}%</span>
+              <span className="text-sm font-black tabular-nums">{readinessScore}%</span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-background">
+            <div className="h-3 overflow-hidden rounded-full bg-background">
               <div className={cn("h-full rounded-full transition-all duration-700", readinessConfig.color)}
                 style={{ width: `${readinessScore}%` }} />
             </div>
@@ -483,22 +429,22 @@ export function Dashboard({
             </div>
           </div>
 
-          <div className="mt-2 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <button type="button" onClick={() => onNavigate("quiz")}
-              className="rounded-btn bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition hover:opacity-90">
+              className="rounded-btn bg-primary px-4 py-3 text-sm font-black text-primary-foreground transition hover:opacity-90">
               Quiz cible
             </button>
             <button type="button" onClick={() => onNavigate("exam")}
-              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-semibold transition hover:border-primary hover:text-primary">
+              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
               Examen blanc
             </button>
             <button type="button" onClick={() => onNavigate("errors")}
-              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-semibold transition hover:border-primary hover:text-primary">
+              className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
               Journal erreurs
             </button>
             {onSmartReview && (
               <button type="button" onClick={onSmartReview}
-                className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-semibold transition hover:border-primary hover:text-primary">
+                className="rounded-btn border border-border bg-muted px-4 py-3 text-sm font-black transition hover:border-primary hover:text-primary">
                 Revision active
               </button>
             )}
@@ -508,31 +454,31 @@ export function Dashboard({
         <Countdown examTime={examTime} examStart={examStart} />
       </div>
 
-      <div className="grid gap-2.5 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className={cn("rounded-card border p-2.5 shadow-sm", rec.color)}>
-          <div className="flex items-start gap-2.5">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-btn bg-card">
+      <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className={cn("rounded-card border p-5 shadow-sm", rec.color)}>
+          <div className="flex items-start gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-btn bg-card">
               <Lightbulb className="h-5 w-5 text-warning-fg" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Prochaine meilleure action</p>
-              <p className="mt-1 font-semibold leading-snug">{rec.text}</p>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Prochaine meilleure action</p>
+              <p className="mt-1 font-black leading-snug">{rec.text}</p>
               <p className="mt-1 text-sm text-muted-foreground">{readinessConfig.desc}.</p>
             </div>
           </div>
           <button type="button" onClick={() => onNavigate(rec.nav)}
-            className="mt-2 inline-flex min-h-8 items-center justify-center gap-2 rounded-btn bg-foreground px-4 text-sm font-semibold text-background transition hover:opacity-90">
+            className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-btn bg-foreground px-4 text-sm font-black text-background transition hover:opacity-90">
             {rec.cta} <ArrowRight className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-          <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Mission du jour</p>
-              <h2 className="mt-1 text-lg font-semibold">Plan 90 min</h2>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Mission du jour</p>
+              <h2 className="mt-1 text-lg font-black">Plan 90 min</h2>
             </div>
-            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+            <span className="rounded-full border border-border bg-muted px-3 py-1 text-xs font-black text-muted-foreground">
               {tasks.filter((task) => task.done >= task.target).length}/{tasks.length} terminees
             </span>
           </div>
@@ -542,15 +488,15 @@ export function Dashboard({
               const done = pct >= 100;
               return (
                 <button type="button" key={task.label} onClick={() => onNavigate(task.nav)}
-                  className="rounded-card border border-border bg-muted p-2.5 text-left transition hover:-translate-y-0.5 hover:border-primary">
-                  <div className="mb-1.5 flex items-center justify-between gap-2">
-                    <div className={cn("flex h-7 w-7 items-center justify-center rounded-btn", done ? "bg-success" : task.color)}>
+                  className="rounded-card border border-border bg-muted p-3 text-left transition hover:-translate-y-0.5 hover:border-primary">
+                  <div className="mb-3 flex items-center justify-between gap-2">
+                    <div className={cn("flex h-9 w-9 items-center justify-center rounded-btn", done ? "bg-success" : task.color)}>
                       {done ? <CheckCircle2 className="h-4 w-4 text-white" /> : <task.icon className="h-4 w-4 text-white" />}
                     </div>
-                    <span className="text-xs font-bold tabular-nums text-muted-foreground">{task.done}/{task.target}</span>
+                    <span className="text-xs font-black tabular-nums text-muted-foreground" suppressHydrationWarning>{task.done}/{task.target}</span>
                   </div>
-                  <p className="min-h-8 text-sm font-semibold leading-tight">{task.label}</p>
-                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-background">
+                  <p className="min-h-10 text-sm font-black leading-tight">{task.label}</p>
+                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-background">
                     <div className={cn("h-full rounded-full", done ? "bg-success" : task.color)} style={{ width: `${pct}%` }} />
                   </div>
                 </button>
@@ -561,12 +507,12 @@ export function Dashboard({
       </div>
 
       {/* Quick Access */}
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <div className="mb-1.5 flex items-center justify-between gap-2.5">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Raccourcis de revision</h2>
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <h2 className="text-sm font-black uppercase tracking-wider text-muted-foreground">Raccourcis de revision</h2>
           <span className="text-xs text-muted-foreground">Choisis ton mode selon ton energie</span>
         </div>
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
           <ActionTile icon={FileQuestion} label="Quiz" sub="QCM cible" tone="bg-violet-500" onClick={() => onNavigate("quiz")} />
           <ActionTile icon={Brain} label="PBQ" sub="Labs pratiques" tone="bg-cyan-500" onClick={() => onNavigate("pbq")} />
           <ActionTile icon={RotateCcw} label="Flashcards" sub="Memo active" tone="bg-emerald-500" onClick={() => onNavigate("flashcards")} />
@@ -576,7 +522,7 @@ export function Dashboard({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard label="Score global" value={`${globalAccuracy}%`}
           sub={`${correct}/${answered} questions`}
           color={globalAccuracy >= 75 ? "text-success-fg" : globalAccuracy >= 55 ? "text-warning-fg" : "text-danger-fg"} />
@@ -592,9 +538,9 @@ export function Dashboard({
       </div>
 
       {/* Smart Analytics */}
-      <div className="grid gap-2.5 xl:grid-cols-[1.2fr_0.8fr]">
-        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-          <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
+      <div className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
               <TrendingUp className="h-4 w-4" /> Courbe d'evolution
             </h2>
@@ -603,7 +549,7 @@ export function Dashboard({
               {analytics.trend >= 0 ? "+" : ""}{analytics.trend} pts cette semaine
             </span>
           </div>
-          <div className="h-48">
+          <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={analytics.weeklyProgress} margin={{ top: 10, right: 8, bottom: 0, left: -24 }}>
                 <defs>
@@ -623,24 +569,24 @@ export function Dashboard({
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 grid gap-2 sm:grid-cols-3">
-            <div className="rounded-card bg-muted p-2.5">
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            <div className="rounded-card bg-muted p-3">
               <p className="text-xs font-bold uppercase text-muted-foreground">Questions semaine</p>
-              <p className="text-xl font-bold tabular-nums">{analytics.weeklyQuestions}</p>
+              <p className="text-xl font-black tabular-nums" suppressHydrationWarning>{analytics.weeklyQuestions}</p>
             </div>
-            <div className="rounded-card bg-muted p-2.5">
+            <div className="rounded-card bg-muted p-3">
               <p className="text-xs font-bold uppercase text-muted-foreground">Moyenne domaines</p>
-              <p className="text-xl font-bold tabular-nums">{realAvg}%</p>
+              <p className="text-xl font-black tabular-nums" suppressHydrationWarning>{realAvg}%</p>
             </div>
-            <div className="rounded-card bg-muted p-2.5">
+            <div className="rounded-card bg-muted p-3">
               <p className="text-xs font-bold uppercase text-muted-foreground">Precision globale</p>
-              <p className="text-xl font-bold tabular-nums">{globalAccuracy}%</p>
+              <p className="text-xl font-black tabular-nums" suppressHydrationWarning>{globalAccuracy}%</p>
             </div>
           </div>
         </div>
 
-        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-          <h2 className="mb-1.5 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+          <h2 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
             <Target className="h-4 w-4" /> Concepts faibles
           </h2>
           {analytics.weakConcepts.length ? (
@@ -650,18 +596,18 @@ export function Dashboard({
                   key={`${item.domain}-${item.concept}`}
                   type="button"
                   onClick={() => onNavigate("errors")}
-                  className="w-full rounded-card border border-border bg-muted p-2.5 text-left transition hover:border-primary"
+                  className="w-full rounded-card border border-border bg-muted p-3 text-left transition hover:border-primary"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <p className="font-bold leading-snug">{item.concept}</p>
-                    <span className="shrink-0 rounded-full bg-danger px-2 py-0.5 text-xs font-semibold text-white">{item.count}x</span>
+                    <span className="shrink-0 rounded-full bg-danger px-2 py-0.5 text-xs font-black text-white">{item.count}x</span>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">{item.domain}</p>
                 </button>
               ))}
             </div>
           ) : (
-            <div className="rounded-card bg-success-muted p-2.5">
+            <div className="rounded-card bg-success-muted p-4">
               <p className="font-bold text-success-fg">Aucun concept faible majeur pour l'instant.</p>
               <p className="mt-1 text-sm text-muted-foreground">Continue les quiz pour alimenter les statistiques.</p>
             </div>
@@ -669,13 +615,13 @@ export function Dashboard({
         </div>
       </div>
 
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <h2 className="mb-1.5 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <h2 className="mb-4 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
           <BarChart3 className="h-4 w-4" /> Scores par domaine
         </h2>
-        <div className="h-44">
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart layout="vertical" data={analytics.domainAccuracy} margin={{ top: 10, right: 8, bottom: 24, left: -24 }}>
+            <BarChart data={analytics.domainAccuracy} margin={{ top: 10, right: 8, bottom: 24, left: -24 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis dataKey="domain" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} interval={0} angle={-12} textAnchor="end" height={52} />
               <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
@@ -689,98 +635,21 @@ export function Dashboard({
         </div>
       </div>
 
-      
-      {/* PBQ Practice Widget */}
-      {pbqStats && pbqStats.totalCompleted > 0 && (
-        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-          <div className="flex items-center justify-between mb-1.5">
-            <div>
-              <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-                <Shield className="h-4 w-4" /> Pratique Lab (PBQ)
-              </h2>
-              <p className="text-xs text-muted-foreground">{pbqStats.totalCompleted} exercices completes</p>
-            </div>
-            <div className="flex h-8 w-8 items-center justify-center rounded-btn bg-primary/10">
-              <Shield className="h-5 w-5 text-primary" />
-            </div>
-          </div>
-          <div className="mb-5">
-            <div className="mb-1 flex items-baseline justify-between">
-              <span className="text-2xl font-bold tabular-nums">{pbqStats.globalScore}%</span>
-              <span className="text-xs font-medium text-success-fg">Precision pratique</span>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-primary transition-all duration-500"
-                style={{ width: pbqStats.globalScore + "%" }} />
-            </div>
-          </div>
-          <div className="space-y-2.5 border-t border-border pt-4">
-            {pbqStats.breakdown.firewall > 0 && (
-              <div>
-                <div className="mb-1 flex justify-between text-xs">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Terminal className="h-2.5 w-3.5" /> Regles Pare-feu
-                  </span>
-                  <span className="font-bold tabular-nums">{pbqStats.breakdown.firewall}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full bg-blue-500" style={{ width: pbqStats.breakdown.firewall + "%" }} />
-                </div>
-              </div>
-            )}
-            {pbqStats.breakdown.siem > 0 && (
-              <div>
-                <div className="mb-1 flex justify-between text-xs">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Activity className="h-2.5 w-3.5" /> Analyse SIEM / Logs
-                  </span>
-                  <span className="font-bold tabular-nums">{pbqStats.breakdown.siem}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full bg-amber-500" style={{ width: pbqStats.breakdown.siem + "%" }} />
-                </div>
-              </div>
-            )}
-            {pbqStats.breakdown.investigation > 0 && (
-              <div>
-                <div className="mb-1 flex justify-between text-xs">
-                  <span className="flex items-center gap-1.5 text-muted-foreground">
-                    <Flame className="h-2.5 w-3.5" /> Reponses aux incidents
-                  </span>
-                  <span className="font-bold tabular-nums">{pbqStats.breakdown.investigation}%</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div className="h-full bg-success" style={{ width: pbqStats.breakdown.investigation + "%" }} />
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Time Analytics */}
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <h2 className="mb-1.5 flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-          <Clock className="h-4 w-4" /> Gestion du temps
-        </h2>
-        <TimeAnalytics />
-      </div>
-
       {/* Domain Progress */}
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <h2 className="mb-1.5 text-sm font-bold text-muted-foreground uppercase tracking-wider">
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <h2 className="mb-4 text-sm font-bold text-muted-foreground uppercase tracking-wider">
           Progression par domaine
           <span className="ml-2 font-normal normal-case">({allDomainStats.reduce((s, d) => s + d.totalQuestions, 0)} questions au total)</span>
         </h2>
-        <div className="space-y-2">
+        <div className="space-y-4">
           {domainProgress.map((dp, idx) => {
             const coverage = dp.totalQuestions > 0 ? Math.round((dp.attempted / dp.totalQuestions) * 100) : 0;
             const accuracy = dp.attempted > 0 ? Math.round((dp.correct / dp.attempted) * 100) : 0;
             const isWeakest = idx === weakDomains.findIndex(w => w.id === dp.id && w === weakDomains[0]);
             const isCritical = dp.progress < 50;
             return (
-              <div key={dp.id} className={cn("space-y-1.5 rounded-card p-2.5 transition-colors",
-                  isCritical ? "border-danger-muted/50" : "")}>
+              <div key={dp.id} className={cn("space-y-1.5 rounded-card p-3 transition-colors",
+                  isCritical ? "bg-danger-muted border border-danger-muted" : "")}>
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className={cn("h-2 w-2 shrink-0 rounded-full",
@@ -788,16 +657,16 @@ export function Dashboard({
                     <span className={cn("truncate text-sm font-semibold", isCritical && "text-danger-fg")}>{dp.name}</span>
                     {isCritical && <span className="shrink-0 rounded-full border border-danger-muted bg-danger-muted px-2 py-0.5 text-xs font-bold text-danger-fg">Prioritaire</span>}
                   </div>
-                  <div className="flex shrink-0 items-center gap-2.5">
+                  <div className="flex shrink-0 items-center gap-3">
                     <span className="text-xs text-muted-foreground tabular-nums">{dp.weight}% exam</span>
-                    <span className={cn("text-sm font-bold tabular-nums",
+                    <span className={cn("text-sm font-black tabular-nums",
                       dp.progress >= 75 ? "text-success-fg" : dp.progress >= 50 ? "text-warning-fg" : "text-danger-fg")}>
                       {dp.progress}%
                     </span>
                     {isCritical && (
                       <button type="button" onClick={() => onNavigate("quiz")}
                         className="flex items-center gap-1 rounded-btn bg-danger px-2 py-1 text-xs font-bold text-white transition hover:opacity-90">
-                        Reviser <ArrowRight className="h-2 w-3" />
+                        Reviser <ArrowRight className="h-3 w-3" />
                       </button>
                     )}
                   </div>
@@ -818,15 +687,15 @@ export function Dashboard({
       </div>
 
       {/* Daily Plan */}
-      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
-        <h2 className="mb-1.5 text-sm font-bold text-muted-foreground uppercase tracking-wider">Plan du jour (90 min)</h2>
+      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <h2 className="mb-4 text-sm font-bold text-muted-foreground uppercase tracking-wider">Plan du jour (90 min)</h2>
         <div className="space-y-2">
           {tasks.map((task) => {
             const pct = Math.min(100, (task.done / task.target) * 100);
             const done = pct >= 100;
             return (
               <button type="button" key={task.label} onClick={() => onNavigate(task.nav)}
-                className="group flex w-full items-center gap-2.5 rounded-card border border-transparent p-2 text-left transition hover:border-border hover:bg-muted">
+                className="group flex w-full items-center gap-3 rounded-card border border-transparent p-2 text-left transition hover:border-border hover:bg-muted">
                 <div className={cn("flex h-8 w-8 shrink-0 items-center justify-center rounded-btn", done ? "bg-success" : task.color)}>
                   {done ? <CheckCircle2 className="h-4 w-4 text-white" /> : <task.icon className="h-4 w-4 text-white" />}
                 </div>
@@ -837,7 +706,7 @@ export function Dashboard({
                       {task.done}/{task.target}
                     </span>
                   </div>
-                  <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
+                  <div className="mt-1 h-1.5 rounded-full bg-muted overflow-hidden">
                     <div className={cn("h-full rounded-full transition-all", done ? "bg-success" : task.color)}
                       style={{ width: `${pct}%` }} />
                   </div>
@@ -851,14 +720,14 @@ export function Dashboard({
 
       {/* Cram Plan */}
       {isLast48h && (
-        <div className="rounded-card border-2 border-danger-muted bg-danger-muted p-2.5 shadow-sm">
-          <div className="mb-1.5 flex items-center gap-2">
+        <div className="rounded-card border-2 border-danger-muted bg-danger-muted p-5 shadow-sm">
+          <div className="mb-3 flex items-center gap-2">
             <Flame className="h-5 w-5 animate-bounce text-danger-fg" />
             <h2 className="text-sm font-bold text-danger-fg uppercase tracking-wider">Plan Cram 48h — Execution!</h2>
           </div>
           <div className="grid gap-2 sm:grid-cols-2">
             {cramPlan.map((item, i) => (
-              <div key={i} className="flex items-center gap-2.5 rounded-card bg-card/80 p-2.5 shadow-sm">
+              <div key={i} className="flex items-center gap-3 rounded-card bg-card/80 p-3 shadow-sm">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-danger text-xs font-bold text-white">{i + 1}</span>
                 <div>
                   <p className="text-xs font-bold text-danger-fg">{item.time}</p>

@@ -97,13 +97,13 @@ export function InteractiveTerminal({ scenario, onComplete }: { scenario?: strin
   }
 
   return (
-    <div className="w-full rounded-card border border-slate-800 bg-slate-950 font-mono text-sm shadow-2xl overflow-hidden">
-      <div className="flex items-center justify-between bg-slate-900 px-4 py-2 border-b border-slate-800">
-        <div className="flex items-center gap-2 text-slate-400">
+    <div className="w-full rounded-card border border-[#1a2833] bg-[#0a0f14] font-mono text-sm shadow-2xl overflow-hidden">
+      <div className="flex items-center justify-between bg-[#0d1419] px-4 py-2 border-b border-[#1a2833]">
+        <div className="flex items-center gap-2 text-[#8ba0b0]">
           <Terminal className="h-4 w-4 text-success" />
           <span>sec-incident-response.sh</span>
         </div>
-        <button onClick={() => setHistory([])} className="text-slate-500 hover:text-slate-300 transition" title="Reset">
+        <button onClick={() => setHistory([])} className="text-[#6b8090] hover:text-[#b8c8d4] transition" title="Reset">
           <RotateCcw className="h-4 w-4" />
         </button>
       </div>
@@ -111,7 +111,7 @@ export function InteractiveTerminal({ scenario, onComplete }: { scenario?: strin
       <div className="h-80 overflow-y-auto p-4 space-y-1 select-text">
         {history.map((line, i) => (
           <div key={i} className={`whitespace-pre-wrap ${
-            line.type === "input" ? "text-slate-100 font-bold" :
+            line.type === "input" ? "text-[#e0e8f0] font-bold" :
             line.type === "error" ? "text-danger-fg" :
             line.type === "success" ? "text-success-fg font-semibold" :
             "text-success/90"
@@ -120,10 +120,10 @@ export function InteractiveTerminal({ scenario, onComplete }: { scenario?: strin
         <div ref={terminalRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex bg-slate-900/50 border-t border-slate-800 px-4 py-3">
+      <form onSubmit={handleSubmit} className="flex bg-[#0d1419]/50 border-t border-[#1a2833] px-4 py-3">
         <span className="text-success mr-2 font-bold">root@lab:~#</span>
         <input type="text" value={input} onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent text-slate-100 focus:outline-none caret-success"
+          className="flex-1 bg-transparent text-[#e0e8f0] focus:outline-none caret-success"
           placeholder="commande..." autoFocus />
       </form>
     </div>
