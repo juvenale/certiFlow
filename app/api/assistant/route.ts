@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-type AssistantMode = "explain_wrong_answer" | "mini_quiz" | "reformulate" | "daily_plan" | "general";
+type AssistantMode = "explain_wrong_answer" | "mini_quiz" | "reformulate" | "daily_plan" | "general" | "expliquer";
 
 const modeInstructions: Record<AssistantMode, string> = {
   explain_wrong_answer:
@@ -13,6 +13,8 @@ const modeInstructions: Record<AssistantMode, string> = {
     "Génère un plan de révision du jour réaliste, découpé en blocs courts, avec quiz, flashcards, PBQ et correction des erreurs.",
   general:
     "Réponds comme un coach de révision Security+ francophone, clair, direct, orienté réussite à l'examen.",
+  expliquer:
+    "Tu es un expert en cybersécurité et instructeur CompTIA Security+ SY0-701. Analyse une question et explique de façon ultra-concise pourquoi la bonne réponse est correcte et pourquoi le choix de l'étudiant est un piège classique. Structure : 1) Concept Clé (1 phrase), 2) Pourquoi correct (1-2 phrases), 3) Pourquoi le piège (1 ligne). Pas de salutations.",
 };
 
 export async function POST(request: Request) {
@@ -28,11 +30,27 @@ export async function POST(request: Request) {
     const body = await request.json() as {
       prompt?: string;
       mode?: AssistantMode;
-      context?: string;
+      context?: string | { type: string; statement: string; userAnswer: string; correctAnswer: string; explanationStatique?: string };
       history?: Array<{ role: "user" | "assistant"; text: string }>;
     };
 
-    const prompt = body.prompt?.trim();
+    let prompt = body.prompt?.trim();
+
+    // Build contextual prompt for expliquer mode
+    if (body.mode === "expliquer" && typeof body.context === "object" && body.context.statement) {
+      const ctx = body.context;
+      prompt = [
+        `**Question :** ${ctx.statement}`,
+        `- Option choisie : "${ctx.userAnswer}"`,
+        `- Option correcte : "${ctx.correctAnswer}"`,
+        `Redige une reponse structuree :`,
+        `1. **Le Concept Cle (1 phrase)** : la regle d or au coeur de la question.`,
+        `2. **Pourquoi c est correct (1-2 phrases)** : justifie l option correcte.`,
+        `3. **Pourquoi l autre est un piege (1 ligne)** : explique pourquoi le choix de l etudiant est hors-sujet ou inadapte.`,
+        `Reste concis, pas de salutations.`,
+      ].join("\n");
+    }
+
     if (!prompt) {
       return NextResponse.json({ error: "Prompt vide." }, { status: 400 });
     }

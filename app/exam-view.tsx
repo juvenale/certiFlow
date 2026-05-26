@@ -50,7 +50,7 @@ function LetterBadge({ letter, state }: {
 }) {
   return (
     <span className={cn(
-      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black transition-colors",
+      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-colors",
       state === "default"            && "bg-muted text-muted-foreground",
       state === "selected"           && "bg-primary text-primary-foreground",
       state === "correct"            && "bg-success text-white",
@@ -147,8 +147,8 @@ function ExamLaunchCard({ title, count, note, onPrepare }: {
   const isMesser = note.toLowerCase().includes("messer");
   return (
     <article className="group flex flex-col rounded-card border border-border bg-card shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:shadow-md">
-      <div className="flex-1 p-5">
-        <div className="mb-3 flex items-start justify-between gap-3">
+      <div className="flex-1 p-2.5">
+        <div className="mb-2 flex items-start justify-between gap-1.5">
           <span className={cn(
             "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider",
             isMesser ? "bg-muted text-muted-foreground" : "bg-muted text-primary"
@@ -161,7 +161,7 @@ function ExamLaunchCard({ title, count, note, onPrepare }: {
           </div>
         </div>
         <h3 className="font-black leading-snug">{title}</h3>
-        <div className="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> ~{estimate} min</span>
           <span className="flex items-center gap-1"><Target className="h-3 w-3" /> Grille + correction</span>
         </div>
@@ -187,10 +187,10 @@ function SelectedExamReviewCard({ question, index, selected, flagged, confidence
 
   return (
     <article className={cn(
-      "mt-4 rounded-card border p-5 shadow-sm",
+      "mt-2 rounded-card border p-2.5 shadow-sm",
       correct ? "border-success-muted bg-success-muted" : priority ? "border-danger-muted bg-danger-muted" : "border-border bg-card"
     )}>
-      <div className="mb-3 flex flex-wrap items-center gap-2">
+      <div className="mb-2 flex flex-wrap items-center gap-2">
         <span className={cn(
           "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-black",
           unanswered ? "bg-muted text-muted-foreground"
@@ -212,7 +212,7 @@ function SelectedExamReviewCard({ question, index, selected, flagged, confidence
 
       <h4 className="text-base font-black leading-snug">{question.question}</h4>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-2">
+      <div className="mt-2 grid gap-1.5 lg:grid-cols-2">
         <div className={cn("rounded-card border p-3",
           unanswered ? "border-muted bg-muted/50" : correct ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
         )}>
@@ -263,15 +263,15 @@ function ExamLauncherView({
   return (
     <div className="space-y-5">
       {/* Hero */}
-      <div className="rounded-card border border-border bg-card p-6 shadow-sm">
-        <div className="grid gap-6 xl:grid-cols-[1fr_320px]">
+      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+        <div className="grid gap-1.5 xl:grid-cols-[1fr_320px]">
           <div>
             <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">Exam Launcher</span>
             <h2 className="mt-3 text-3xl font-black">Choisis ton format d'examen</h2>
             <p className="mt-2 max-w-xl text-muted-foreground">
               Lance un examen fixe importé, un entraînement aléatoire ou une session ciblée. Chaque session inclut timer, grille de navigation, confidence tracking et revue post-examen.
             </p>
-            <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="mt-3 grid grid-cols-3 gap-1.5">
               {[
                 { label: "Banque active", value: allExamQuestions.length, note: "questions" },
                 { label: "Examens fixes", value: allExamSuites.length,    note: "sets prêts" },
@@ -287,17 +287,17 @@ function ExamLauncherView({
           </div>
 
           {/* Correction settings */}
-          <div className="rounded-card border border-border bg-muted p-4">
+          <div className="rounded-card border border-border bg-muted p-2.5">
             <h3 className="font-black">Mode de correction</h3>
             <p className="mt-0.5 text-xs text-muted-foreground">Choisissez avant de lancer.</p>
-            <div className="mt-4 space-y-2">
+            <div className="mt-2 space-y-2">
               {([
                 { id: "end",     label: "Correction à la fin",    note: "Proche de l'examen réel" },
                 { id: "instant", label: "Correction immédiate",   note: "Idéal pour l'apprentissage" },
               ] as { id: ExamCorrectionMode; label: string; note: string }[]).map((opt) => (
                 <button key={opt.id} type="button" onClick={() => setExamCorrectionMode(opt.id)}
                   className={cn(
-                    "flex w-full items-center gap-3 rounded-card border p-3 text-left transition",
+                    "flex w-full items-center gap-1.5 rounded-card border p-3 text-left transition",
                     examCorrectionMode === opt.id
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-border bg-card hover:border-primary/50"
@@ -316,7 +316,7 @@ function ExamLauncherView({
               ))}
             </div>
             {examSetup && (
-              <div className="mt-4 rounded-card border border-primary bg-primary/10 p-4">
+              <div className="mt-2 rounded-card border border-primary bg-primary/10 p-2.5">
                 <p className="text-sm font-black">{examSetup.title}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">{examSetup.questions.length} questions · {examCorrectionMode === "instant" ? "correction immédiate" : "correction finale"}</p>
                 <button type="button" onClick={beginExam}
@@ -330,13 +330,13 @@ function ExamLauncherView({
       </div>
 
       {/* Quick modes */}
-      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
-        <h2 className="mb-4 text-sm font-bold uppercase tracking-wider text-muted-foreground">Modes rapides</h2>
-        <div className="grid gap-4 md:grid-cols-3">
+      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+        <h2 className="mb-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">Modes rapides</h2>
+        <div className="grid gap-1.5 md:grid-cols-3">
           {modes.map(({ name, count, note, duration, icon: Icon, color }) => (
             <button key={name} type="button" onClick={() => openRandomExam(count)}
-              className="group flex flex-col items-start rounded-card border border-border bg-muted p-5 text-left transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
-              <div className="mb-3 flex w-full items-center justify-between">
+              className="group flex flex-col items-start rounded-card border border-border bg-muted p-2.5 text-left transition-all hover:-translate-y-0.5 hover:border-primary hover:bg-card hover:shadow-md">
+              <div className="mb-2 flex w-full items-center justify-between">
                 <Icon className={cn("h-6 w-6", color)} />
                 <span className="rounded-full border border-border bg-card px-2.5 py-0.5 text-xs font-black">{count}Q</span>
               </div>
@@ -350,14 +350,14 @@ function ExamLauncherView({
 
       {/* Search results */}
       {normalizedSearch && filteredExamQuestions.length > 0 && (
-        <div className="rounded-card border border-border bg-card p-5 shadow-sm">
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-wider text-muted-foreground">
+        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+          <h2 className="mb-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
             Résultats dans les examens — "{globalSearch}" ({filteredExamQuestions.length})
           </h2>
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-1.5 md:grid-cols-2">
             {filteredExamQuestions.slice(0, 12).map((q) => (
               <article key={q.id} className="rounded-card border border-border bg-muted p-3">
-                <div className="mb-1.5 flex flex-wrap gap-1.5">
+                <div className="mb-2 flex flex-wrap gap-1.5">
                   <span className="rounded-full bg-card px-2 py-0.5 text-[10px] font-bold border border-border">{q.examTitle}</span>
                   <span className="rounded-full bg-card px-2 py-0.5 text-[10px] font-bold border border-border">Q{q.questionNumber}</span>
                 </div>
@@ -370,11 +370,11 @@ function ExamLauncherView({
 
       {/* Fixed exams */}
       <div>
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <h2 className="text-lg font-black">Examens fixes importés</h2>
           <span className="text-sm text-muted-foreground">{allExamSuites.length} examens disponibles</span>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           {allExamSuites.map((exam: any) => (
             <ExamLaunchCard
               key={exam.id}
@@ -434,10 +434,10 @@ function ExamSessionView({
   const passed = finalScore >= 75;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Session header */}
-      <div className="rounded-card border border-border bg-card p-4 shadow-sm">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+        <div className="flex flex-wrap items-start justify-between gap-1.5">
           <div>
             <div className="mb-1 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">Test center</span>
@@ -473,7 +473,7 @@ function ExamSessionView({
           </div>
         </div>
         {/* Dual progress bar */}
-        <div className="mt-4 space-y-1.5">
+        <div className="mt-2 space-y-1.5">
           <div className="flex justify-between text-[10px] font-bold text-muted-foreground">
             <span>Navigation: Q{examIndex + 1}</span>
             <span>Répondues: {answeredPct}%</span>
@@ -486,7 +486,7 @@ function ExamSessionView({
       </div>
 
       {/* Main 2-col layout */}
-      <div className="grid gap-5 xl:grid-cols-[280px_1fr]">
+      <div className="grid gap-1.5 lg:grid-cols-[260px_1fr]">
         {/* Progress grid (sticky on XL) */}
         <div className="xl:sticky xl:top-28 xl:self-start space-y-3">
           <ExamProgressGrid
@@ -500,10 +500,10 @@ function ExamSessionView({
         </div>
 
         {/* Question panel */}
-        <div className="space-y-4">
-          <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+        <div className="space-y-2">
+          <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
             {/* Question meta */}
-            <div className="mb-4 flex flex-wrap items-center gap-2">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">Q{examIndex + 1}</span>
               <span className="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-bold text-muted-foreground">{q.examTitle}</span>
               {isPBQ(q) && <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[10px] font-bold text-cyan-700">PBQ</span>}
@@ -512,7 +512,7 @@ function ExamSessionView({
             </div>
 
             {/* Confidence + flag row */}
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-card border border-border bg-muted p-3">
+            <div className="mb-2 flex flex-wrap items-center justify-between gap-1.5 rounded-card border border-border bg-muted p-3">
               <ConfidenceSelector
                 value={examConfidence[q.id]}
                 onChange={(v) => setExamConfidence((items) => ({ ...items, [q.id]: v }))}
@@ -529,7 +529,7 @@ function ExamSessionView({
             </div>
 
             {/* Question text */}
-            <h2 className="mb-5 text-xl font-black leading-snug">{q.question}</h2>
+            <h2 className="mb-2 text-xl font-black leading-snug">{q.question}</h2>
 
             {/* Choices */}
             <div className="space-y-2">
@@ -548,7 +548,7 @@ function ExamSessionView({
                 return (
                   <button key={`${q.id}-${i}`} type="button" onClick={() => chooseExamAnswer(i)}
                     className={cn(
-                      "flex w-full items-center gap-3 rounded-card border px-4 py-3 text-left text-sm transition",
+                      "flex w-full items-center gap-1.5 rounded-card border px-4 py-3 text-left text-sm transition",
                       !showResult && !selected && "border-border bg-muted hover:border-primary/50 hover:bg-card",
                       !showResult && selected  && "border-primary bg-primary/10",
                       showResult && selected && correct  && "border-success-muted bg-success-muted",
@@ -569,7 +569,7 @@ function ExamSessionView({
             {/* Instant correction panel */}
             {canShowExamCorrection && examAnswers[q.id] !== undefined && (
               <div className={cn(
-                "mt-4 rounded-card border p-4",
+                "mt-2 rounded-card border p-2.5",
                 isCorrectAnswer ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
               )}>
                 <p className={cn("flex items-center gap-2 font-black",
@@ -621,13 +621,13 @@ function ExamSessionView({
 
       {/* Finished — results */}
       {examFinished && (
-        <div className="space-y-4">
+        <div className="space-y-2">
           {/* Score card */}
           <div className={cn(
-            "rounded-card border-2 p-6 shadow-sm",
+            "rounded-xl border-2 p-2.5 shadow-sm",
             passed ? "border-success-muted bg-success-muted" : "border-danger-muted bg-danger-muted"
           )}>
-            <div className="flex flex-col items-center gap-4 sm:flex-row">
+            <div className="flex flex-col items-center gap-1.5 sm:flex-row">
               <div className={cn(
                 "flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-4 text-3xl font-black",
                 passed ? "border-success-muted bg-card text-success-fg" : "border-danger-muted bg-card text-danger-fg"
@@ -646,14 +646,14 @@ function ExamSessionView({
           </div>
 
           {/* Breakdown metrics */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
             {[
               { label: "Score", value: `${finalScore}%`, sub: `${examCorrectCount}/${total}` },
               { label: "Temps", value: formatTime(examElapsedSeconds), sub: "durée totale" },
               { label: "Flags",        value: examFlaggedCount, sub: "à revoir" },
               { label: "Non répondues", value: total - examAnsweredCount, sub: "sans réponse" },
             ].map(({ label, value, sub }) => (
-              <div key={label} className="rounded-card border border-border bg-card p-4 text-center shadow-sm">
+              <div key={label} className="rounded-card border border-border bg-card p-2.5 text-center shadow-sm">
                 <p className="text-2xl font-black tabular-nums text-primary">{value}</p>
                 <p className="text-xs font-bold">{label}</p>
                 <p className="text-[10px] text-muted-foreground">{sub}</p>
@@ -663,7 +663,7 @@ function ExamSessionView({
 
           {/* Confidence summary */}
           {(examConfidenceSummary.low + examConfidenceSummary.medium + examConfidenceSummary.high) > 0 && (
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-1.5">
               {[
                 { label: "Faible confiance", value: examConfidenceSummary.low,    color: "border-danger-muted bg-danger-muted text-danger-fg" },
                 { label: "Confiance moyenne", value: examConfidenceSummary.medium, color: "border-warning-muted bg-warning-muted text-warning-fg" },
@@ -678,9 +678,9 @@ function ExamSessionView({
           )}
 
           {/* Review grid + card */}
-          <div className="rounded-card border border-border bg-card p-4 shadow-sm">
+          <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
             <h3 className="mb-1 font-black">Révision question par question</h3>
-            <p className="mb-4 text-sm text-muted-foreground">Cliquez sur une pastille pour revoir une question.</p>
+            <p className="mb-2 text-sm text-muted-foreground">Cliquez sur une pastille pour revoir une question.</p>
             <ExamProgressGrid
               questions={activeExam.questions}
               currentIndex={examIndex}

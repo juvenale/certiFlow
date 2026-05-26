@@ -29,7 +29,7 @@ function ConceptCard({ item, onFlashcard, onPractice }: {
       open ? "shadow-md" : "hover:shadow-sm hover:border-primary/40"
     )}>
       <button type="button" onClick={() => setOpen(!open)}
-        className="flex w-full items-start gap-3 p-3 text-left">
+        className="flex w-full items-start gap-1.5 p-3 text-left">
         <ChevronDown className={cn(
           "mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
           open && "rotate-180"
@@ -81,14 +81,14 @@ function ThemeSection({ theme, expanded, onToggle, onFlashcard, onPractice }: {
     <section className={cn("rounded-card border overflow-hidden", colors.border)}>
       <div
         className={cn(
-          "flex w-full items-center gap-3 p-4 text-left transition-colors",
+          "flex w-full items-center gap-1.5 p-2.5 text-left transition-colors",
           expanded ? colors.bg : "bg-card hover:bg-muted/50"
         )}
       >
         <button
           type="button"
           onClick={onToggle}
-          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
           aria-expanded={expanded}
         >
           <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot)} />
@@ -125,8 +125,8 @@ function ThemeSection({ theme, expanded, onToggle, onFlashcard, onPractice }: {
       </div>
 
       {expanded && (
-        <div className="border-t border-border bg-card p-4">
-          <div className="mb-3 flex items-center justify-between sm:hidden">
+        <div className="border-t border-border bg-card p-2.5">
+          <div className="mb-2 flex items-center justify-between sm:hidden">
             <span className="text-sm font-bold text-muted-foreground">{theme.items.length} concepts</span>
             <button type="button" onClick={() => onFlashcard(theme.id)}
               className="inline-flex items-center gap-1 rounded-btn border border-border px-2 py-1 text-xs font-bold transition hover:border-primary hover:text-primary">
@@ -192,7 +192,7 @@ export function CoursesView({
   if (filteredStudyItems.length === 0) {
     return (
       <div className="rounded-card border border-border bg-card p-12 text-center shadow-sm">
-        <BookOpen className="mx-auto mb-3 h-10 w-10 text-muted-foreground/40" />
+        <BookOpen className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40" />
         <p className="text-base font-bold">Aucun concept trouvé</p>
         <p className="mt-1 text-sm text-muted-foreground">Modifiez les filtres pour afficher des concepts.</p>
       </div>
@@ -200,7 +200,7 @@ export function CoursesView({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Domain summary chips */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         {Object.entries(domainSummary).map(([domain, data]) => {

@@ -19,9 +19,9 @@ type ErrorEntry = {
 type SortMode = "count" | "recent" | "status";
 
 const statusCfg = {
-  "à revoir": { label: "À revoir", badge: "border-danger-muted  bg-danger-muted  text-danger-fg",  dot: "bg-danger"  },
-  "compris":  { label: "Compris",  badge: "border-warning-muted bg-warning-muted text-warning-fg", dot: "bg-warning" },
-  "maîtrisé": { label: "Maîtrisé", badge: "border-success-muted bg-success-muted text-success-fg", dot: "bg-success" },
+  "à revoir": { label: "À revoir", badge: "border-t-2 border-danger bg-card text-danger-fg",  dot: "bg-danger"  },
+  "compris":  { label: "Compris",  badge: "border-t-2 border-warning bg-card text-warning-fg", dot: "bg-warning" },
+  "maîtrisé": { label: "Maîtrisé", badge: "border-t-2 border-success bg-card text-success-fg", dot: "bg-success" },
 } as const;
 
 function ErrorCard({ error, onStatusChange, onDelete }: {
@@ -38,7 +38,7 @@ function ErrorCard({ error, onStatusChange, onDelete }: {
       open ? "shadow-md" : "hover:shadow-sm hover:border-primary/40"
     )}>
       <button type="button" onClick={() => setOpen(!open)}
-        className="flex w-full items-center gap-3 p-3 text-left">
+        className="flex w-full items-center gap-1.5 p-3 text-left">
         <span className={cn("h-2 w-2 shrink-0 rounded-full", cfg.dot)} />
         <div className="flex-1 min-w-0">
           <p className={cn("text-sm font-semibold leading-snug", !open && "line-clamp-2")}>{error.question}</p>
@@ -72,7 +72,7 @@ function ErrorCard({ error, onStatusChange, onDelete }: {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-1.5">
             <div className="space-y-1">
               <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Statut</p>
               <div className="flex gap-1.5">
@@ -142,7 +142,7 @@ export function ErrorsView({ errors, onClear, onStatusChange, onDelete }: {
   if (errors.length === 0) {
     return (
       <div className="rounded-card border border-border bg-card p-12 text-center shadow-sm">
-        <ClipboardList className="mx-auto mb-3 h-10 w-10 text-muted-foreground/40" />
+        <ClipboardList className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40" />
         <p className="text-base font-bold">Journal vide</p>
         <p className="mt-1 text-sm text-muted-foreground">Lance un quiz pour alimenter le journal d'erreurs.</p>
       </div>
@@ -150,25 +150,25 @@ export function ErrorsView({ errors, onClear, onStatusChange, onDelete }: {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Stats */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div className="rounded-card border border-border bg-card p-4 shadow-sm">
+      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
+        <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Total</p>
           <p className="mt-1 text-2xl font-black tabular-nums">{counts.total}</p>
           <p className="mt-0.5 text-xs text-muted-foreground">questions ratées</p>
         </div>
-        <div className="rounded-card border border-danger-muted bg-danger-muted p-4 shadow-sm">
+        <div className="rounded-card border border-danger-muted bg-danger-muted p-2.5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-danger-fg">À revoir</p>
           <p className="mt-1 text-2xl font-black tabular-nums text-danger-fg">{counts.revoir}</p>
           <p className="mt-0.5 text-xs text-danger-fg opacity-70">à réviser activement</p>
         </div>
-        <div className="rounded-card border border-warning-muted bg-warning-muted p-4 shadow-sm">
+        <div className="rounded-card border border-warning-muted bg-warning-muted p-2.5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-warning-fg">Compris</p>
           <p className="mt-1 text-2xl font-black tabular-nums text-warning-fg">{counts.compris}</p>
           <p className="mt-0.5 text-xs text-warning-fg opacity-70">en cours de consolidation</p>
         </div>
-        <div className="rounded-card border border-success-muted bg-success-muted p-4 shadow-sm">
+        <div className="rounded-card border border-success-muted bg-success-muted p-2.5 shadow-sm">
           <p className="text-xs font-bold uppercase tracking-wider text-success-fg">Maîtrisé</p>
           <p className="mt-1 text-2xl font-black tabular-nums text-success-fg">{counts.maitrise}</p>
           <p className="mt-0.5 text-xs text-success-fg opacity-70">bien assimilé</p>
@@ -207,7 +207,7 @@ export function ErrorsView({ errors, onClear, onStatusChange, onDelete }: {
       </div>
 
       {/* Sort + actions toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-1.5">
         <div className="flex items-center gap-2">
           <span className="text-xs font-bold text-muted-foreground">Trier:</span>
           {([["count", "Plus ratées"], ["recent", "Récentes"], ["status", "Par statut"]] as [SortMode, string][]).map(([mode, label]) => (

@@ -17,7 +17,7 @@ export function ExamHistory() {
 
   if (!history.length) {
     return (
-      <div className="rounded-card border border-border bg-muted p-4 text-center">
+      <div className="rounded-card border border-border bg-muted p-5 text-center">
         <BarChart3 className="mx-auto h-8 w-8 text-muted-foreground" />
         <p className="mt-3 font-bold">Aucun examen termine</p>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -46,7 +46,7 @@ export function ExamHistory() {
             <Trash2 className="h-3 w-3" /> Effacer
           </button>
         </div>
-        <div className="h-48">
+        <div className="h-52">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={chartData} margin={{ top: 5, right: 8, bottom: 0, left: -24 }}>
               <defs>
@@ -68,7 +68,7 @@ export function ExamHistory() {
       {/* Results list */}
       <div className="space-y-2">
         {history.map((r) => (
-          <div key={r.id} className="rounded-card border border-border bg-card p-4 shadow-sm">
+          <div key={r.id} className="rounded-card border border-border bg-card p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="min-w-0">
                 <p className="font-bold truncate">{r.examTitle}</p>

@@ -58,9 +58,9 @@ export function PortsCommandsView({ onStartPortFlashcards, onPracticeAnswered }:
   const counts = { practice: filteredPorts.length, commands: filteredCommands.length, scenarios: filteredScenarios.length, confusions: filteredConfusions.length, ports: filteredPorts.length };
 
   return (
-    <div className="animate-fade-in space-y-4">
-      <div className="rounded-card border border-border bg-card p-4 shadow-sm">
-        <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+    <div className="animate-fade-in space-y-2">
+      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+        <div className="mb-1.5 grid gap-1.5 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
             <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Ports & protocoles</p>
             <h2 className="mt-1 text-2xl font-black">Révision opérationnelle</h2>
@@ -68,19 +68,19 @@ export function PortsCommandsView({ onStartPortFlashcards, onPracticeAnswered }:
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setTab("practice")}
-              className="inline-flex min-h-10 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
+              className="inline-flex min-h-8 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
               <RotateCcw className="h-4 w-4" /> Réviser maintenant
             </button>
             {onStartPortFlashcards && (
               <button type="button" onClick={onStartPortFlashcards}
-                className="inline-flex min-h-10 items-center gap-2 rounded-btn border border-border bg-muted px-4 text-sm font-black transition hover:border-primary hover:text-primary">
+                className="inline-flex min-h-8 items-center gap-2 rounded-btn border border-border bg-muted px-4 text-sm font-black transition hover:border-primary hover:text-primary">
                 Flashcards ports <ArrowRight className="h-4 w-4" />
               </button>
             )}
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+        <div className="flex flex-wrap items-center gap-1.5 mb-1.5">
           <div className="flex rounded-btn bg-muted p-0.5">
             {tabs.map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
@@ -166,8 +166,8 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
   }
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[0.85fr_1.15fr]">
-      <div className="rounded-card border border-border bg-muted p-4">
+    <div className="grid gap-1.5 xl:grid-cols-[0.85fr_1.15fr]">
+      <div className="rounded-card border border-border bg-muted p-2.5">
         <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Mode de révision</p>
         <div className="mt-3 grid gap-2">
           {([
@@ -176,13 +176,13 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
             ["security", "Risque & sécurité", "Identifier clair/chiffré et alternatives."],
           ] as Array<[PracticeMode, string, string]>).map(([id, label, desc]) => (
             <button key={id} type="button" onClick={() => { setMode(id); setSelected(null); }}
-              className={cn("rounded-card border p-3 text-left transition hover:border-primary", mode === id ? "border-primary bg-primary/10" : "border-border bg-card")}>
+              className={cn("rounded-lg border p-2.5 text-left transition hover:border-primary", mode === id ? "border-primary bg-primary/10" : "border-border bg-card")}>
               <p className="font-black">{label}</p>
               <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
             </button>
           ))}
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-2">
+        <div className="mt-3 grid grid-cols-2 gap-2">
           <div className="rounded-card border border-border bg-card p-3">
             <p className="text-xs font-bold uppercase text-muted-foreground">Score</p>
             <p className="mt-1 text-2xl font-black tabular-nums">{score.answered ? Math.round((score.correct / score.answered) * 100) : 0}%</p>
@@ -194,8 +194,8 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
         </div>
       </div>
 
-      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+        <div className="mb-1.5 flex flex-wrap items-center justify-between gap-1.5">
           <div>
             <Badge className={isSecure(current.protocol) ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg"}>
               {isSecure(current.protocol) ? "Secure" : "À risque"}
@@ -212,7 +212,7 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
             return (
               <button key={option} type="button" onClick={() => choose(option)}
                 className={cn(
-                  "flex min-h-12 items-center gap-3 rounded-card border px-4 py-3 text-left text-sm font-black transition",
+                  "flex min-h-12 items-center gap-1.5 rounded-lg border px-3 py-2.5 text-left text-sm font-black transition",
                   !revealed && "border-border bg-muted hover:border-primary",
                   revealed && isAnswer && "border-success-muted bg-success-muted text-success-fg",
                   revealed && isSelected && !isAnswer && "border-danger-muted bg-danger-muted text-danger-fg",
@@ -226,13 +226,13 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
         </div>
 
         {revealed && (
-          <div className="mt-4 rounded-card border border-border bg-muted p-4">
+          <div className="mt-3 rounded-card border border-border bg-muted p-2.5">
             <p className={cn("font-black", correct ? "text-success-fg" : "text-danger-fg")}>{correct ? "Correct" : "À revoir"}</p>
             <p className="mt-2 text-sm leading-6"><strong>{current.protocol}</strong> · {current.port} · {current.english}</p>
             <p className="mt-1 text-sm text-muted-foreground">{current.details}</p>
             {current.secureAlternative && <p className="mt-1 text-sm"><strong>Alternative sécurisée: </strong>{current.secureAlternative}</p>}
             <button type="button" onClick={next}
-              className="mt-4 inline-flex min-h-10 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
+              className="mt-3 inline-flex min-h-8 items-center gap-2 rounded-btn bg-primary px-4 text-sm font-black text-primary-foreground transition hover:opacity-90">
               Suivant <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -301,7 +301,7 @@ function PortsGrid({ items, isSecure }: { items: typeof portFlashcards; isSecure
     <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
       {items.map(p => (
         <div key={p.id} className="group rounded-card border border-border bg-muted p-3 transition-all hover:border-primary/30 hover:shadow-sm">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-1.5 mb-2">
             <div className={cn("flex h-8 w-8 items-center justify-center rounded-btn text-xs font-mono font-bold shrink-0", isSecure(p.protocol) ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400")}>{p.port}</div>
             <div className="flex-1 min-w-0"><p className="text-sm font-bold truncate">{p.protocol}</p><p className="text-xs text-muted-foreground">{p.english}</p></div>
             {isSecure(p.protocol) ? <Shield className="h-4 w-4 text-emerald-500 shrink-0" /> : <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />}

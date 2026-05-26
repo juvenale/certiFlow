@@ -20,8 +20,8 @@
   --success-muted: rgba(16,185,129,.12); --success-border: rgba(16,185,129,.28);
   --warning-muted: rgba(245,158,11,.12); --warning-border: rgba(245,158,11,.28);
   --danger-muted:  rgba(239,68,68,.12);  --danger-border:  rgba(239,68,68,.28);
-  --radius-card: 10px;
-  --radius-btn: 8px;
+  --radius-card: 12px;
+  --radius-btn: 10px;
   --surface: #ffffffcc;
   --sidebar: #ffffff;
   --ring-soft: rgba(23, 107, 135, .16);

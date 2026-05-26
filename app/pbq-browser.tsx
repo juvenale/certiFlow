@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Brain, CheckCircle2, GraduationCap, Shield, Timer } from "lucide-react";
+import { Brain, CheckCircle2, Clock, GraduationCap, Shield, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getPBQScores, savePBQScore } from "@/lib/pbq-scores";
+import { useTimeTracker } from "./hooks/useTimeTracker";
 import type { PBQExercise } from "@/data/pbq";
 import { pbqExercises } from "@/data/pbq-exercises";
 import { FirewallRulesPBQ } from "./pbq-firewall";
@@ -28,7 +29,7 @@ function Badge({ children }: { children: React.ReactNode }) {
   return <span className="inline-flex min-h-8 items-center rounded-card bg-muted px-3 text-sm font-bold text-muted-foreground">{children}</span>;
 }
 
-export default function PBQBrowser() {
+export default function PBQBrowser({ onComplete }: { onComplete?: () => void }) {
   const [selected, setSelected] = useState<PBQExercise | null>(null);
   const [filterDifficulty, setFilterDifficulty] = useState("all");
   const [filterDomain, setFilterDomain] = useState("all");
@@ -44,6 +45,9 @@ export default function PBQBrowser() {
   });
   const scoreMap = new Map(scores.map((s) => [s.pbqId, s]));
 
+  // Time tracker for active exercise
+  const timeTracker = useTimeTracker(selected?.id || "browser", "PBQ");
+
   // Mark PBQ as completed when user returns to browser
   function handleReset() {
     if (selected) {
@@ -57,17 +61,28 @@ export default function PBQBrowser() {
       });
     }
     setSelected(null);
+    onComplete?.();
   }
 
   if (selected) {
+    // Time tracker display
+    const timerDisplay = (
+      <div className="mb-3 flex items-center justify-between rounded-card border border-border bg-muted px-4 py-2">
+        <h3 className="font-black">{selected.title}</h3>
+        <span className="flex items-center gap-1.5 rounded-btn bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+          <Clock className="h-3.5 w-3.5" /> {timeTracker.formattedTime}
+        </span>
+      </div>
+    );
+
     switch (selected.type) {
-      case "firewall_rules": return <FirewallRulesPBQ exercise={selected} onReset={handleReset} />;
-      case "topology": return <TopologyDragDropPBQ exercise={selected} onReset={handleReset} />;
-      case "rack_vlan": return <RackVLANPBQView exercise={selected} onReset={handleReset} />;
-      case "siem": return <SIEMInteractive exercise={selected} onReset={handleReset} />;
-      case "investigation": return <InvestigationInteractive exercise={selected} onReset={handleReset} />;
-      case "timed_config": return <TimedConfigPBQView exercise={selected} onReset={handleReset} />;
-      case "scenario_tasks": return <ScenarioTasksPBQView exercise={selected} onReset={handleReset} />;
+      case "firewall_rules": return <>{timerDisplay}<FirewallRulesPBQ exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "topology": return <>{timerDisplay}<TopologyDragDropPBQ exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "rack_vlan": return <>{timerDisplay}<RackVLANPBQView exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "siem": return <>{timerDisplay}<SIEMInteractive exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "investigation": return <>{timerDisplay}<InvestigationInteractive exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "timed_config": return <>{timerDisplay}<TimedConfigPBQView exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "scenario_tasks": return <>{timerDisplay}<ScenarioTasksPBQView exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
       default: return <p className="p-4">Type non supporté.</p>;
     }
   }

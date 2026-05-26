@@ -70,7 +70,7 @@ function ConfusionCard({ item }: { item: ConfusionItem }) {
       open ? "shadow-md" : "hover:shadow-sm hover:border-primary/40"
     )}>
       <button type="button" onClick={() => setOpen(!open)} title={item.comparison}
-        className="flex w-full items-center gap-3 p-3 text-left">
+        className="flex w-full items-center gap-1.5 p-3 text-left">
         <ChevronDown className={cn(
           "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
           open && "rotate-180"
@@ -119,7 +119,7 @@ function ConfusionSection({ section, expanded, onToggle }: {
     <section className={cn("rounded-card border overflow-hidden", colors.border)}>
       <button type="button" onClick={onToggle}
         className={cn(
-          "flex w-full items-center gap-3 p-4 text-left transition-colors",
+          "flex w-full items-center gap-1.5 p-2.5 text-left transition-colors",
           expanded ? colors.bg : "bg-card hover:bg-muted/50"
         )}>
         <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot)} />
@@ -129,7 +129,7 @@ function ConfusionSection({ section, expanded, onToggle }: {
             {section.domain}
           </span>
         </div>
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-1.5">
           <span className="text-sm font-bold text-muted-foreground tabular-nums">
             {section.items.length} confusion{section.items.length > 1 ? "s" : ""}
           </span>
@@ -141,7 +141,7 @@ function ConfusionSection({ section, expanded, onToggle }: {
       </button>
 
       {expanded && (
-        <div className="border-t border-border bg-card p-4">
+        <div className="border-t border-border bg-card p-2.5">
           <div className="grid gap-2 md:grid-cols-2">
             {section.items.map((item) => (
               <ConfusionCard key={item.id} item={item} />
@@ -192,7 +192,7 @@ export function ConfusionsView({
   if (filteredItems.length === 0) {
     return (
       <div className="rounded-card border border-border bg-card p-12 text-center shadow-sm">
-        <AlertTriangle className="mx-auto mb-3 h-10 w-10 text-muted-foreground/40" />
+        <AlertTriangle className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40" />
         <p className="text-base font-bold">Aucune confusion trouvée</p>
         <p className="mt-1 text-sm text-muted-foreground">Modifiez le domaine ou la recherche pour afficher des entrées.</p>
       </div>
@@ -200,7 +200,7 @@ export function ConfusionsView({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Domain summary chips */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         {Object.entries(domainSummary).map(([domain, data]) => {

@@ -1,7 +1,8 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Settings2, Target, XCircle, Zap } from "lucide-react";
-import { useState } from "react";
+import { AlertCircle, CheckCircle2, Clock, Loader2, Sparkles, Target, XCircle, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useTimeTracker } from "./hooks/useTimeTracker";
 import { cn } from "@/lib/utils";
 
 type QuizQuestion = {
@@ -85,67 +86,6 @@ function ModeCard({ icon: Icon, label, desc, onClick, disabled }: {
 }
 
 // ─── QuizView ─────────────────────────────────────────────────────────────────
-
-// ─── ConfigPanel ───────────────────────────────────────────────────────────
-
-function ConfigPanel() {
-  const [open, setOpen] = useState(false);
-  const [config, setConfig] = useState(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem("certiflow-quiz-config") || "null");
-      return saved || { poolSize: 0, randomOrder: true, correction: "instant" };
-    } catch { return { poolSize: 0, randomOrder: true, correction: "instant" }; }
-  });
-
-  function update(partial: Partial<typeof config>) {
-    const next = { ...config, ...partial };
-    setConfig(next);
-    localStorage.setItem("certiflow-quiz-config", JSON.stringify(next));
-  }
-
-  return (
-    <div className="rounded-card border border-border bg-card p-4 shadow-sm">
-      <button type="button" onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Settings2 className="h-4 w-4 text-muted-foreground" />
-          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Session</span>
-        </div>
-        <span className="text-xs text-muted-foreground">{open ? "Masquer" : "Configurer"}</span>
-      </button>
-      {open && (
-        <div className="mt-4 space-y-4 border-t border-border pt-4">
-          <div>
-            <p className="mb-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">Taille du pool</p>
-            <div className="flex flex-wrap gap-1.5">
-              {[{ v: 0, l: "Toutes" }, { v: 10, l: "10" }, { v: 20, l: "20" }, { v: 30, l: "30" }, { v: 50, l: "50" }].map(({ v, l }) => (
-                <button key={v} type="button" onClick={() => update({ poolSize: v })}
-                  className="rounded-btn border px-3 py-1.5 text-xs font-bold transition hover:border-primary"
-                  style={{
-                    borderColor: config.poolSize === v ? "var(--primary)" : "var(--border)",
-                    background: config.poolSize === v ? "var(--primary)" : "var(--muted)",
-                    color: config.poolSize === v ? "var(--primary-foreground)" : "var(--muted-foreground)",
-                  }}>{l}</button>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Ordre aleatoire</p>
-              <p className="text-[10px] text-muted-foreground">Melange a chaque session</p>
-            </div>
-            <button type="button" onClick={() => update({ randomOrder: !config.randomOrder })}
-              className="relative h-6 w-11 rounded-full transition-colors"
-              style={{ background: config.randomOrder ? "var(--success)" : "var(--border)" }}>
-              <span className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform"
-                style={{ transform: config.randomOrder ? "translateX(20px)" : "translateX(4px)" }} />
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
 export function QuizView({
   score, answered, correct,
   effectiveQuizQuestions, totalQuestions,
@@ -176,6 +116,58 @@ export function QuizView({
   const isCorrect = selectedAnswer === currentQuestionAnswer;
   const colors = dc(currentQuestion.domain);
   const revealed = selectedAnswer !== null;
+  const [quizStarted, setQuizStarted] = useState(false);
+
+  // Mark quiz as started on first answer
+  useEffect(() => { if (revealed && !quizStarted) setQuizStarted(true); }, [revealed]);
+  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [isAiLoading, setIsAiLoading] = useState<boolean>(false);
+  const [isFlagged, setIsFlagged] = useState(false);
+  const timer = useTimeTracker(currentQuestion.id, "QCM");
+
+  // Keyboard: A-D to answer, Enter to advance
+  useEffect(() => {
+    const tips = [
+      "Port 22 = SSH (chiffre). Port 23 = Telnet (clair).",
+      "CIA = Confidentialite, Integrite, Disponibilite.",
+      "Faux positif = alerte legitime. Faux negatif = menace ignoree.",
+      "IDS detecte. IPS bloque. Firewall filtre.",
+      "TLS 1.3 est la norme examen. SSL est obsolete.",
+      "Hashing = integrite. Chiffrement = confidentialite.",
+    ];
+    function onKey(e: KeyboardEvent) {
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (["a","b","c","d"].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+        const idx = e.key.toLowerCase().charCodeAt(0) - 97;
+        if (idx < currentQuestionChoices.length && !revealed) chooseAnswer(idx);
+      }
+      if (e.key === "Enter" && revealed) {
+        e.preventDefault();
+        timer.saveAndProgress();
+        setAiExplanation(null);
+        nextQuestion();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [revealed, currentQuestionChoices, chooseAnswer, nextQuestion]);
+
+  const handleAskAI = async () => {
+    setIsAiLoading(true);
+    setAiExplanation(null);
+    try {
+      const res = await fetch("/api/assistant", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "expliquer", context: { type: "QCM", statement: currentQuestion.question, userAnswer: selectedAnswer !== null ? currentQuestionChoices[selectedAnswer] : "", correctAnswer: currentQuestionChoices[currentQuestionAnswer], explanationStatique: currentQuestion.explanation } }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error);
+      setAiExplanation(data.answer);
+    } catch { setAiExplanation("IA indisponible."); }
+    finally { setIsAiLoading(false); }
+  };
 
   return (
     <div className="space-y-4">
@@ -188,10 +180,9 @@ export function QuizView({
           accent={score >= 75 ? "border-success-muted bg-success-muted" : score >= 50 ? "border-warning-muted bg-warning-muted" : undefined}
         />
         <StatChip label="Questions actives" value={effectiveQuizQuestions.length} sub={`sur ${totalQuestions} au total`} />
+        <StatChip label="Chrono" value={timer.formattedTime} />
         <StatChip label="Position" value={`${pos + 1} / ${effectiveQuizQuestions.length}`} sub={`${progressPct}% parcouru`} />
       </div>
-
-            <ConfigPanel />
 
       {/* Mode selector */}
       <div className="rounded-card border border-border bg-card p-4 shadow-sm">
@@ -263,7 +254,7 @@ export function QuizView({
                   disabled={revealed}
                   className={cn(
                     "flex items-center gap-3 rounded-card border px-4 py-3 text-left transition-colors",
-                    !revealed && "border-border hover:border-primary hover:bg-muted/50",
+                    !revealed && "border-border hover:border-primary hover:bg-muted/50 hover:scale-[1.01] active:scale-[0.99]",
                     revealed && isAnswer && "border-success-muted bg-success-muted",
                     revealed && isSelected && !isAnswer && "border-danger-muted bg-danger-muted",
                     revealed && !isSelected && !isAnswer && "border-border opacity-40",
@@ -285,7 +276,7 @@ export function QuizView({
           {/* Skip button */}
           {!revealed && (
             <div className="mt-4 flex justify-end">
-              <button type="button" onClick={nextQuestion}
+              <button type="button" onClick={() => { timer.saveAndProgress(); nextQuestion(); }}
                 className="text-xs font-bold text-muted-foreground underline-offset-2 hover:text-foreground hover:underline">
                 Passer cette question →
               </button>
@@ -338,10 +329,27 @@ export function QuizView({
               <p className="text-sm leading-relaxed">{currentQuestion.explanation}</p>
             </div>
 
-            <button type="button" onClick={nextQuestion}
-              className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:opacity-90">
+            {aiExplanation && (
+              <div className="rounded-card border-l-2 border-indigo-500 bg-muted p-3 text-xs leading-relaxed">
+                <p className="mb-1 font-bold text-indigo-600">Analyse de l'IA :</p>
+                <div className="whitespace-pre-line">{aiExplanation}</div>
+              </div>
+            )}
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+              <button type="button" onClick={() => setIsFlagged((v) => !v)}
+                className="inline-flex items-center gap-1 rounded-btn border px-2.5 py-1.5 text-[10px] font-bold transition hover:border-warning hover:text-warning-fg"
+                style={{ borderColor: isFlagged ? "var(--warning)" : "var(--border)", color: isFlagged ? "var(--warning)" : "var(--muted-foreground)" }}>
+                Flag {isFlagged ? "✓" : ""}
+              </button>
+              <button type="button" onClick={handleAskAI} disabled={isAiLoading}
+                className="inline-flex items-center gap-1.5 rounded-btn border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-xs font-bold text-indigo-600 transition hover:bg-indigo-500/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50">
+                {isAiLoading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Analyse...</> : <><Sparkles className="h-3.5 w-3.5" /> Expliquer avec l'IA</>}
+              </button>
+              <button type="button" onClick={() => { timer.saveAndProgress(); setAiExplanation(null); nextQuestion(); }}
+                className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground transition hover:scale-[1.02] active:scale-[0.98] hover:opacity-90">
               Question suivante →
             </button>
+            </div>
           </div>
         </div>
       )}

@@ -121,7 +121,7 @@ export function AssistantView() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-card border border-border bg-card p-5 shadow-sm">
+      <div className="rounded-card border border-border bg-card p-4 shadow-sm">
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-btn bg-primary/10">
             <Bot className="h-5 w-5 text-primary" />
@@ -161,23 +161,16 @@ export function AssistantView() {
           <Lightbulb className="h-4 w-4 text-amber-500" />
           <span className="text-sm font-bold">Prompts rapides</span>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {quickPrompts.map(({ category, items }) => (
-            <div key={category}>
-              <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{category}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {items.map((prompt) => (
-                  <button
-                    key={prompt}
-                    type="button"
-                    onClick={() => send(prompt, "reformulate")}
-                    className="rounded-btn border border-border bg-muted px-2.5 py-1 text-xs font-semibold transition hover:border-primary hover:text-primary"
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            </div>
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
+          {quickPrompts.flatMap(({ category, items }) => items).map((prompt) => (
+            <button
+              key={prompt}
+              type="button"
+              onClick={() => send(prompt, "reformulate")}
+              className="rounded-lg border border-border bg-card p-2.5 text-left text-xs font-medium transition hover:border-primary hover:shadow-sm hover:scale-[1.01]"
+            >
+              {prompt}
+            </button>
           ))}
         </div>
       </div>

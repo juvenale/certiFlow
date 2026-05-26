@@ -8,12 +8,10 @@ import { ConfusionsView } from "./confusions-view";
 import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
-import { ExamHistory } from "./exam-history-view";
 import { QuizView } from "./quiz-view";
 
 import { useEffect, useMemo, useState } from "react";
 import {
-  BarChart3,
   BookOpen,
   Moon,
   Bot,
@@ -239,8 +237,6 @@ export function HomeClient() {
   const [examElapsedSeconds, setExamElapsedSeconds] = useState(() => readExamSession()?.examElapsedSeconds ?? 0);
   const [examFlags, setExamFlags] = useState<Record<string, boolean>>(() => readExamSession()?.examFlags ?? {});
   const [examConfidence, setExamConfidence] = useState<Record<string, ExamConfidence>>(() => readExamSession()?.examConfidence ?? {});
-  const [examHistoryOpen, setExamHistoryOpen] = useState(false);
-  const [shuffledErrorPool, setShuffledErrorPool] = useState<typeof questions>([]);
   const [selectedDomain, setSelectedDomain] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-domain") || "all" : "all"));
   const [selectedTheme, setSelectedTheme] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all"));
   const [globalSearch, setGlobalSearch] = useState("");
@@ -319,27 +315,7 @@ export function HomeClient() {
     }
   }, [activeExam, examIndex, examAnswers, examFinished, examElapsedSeconds, examFlags, examConfidence]);
 
-  
-  // Study streak
-  const studyStreak = (() => {
-    let streak = 0;
-    const today = new Date().toISOString().split("T")[0];
-    let history = [];
-    try { history = JSON.parse(localStorage.getItem("certiflow-quiz-history") || "[]"); } catch {}
-    const dates = new Set(history.map((h: { date?: string }) => h.date?.slice(0, 10)));
-    if (dates.has(today)) streak++;
-    for (let i = 1; i <= 365; i++) {
-      const d = new Date(); d.setDate(d.getDate() - i);
-      if (dates.has(d.toISOString().split("T")[0])) streak++;
-      else break;
-    }
-    if (streak === 0) {
-      const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-      if (dates.has(yesterday.toISOString().split("T")[0])) streak = -1;
-    }
-    return streak;
-  })();
-const score = answered ? Math.round((correct / answered) * 100) : 0;
+  const score = answered ? Math.round((correct / answered) * 100) : 0;
   const avgProgress = Math.round(domains.reduce((sum, domain) => sum + domain.progress, 0) / domains.length);
   const weakest = [...domains].sort((a, b) => a.progress - b.progress)[0];
   const selectedThemeData = studyThemes.find((theme) => theme.id === selectedTheme);
@@ -391,7 +367,6 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
     return domainMatch && themeMatch && searchMatch;
   });
   const effectiveQuizQuestions = filteredQuizQuestions.length ? filteredQuizQuestions : questions;
-  const quizQuestions = shuffledErrorPool.length ? shuffledErrorPool : effectiveQuizQuestions;
   const currentQuestion = effectiveQuizQuestions[questionIndex % effectiveQuizQuestions.length];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
@@ -821,7 +796,7 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
   return (
     <main className="app-shell min-h-screen text-foreground">
       <div className="grid min-h-screen lg:grid-cols-[286px_1fr]">
-        <aside className="glass-panel border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
+        <aside className="border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r bg-card/80 backdrop-blur-xl">
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
               <img
@@ -901,7 +876,7 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
 
           <div className="glass-panel sticky top-0 z-20 mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
             <label className="text-sm font-bold" htmlFor="global-search">Rechercher un terme, concept, question...</label>
-            <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto]">
+            <div className="grid gap-3 lg:grid-cols-[220px_220px_auto]">
               <input
                 id="global-search"
                 value={globalSearch}
@@ -968,7 +943,7 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
               score={score}
               answered={answered}
               correct={correct}
-              effectiveQuizQuestions={quizQuestions}
+              effectiveQuizQuestions={effectiveQuizQuestions}
               totalQuestions={questions.length}
               questionIndex={questionIndex}
               currentQuestion={currentQuestion}
@@ -1032,14 +1007,14 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
               >
                 {flashBack ? (
                   <div>
-                    <h2 className="text-3xl font-black text-primary">{currentFlashcard.term}</h2>
+                    <h2 className="text-2xl font-semibold text-primary">{currentFlashcard.term}</h2>
                     <p className="mt-3 text-xl font-bold">{currentFlashcard.definition}</p>
                     <p className="mt-3">{currentFlashcard.details}</p>
                     <p className="mt-3 text-sm text-muted-foreground">{currentFlashcard.domain} | {currentFlashcard.themeTitle}</p>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-6xl font-black text-primary">{currentFlashcard.term}</p>
+                    <p className="text-4xl font-bold text-primary tracking-tight">{currentFlashcard.term}</p>
                     <p className="mt-4 text-muted-foreground">Clique pour retourner la carte</p>
                   </div>
                 )}
@@ -1065,17 +1040,6 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
           )}
 
           {view === "exam" && (
-            <>
-              {!activeExam && (
-                <div className="mb-3 flex justify-end">
-                  <button type="button" onClick={() => setExamHistoryOpen((v) => !v)}
-                    className="inline-flex items-center gap-1.5 rounded-btn border border-border bg-card px-4 py-2 text-sm font-bold transition hover:border-primary hover:text-primary">
-                    <BarChart3 className="h-4 w-4" />
-                    {examHistoryOpen ? "Examens disponibles" : "Historique"}
-                  </button>
-                </div>
-              )}
-              {examHistoryOpen && !activeExam ? <ExamHistory /> : (
             <ExamView
               examSetup={examSetup}
               examCorrectionMode={examCorrectionMode}
@@ -1108,8 +1072,6 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
               finishExam={finishExam}
               returnToExamList={returnToExamList}
             />
-              )}
-            </>
           )}
 
           {view === "errors" && (
@@ -1122,53 +1084,19 @@ const score = answered ? Math.round((correct / answered) * 100) : 0;
           )}
 
           {view === "plan" && (
-            <div className="grid gap-4">
-              <Panel title="Plan jusqu'au 28 mai 2026">
-                <p className="mb-4 text-sm text-muted-foreground">Priorite actuelle selon tes scores: <strong className="text-danger-fg">{weakest.name} ({weakest.progress}%)</strong>. Le plan s'intensifie a mesure que la date approche.</p>
-                <div className="grid gap-3">
-                  {plan.map(([day, task]) => (
-                    <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
-                      <strong>{day}</strong>
-                      <span>{task}</span>
-                    </div>
-                  ))}
-                </div>
-              </Panel>
-
-              <Panel title="Fiche revision express">
-                <p className="mb-4 text-sm text-muted-foreground">Synthese de tes points faibles a reviser en priorite. Exporte cette fiche pour la relire hors connexion.</p>
-                <button type="button" onClick={() => {
-                  const lines = [];
-                  lines.push("=== FICHE REVISION CERTIFLOW — " + new Date().toLocaleDateString("fr-FR") + " ===");
-                  lines.push("");
-                  lines.push("Score global: " + (answered > 0 ? Math.round((correct / answered) * 100) : 0) + "% (" + correct + "/" + answered + ")");
-                  lines.push("Streak: " + studyStreak + " jours");
-                  lines.push("");
-                  lines.push("--- DOMAINES FAIBLES ---");
-                  domains.filter(d => d.progress < 60).forEach(d => lines.push("  " + d.name + ": " + d.progress + "%"));
-                  lines.push("");
-                  lines.push("--- TOP ERREURS ---");
-                  errors.filter(e => e.status !== "maîtrisé").sort((a, b) => b.count - a.count).slice(0, 10).forEach((e, i) => lines.push("  " + (i+1) + ". [" + e.domain + "] " + (e.concept || e.question).slice(0, 80) + " (" + e.count + "x)"));
-                  lines.push("");
-                  lines.push("--- CONFUSIONS A REVISER ---");
-                  const haystack = errors.map(e => (e.concept || e.question).toLowerCase()).join(" ");
-                  confusionItems.filter(c => haystack.includes(c.comparison.toLowerCase())).slice(0, 5).forEach(c => lines.push("  " + c.comparison + " vs " + c.english + ": " + c.difference.slice(0, 100)));
-                  lines.push("");
-                  lines.push("--- PORTS A MEMORISER ---");
-                  portFlashcards.filter(p => ["HTTPS", "SSH", "DNS", "DHCP", "FTP", "SMTP", "RDP", "LDAP"].some(s => p.protocol.toUpperCase().includes(s))).forEach(p => lines.push("  " + p.protocol + " → " + p.port + " | " + p.english));
-                  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = url; a.download = "certiflow-fiche-revision-" + new Date().toISOString().slice(0, 10) + ".txt";
-                  a.click();
-                  URL.revokeObjectURL(url);
-                }}
-                  className="inline-flex min-h-10 items-center justify-center rounded-card bg-primary px-5 font-bold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:opacity-95">
-                  Exporter fiche revision (TXT)
-                </button>
-              </Panel>
-            </div>
+            <Panel title="Plan jusqu'au 25 mai 2026">
+              <p className="mb-4 text-muted-foreground">Priorité actuelle selon tes scores: {weakest.name}. Le plan s&apos;intensifie à mesure que la date approche.</p>
+              <div className="grid gap-3">
+                {plan.map(([day, task]) => (
+                  <div key={day} className="grid gap-1 rounded-card border border-border bg-muted p-4 md:grid-cols-[100px_1fr]">
+                    <strong>{day}</strong>
+                    <span>{task}</span>
+                  </div>
+                ))}
+              </div>
+            </Panel>
           )}
+
           {view === "search" && (
             <div className="grid gap-4">
               <Panel title="Recherche globale">
