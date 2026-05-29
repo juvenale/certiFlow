@@ -9,6 +9,8 @@ import { ErrorsView } from "./errors-view";
 import { AssistantView } from "./assistant-view";
 import { ExamView } from "./exam-view";
 import { QuizView } from "./quiz-view";
+import { ExamHistory } from "./exam-history-view";
+import Image from "next/image";
 
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -27,7 +29,8 @@ import {
   Search,
   Sun,
   Timer,
-  XCircle
+  XCircle,
+  BarChart3
 } from "lucide-react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { cn } from "@/lib/utils";
@@ -44,11 +47,11 @@ import { confusionItems, confusionSections } from "@/data/confusions";
 import { commandToolConfusions, commandToolScenarios, commandTools } from "@/data/command-tools";
 import type { User } from "@supabase/supabase-js";
 
-type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "errors" | "plan" | "assistant" | "search" | "settings";
+type ViewId = "dashboard" | "courses" | "confusions" | "quiz" | "pbq" | "flashcards" | "ports" | "exam" | "history" | "errors" | "plan" | "assistant" | "search" | "settings";
 type ExamCorrectionMode = "end" | "instant";
 type ExamConfidence = "low" | "medium" | "high";
 type FlashcardDeckType = "technical" | "acronyms" | "ports" | "commands";
-type AppTheme = "certiflow-classic" | "soc-night" | "exam-focus" | "threat-lab" | "midnight" | "warm-focus" | "forest-ops" | "arctic";
+type AppTheme = "certiflow-classic" | "soc-night" | "exam-focus" | "threat-lab" | "midnight" | "warm-focus" | "forest-ops" | "arctic" | "cyber-neon" | "dracula-mode" | "solarized-light" | "nordic-frost";
 type UnifiedFlashcard = {
   id: string;
   term: string;
@@ -105,6 +108,7 @@ const views: Array<{ id: ViewId; label: string; icon: React.ElementType }> = [
   { id: "flashcards", label: "Flashcards", icon: RotateCcw },
   { id: "ports", label: "Ports & commandes", icon: Command },
   { id: "exam", label: "Examens blancs", icon: Timer },
+  { id: "history", label: "Historique examens", icon: BarChart3 },
   { id: "errors", label: "Journal d'erreurs", icon: ClipboardList },
   { id: "plan", label: "Plan de révision", icon: CalendarDays },
   { id: "assistant", label: "Assistant IA", icon: Bot },
@@ -121,6 +125,10 @@ const appThemes: Array<{ id: AppTheme; label: string; note: string; swatches: st
   { id: "warm-focus",        label: "Warm Focus",        note: "Crème chaud — révision longue",  swatches: ["#C2410C", "#D97706", "#FDF8F2"] },
   { id: "forest-ops",        label: "Forest Ops",        note: "Terminal vert — full immersif",  swatches: ["#34D399", "#60A5FA", "#091510"] },
   { id: "arctic",            label: "Arctic",            note: "Bleu glacé — ultra propre",      swatches: ["#0369A1", "#0891B2", "#EEF3F8"] },
+  { id: "cyber-neon",        label: "Cyber-Néon",        note: "Rétro-futuriste néon",           swatches: ["#00FFCC", "#FF007F", "#050508"] },
+  { id: "dracula-mode",      label: "Dracula Premium",   note: "Le classique des développeurs",  swatches: ["#BD93F9", "#50FA7B", "#282A36"] },
+  { id: "solarized-light",   label: "Solarized Light",   note: "Rétro-chic — repos des yeux",    swatches: ["#268BD2", "#859900", "#FDF6E3"] },
+  { id: "nordic-frost",      label: "Nordic Frost",      note: "Bleu glacé et ardoise nordique",  swatches: ["#88C0D0", "#A3BE8C", "#2E3440"] },
 ];
 
 const plan = [
@@ -212,6 +220,17 @@ function formatExamAnswers(question: ExamQuestion, indexes: number[] | undefined
     .join(" | ");
 }
 
+const fallbackFlashcards: UnifiedFlashcard[] = flashcards.map((card) => ({
+  id: `fallback-${card.term}`,
+  themeId: "mvp",
+  themeTitle: card.domain,
+  domain: card.domain,
+  term: card.term,
+  definition: card.fr,
+  details: card.definition,
+  source: "flashcard cours local import" as const
+}));
+
 export function HomeClient() {
   const [view, setView] = useState<ViewId>("dashboard");
   const [appTheme, setAppTheme] = useState<AppTheme>(readThemeStorage);
@@ -240,7 +259,14 @@ export function HomeClient() {
   const [examConfidence, setExamConfidence] = useState<Record<string, ExamConfidence>>(() => readExamSession()?.examConfidence ?? {});
   const [selectedDomain, setSelectedDomain] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-domain") || "all" : "all"));
   const [selectedTheme, setSelectedTheme] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all"));
+  const [selectedSource, setSelectedSource] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-source-filter") || "all" : "all"));
   const [globalSearch, setGlobalSearch] = useState("");
+  const [prevFilters, setPrevFilters] = useState(() => ({
+    selectedDomain: typeof window !== "undefined" ? localStorage.getItem("certiflow-domain") || "all" : "all",
+    selectedTheme: typeof window !== "undefined" ? localStorage.getItem("certiflow-theme-filter") || "all" : "all",
+    selectedSource: typeof window !== "undefined" ? localStorage.getItem("certiflow-source-filter") || "all" : "all",
+    globalSearch: ""
+  }));
   const [flashcardDeck, setFlashcardDeck] = useState<FlashcardDeckType | null>(() => (typeof window !== "undefined" ? (localStorage.getItem("certiflow-flashcard-deck") as FlashcardDeckType | null) : null));
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [authEmail, setAuthEmail] = useState("");
@@ -250,6 +276,52 @@ export function HomeClient() {
   const [cloudStatus, setCloudStatus] = useState("Connecte-toi pour synchroniser téléphone et PC.");
   const supabase = useMemo(() => getSupabaseClient(), []);
 
+  const [customApiKey, setCustomApiKey] = useState(() => (typeof window !== "undefined" ? localStorage.getItem("certiflow-custom-api-key") || "" : ""));
+  const [srMap, setSrMap] = useState<Record<string, { interval: number; ease: number; repetitions: number; dueDate: string }>>(() => {
+    if (typeof window === "undefined") return {};
+    try {
+      return JSON.parse(localStorage.getItem("certiflow-spaced-repetition") || "{}");
+    } catch { return {}; }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("certiflow-custom-api-key", customApiKey);
+  }, [customApiKey]);
+
+  useEffect(() => {
+    localStorage.setItem("certiflow-spaced-repetition", JSON.stringify(srMap));
+  }, [srMap]);
+
+  function rateFlashcard(cardId: string, rating: 0 | 2 | 4 | 5) {
+    setSrMap((prev) => {
+      const record = prev[cardId] ?? { interval: 0, ease: 2.5, repetitions: 0, dueDate: new Date().toISOString() };
+      let { interval, ease, repetitions } = record;
+
+      if (rating < 3) {
+        repetitions = 0;
+        interval = 1;
+      } else {
+        if (repetitions === 0) {
+          interval = 1;
+        } else if (repetitions === 1) {
+          interval = 6;
+        } else {
+          interval = Math.round(interval * ease);
+        }
+        repetitions += 1;
+      }
+
+      ease = ease + (0.1 - (5 - rating) * (0.08 + (5 - rating) * 0.02));
+      ease = Math.max(1.3, ease);
+
+      const dueDate = new Date(Date.now() + interval * 24 * 60 * 60 * 1000).toISOString();
+      return { ...prev, [cardId]: { interval, ease, repetitions, dueDate } };
+    });
+
+    setFlashBack(false);
+    setFlashIndex((value) => value + 1);
+  }
+
   useEffect(() => {
     document.documentElement.dataset.theme = appTheme;
     localStorage.setItem("certiflow-theme", appTheme);
@@ -257,18 +329,24 @@ export function HomeClient() {
 
   useEffect(() => {
     if (!supabase) {
-      setCloudStatus("Supabase n'est pas encore configuré sur ce déploiement.");
+      setTimeout(() => {
+        setCloudStatus("Supabase n'est pas encore configuré sur ce déploiement.");
+      }, 0);
       return;
     }
 
     supabase.auth.getUser().then(({ data }) => {
       setAuthUser(data.user ?? null);
-      if (data.user) setCloudStatus(`Connecté: ${data.user.email ?? "compte Supabase"}`);
+      if (data.user) {
+        const msg = `Connecté: ${data.user.email ?? "compte Supabase"}`;
+        setCloudStatus((prev) => prev !== msg ? msg : prev);
+      }
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setAuthUser(session?.user ?? null);
-      setCloudStatus(session?.user ? `Connecté: ${session.user.email ?? "compte Supabase"}` : "Déconnecté.");
+      const msg = session?.user ? `Connecté: ${session.user.email ?? "compte Supabase"}` : "Déconnecté.";
+      setCloudStatus((prev) => prev !== msg ? msg : prev);
     });
 
     return () => listener.subscription.unsubscribe();
@@ -295,9 +373,10 @@ export function HomeClient() {
   useEffect(() => {
     localStorage.setItem("certiflow-domain", selectedDomain);
     localStorage.setItem("certiflow-theme-filter", selectedTheme);
+    localStorage.setItem("certiflow-source-filter", selectedSource);
     if (flashcardDeck) localStorage.setItem("certiflow-flashcard-deck", flashcardDeck);
     else localStorage.removeItem("certiflow-flashcard-deck");
-  }, [selectedDomain, selectedTheme, flashcardDeck]);
+  }, [selectedDomain, selectedTheme, selectedSource, flashcardDeck]);
 
   useEffect(() => {
     if (activeExam) {
@@ -365,85 +444,127 @@ export function HomeClient() {
     const domainMatch = selectedDomain === "all" || question.domain === selectedDomain;
     const themeMatch = selectedTheme === "all" || themeTerms.some((term) => haystack.includes(term));
     const searchMatch = !normalizedSearch || haystack.includes(normalizedSearch);
-    return domainMatch && themeMatch && searchMatch;
+    const sourceMatch = selectedSource === "all" || (question as any).source === selectedSource;
+    return domainMatch && themeMatch && searchMatch && sourceMatch;
   });
   const effectiveQuizQuestions = shuffledErrorPool.length ? shuffledErrorPool : (filteredQuizQuestions.length ? filteredQuizQuestions : questions);
   const currentQuestion = (effectiveQuizQuestions.length ? effectiveQuizQuestions : questions)[questionIndex % (effectiveQuizQuestions.length || questions.length)];
   const currentQuestionChoices = currentQuestion.choices.slice(0, 4);
   const currentQuestionAnswer = Math.min(Math.max(currentQuestion.answer, 0), currentQuestionChoices.length - 1);
-  const fallbackFlashcards: UnifiedFlashcard[] = flashcards.map((card) => ({
-    id: `fallback-${card.term}`,
-    themeId: "mvp",
-    themeTitle: card.domain,
-    domain: card.domain,
-    term: card.term,
-    definition: card.fr,
-    details: card.definition,
-    source: "flashcard cours local import" as const
-  }));
-  const technicalFlashcards: UnifiedFlashcard[] = (filteredStudyItems.length ? filteredStudyItems : fallbackFlashcards).map((item) => ({
-    id: item.id,
-    term: item.term,
-    definition: item.definition,
-    details: item.details,
-    domain: item.domain,
-    themeTitle: item.themeTitle,
-    source: item.source
-  }));
-  const acronymDeck: UnifiedFlashcard[] = acronymFlashcards
-    .filter((item) => {
-      const domainMatch = selectedDomain === "all" || item.domain === selectedDomain;
-      const searchMatch = !normalizedSearch || [item.acronym, item.english, item.explanation, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch);
-      return domainMatch && searchMatch;
-    })
-    .map((item) => ({
+  const sortedFlashcards = useMemo(() => {
+    const technical = (filteredStudyItems.length ? filteredStudyItems : fallbackFlashcards).map((item) => ({
       id: item.id,
-      term: item.acronym,
-      definition: item.english,
-      details: `${item.explanation} ${item.details}`,
+      term: item.term,
+      definition: item.definition,
+      details: item.details,
       domain: item.domain,
       themeTitle: item.themeTitle,
       source: item.source
     }));
-  const portDeck: UnifiedFlashcard[] = portFlashcards
-    .filter((item) => {
+
+    const acronyms = acronymFlashcards
+      .filter((item) => {
+        const domainMatch = selectedDomain === "all" || item.domain === selectedDomain;
+        const searchMatch = !normalizedSearch || [item.acronym, item.english, item.explanation, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch);
+        return domainMatch && searchMatch;
+      })
+      .map((item) => ({
+        id: item.id,
+        term: item.acronym,
+        definition: item.english,
+        details: `${item.explanation} ${item.details}`,
+        domain: item.domain,
+        themeTitle: item.themeTitle,
+        source: item.source
+      }));
+
+    const ports = portFlashcards
+      .filter((item) => {
+        const haystack = [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase();
+        return !normalizedSearch || haystack.includes(normalizedSearch);
+      })
+      .map((item) => ({
+        id: item.id,
+        term: item.protocol,
+        definition: `${item.port} | ${item.english}`,
+        details: `${item.details} Alternative sécurisée: ${item.secureAlternative}`,
+        domain: item.domain,
+        themeTitle: "Ports et protocoles",
+        source: item.source
+      }));
+
+    const commands = commandTools
+      .filter((item) => {
+        const haystack = [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase();
+        return !normalizedSearch || haystack.includes(normalizedSearch);
+      })
+      .map((item) => ({
+        id: item.id,
+        term: item.name,
+        definition: item.english,
+        details: `${item.purpose} À connaître: ${item.examTip}`,
+        domain: item.domain,
+        themeTitle: "Commandes et outils",
+        source: item.source
+      }));
+
+    const deck =
+      flashcardDeck === "acronyms" ? acronyms :
+      flashcardDeck === "ports" ? ports :
+      flashcardDeck === "commands" ? commands :
+      technical;
+
+    const now = new Date().toISOString();
+
+    return [...deck].sort((a, b) => {
+      const recA = srMap[a.id];
+      const recB = srMap[b.id];
+
+      const dueA = recA ? recA.dueDate : "1970-01-01";
+      const dueB = recB ? recB.dueDate : "1970-01-01";
+
+      const isDueA = dueA <= now;
+      const isDueB = dueB <= now;
+
+      if (isDueA && !isDueB) return -1;
+      if (!isDueA && isDueB) return 1;
+
+      return dueA.localeCompare(dueB);
+    });
+  }, [flashcardDeck, selectedDomain, normalizedSearch, srMap, filteredStudyItems]);
+
+  const currentFlashcard = sortedFlashcards.length ? sortedFlashcards[flashIndex % sortedFlashcards.length] : undefined;
+
+  const deckCounts = useMemo(() => {
+    const technicalCount = filteredStudyItems.length ? filteredStudyItems.length : fallbackFlashcards.length;
+
+    const acronymsCount = acronymFlashcards.filter((item) => {
+      const domainMatch = selectedDomain === "all" || item.domain === selectedDomain;
+      const searchMatch = !normalizedSearch || [item.acronym, item.english, item.explanation, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch);
+      return domainMatch && searchMatch;
+    }).length;
+
+    const portsCount = portFlashcards.filter((item) => {
       const haystack = [item.port, item.protocol, item.english, item.details, item.secureAlternative].join(" ").toLowerCase();
       return !normalizedSearch || haystack.includes(normalizedSearch);
-    })
-    .map((item) => ({
-      id: item.id,
-      term: item.protocol,
-      definition: `${item.port} | ${item.english}`,
-      details: `${item.details} Alternative sécurisée: ${item.secureAlternative}`,
-      domain: item.domain,
-      themeTitle: "Ports et protocoles",
-      source: item.source
-    }));
-  const commandDeck: UnifiedFlashcard[] = commandTools
-    .filter((item) => {
+    }).length;
+
+    const commandsCount = commandTools.filter((item) => {
       const haystack = [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase();
       return !normalizedSearch || haystack.includes(normalizedSearch);
-    })
-    .map((item) => ({
-      id: item.id,
-      term: item.name,
-      definition: item.english,
-      details: `${item.purpose} À connaître: ${item.examTip}`,
-      domain: item.domain,
-      themeTitle: "Commandes et outils",
-      source: item.source
-    }));
-  const effectiveFlashcards =
-    flashcardDeck === "acronyms" ? acronymDeck :
-    flashcardDeck === "ports" ? portDeck :
-    flashcardDeck === "commands" ? commandDeck :
-    technicalFlashcards;
-  const currentFlashcard = effectiveFlashcards.length ? effectiveFlashcards[flashIndex % effectiveFlashcards.length] : technicalFlashcards[0];
+    }).length;
+
+    return { technical: technicalCount, acronyms: acronymsCount, ports: portsCount, commands: commandsCount };
+  }, [selectedDomain, normalizedSearch, filteredStudyItems]);
+
   const activeView = views.find((item) => item.id === view) ?? views[0];
   const activeTheme = appThemes.find((item) => item.id === appTheme) ?? appThemes[0];
   const activeExamQuestion = activeExam?.questions[examIndex];
   const allExamSuites = [...(ninetyExams as any[]), ...messerExams];
   const allExamQuestions = [...(ninetyQuestions as ExamQuestion[]), ...messerQuestions];
+  const quizSources = (questions as any[]).map(q => q.source).filter(Boolean);
+  const examSources = allExamQuestions.map(q => q.source).filter(Boolean);
+  const uniqueSources = Array.from(new Set([...quizSources, ...examSources])).sort();
   const examAnsweredCount = activeExam ? activeExam.questions.filter((question) => (examAnswers[question.id]?.length ?? 0) > 0).length : 0;
   const examCorrectCount = activeExam ? activeExam.questions.filter((question) => sameAnswerSet(examAnswers[question.id], getExamCorrectAnswers(question))).length : 0;
   const examFlaggedCount = activeExam ? activeExam.questions.filter((question) => examFlags[question.id]).length : 0;
@@ -458,7 +579,8 @@ export function HomeClient() {
   const canShowExamCorrection = Boolean(activeExam && (examFinished || activeExam.correctionMode === "instant"));
   const filteredExamQuestions = allExamQuestions.filter((question) => {
     const haystack = [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase();
-    return !normalizedSearch || haystack.includes(normalizedSearch);
+    const sourceMatch = selectedSource === "all" || question.source === selectedSource;
+    return (!normalizedSearch || haystack.includes(normalizedSearch)) && sourceMatch;
   });
   const filteredCommandTools = commandTools.filter((item) => {
     const haystack = [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase();
@@ -471,13 +593,17 @@ export function HomeClient() {
   const quickCourseResults = normalizedSearch ? studyItems.filter((item) => [item.term, item.definition, item.details, item.themeTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickConfusionResults = normalizedSearch ? allConfusionItems.filter((item) => [item.comparison, item.english, item.difference, item.sectionTitle].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
   const quickCommandResults = normalizedSearch ? commandTools.filter((item) => [item.name, item.english, item.purpose, item.examTip].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
-  const quickQuizResults = normalizedSearch ? questions.filter((question) => [question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
-  const quickExamResults = normalizedSearch ? allExamQuestions.filter((question) => [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
+  const quickQuizResults = normalizedSearch ? questions.filter((question) => (selectedSource === "all" || (question as any).source === selectedSource) && [question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
+  const quickExamResults = normalizedSearch ? allExamQuestions.filter((question) => (selectedSource === "all" || question.source === selectedSource) && [question.examTitle, question.question, question.choices.join(" "), question.explanation].join(" ").toLowerCase().includes(normalizedSearch)).slice(0, 5) : [];
 
-  useEffect(() => {
+  if (prevFilters.selectedDomain !== selectedDomain ||
+      prevFilters.selectedTheme !== selectedTheme ||
+      prevFilters.selectedSource !== selectedSource ||
+      prevFilters.globalSearch !== globalSearch) {
+    setPrevFilters({ selectedDomain, selectedTheme, selectedSource, globalSearch });
     setFlashIndex(0);
     setQuestionIndex(0);
-  }, [selectedDomain, selectedTheme, globalSearch]);
+  }
 
   function chooseAnswer(index: number) {
     if (selectedAnswer !== null) return;
@@ -680,6 +806,7 @@ if (filters.count > 0 && filters.count < pool.length) {
     }
     setExamStartedAt(null);
     setExamFinished(true);
+    setExamIndex(-1);
   }
 
   function returnToExamList() {
@@ -841,9 +968,12 @@ if (filters.count > 0 && filters.count < pool.length) {
         <aside className="glass-panel border-b border-border p-4 lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="mb-6">
             <div className="rounded-card border border-border bg-white p-2 shadow-sm">
-              <img
+              <Image
                 src="/certiflow-logo.png"
                 alt="CertiFlow certification workflow"
+                width={250}
+                height={64}
+                priority
                 className="h-16 w-full rounded-card object-contain"
               />
             </div>
@@ -918,7 +1048,7 @@ if (filters.count > 0 && filters.count < pool.length) {
 
           <div className="glass-panel sticky top-0 z-20 mb-6 grid gap-3 rounded-card border border-border p-4 shadow-sm">
             <label className="text-sm font-bold" htmlFor="global-search">Rechercher un terme, concept, question...</label>
-            <div className="grid gap-3 lg:grid-cols-[1fr_220px_220px_auto]">
+            <div className="grid gap-3 lg:grid-cols-[1fr_200px_200px_200px_auto]">
               <input
                 id="global-search"
                 value={globalSearch}
@@ -935,6 +1065,10 @@ if (filters.count > 0 && filters.count < pool.length) {
                 {studyThemes
                   .filter((theme) => selectedDomain === "all" || theme.domain === selectedDomain)
                   .map((theme) => <option key={theme.id} value={theme.id}>{theme.title}</option>)}
+              </select>
+              <select value={selectedSource} onChange={(event) => setSelectedSource(event.target.value)} className="min-h-11 rounded-card border border-border bg-background px-3">
+                <option value="all">Toutes les sources</option>
+                {uniqueSources.map((src) => <option key={src} value={src}>{src}</option>)}
               </select>
               <ActionButton onClick={() => setView("search")}>Recherche</ActionButton>
             </div>
@@ -1008,63 +1142,104 @@ if (filters.count > 0 && filters.count < pool.length) {
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                   <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Acronymes</h2>
-                    <p className="mt-2 text-muted-foreground">Sigles Security+ avec signification anglaise, explication française et pièges d'examen.</p>
-                    <Badge>{acronymDeck.length} cartes</Badge>
+                    <p className="mt-2 text-muted-foreground">{"Sigles Security+ avec signification anglaise, explication française et pièges d'examen."}</p>
+                    <Badge>{deckCounts.acronyms} cartes</Badge>
                     <ActionButton className="mt-4" onClick={() => startFlashcardDeck("acronyms")}>Lancer</ActionButton>
                   </article>
                   <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Ports / protocoles</h2>
-                    <p className="mt-2 text-muted-foreground">Ports, protocoles, rôle et risques à mémoriser pour l'examen.</p>
-                    <Badge>{portDeck.length} cartes</Badge>
+                    <p className="mt-2 text-muted-foreground">{"Ports, protocoles, rôle et risques à mémoriser pour l'examen."}</p>
+                    <Badge>{deckCounts.ports} cartes</Badge>
                     <ActionButton className="mt-4" onClick={() => startFlashcardDeck("ports")}>Lancer</ActionButton>
                   </article>
                   <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Commandes / outils</h2>
-                    <p className="mt-2 text-muted-foreground">Commandes, outils, usage pratique et points à reconnaître à l'examen.</p>
-                    <Badge>{commandDeck.length} cartes</Badge>
+                    <p className="mt-2 text-muted-foreground">{"Commandes, outils, usage pratique et points à reconnaître à l'examen."}</p>
+                    <Badge>{deckCounts.commands} cartes</Badge>
                     <ActionButton className="mt-4" onClick={() => startFlashcardDeck("commands")}>Lancer</ActionButton>
                   </article>
                   <article className="rounded-card border border-border bg-muted p-5">
                     <h2 className="text-xl font-black">Termes techniques</h2>
                     <p className="mt-2 text-muted-foreground">Concepts importants issus des cours, filtrables par domaine, thème et recherche.</p>
-                    <Badge>{technicalFlashcards.length} cartes</Badge>
+                    <Badge>{deckCounts.technical} cartes</Badge>
                     <ActionButton className="mt-4" onClick={() => startFlashcardDeck("technical")}>Lancer</ActionButton>
                   </article>
                 </div>
               ) : (
                 <>
               <div className="mb-4 flex flex-wrap gap-2">
-                <Badge>{effectiveFlashcards.length} cartes</Badge>
+                <Badge>{sortedFlashcards.length} cartes</Badge>
                 <Badge>{flashcardDeck === "acronyms" ? "Acronymes" : flashcardDeck === "ports" ? "Ports / protocoles" : flashcardDeck === "commands" ? "Commandes / outils" : "Termes techniques"}</Badge>
                 {selectedDomain !== "all" && <Badge>{selectedDomain}</Badge>}
                 {selectedThemeData && <Badge>{selectedThemeData.title}</Badge>}
+                {currentFlashcard && (
+                  <Badge>
+                    {srMap[currentFlashcard.id]
+                      ? `Rétention : Int ${srMap[currentFlashcard.id].interval}j (Rep #${srMap[currentFlashcard.id].repetitions})`
+                      : "Nouvelle carte"}
+                  </Badge>
+                )}
                 <GhostButton onClick={() => { setFlashcardDeck(null); setFlashBack(false); }}>Changer de paquet</GhostButton>
               </div>
-              {effectiveFlashcards.length ? (
+              {sortedFlashcards.length ? (
                 <>
-              <button
-                type="button"
-                onClick={() => setFlashBack((value) => !value)}
-                className="grid min-h-72 w-full place-items-center rounded-card bg-muted p-6 text-center"
-              >
-                {flashBack ? (
-                  <div>
-                    <h2 className="text-3xl font-black text-primary">{currentFlashcard.term}</h2>
-                    <p className="mt-3 text-xl font-bold">{currentFlashcard.definition}</p>
-                    <p className="mt-3">{currentFlashcard.details}</p>
-                    <p className="mt-3 text-sm text-muted-foreground">{currentFlashcard.domain} | {currentFlashcard.themeTitle}</p>
+              <div className="card-perspective w-full h-[280px]">
+                <div 
+                  className={cn("card-inner cursor-pointer w-full h-full", flashBack && "card-flipped")}
+                  onClick={() => setFlashBack((value) => !value)}
+                >
+                  {/* Front side of the card */}
+                  <div className="card-front rounded-card bg-card border border-border p-6 text-center shadow-md flex flex-col items-center justify-center h-full">
+                    <p className="text-4xl font-extrabold text-gradient tracking-tight">{currentFlashcard?.term}</p>
+                    <p className="mt-4 text-[10px] text-muted-foreground uppercase tracking-widest font-bold">Cliquez pour retourner la carte</p>
                   </div>
-                ) : (
-                  <div>
-                    <p className="text-6xl font-black text-primary">{currentFlashcard.term}</p>
-                    <p className="mt-4 text-muted-foreground">Clique pour retourner la carte</p>
+                  {/* Back side of the card */}
+                  <div className="card-back rounded-card bg-card border border-border p-6 text-center shadow-md flex flex-col items-center justify-center h-full">
+                    <h2 className="text-2xl font-black text-primary">{currentFlashcard?.term}</h2>
+                    <p className="mt-2.5 text-lg font-bold text-foreground leading-snug">{currentFlashcard?.definition}</p>
+                    <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground max-w-xl mx-auto">{currentFlashcard?.details}</p>
+                    <p className="mt-3 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary w-fit mx-auto">{currentFlashcard?.domain} | {currentFlashcard?.themeTitle}</p>
                   </div>
-                )}
-              </button>
-              <div className="mt-4 flex gap-2">
-                <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + effectiveFlashcards.length) % effectiveFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
-                <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % effectiveFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
+                </div>
               </div>
+
+              {flashBack ? (
+                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 select-none">
+                  <button
+                    type="button"
+                    onClick={() => currentFlashcard && rateFlashcard(currentFlashcard.id, 0)}
+                    className="inline-flex min-h-12 py-3 px-4 items-center justify-center rounded-card bg-red-600/5 border-2 border-red-600/30 text-red-600 font-bold hover:bg-red-600 hover:text-white transition-all duration-200"
+                  >
+                    {"À revoir (1j)"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => currentFlashcard && rateFlashcard(currentFlashcard.id, 2)}
+                    className="inline-flex min-h-12 py-3 px-4 items-center justify-center rounded-card bg-amber-600/5 border-2 border-amber-600/30 text-amber-600 font-bold hover:bg-amber-600 hover:text-white transition-all duration-200"
+                  >
+                    {"Difficile (1j)"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => currentFlashcard && rateFlashcard(currentFlashcard.id, 4)}
+                    className="inline-flex min-h-12 py-3 px-4 items-center justify-center rounded-card bg-blue-600/5 border-2 border-blue-600/30 text-blue-600 font-bold hover:bg-blue-600 hover:text-white transition-all duration-200"
+                  >
+                    {"Bien (6j)"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => currentFlashcard && rateFlashcard(currentFlashcard.id, 5)}
+                    className="inline-flex min-h-12 py-3 px-4 items-center justify-center rounded-card bg-emerald-600/5 border-2 border-emerald-600/30 text-emerald-600 font-bold hover:bg-emerald-600 hover:text-white transition-all duration-200"
+                  >
+                    {"Facile (12j)"}
+                  </button>
+                </div>
+              ) : (
+                <div className="mt-5 flex gap-2">
+                  <GhostButton onClick={() => { setFlashIndex((value) => (value - 1 + sortedFlashcards.length) % sortedFlashcards.length); setFlashBack(false); }}>Précédente</GhostButton>
+                  <ActionButton onClick={() => { setFlashIndex((value) => (value + 1) % sortedFlashcards.length); setFlashBack(false); }}>Suivante</ActionButton>
+                </div>
+              )}
                 </>
               ) : (
                 <div className="rounded-card bg-muted p-5">
@@ -1116,6 +1291,10 @@ if (filters.count > 0 && filters.count < pool.length) {
             />
           )}
 
+          {view === "history" && (
+            <ExamHistory />
+          )}
+
           {view === "errors" && (
             <ErrorsView
               errors={errors}
@@ -1142,7 +1321,7 @@ if (filters.count > 0 && filters.count < pool.length) {
           {view === "search" && (
             <div className="grid gap-4">
               <Panel title="Recherche globale">
-                <p className="text-muted-foreground">Recherche active: {globalSearch ? `"${globalSearch}"` : "aucun terme saisi"}. Les filtres domaine/thème restent appliqués aux cours, flashcards et quiz.</p>
+                <p className="text-muted-foreground">Recherche active: {globalSearch ? `"${globalSearch}"` : "aucun terme saisi"}. Les filtres domaine, thème et source restent appliqués aux quiz et examens.</p>
               </Panel>
 
               <Panel title={`Cours et flashcards (${filteredStudyItems.length})`}>
@@ -1220,6 +1399,7 @@ if (filters.count > 0 && filters.count < pool.length) {
                       <div className="mb-2 flex flex-wrap gap-2">
                         <Badge>{question.domain}</Badge>
                         <Badge>Question {question.questionNumber}</Badge>
+                        <Badge>{(question as any).source}</Badge>
                       </div>
                       <p className="font-semibold">{question.question}</p>
                       <GhostButton onClick={() => { setQuestionIndex(effectiveQuizQuestions.findIndex((item) => item.id === question.id)); setSelectedAnswer(null); setView("quiz"); }}>Pratiquer</GhostButton>
@@ -1236,6 +1416,7 @@ if (filters.count > 0 && filters.count < pool.length) {
                         <Badge>{question.examTitle}</Badge>
                         <Badge>Question {question.questionNumber}</Badge>
                       </div>
+                        <Badge>{question.source}</Badge>
                       <p className="font-semibold">{question.question}</p>
                       <GhostButton onClick={() => { openExamSetup(`${question.examTitle} - question ${question.questionNumber}`, [question]); setView("exam"); }}>Pratiquer</GhostButton>
                     </article>
@@ -1328,6 +1509,30 @@ if (filters.count > 0 && filters.count < pool.length) {
                       </div>
                     )}
                   </div>
+                </div>
+              </Panel>
+
+              <Panel title="Clé API Assistant IA (DeepSeek)">
+                <p className="mb-4 text-muted-foreground text-sm">
+                  {"Renseignez votre clé API personnelle DeepSeek pour poser vos questions à l'assistant ou obtenir des explications détaillées dans les quiz. Elle est sauvegardée uniquement en local sur votre appareil."}
+                </p>
+                <div className="flex max-w-md gap-3">
+                  <input
+                    type="password"
+                    value={customApiKey}
+                    onChange={(event) => setCustomApiKey(event.target.value)}
+                    placeholder="sk-..."
+                    className="min-h-11 flex-1 rounded-card border border-border bg-card px-3 outline-none focus:border-primary"
+                  />
+                  {customApiKey && (
+                    <button
+                      type="button"
+                      onClick={() => setCustomApiKey("")}
+                      className="inline-flex min-h-11 items-center justify-center rounded-card border border-border bg-muted px-4 font-bold text-red-600 transition hover:border-red-600"
+                    >
+                      Effacer
+                    </button>
+                  )}
                 </div>
               </Panel>
 

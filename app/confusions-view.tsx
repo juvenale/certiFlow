@@ -36,7 +36,7 @@ function dc(domain: string) {
 
 function VsBadge() {
   return (
-    <span className="inline-flex shrink-0 items-center rounded-full border border-border bg-muted px-1.5 py-0.5 text-[10px] font-black text-muted-foreground">
+    <span className="inline-flex shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/5 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-primary select-none leading-none">
       vs
     </span>
   );
@@ -44,12 +44,12 @@ function VsBadge() {
 
 function ComparisonTitle({ text }: { text: string }) {
   const parts = text.split(" vs ");
-  if (parts.length < 2) return <span className="font-black text-primary">{text}</span>;
+  if (parts.length < 2) return <span className="font-extrabold text-xs text-primary">{text}</span>;
   return (
-    <span className="flex flex-wrap items-center gap-1.5 leading-snug">
+    <span className="flex flex-wrap items-center gap-1.5 leading-tight">
       {parts.map((part, i) => (
         <span key={i} className="flex items-center gap-1.5">
-          <span className="font-black text-primary">{part}</span>
+          <span className="font-extrabold text-xs text-primary">{part}</span>
           {i < parts.length - 1 && <VsBadge />}
         </span>
       ))}
@@ -57,6 +57,7 @@ function ComparisonTitle({ text }: { text: string }) {
   );
 }
 
+// ─── ConfusionCard ────────────────────────────────────────────────────────────
 function ConfusionCard({ item }: { item: ConfusionItem }) {
   const [open, setOpen] = useState(false);
 
@@ -66,41 +67,47 @@ function ConfusionCard({ item }: { item: ConfusionItem }) {
 
   return (
     <article className={cn(
-      "rounded-card border border-border bg-card overflow-hidden transition-shadow duration-200",
-      open ? "shadow-md" : "hover:shadow-sm hover:border-primary/40"
+      "rounded-card border bg-card overflow-hidden transition-all duration-200",
+      open ? "border-primary/30 shadow-md" : "border-border hover:border-primary/20 hover:shadow-sm"
     )}>
-      <button type="button" onClick={() => setOpen(!open)} title={item.comparison}
-        className="flex w-full items-center gap-1.5 p-3 text-left">
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        title={item.comparison}
+        className="flex w-full items-center gap-2 p-2.5 text-left transition-colors hover:bg-muted/20"
+      >
         <ChevronDown className={cn(
-          "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
-          open && "rotate-180"
+          "h-3.5 w-3.5 shrink-0 text-muted-foreground transition-transform duration-300",
+          open && "rotate-180 text-primary"
         )} />
         <ComparisonTitle text={item.comparison} />
       </button>
 
       {open && (
-        <div className="border-t border-border space-y-3 bg-muted/30 px-4 pb-4 pt-3">
+        <div className="border-t border-border space-y-2.5 bg-muted/30 px-3.5 pb-3.5 pt-2.5 animate-in fade-in slide-in-from-top-0.5 duration-200">
           {hasSplit ? (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {cmpParts.map((cmp, i) => (
-                <div key={i} className="rounded-card border border-border bg-card p-3">
-                  <p className="mb-1 text-xs font-black text-primary">{cmp}</p>
-                  <p className="text-sm text-muted-foreground leading-snug">
+                <div key={i} className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+                  <p className="mb-0.5 text-xs font-black text-primary">{cmp}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     {engParts[i] ?? ""}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <div>
-              <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Signification</p>
-              <p className="text-sm">{item.english}</p>
+            <div className="rounded-card border border-border bg-card p-2.5 shadow-sm">
+              <p className="mb-0.5 text-[8px] font-bold uppercase tracking-widest text-muted-foreground">Signification</p>
+              <p className="text-xs font-medium text-foreground">{item.english}</p>
             </div>
           )}
 
-          <div className="rounded-card border border-amber-200 bg-amber-50 p-3">
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-warning-fg">Différence clé</p>
-            <p className="text-sm text-warning-fg leading-relaxed">{item.difference}</p>
+          {/* Key difference panel (Theme adaptable warning classes!) */}
+          <div className="rounded-card border border-warning-muted bg-warning-muted p-2.5 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 right-0 h-12 w-12 -mr-4 -mt-4 rounded-full bg-warning-muted/40 blur-md" />
+            <p className="mb-0.5 text-[8px] font-black uppercase tracking-widest text-warning-fg relative z-10">Différence clé</p>
+            <p className="text-xs text-warning-fg leading-relaxed font-medium relative z-10">{item.difference}</p>
           </div>
         </div>
       )}
@@ -108,6 +115,7 @@ function ConfusionCard({ item }: { item: ConfusionItem }) {
   );
 }
 
+// ─── ConfusionSection ─────────────────────────────────────────────────────────
 function ConfusionSection({ section, expanded, onToggle }: {
   section: ConfusionSection;
   expanded: boolean;
@@ -116,33 +124,39 @@ function ConfusionSection({ section, expanded, onToggle }: {
   if (section.items.length === 0) return null;
   const colors = dc(section.domain);
   return (
-    <section className={cn("rounded-card border overflow-hidden", colors.border)}>
-      <button type="button" onClick={onToggle}
+    <section className={cn(
+      "rounded-card border overflow-hidden transition-all duration-200",
+      expanded ? colors.border : "border-border hover:border-primary/20"
+    )}>
+      <button
+        type="button"
+        onClick={onToggle}
         className={cn(
-          "flex w-full items-center gap-1.5 p-2.5 text-left transition-colors",
-          expanded ? colors.bg : "bg-card hover:bg-muted/50"
-        )}>
-        <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot)} />
+          "flex w-full items-center gap-2 p-2.5 text-left transition-colors",
+          expanded ? colors.bg : "bg-card hover:bg-muted/40"
+        )}
+      >
+        <span className={cn("h-2.5 w-2.5 shrink-0 rounded-full", colors.dot, "shadow-[0_0_6px_currentColor]")} style={{ color: "var(--primary)" }} />
         <div className="flex-1 min-w-0">
-          <p className="font-black leading-snug">{section.title}</p>
-          <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold", colors.tag)}>
+          <p className="font-extrabold text-sm leading-snug text-foreground">{section.title}</p>
+          <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[8px] font-black uppercase tracking-wide", colors.tag)}>
             {section.domain}
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
-          <span className="text-sm font-bold text-muted-foreground tabular-nums">
+          <span className="text-xs font-bold text-muted-foreground/80 tabular-nums">
             {section.items.length} confusion{section.items.length > 1 ? "s" : ""}
           </span>
           <ChevronDown className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform duration-200",
+            "h-3.5 w-3.5 text-muted-foreground transition-transform duration-300",
             expanded && "rotate-180"
           )} />
         </div>
       </button>
 
       {expanded && (
-        <div className="border-t border-border bg-card p-2.5">
-          <div className="grid gap-2 md:grid-cols-2">
+        <div className="border-t border-border bg-muted/10 p-2.5 animate-in fade-in slide-in-from-top-1 duration-200">
+          <div className="grid gap-2 grid-cols-1 md:grid-cols-2">
             {section.items.map((item) => (
               <ConfusionCard key={item.id} item={item} />
             ))}
@@ -153,6 +167,7 @@ function ConfusionSection({ section, expanded, onToggle }: {
   );
 }
 
+// ─── ConfusionsView ───────────────────────────────────────────────────────────
 export function ConfusionsView({
   filteredSections,
   filteredItems,
@@ -192,7 +207,7 @@ export function ConfusionsView({
   if (filteredItems.length === 0) {
     return (
       <div className="rounded-card border border-border bg-card p-12 text-center shadow-sm">
-        <AlertTriangle className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40" />
+        <AlertTriangle className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40 animate-bounce" />
         <p className="text-base font-bold">Aucune confusion trouvée</p>
         <p className="mt-1 text-sm text-muted-foreground">Modifiez le domaine ou la recherche pour afficher des entrées.</p>
       </div>
@@ -200,21 +215,26 @@ export function ConfusionsView({
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {/* Domain summary chips */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
         {Object.entries(domainSummary).map(([domain, data]) => {
           const colors = dc(domain);
           return (
-            <div key={domain} className={cn("rounded-card border p-3", colors.bg, colors.border)}>
-              <div className="flex items-center gap-1.5 mb-1">
-                <span className={cn("h-2 w-2 rounded-full shrink-0", colors.dot)} />
-                <span className="text-xs font-bold text-muted-foreground">
+            <div key={domain} className={cn(
+              "rounded-card border p-3 shadow-sm transition-all duration-300 hover:shadow-md hover:border-primary/20 relative overflow-hidden group", 
+              colors.bg, 
+              colors.border
+            )}>
+              <div className="absolute -right-4 -bottom-4 h-12 w-12 rounded-full bg-primary/5 blur-lg group-hover:bg-primary/10 transition-all duration-300" />
+              <div className="flex items-center gap-1.5 mb-1.5 relative z-10">
+                <span className={cn("h-1.5 w-1.5 rounded-full shrink-0", colors.dot)} />
+                <span className="text-[9px] font-black uppercase tracking-wider text-muted-foreground">
                   {data.sections} section{data.sections > 1 ? "s" : ""}
                 </span>
               </div>
-              <p className="text-xl font-black tabular-nums">{data.items}</p>
-              <p className="text-[10px] text-muted-foreground leading-tight mt-0.5 line-clamp-2">{domain}</p>
+              <p className="text-lg font-black tracking-tight tabular-nums text-foreground relative z-10">{data.items}</p>
+              <p className="text-[9px] font-bold text-muted-foreground/80 leading-tight mt-1 line-clamp-2 relative z-10">{domain}</p>
             </div>
           );
         })}
@@ -222,14 +242,14 @@ export function ConfusionsView({
 
       {/* Hint + controls */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          <span className="font-bold text-foreground">{filteredItems.length}</span>{" "}
+        <p className="text-xs text-muted-foreground">
+          <span className="font-extrabold text-foreground">{filteredItems.length}</span>{" "}
           confusion{filteredItems.length > 1 ? "s" : ""} dans{" "}
-          <span className="font-bold text-foreground">{visible.length}</span>{" "}
+          <span className="font-extrabold text-foreground">{visible.length}</span>{" "}
           section{visible.length > 1 ? "s" : ""} — cliquez pour comparer
         </p>
         <button type="button" onClick={toggleAll}
-          className="text-xs font-bold text-primary underline-offset-2 hover:underline">
+          className="text-xs font-black text-primary underline-offset-2 hover:underline">
           {allExpanded ? "Tout réduire" : "Tout développer"}
         </button>
       </div>

@@ -26,7 +26,6 @@ export function GhostButton({ children, onClick }: { children: React.ReactNode; 
 
 export function CountdownTimer({ seconds, onExpire, incompleteCount }: { seconds: number; onExpire: () => void; incompleteCount?: number }) {
   const [remaining, setRemaining] = useState(seconds);
-  const warned = useRef(false);
   const expired = useRef(false);
   const halfTime = Math.floor(seconds / 2);
 
@@ -43,8 +42,7 @@ export function CountdownTimer({ seconds, onExpire, incompleteCount }: { seconds
   const secs = remaining % 60;
   const pct = (remaining / seconds) * 100;
   const urgent = remaining <= 30;
-  const halfway = remaining <= halfTime && !warned.current;
-  if (halfway) warned.current = true;
+  const halfway = remaining <= halfTime;
 
   return (
     <div>
@@ -57,7 +55,7 @@ export function CountdownTimer({ seconds, onExpire, incompleteCount }: { seconds
         </div>
         <span className={cn("font-mono font-bold tabular-nums", urgent && "text-red-500")}>{mins}:{secs.toString().padStart(2, "0")}</span>
       </div>
-      {halfway && !urgent && <p className="mb-2 flex items-center gap-2 text-sm text-yellow-600"><AlertTriangle className="h-4 w-4" /> Mi-temps: verifie les contraintes.</p>}
+      {halfway && !urgent && <p className="mb-2 flex items-center gap-2 text-sm text-yellow-600"><AlertTriangle className="h-4 w-4" /> {"Mi-temps: vérifiez les contraintes."}</p>}
       {urgent && incompleteCount !== undefined && incompleteCount > 0 && <p className="mb-2 flex items-center gap-2 text-sm text-red-500 animate-pulse"><AlertTriangle className="h-4 w-4" /> {incompleteCount} champ(s) incomplet(s) !</p>}
     </div>
   );
@@ -107,9 +105,20 @@ export function ScoringDisplay({ score, max, feedback, correctAnswers }: { score
 }
 
 export function usePBQPersist(key: string) {
-  const [saved, setSaved] = useState<string | null>(null);
+  const [saved, setSaved] = useState<string | null>(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem(`pbq-${key}`);
+    }
+    return null;
+  });
 
-  useEffect(() => { if (typeof window !== "undefined") setSaved(localStorage.getItem(`pbq-${key}`)); }, [key]);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const val = localStorage.getItem(`pbq-${key}`);
+    setTimeout(() => {
+      setSaved((prev) => (prev !== val ? val : prev));
+    }, 0);
+  }, [key]);
 
   function save(data: unknown) { if (typeof window !== "undefined") { localStorage.setItem(`pbq-${key}`, JSON.stringify(data)); setSaved(JSON.stringify(data)); } }
   function load<T>(): T | null { if (typeof window === "undefined") return null; const raw = localStorage.getItem(`pbq-${key}`); return raw ? JSON.parse(raw) : null; }

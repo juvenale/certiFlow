@@ -1,4 +1,4 @@
-export type PBQType = 'firewall_rules' | 'topology' | 'rack_vlan' | 'siem' | 'investigation' | 'timed_config' | 'log_generator' | 'scenario_tasks';
+export type PBQType = 'firewall_rules' | 'topology' | 'rack_vlan' | 'siem' | 'investigation' | 'timed_config' | 'log_generator' | 'scenario_tasks' | 'terminal';
 
 export interface PBQScoringRule { condition: string; points: number; }
 
@@ -80,4 +80,10 @@ export interface ScenarioTasksPBQ extends PBQBase {
   tasks: ScenarioTask[];
 }
 
-export type PBQExercise = FirewallPBQ | TopologyPBQ | RackVLANPBQ | SIEMPBQ | InvestigationPBQ | TimedConfigPBQ | LogGeneratorPBQ | ScenarioTasksPBQ;
+export interface TerminalPBQ extends PBQBase {
+  type: 'terminal';
+  terminalScenario: string;
+  requirements: string[];
+}
+
+export type PBQExercise = FirewallPBQ | TopologyPBQ | RackVLANPBQ | SIEMPBQ | InvestigationPBQ | TimedConfigPBQ | LogGeneratorPBQ | ScenarioTasksPBQ | TerminalPBQ;

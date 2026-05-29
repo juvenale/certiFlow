@@ -19,10 +19,14 @@ const modeInstructions: Record<AssistantMode, string> = {
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.DEEPSEEK_API_KEY;
+    let apiKey = request.headers.get("Authorization")?.replace("Bearer ", "")?.trim();
+    if (!apiKey || apiKey === "null" || apiKey === "undefined") {
+      apiKey = process.env.DEEPSEEK_API_KEY;
+    }
+
     if (!apiKey) {
       return NextResponse.json(
-        { error: "DEEPSEEK_API_KEY n'est pas configurée côté serveur." },
+        { error: "Clé API non configurée. Veuillez renseigner votre clé API DeepSeek dans les Paramètres de l'application." },
         { status: 500 },
       );
     }

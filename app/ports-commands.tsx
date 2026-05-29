@@ -64,7 +64,7 @@ export function PortsCommandsView({ onStartPortFlashcards, onPracticeAnswered }:
           <div>
             <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Ports & protocoles</p>
             <h2 className="mt-1 text-2xl font-black">Révision opérationnelle</h2>
-            <p className="mt-1 text-sm text-muted-foreground">Mémorise port, protocole, risque, alternative sécurisée et contexte d'examen.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Mémorise port, protocole, risque, alternative sécurisée et contexte d&apos;examen.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => setTab("practice")}
@@ -137,7 +137,7 @@ function PortPractice({ items, isSecure, onAnswered }: { items: typeof portFlash
   const [score, setScore] = useState({ correct: 0, answered: 0 });
 
   const pool = items.length ? items : portFlashcards;
-  const shuffledPool = useMemo(() => shuffleArray([...pool]), [items, pool.length]);
+  const shuffledPool = useMemo(() => shuffleArray([...pool]), [pool]);
   const current = shuffledPool[index % shuffledPool.length];
   const question = mode === "protocol-to-port"
     ? `Quel port est associé à ${current.protocol} (${current.english}) ?`

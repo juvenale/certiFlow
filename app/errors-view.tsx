@@ -144,7 +144,7 @@ export function ErrorsView({ errors, onClear, onStatusChange, onDelete }: {
       <div className="rounded-card border border-border bg-card p-12 text-center shadow-sm">
         <ClipboardList className="mx-auto mb-1.5 h-10 w-10 text-muted-foreground/40" />
         <p className="text-base font-bold">Journal vide</p>
-        <p className="mt-1 text-sm text-muted-foreground">Lance un quiz pour alimenter le journal d'erreurs.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Lance un quiz pour alimenter le journal d&apos;erreurs.</p>
       </div>
     );
   }

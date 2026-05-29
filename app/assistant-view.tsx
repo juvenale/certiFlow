@@ -74,9 +74,13 @@ export function AssistantView() {
     setStatus("DeepSeek réfléchit...");
 
     try {
+      const customKey = typeof window !== "undefined" ? localStorage.getItem("certiflow-custom-api-key") : "";
       const response = await fetch("/api/assistant", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          ...(customKey ? { "Authorization": `Bearer ${customKey}` } : {})
+        },
         body: JSON.stringify({
           prompt,
           mode: activeMode,
@@ -113,7 +117,7 @@ export function AssistantView() {
     }
   }
 
-  function useModePrompt(selectedMode: AssistantMode) {
+  function selectModePrompt(selectedMode: AssistantMode) {
     const selected = assistantModes.find((item) => item.id === selectedMode);
     setMode(selectedMode);
     setInput(selected?.prompt ?? "");
@@ -141,7 +145,7 @@ export function AssistantView() {
           <button
             key={item.id}
             type="button"
-            onClick={() => useModePrompt(item.id)}
+            onClick={() => selectModePrompt(item.id)}
             className={cn(
               "rounded-card border bg-card p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-primary",
               mode === item.id ? "border-primary bg-primary/5" : "border-border",
@@ -175,85 +179,106 @@ export function AssistantView() {
         </div>
       </div>
 
-      {messages.length > 0 && (
-        <div className="overflow-hidden rounded-card border border-border bg-card shadow-sm">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
-            <p className="text-sm font-bold">Conversation</p>
+      <div className="overflow-hidden rounded-card border border-border bg-card shadow-md flex flex-col">
+        {/* Chat Window Header */}
+        <div className="flex items-center justify-between border-b border-border px-4 py-3 bg-muted/30">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-success animate-pulse" />
+            <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Cockpit de chat IA · DeepSeek</p>
+          </div>
+          {messages.length > 0 && (
             <button
               type="button"
               onClick={() => setMessages([])}
-              className="text-xs font-bold text-muted-foreground transition hover:text-red-500"
+              className="text-xs font-bold text-muted-foreground transition hover:text-red-500 select-none"
             >
-              Effacer
+              Effacer la conversation
             </button>
-          </div>
-          <div className="max-h-[32rem] space-y-3 overflow-y-auto p-4">
-            {messages.map((message, index) => (
+          )}
+        </div>
+
+        {/* Chat Messages Stream */}
+        <div className="max-h-[30rem] overflow-y-auto p-4 space-y-4 min-h-[160px] bg-card scrollbar-thin">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center text-center py-10 text-muted-foreground select-none">
+              <Bot className="h-10 w-10 text-muted-foreground/40 mb-3" />
+              <p className="text-sm font-bold">Aucun message pour le moment</p>
+              <p className="text-xs max-w-sm mt-1">Sélectionnez un prompt rapide ci-dessus ou posez directement votre question pour démarrer.</p>
+            </div>
+          ) : (
+            messages.map((message, index) => (
               <div key={`${message.role}-${index}`} className={cn("flex gap-2.5", message.role === "user" ? "flex-row-reverse" : "flex-row")}>
                 <div className={cn(
-                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
-                  message.role === "user" ? "bg-primary" : "border border-border bg-muted",
+                  "flex h-7 w-7 shrink-0 items-center justify-center rounded-full shadow-sm",
+                  message.role === "user" ? "bg-primary text-white" : "border border-border bg-muted",
                 )}>
                   {message.role === "user" ? (
-                    <span className="text-[10px] font-black text-primary-foreground">Q</span>
+                    <span className="text-[10px] font-black select-none">Q</span>
                   ) : (
                     <Bot className="h-3.5 w-3.5 text-muted-foreground" />
                   )}
                 </div>
                 <div className={cn(
-                  "max-w-[88%] whitespace-pre-wrap rounded-card px-3.5 py-2.5 text-sm leading-relaxed",
-                  message.role === "user" ? "bg-primary text-primary-foreground" : "border border-border bg-muted text-foreground",
+                  "max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm",
+                  message.role === "user" 
+                    ? "bg-primary text-white border border-primary/10 rounded-tr-none" 
+                    : "border border-border bg-muted/65 text-foreground rounded-tl-none"
                 )}>
                   {message.role === "assistant" && (
-                    <div className="mb-2 inline-flex items-center gap-1 rounded-full border border-border bg-card px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                      <Brain className="h-3 w-3" /> {modeLabel(message.mode)}
+                    <div className="mb-2.5 inline-flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground select-none">
+                      <Brain className="h-3 w-3 text-primary" /> {modeLabel(message.mode)}
                     </div>
                   )}
                   {message.text}
                 </div>
               </div>
-            ))}
-            {loading && (
-              <div className="flex gap-2.5">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-muted">
-                  <Bot className="h-3.5 w-3.5 text-muted-foreground" />
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-card border border-border bg-muted px-3.5 py-2.5 text-sm">
-                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                  DeepSeek prépare la réponse...
-                </div>
+            ))
+          )}
+          {loading && (
+            <div className="flex gap-2.5">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-muted shadow-sm">
+                <Bot className="h-3.5 w-3.5 text-muted-foreground" />
               </div>
-            )}
-            <div ref={bottomRef} />
-          </div>
+              <div className="inline-flex items-center gap-3 rounded-2xl rounded-tl-none border border-border bg-muted/60 px-4 py-3 text-sm text-foreground shadow-sm">
+                <div className="flex items-center gap-1 select-none">
+                  <span className="dot-pulse" />
+                  <span className="dot-pulse" />
+                  <span className="dot-pulse" />
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground animate-pulse">DeepSeek formule une réponse...</span>
+              </div>
+            </div>
+          )}
+          <div ref={bottomRef} />
         </div>
-      )}
 
-      <div className="rounded-card border border-border bg-card p-4 shadow-sm">
-        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Mode actif: {modeLabel(mode)}</span>
-          <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
-            <CornerDownLeft className="h-3 w-3" /> Ctrl+Entrée pour envoyer
-          </span>
-        </div>
-        <textarea
-          value={input}
-          onChange={(event) => setInput(event.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Ex: explique pourquoi ma réponse IPS est fausse dans une question sur détection seulement..."
-          rows={4}
-          className="w-full resize-none rounded-card border border-border bg-muted p-3 text-sm outline-none transition focus:border-primary"
-        />
-        <div className="mt-2 flex justify-end">
-          <button
-            type="button"
-            onClick={() => send()}
-            disabled={!input.trim() || loading}
-            className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition hover:opacity-90 disabled:opacity-40"
-          >
-            {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
-            Envoyer
-          </button>
+        {/* Sticky Input container docked at bottom */}
+        <div className="border-t border-border bg-muted/40 p-4">
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Mode actif: {modeLabel(mode)}</span>
+            <span className="flex items-center gap-1 text-[10px] text-muted-foreground select-none">
+              <CornerDownLeft className="h-3 w-3" /> Ctrl+Entrée pour envoyer
+            </span>
+          </div>
+          <textarea
+            value={input}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Posez votre question sur CompTIA Security+ ou expliquez une confusion..."
+            rows={3}
+            className="w-full resize-none rounded-card border border-border bg-card p-3 text-sm outline-none transition focus:border-primary focus:ring-1 focus:ring-primary shadow-inner"
+          />
+          <div className="mt-2 flex justify-end">
+            <button
+              type="button"
+              onClick={() => send()}
+              disabled={!input.trim() || loading}
+              className="inline-flex items-center gap-1.5 rounded-btn bg-primary px-4 py-2 text-sm font-bold text-primary-foreground transition hover:opacity-90 disabled:opacity-40 shadow-sm"
+            >
+              {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+              Envoyer
+            </button>
+          </div>
         </div>
       </div>
     </div>

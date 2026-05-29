@@ -364,6 +364,166 @@ html[data-theme="arctic"] {
   --domain-amber-border:  rgba(245, 158, 11, .28);
 }
 
+html[data-theme="cyber-neon"] {
+  --background: #050508;
+  --foreground: #00ffcc;
+  --card: #0c0e17;
+  --card-hover: #161a29;
+  --border: #ff007f3a;
+  --muted: #111422;
+  --muted-foreground: #a0aec0;
+  --primary: #00ffcc;
+  --primary-foreground: #050508;
+  --primary-light: #00ffcc1a;
+  --accent: #ff007f;
+  --success: #39ff14;
+  --warning: #ffb703;
+  --danger: #ff003c;
+  --success-muted: rgba(57,255,20,.12);   --success-border: rgba(57,255,20,.28);
+  --warning-muted: rgba(255,183,3,.12);   --warning-border: rgba(255,183,3,.28);
+  --danger-muted:  rgba(255,0,60,.12);    --danger-border:  rgba(255,0,60,.28);
+  --surface: rgba(12,14,23,.88);
+  --sidebar: #07080d;
+  --ring-soft: rgba(0,255,204,.18);
+  --hero: linear-gradient(135deg, rgba(0,255,204,.16), rgba(255,0,127,.08));
+  /* Domain colors (brightened neon for dark backgrounds) */
+  --domain-violet:        #d600ff;
+  --domain-violet-muted:  rgba(214, 0, 255, .16);
+  --domain-violet-border: rgba(214, 0, 255, .32);
+  --domain-red:           #ff003c;
+  --domain-red-muted:     rgba(255, 0, 60, .16);
+  --domain-red-border:    rgba(255, 0, 60, .32);
+  --domain-blue:          #00bfff;
+  --domain-blue-muted:    rgba(0, 191, 255, .16);
+  --domain-blue-border:   rgba(0, 191, 255, .32);
+  --domain-emerald:       #00ffcc;
+  --domain-emerald-muted: rgba(0, 255, 204, .16);
+  --domain-emerald-border:rgba(0, 255, 204, .32);
+  --domain-amber:         #ffb703;
+  --domain-amber-muted:   rgba(255, 183, 3, .16);
+  --domain-amber-border:  rgba(255, 183, 3, .32);
+}
+
+html[data-theme="dracula-mode"] {
+  --background: #1e1f29;
+  --foreground: #f8f8f2;
+  --card: #282a36;
+  --card-hover: #343746;
+  --border: #44475a;
+  --muted: #21222c;
+  --muted-foreground: #6272a4;
+  --primary: #bd93f9;
+  --primary-foreground: #282a36;
+  --primary-light: #bd93f91a;
+  --accent: #ff79c6;
+  --success: #50fa7b;
+  --warning: #ffb86c;
+  --danger: #ff5555;
+  --success-muted: rgba(80,250,123,.12);  --success-border: rgba(80,250,123,.28);
+  --warning-muted: rgba(255,184,108,.12); --warning-border: rgba(255,184,108,.28);
+  --danger-muted:  rgba(255,85,85,.12);   --danger-border:  rgba(255,85,85,.28);
+  --surface: rgba(40,42,54,.90);
+  --sidebar: #191a21;
+  --ring-soft: rgba(189,147,249,.18);
+  --hero: linear-gradient(135deg, rgba(189,147,249,.16), rgba(255,121,198,.08));
+  /* Domain colors (Dracula palette) */
+  --domain-violet:        #bd93f9;
+  --domain-violet-muted:  rgba(189, 147, 249, .16);
+  --domain-violet-border: rgba(189, 147, 249, .32);
+  --domain-red:           #ff5555;
+  --domain-red-muted:     rgba(255, 85, 85, .16);
+  --domain-red-border:    rgba(255, 85, 85, .32);
+  --domain-blue:          #8be9fd;
+  --domain-blue-muted:    rgba(139, 233, 253, .16);
+  --domain-blue-border:   rgba(139, 233, 253, .32);
+  --domain-emerald:       #50fa7b;
+  --domain-emerald-muted: rgba(80, 250, 123, .16);
+  --domain-emerald-border:rgba(80, 250, 123, .32);
+  --domain-amber:         #ffb86c;
+  --domain-amber-muted:   rgba(255, 184, 108, .16);
+  --domain-amber-border:  rgba(255, 184, 108, .32);
+}
+
+html[data-theme="solarized-light"] {
+  --background: #fdf6e3;
+  --foreground: #657b83;
+  --card: #eee8d5;
+  --card-hover: #e4ddcb;
+  --border: #d3c7a3;
+  --muted: #ebdcb2;
+  --muted-foreground: #93a1a1;
+  --primary: #268bd2;
+  --primary-foreground: #fdf6e3;
+  --primary-light: #268bd21a;
+  --accent: #d33682;
+  --success: #859900;
+  --warning: #b58900;
+  --danger: #dc322f;
+  --success-muted: rgba(133,153,0,.12);   --success-border: rgba(133,153,0,.28);
+  --warning-muted: rgba(181,137,0,.12);   --warning-border: rgba(181,137,0,.28);
+  --danger-muted:  rgba(220,50,47,.12);   --danger-border:  rgba(220,50,47,.28);
+  --surface: rgba(238,232,213,.90);
+  --sidebar: #fdf6e3;
+  --ring-soft: rgba(38,139,210,.14);
+  --hero: linear-gradient(135deg, rgba(38,139,210,.10), rgba(211,54,130,.06));
+  /* Domain colors */
+  --domain-violet:        #6c71c4;
+  --domain-violet-muted:  rgba(108, 113, 196, .12);
+  --domain-violet-border: rgba(108, 113, 196, .28);
+  --domain-red:           #dc322f;
+  --domain-red-muted:     rgba(220, 50, 47, .12);
+  --domain-red-border:    rgba(220, 50, 47, .28);
+  --domain-blue:          #268bd2;
+  --domain-blue-muted:    rgba(38, 139, 210, .12);
+  --domain-blue-border:   rgba(38, 139, 210, .28);
+  --domain-emerald:       #859900;
+  --domain-emerald-muted: rgba(133, 153, 0, .12);
+  --domain-emerald-border:rgba(133, 153, 0, .28);
+  --domain-amber:         #b58900;
+  --domain-amber-muted:   rgba(181, 137, 0, .12);
+  --domain-amber-border:  rgba(181, 137, 0, .28);
+}
+
+html[data-theme="nordic-frost"] {
+  --background: #2e3440;
+  --foreground: #eceff4;
+  --card: #3b4252;
+  --card-hover: #434c5e;
+  --border: #4c566a;
+  --muted: #373e4c;
+  --muted-foreground: #d8dee9;
+  --primary: #88c0d0;
+  --primary-foreground: #2e3440;
+  --primary-light: #88c0d01a;
+  --accent: #81a1c1;
+  --success: #a3be8c;
+  --warning: #ebcb8b;
+  --danger: #bf616a;
+  --success-muted: rgba(163,190,140,.12); --success-border: rgba(163,190,140,.28);
+  --warning-muted: rgba(235,203,139,.12); --warning-border: rgba(235,203,139,.28);
+  --danger-muted:  rgba(191,97,106,.12);  --danger-border:  rgba(191,97,106,.28);
+  --surface: rgba(59,66,82,.90);
+  --sidebar: #242933;
+  --ring-soft: rgba(136,192,208,.18);
+  --hero: linear-gradient(135deg, rgba(136,192,208,.16), rgba(129,161,193,.08));
+  /* Domain colors (Nord theme palette) */
+  --domain-violet:        #b48ead;
+  --domain-violet-muted:  rgba(180, 142, 173, .16);
+  --domain-violet-border: rgba(180, 142, 173, .32);
+  --domain-red:           #bf616a;
+  --domain-red-muted:     rgba(191, 97, 106, .16);
+  --domain-red-border:    rgba(191, 97, 106, .32);
+  --domain-blue:          #8fbcbb;
+  --domain-blue-muted:    rgba(143, 188, 187, .16);
+  --domain-blue-border:   rgba(143, 188, 187, .32);
+  --domain-emerald:       #a3be8c;
+  --domain-emerald-muted: rgba(163, 190, 140, .16);
+  --domain-emerald-border:rgba(163, 190, 140, .32);
+  --domain-amber:         #ebcb8b;
+  --domain-amber-muted:   rgba(235, 203, 139, .16);
+  --domain-amber-border:  rgba(235, 203, 139, .32);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -508,3 +668,155 @@ textarea,
 .dom-bg-amber    { background-color: var(--domain-amber-muted); }
 .dom-bd-amber    { border-color:     var(--domain-amber-border); }
 .dom-tag-amber   { background-color: var(--domain-amber-muted); color: var(--domain-amber); }
+
+/* ── UI/UX Audit Custom Enhancements ────────────────────────────────── */
+
+/* 1. Shimmer effect for progress bars and buttons */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0.3) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2.5s infinite;
+  content: '';
+  pointer-events: none;
+}
+
+/* 2. Glow border effect for intelligent recommendations */
+@keyframes border-glow {
+  0%, 100% {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
+  }
+  50% {
+    border-color: var(--accent);
+    box-shadow: 0 0 18px rgba(6, 182, 212, 0.3);
+  }
+}
+
+.glow-border {
+  animation: border-glow 3s infinite alternate;
+  border-width: 1.5px !important;
+}
+
+/* 3. 3D Card Flip for Flashcards */
+.card-perspective {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.card-flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* 4. Incident Response Terminal CRT Filter & Glow */
+.crt-terminal {
+  position: relative;
+  background-color: #05080c !important;
+  border-color: #1a2833 !important;
+  color: #38bdf8;
+  text-shadow: 0 0 4px rgba(56, 189, 248, 0.4);
+}
+
+.crt-terminal::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.crt-text-green {
+  color: #4ade80 !important;
+  text-shadow: 0 0 6px rgba(74, 222, 128, 0.5) !important;
+}
+
+.crt-text-blue {
+  color: #38bdf8 !important;
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.5) !important;
+}
+
+.crt-text-amber {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 6px rgba(251, 191, 36, 0.5) !important;
+}
+
+.crt-text-red {
+  color: #f87171 !important;
+  text-shadow: 0 0 6px rgba(248, 113, 113, 0.5) !important;
+}
+
+/* 5. AI Chat Pulsing Dots reflection indicator */
+@keyframes pulse-dots {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.dot-pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  animation: pulse-dots 1.4s infinite ease-in-out;
+}
+
+.dot-pulse:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot-pulse:nth-child(3) {
+  animation-delay: 0.4s;
+}

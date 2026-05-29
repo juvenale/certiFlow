@@ -14,8 +14,13 @@ export function useTimeTracker(questionId: string, type: QuestionType) {
   const [seconds, setSeconds] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  useEffect(() => {
+  const [prevQuestionId, setPrevQuestionId] = useState(questionId);
+  if (prevQuestionId !== questionId) {
+    setPrevQuestionId(questionId);
     setSeconds(0);
+  }
+
+  useEffect(() => {
     timerRef.current = setInterval(() => setSeconds((prev) => prev + 1), 1000);
     return () => { if (timerRef.current) clearInterval(timerRef.current); };
   }, [questionId]);

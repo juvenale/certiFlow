@@ -14,11 +14,12 @@ import { SIEMInteractive } from "./pbq-scenario";
 import { InvestigationInteractive } from "./pbq-investigation2";
 import { TimedConfigPBQView } from "./pbq-investigation";
 import { ScenarioTasksPBQView } from "./pbq-scenario-tasks";
+import { InteractiveTerminal } from "./pbq-terminal";
 
 const typeLabels: Record<string, string> = {
   firewall_rules: "Firewall", topology: "Topologie", rack_vlan: "Rack & VLAN",
   siem: "Analyse SIEM", investigation: "Investigation", timed_config: "Config. chronométrée",
-  scenario_tasks: "Matching / Classif.",
+  scenario_tasks: "Matching / Classif.", terminal: "Terminal Linux",
 };
 const difficultyColors: Record<string, string> = {
   foundation: "bg-success-muted text-success-fg", intermediate: "bg-warning-muted text-warning-fg",
@@ -83,6 +84,7 @@ export default function PBQBrowser({ onComplete }: { onComplete?: () => void }) 
       case "investigation": return <>{timerDisplay}<InvestigationInteractive exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
       case "timed_config": return <>{timerDisplay}<TimedConfigPBQView exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
       case "scenario_tasks": return <>{timerDisplay}<ScenarioTasksPBQView exercise={selected} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
+      case "terminal": return <>{timerDisplay}<InteractiveTerminal exercise={selected as any} onReset={() => { timeTracker.saveAndProgress(); handleReset(); }} /></>;
       default: return <p className="p-4">Type non supporté.</p>;
     }
   }

@@ -1,4 +1,4 @@
-import type { FirewallPBQ, InvestigationPBQ, PBQExercise, RackVLANPBQ, ScenarioTasksPBQ, SIEMPBQ, TimedConfigPBQ, TopologyPBQ } from './pbq';
+import type { FirewallPBQ, InvestigationPBQ, PBQExercise, RackVLANPBQ, ScenarioTasksPBQ, SIEMPBQ, TimedConfigPBQ, TopologyPBQ, TerminalPBQ } from './pbq';
 
 export const pbqExercises: PBQExercise[] = [
   {
@@ -2926,4 +2926,31 @@ R6 — Deny : risque HIGH dépasse le seuil Medium — refus même si toutes les
       },
     ],
   } satisfies ScenarioTasksPBQ,
+  {
+    id: "pbq-terminal-001",
+    domain: "Security Operations",
+    type: "terminal",
+    title: "Incident Response: Reverse Shell",
+    difficulty: "advanced",
+    timeLimitSeconds: 300,
+    role: "SOC Analyst",
+    scenario: "Une alerte SIEM signale un trafic sortant suspect depuis un poste client. Utilisez les outils de la console pour enquêter et contenir la menace.",
+    objective: "Identifier le port et le processus suspect, puis bloquer l'IP malveillante via le pare-feu.",
+    terminalScenario: "reverse-shell",
+    requirements: [
+      "Identifier le port ouvert suspect (netstat ou nmap).",
+      "Détecter la destination et l'IP suspecte (whois).",
+      "Inspecter les règles de pare-feu actives (iptables).",
+      "Bloquer la menace en fermant le port 4444 (iptables block 4444 ou block 4444)."
+    ],
+    scoring: {
+      max: 100,
+      rules: [
+        { condition: "reconnaissance_reussie", points: 25 },
+        { condition: "investigation_reussie", points: 25 },
+        { condition: "inspection_reussie", points: 25 },
+        { condition: "remediation_reussie", points: 25 }
+      ]
+    }
+  } satisfies TerminalPBQ,
 ];

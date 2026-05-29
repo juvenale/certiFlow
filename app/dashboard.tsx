@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { getDailyTasks, setDailyTaskCount } from "@/lib/daily-tasks";
 import { domainStats as allDomainStats } from "@/data/domain-stats";
+import { examDate } from "@/data/certiflow";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 type DomainStat = { id: string; name: string; weight: number; totalQuestions: number; attempted: number; correct: number; progress: number };
@@ -45,7 +46,9 @@ function useDomainProgress(answered: number, correct: number) {
       const progress = Math.min(100, Math.round(coverage * 0.5 + accuracy * 0.5));
       return { id: d.id, name: d.name, weight: d.weight, totalQuestions: d.totalQuestions, attempted: stat.answered, correct: stat.correct, progress };
     });
-    setDomainProgress(result);
+    setTimeout(() => {
+      setDomainProgress(result);
+    }, 0);
   }, [answered, correct]);
 
   return domainProgress;
@@ -118,7 +121,9 @@ function useSmartAnalytics(answered: number, correct: number) {
     const trend = recentScores.length >= 2 ? recentScores[recentScores.length - 1] - recentScores[0] : 0;
     const globalAccuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
 
-    setAnalytics({ weeklyProgress, domainAccuracy, weakConcepts, weeklyQuestions, trend, globalAccuracy });
+    setTimeout(() => {
+      setAnalytics({ weeklyProgress, domainAccuracy, weakConcepts, weeklyQuestions, trend, globalAccuracy });
+    }, 0);
   }, [answered, correct]);
 
   return analytics;
@@ -145,8 +150,10 @@ function useDailyCheckpoint(answered: number, correct: number) {
       cp = { startAnswered: answered, startCorrect: correct };
     }
 
-    setTodayAnswered(Math.max(0, answered - cp.startAnswered));
-    setTodayCorrect(Math.max(0, correct - cp.startCorrect));
+    setTimeout(() => {
+      setTodayAnswered(Math.max(0, answered - cp.startAnswered));
+      setTodayCorrect(Math.max(0, correct - cp.startCorrect));
+    }, 0);
   }, [answered, correct]);
 
   return { todayAnswered, todayCorrect };
@@ -212,7 +219,7 @@ function ActionTile({
 // ─── Countdown (isolated to avoid 1s re-renders of entire Dashboard) ─────────
 
 const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: number; examStart: number }) {
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
@@ -241,7 +248,7 @@ const Countdown = memo(function Countdown({ examTime, examStart }: { examTime: n
         <span className="text-xs text-muted-foreground">{timelineProgress}% du temps ecoule</span>
       </div>
       <div className="mb-3 h-2 rounded-full bg-muted overflow-hidden">
-        <div className={cn("h-full rounded-full transition-all duration-1000",
+        <div className={cn("h-full rounded-full transition-all duration-1000 shimmer-effect",
             timelineProgress > 90 ? "bg-danger" : timelineProgress > 75 ? "bg-warning" : "bg-primary")}
           style={{ width: `${timelineProgress}%` }} />
       </div>
@@ -271,7 +278,7 @@ export function Dashboard({
   onSmartReview?: () => void;
 }) {
   const [now, setNow] = useState(Date.now());
-  const examTime = new Date("2026-05-28T09:00:00").getTime();
+  const examTime = new Date(examDate).getTime();
   const examStart = new Date("2026-05-01").getTime();
   const domainProgress = useDomainProgress(answered, correct);
   const { todayAnswered, todayCorrect } = useDailyCheckpoint(answered, correct);
@@ -343,6 +350,7 @@ export function Dashboard({
       else break;
     }
     return streak;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answered]);
 
   const examMini = useMemo(() => {
@@ -350,6 +358,7 @@ export function Dashboard({
     try { exams = JSON.parse(localStorage.getItem("certiflow-exam-history") || "[]"); } catch {}
     if (!exams.length) return null;
     return { lastScore: exams[0].score, totalExams: exams.length, avgScore: Math.round(exams.reduce((s, e) => s + e.score, 0) / exams.length) };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answered]);
 
   // Re-read on mount and when the tab becomes visible (user may have completed tasks)
@@ -393,7 +402,7 @@ export function Dashboard({
           <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-success" />
           <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
             <div>
-              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Cockpit d'examen</p>
+              <p className="text-xs font-black uppercase tracking-wider text-muted-foreground">Cockpit d&apos;examen</p>
               <h2 className="mt-1 text-2xl font-black sm:text-3xl">Security+ SY0-701</h2>
               <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
                 Ton tableau de bord priorise ce qui fait monter le score: precision, domaines faibles, rythme hebdomadaire et revision active.
@@ -421,7 +430,7 @@ export function Dashboard({
               <span className="text-sm font-black tabular-nums">{readinessScore}%</span>
             </div>
             <div className="h-3 overflow-hidden rounded-full bg-background">
-              <div className={cn("h-full rounded-full transition-all duration-700", readinessConfig.color)}
+              <div className={cn("h-full rounded-full transition-all duration-700 shimmer-effect", readinessConfig.color)}
                 style={{ width: `${readinessScore}%` }} />
             </div>
             <div className="mt-2 flex justify-between text-xs text-muted-foreground">
@@ -455,7 +464,7 @@ export function Dashboard({
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className={cn("rounded-card border p-5 shadow-sm", rec.color)}>
+        <div className={cn("rounded-card border p-5 shadow-sm glow-border", rec.color)}>
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-btn bg-card">
               <Lightbulb className="h-5 w-5 text-warning-fg" />
@@ -482,7 +491,7 @@ export function Dashboard({
               {tasks.filter((task) => task.done >= task.target).length}/{tasks.length} terminees
             </span>
           </div>
-          <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {tasks.map((task) => {
               const pct = Math.min(100, (task.done / task.target) * 100);
               const done = pct >= 100;
@@ -497,7 +506,7 @@ export function Dashboard({
                   </div>
                   <p className="min-h-10 text-sm font-black leading-tight">{task.label}</p>
                   <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-background">
-                    <div className={cn("h-full rounded-full", done ? "bg-success" : task.color)} style={{ width: `${pct}%` }} />
+                    <div className={cn("h-full rounded-full shimmer-effect", done ? "bg-success" : task.color)} style={{ width: `${pct}%` }} />
                   </div>
                 </button>
               );
@@ -542,7 +551,7 @@ export function Dashboard({
         <div className="rounded-card border border-border bg-card p-5 shadow-sm">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-muted-foreground">
-              <TrendingUp className="h-4 w-4" /> Courbe d'evolution
+              <TrendingUp className="h-4 w-4" /> Courbe d&apos;evolution
             </h2>
             <span className={cn("rounded-full px-2 py-1 text-xs font-bold",
               analytics.trend >= 0 ? "bg-success-muted text-success-fg" : "bg-danger-muted text-danger-fg")}>
@@ -608,7 +617,7 @@ export function Dashboard({
             </div>
           ) : (
             <div className="rounded-card bg-success-muted p-4">
-              <p className="font-bold text-success-fg">Aucun concept faible majeur pour l'instant.</p>
+              <p className="font-bold text-success-fg">Aucun concept faible majeur pour l&apos;instant.</p>
               <p className="mt-1 text-sm text-muted-foreground">Continue les quiz pour alimenter les statistiques.</p>
             </div>
           )}
