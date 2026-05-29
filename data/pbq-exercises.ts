@@ -1,4 +1,5 @@
 import type { FirewallPBQ, InvestigationPBQ, PBQExercise, RackVLANPBQ, ScenarioTasksPBQ, SIEMPBQ, TimedConfigPBQ, TopologyPBQ, TerminalPBQ } from './pbq';
+import { importedPbqExercises } from './imported-pbq-exercises';
 
 export const pbqExercises: PBQExercise[] = [
   {
@@ -2953,4 +2954,5 @@ R6 — Deny : risque HIGH dépasse le seuil Medium — refus même si toutes les
       ]
     }
   } satisfies TerminalPBQ,
+  ...(importedPbqExercises as PBQExercise[]),
 ];
