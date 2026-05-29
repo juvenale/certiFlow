@@ -366,7 +366,17 @@ function computeTaskScore(
   task: ScenarioTask,
   answers: Record<string, string>,
   ordering: Record<string, string[]>,
+  selfGrades?: Record<string, number>,
 ): { earned: number; correct: number; total: number } {
+  const isSelfGraded = task.kind === "self_check" || task.kind === "table_completion" || (task.options ?? []).length === 0;
+  if (isSelfGraded) {
+    const earned = selfGrades ? (selfGrades[task.id] ?? 0) : 0;
+    return {
+      earned,
+      correct: earned > 0 ? (earned === task.points ? 1 : 0.5) : 0,
+      total: 1,
+    };
+  }
   if (task.kind === "matching" || task.kind === "classification") {
     const items = task.items ?? [];
     let correct = 0;
@@ -467,12 +477,18 @@ export function ScenarioTasksPBQView({
   });
   const [checked, setChecked] = useState(false);
 
+  const [draftAnswers, setDraftAnswers] = useState<Record<string, string>>({});
+  const [revealedClues, setRevealedClues] = useState<Record<string, boolean>>({});
+  const [selfGrades, setSelfGrades] = useState<Record<string, number>>({});
+  const [aiAudits, setAiAudits] = useState<Record<string, string>>({});
+  const [aiLoading, setAiLoading] = useState<Record<string, boolean>>({});
+
   const taskScores = useMemo(
     () =>
       checked
-        ? exercise.tasks.map((t) => computeTaskScore(t, answers, ordering))
+        ? exercise.tasks.map((t) => computeTaskScore(t, answers, ordering, selfGrades))
         : null,
-    [checked, answers, ordering, exercise.tasks],
+    [checked, answers, ordering, selfGrades, exercise.tasks],
   );
 
   const totalScore = taskScores
@@ -481,6 +497,44 @@ export function ScenarioTasksPBQView({
 
   const onAnswer = (key: string, value: string) =>
     setAnswers((prev) => ({ ...prev, [key]: value }));
+
+  const handleAskAIAudit = async (task: ScenarioTask) => {
+    setAiLoading(prev => ({ ...prev, [task.id]: true }));
+    setAiAudits(prev => ({ ...prev, [task.id]: "" }));
+    try {
+      const customKey = typeof window !== "undefined" ? localStorage.getItem("certiflow-custom-api-key") : "";
+      const prompt = `
+Question PBQ Security+: "${task.title}"
+Énoncé/Contexte: "${task.prompt}"
+Corrigé officiel attendu:
+${JSON.stringify(task.expectedAnswers, null, 2)}
+
+Brouillon soumis par l'étudiant:
+"${draftAnswers[task.id] ?? ""}"
+
+Rédige une analyse de coach en français pour guider l'étudiant. Structure la réponse :
+1. **Évaluation** : Analyse ce qu'il a écrit de façon constructive.
+2. **Le Piège** : Mentionne s'il est tombé ou a su éviter un piège CompTIA classique lié à cette question.
+3. **Score recommandé** : Recommande s'il doit s'attribuer 100%, 50% ou 0% des points.
+Garde un ton encourageant, sans politesse inutile.
+`;
+      const res = await fetch("/api/assistant", { 
+        method: "POST", 
+        headers: { 
+          "Content-Type": "application/json",
+          ...(customKey ? { "Authorization": `Bearer ${customKey}` } : {})
+        },
+        body: JSON.stringify({ mode: "general", prompt }) 
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error);
+      setAiAudits(prev => ({ ...prev, [task.id]: data.answer }));
+    } catch { 
+      setAiAudits(prev => ({ ...prev, [task.id]: "IA indisponible pour l'audit." })); 
+    } finally { 
+      setAiLoading(prev => ({ ...prev, [task.id]: false })); 
+    }
+  };
 
   return (
     <section className="rounded-card border border-border bg-card p-5 shadow-sm">
@@ -537,61 +591,231 @@ export function ScenarioTasksPBQView({
                 </p>
               )}
 
-              {task.kind === "matching" && (
-                <DnDMatchingPool
-                  task={task}
-                  answers={answers}
-                  onAnswer={onAnswer}
-                  checked={checked}
-                />
-              )}
+              {(() => {
+                const isSelfGraded = task.kind === "self_check" || task.kind === "table_completion" || (task.options ?? []).length === 0;
+                
+                if (isSelfGraded) {
+                  return (
+                    <div className="space-y-4">
+                      {!checked ? (
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <label htmlFor={`draft-${task.id}`} className="text-xs font-black uppercase text-muted-foreground">Votre Brouillon de Travail / Réponse rédigée</label>
+                            <span className="text-[10px] bg-primary/10 text-primary font-bold px-2 py-0.5 rounded-full">Saisie active</span>
+                          </div>
+                          <textarea
+                            id={`draft-${task.id}`}
+                            value={draftAnswers[task.id] ?? ""}
+                            onChange={(e) => setDraftAnswers(prev => ({ ...prev, [task.id]: e.target.value }))}
+                            placeholder="Saisissez vos règles de pare-feu, vos correspondances ou vos analyses ici..."
+                            rows={5}
+                            className="w-full rounded-card border border-border bg-background p-3.5 text-sm font-mono leading-relaxed placeholder:text-muted-foreground/40 focus:ring-1 focus:ring-primary focus:border-primary transition-all shadow-inner"
+                          />
+                          
+                          {/* Hint Unlocker */}
+                          {task.traps && task.traps.length > 0 && (
+                            <div className="flex justify-end">
+                              <button
+                                type="button"
+                                onClick={() => setRevealedClues(prev => ({ ...prev, [task.id]: !prev[task.id] }))}
+                                className="text-xs font-bold text-primary hover:text-primary transition-colors flex items-center gap-1 bg-primary/10 hover:bg-primary/15 py-1 px-3 rounded-full"
+                              >
+                                <span>{revealedClues[task.id] ? "Masquer l'indice" : "💡 Révéler un indice stratégique"}</span>
+                              </button>
+                            </div>
+                          )}
+                          
+                          {revealedClues[task.id] && task.traps && (
+                            <div className="rounded-card border border-primary/20 bg-primary/5 p-3.5 text-xs text-primary leading-relaxed animate-in fade-in duration-200">
+                              <p className="font-black uppercase tracking-wider text-[9px] mb-1">Indice & Pièges à éviter :</p>
+                              <ul className="list-disc pl-4 space-y-1">
+                                {task.traps.map((trap, i) => (
+                                  <li key={i}>{trap}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {/* Side by Side */}
+                          <div className="grid gap-4 md:grid-cols-2">
+                            {/* Left Column: Draft */}
+                            <div className="rounded-card border border-border bg-muted/40 p-3.5 relative overflow-hidden">
+                              <div className="absolute top-0 right-0 h-16 w-16 -mr-4 -mt-4 rounded-full bg-primary/5 blur-lg" />
+                              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">Votre brouillon soumis</p>
+                              {draftAnswers[task.id] ? (
+                                <pre className="text-xs font-mono whitespace-pre-wrap leading-relaxed text-foreground bg-background/50 p-2.5 rounded border border-border/60">{draftAnswers[task.id]}</pre>
+                              ) : (
+                                <p className="text-xs italic text-muted-foreground p-3 bg-background/50 rounded border border-dashed">Aucune note saisie.</p>
+                              )}
+                            </div>
+                            
+                            {/* Right Column: Expected */}
+                            <div className="rounded-card border border-success-muted bg-success-muted p-3.5 relative overflow-hidden">
+                              <div className="absolute top-0 right-0 h-16 w-16 -mr-4 -mt-4 rounded-full bg-success-muted/30 blur-lg" />
+                              <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-success-fg">Correction officielle attendue</p>
+                              <div className="text-xs font-mono bg-background/85 text-foreground p-2.5 rounded border border-success-muted/50 max-h-60 overflow-y-auto space-y-1.5 scrollbar-thin">
+                                {task.expectedAnswers && task.expectedAnswers.length > 0 ? (
+                                  <ul className="list-disc pl-3.5 space-y-1">
+                                    {task.expectedAnswers.map((ans, i) => (
+                                      <li key={i} className="leading-relaxed">{ans}</li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  <p className="whitespace-pre-wrap leading-relaxed">{task.explanation || "Consultez l'explication générale ci-dessous."}</p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* AI Audit Block */}
+                          {aiAudits[task.id] && (
+                            <div className="rounded-card border-l-4 border-primary bg-gradient-to-r from-primary/5 to-transparent p-3.5 text-xs leading-relaxed border border-border/80 shadow-sm relative overflow-hidden animate-in fade-in slide-in-from-left-1 duration-200">
+                              <div className="flex items-center gap-1.5 mb-1.5 text-primary">
+                                <span className="text-primary animate-pulse">🤖</span>
+                                <p className="text-[9px] font-black uppercase tracking-widest">Évaluation personnalisée du Coach IA</p>
+                              </div>
+                              <div className="text-xs text-foreground/90 font-medium whitespace-pre-line leading-relaxed">{aiAudits[task.id]}</div>
+                            </div>
+                          )}
 
-              {task.kind === "classification" && (
-                <DnDClassificationBoard
-                  task={task}
-                  answers={answers}
-                  onAnswer={onAnswer}
-                  checked={checked}
-                />
-              )}
+                          {aiLoading[task.id] && (
+                            <div className="rounded-card border border-primary/20 bg-primary/5 p-3.5 animate-pulse">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="animate-spin text-primary">⏳</span>
+                                <span className="text-[9px] font-black uppercase tracking-widest text-primary">{"L'IA analyse votre travail en temps réel..."}</span>
+                              </div>
+                              <div className="space-y-1.5">
+                                <div className="h-2.5 bg-primary/10 rounded w-5/6" />
+                                <div className="h-2.5 bg-primary/10 rounded w-3/4" />
+                              </div>
+                            </div>
+                          )}
 
-              {task.kind === "ordering" && (
-                <DnDOrderingList
-                  task={task}
-                  order={ordering[task.id] ?? []}
-                  onReorder={(items) =>
-                    setOrdering((prev) => ({ ...prev, [task.id]: items }))
-                  }
-                  checked={checked}
-                />
-              )}
+                          {/* Self Check buttons */}
+                          <div className="bg-card border border-border rounded-card p-3.5 space-y-3">
+                            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 pb-2">
+                              <div>
+                                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Auto-Évaluation de Conformité</p>
+                                <p className="text-[11px] text-muted-foreground leading-snug">Comparez votre travail au corrigé et attribuez-vous vos points :</p>
+                              </div>
+                              {!aiAudits[task.id] && !aiLoading[task.id] && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleAskAIAudit(task)}
+                                  className="inline-flex items-center gap-1.5 rounded-btn border border-primary/30 bg-primary/5 px-3 py-1.5 text-[10px] font-black text-primary hover:bg-primary/10 transition-colors"
+                                >
+                                  <span>🤖 Audit Coach IA</span>
+                                </button>
+                              )}
+                            </div>
+                            
+                            <div className="flex items-center justify-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => setSelfGrades(prev => ({ ...prev, [task.id]: 0 }))}
+                                className={cn(
+                                  "flex-1 py-2 px-3 rounded-btn text-xs font-bold border transition-all hover:scale-[1.02]",
+                                  selfGrades[task.id] === 0
+                                    ? "border-danger bg-danger/10 text-danger-fg"
+                                    : "border-border bg-muted/30 text-muted-foreground"
+                                )}
+                              >
+                                Incorrect (0 pt)
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setSelfGrades(prev => ({ ...prev, [task.id]: Math.round(task.points * 0.5) }))}
+                                className={cn(
+                                  "flex-1 py-2 px-3 rounded-btn text-xs font-bold border transition-all hover:scale-[1.02]",
+                                  selfGrades[task.id] === Math.round(task.points * 0.5)
+                                    ? "border-warning bg-warning/10 text-warning-fg"
+                                    : "border-border bg-muted/30 text-muted-foreground"
+                                )}
+                              >
+                                Partiel ({Math.round(task.points * 0.5)} pts)
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setSelfGrades(prev => ({ ...prev, [task.id]: task.points }))}
+                                className={cn(
+                                  "flex-1 py-2 px-3 rounded-btn text-xs font-bold border transition-all hover:scale-[1.02]",
+                                  selfGrades[task.id] === task.points
+                                    ? "border-success bg-success/10 text-success-fg"
+                                    : "border-border bg-muted/30 text-muted-foreground"
+                                )}
+                              >
+                                Parfait ({task.points} pts)
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
 
-              {task.kind === "matrix" && (
-                <MatrixGrid
-                  task={task}
-                  answers={answers}
-                  onAnswer={onAnswer}
-                  checked={checked}
-                />
-              )}
+                return (
+                  <>
+                    {task.kind === "matching" && (
+                      <DnDMatchingPool
+                        task={task}
+                        answers={answers}
+                        onAnswer={onAnswer}
+                        checked={checked}
+                      />
+                    )}
 
-              {task.kind === "single_choice" && (
-                <SingleChoiceTask
-                  task={task}
-                  answers={answers}
-                  onAnswer={onAnswer}
-                  checked={checked}
-                />
-              )}
+                    {task.kind === "classification" && (
+                      <DnDClassificationBoard
+                        task={task}
+                        answers={answers}
+                        onAnswer={onAnswer}
+                        checked={checked}
+                      />
+                    )}
 
-              {task.kind === "multi_select" && (
-                <MultiSelectTask
-                  task={task}
-                  answers={answers}
-                  onAnswer={onAnswer}
-                  checked={checked}
-                />
-              )}
+                    {task.kind === "ordering" && (
+                      <DnDOrderingList
+                        task={task}
+                        order={ordering[task.id] ?? []}
+                        onReorder={(items) =>
+                          setOrdering((prev) => ({ ...prev, [task.id]: items }))
+                        }
+                        checked={checked}
+                      />
+                    )}
+
+                    {task.kind === "matrix" && (
+                      <MatrixGrid
+                        task={task}
+                        answers={answers}
+                        onAnswer={onAnswer}
+                        checked={checked}
+                      />
+                    )}
+
+                    {task.kind === "single_choice" && (
+                      <SingleChoiceTask
+                        task={task}
+                        answers={answers}
+                        onAnswer={onAnswer}
+                        checked={checked}
+                      />
+                    )}
+
+                    {task.kind === "multi_select" && (
+                      <MultiSelectTask
+                        task={task}
+                        answers={answers}
+                        onAnswer={onAnswer}
+                        checked={checked}
+                      />
+                    )}
+                  </>
+                );
+              })()}
 
               {checked && taskScores && (
                 <div className="mt-4 rounded-card border border-border bg-card p-4">
